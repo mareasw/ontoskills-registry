@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_news_monitor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "news-monitor" ;
+    skos:broader "News monitoring strategy framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/news-monitor" ;
+    oc:contentHash "624ffd0e7d02feeba4f1fcfd4bf98b25d1610ef793782c19d59ea2f38bae4314" ;
+    oc:differentia "provides keyword strategy, source taxonomy, digest templates, media analysis frameworks, and alert configuration guides for comprehensive news tracking and media intelligence" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "monitoring topic, brand name, or keywords to track" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Set up news monitoring strategies, analyze news coverage, and synthesize current events. Create news digests and media analysis reports." ;
+    oc:hasName "news-monitor" ;
+    oc:hasPackageName "news-monitor" ;
+    oc:impartsKnowledge oc:kn_0e13c8f2,
+        oc:kn_3fd6a13c,
+        oc:kn_440f2557,
+        oc:kn_4477c2ca,
+        oc:kn_4e4f5d03,
+        oc:kn_59cac1e9,
+        oc:kn_7d3b6b89 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze media coverage",
+        "configure news alerts",
+        "create news digest",
+        "generate media analysis report",
+        "monitor competitor news",
+        "set up news monitoring strategy",
+        "track brand mentions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0e13c8f2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring alert thresholds and frequencies" ;
+    oc:directiveContent "Do not set all alerts to real-time frequency or monitor everything equally — this causes alert fatigue and obscures genuinely important coverage." ;
+    oc:hasRationale "Alert fatigue is the primary reason monitoring programs fail. Prioritization and appropriate frequency settings are essential for sustained effectiveness." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3fd6a13c a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before delivering a monitoring strategy document" ;
+    oc:directiveContent "This skill assumes the user can manually set up recommended tools (Google Alerts, Feedly, Mention, etc.) and implement the monitoring strategy themselves." ;
+    oc:hasRationale "The skill provides guidance and templates but the user must have access to and ability to configure the recommended monitoring tools." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_440f2557 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing media coverage or setting up source monitoring" ;
+    oc:directiveContent "Tier sources by authority (Tier 1: WSJ/NYT/Reuters at 10x weight; Tier 2: industry leaders at 5x; Tier 3: regional at 2x; Tier 4: blogs at 1x) to prioritize coverage analysis." ;
+    oc:hasRationale "Not all sources carry equal weight. Tiered authority scoring ensures that mentions in high-authority outlets receive proportionally more attention in analysis." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4477c2ca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining keyword strategies for any news monitoring setup" ;
+    oc:directiveContent "Use Boolean operators (AND, OR, NOT) to construct precise monitoring queries that reduce noise and increase signal relevance." ;
+    oc:hasRationale "Boolean queries dramatically improve signal-to-noise ratio by filtering irrelevant results and combining related terms effectively." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e4f5d03 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring alert schedules and digest cadences" ;
+    oc:directiveContent "Establish differentiated monitoring frequencies: real-time for brand mentions and negative monitoring, daily for product mentions and competitor news, weekly for executive mentions and industry trends." ;
+    oc:hasRationale "Appropriate frequency prevents alert fatigue while ensuring critical mentions are caught promptly. Over-monitoring low-priority topics wastes resources." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_59cac1e9 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when setting expectations with the user" ;
+    oc:directiveContent "This skill cannot execute actual monitoring, access real-time news feeds, or access paywalled sources — it produces strategy documents and templates that require manual implementation." ;
+    oc:hasRationale "The skill is a strategy and planning tool, not a live monitoring execution engine. Users must implement the recommended strategies using actual monitoring tools." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7d3b6b89 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing an operational monitoring workflow" ;
+    oc:directiveContent "Structure monitoring workflows in three cadences: daily (review alerts, triage, flag for action), weekly (compile digest, analyze trends, share with stakeholders), monthly (full analysis report, strategy review, keyword refinement)." ;
+    oc:hasRationale "A tiered cadence ensures continuous awareness without overwhelming analysts, while monthly reviews prevent strategy drift and keyword staleness." ;
+    oc:severityLevel "HIGH" .
+

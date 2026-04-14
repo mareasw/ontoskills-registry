@@ -1,0 +1,107 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_invoice_template a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "invoice-template" ;
+    skos:broader "Template-based document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/invoice-template" ;
+    oc:contentHash "0f1639a933d8a48ce3c787c2879f6c791883370528005499831ed228d8acccac" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "Produces professional PDF invoices from structured data using ReportLab or HTML/WeasyPrint pipelines with company branding, itemized line items, tax calculations, and payment terms" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "invoice data (invoice_number, from/to, items, tax_rate) or order data description" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Generate professional PDF invoices from templates" ;
+    oc:hasName "invoice-template" ;
+    oc:hasPackageName "claude-office-skills" ;
+    oc:hasPayload oc:payload_0f1639a933d8a48c ;
+    oc:hasRequirement oc:req_24b02bfd,
+        oc:req_31adb754,
+        oc:req_6caa6449,
+        oc:req_99341ad8,
+        oc:req_fd635a4a ;
+    oc:impartsKnowledge oc:kn_07ad1de8,
+        oc:kn_48903047,
+        oc:kn_74eab82e,
+        oc:kn_987bae39,
+        oc:kn_b87fc0a1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "batch generate monthly invoices",
+        "create invoices from order data",
+        "create recurring invoices",
+        "customize invoice templates per client",
+        "generate PDF invoices" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_07ad1de8 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating any invoice" ;
+    oc:directiveContent "Validate all required invoice fields (invoice_number, date, from, to, items) before generating the PDF." ;
+    oc:hasRationale "Missing required fields result in malformed or incomplete invoices that may not be legally compliant." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_48903047 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When regenerating invoices" ;
+    oc:directiveContent "Running invoice generation multiple times with the same input data and output path produces identical PDF files, but overwrites the previous file each time." ;
+    oc:hasRationale "Safe to retry or regenerate, but be aware the file is simply replaced each time." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_74eab82e a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When generating invoices to a file path" ;
+    oc:directiveContent "This skill creates PDF files on disk at the specified output path. Existing files at the same path will be overwritten without warning." ;
+    oc:hasRationale "Users should be aware that output files overwrite existing files to prevent accidental data loss." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_987bae39 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing invoice item data" ;
+    oc:directiveContent "Never trust input-provided totals or tax calculations. Always recalculate line-item amounts, subtotals, tax, and grand total from raw quantity and rate data." ;
+    oc:hasRationale "Pre-computed totals may be wrong, tampered with, or stale. Independent recalculation ensures financial accuracy." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b87fc0a1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating invoices for any client" ;
+    oc:directiveContent "Use templates (either ReportLab canvas layouts or Jinja2/WeasyPrint HTML templates) for consistent branding and formatting across all invoices." ;
+    oc:hasRationale "Consistent branding reinforces professionalism and avoids formatting drift across batch-generated invoices." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_0f1639a933d8a48c a oc:ExecutionPayload ;
+    oc:code """# Requires: pip install reportlab jinja2 weasyprint
+# See SKILL.md for full create_invoice() and create_invoice_html() implementations
+""" ;
+    oc:executor "python" ;
+    oc:timeout 30 .
+
+oc:req_24b02bfd a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "office-mcp MCP server (create_docx, fill_docx_template, docx_to_pdf)" .
+
+oc:req_31adb754 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "weasyprint" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python-docx" .
+
+oc:req_99341ad8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "jinja2" .
+
+oc:req_fd635a4a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "reportlab" .
+

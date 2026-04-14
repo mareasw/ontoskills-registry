@@ -1,0 +1,99 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_linkedin_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "linkedin-automation" ;
+    skos:broader "Social media automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/linkedin-automation" ;
+    oc:contentHash "04f9c7ceea140596281f3624e292cca0c795188b24049d386cf0dd0d11d5d000" ;
+    oc:dependsOnSkill oc:skill_social_publisher ;
+    oc:differentia "that orchestrates LinkedIn marketing workflows including content publishing, B2B lead generation, outreach sequences, company page management, ad campaigns, and analytics tracking" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimitExceeded ;
+    oc:hasAllowedTool "linkedin_analytics",
+        "linkedin_leads",
+        "linkedin_message",
+        "linkedin_post" ;
+    oc:hasArgumentHint "task type (content, leads, outreach, ads, analytics) with optional campaign or profile context" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Automate LinkedIn marketing, lead generation, content publishing, and professional networking" ;
+    oc:hasName "linkedin-automation" ;
+    oc:hasPackageName "linkedin-automation" ;
+    oc:impartsKnowledge oc:kn_019f1459,
+        oc:kn_1783f31b,
+        oc:kn_331e54ff,
+        oc:kn_55652ac1,
+        oc:kn_683e36fc,
+        oc:kn_7df597e0,
+        oc:kn_964adf65 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate LinkedIn marketing",
+        "create LinkedIn content",
+        "generate B2B leads on LinkedIn",
+        "manage LinkedIn company page",
+        "run LinkedIn outreach campaigns",
+        "track LinkedIn analytics" ;
+    oc:yieldsState oc:AnalyticsRetrieved,
+        oc:ContentPublished,
+        oc:LeadsGenerated,
+        oc:OutreachInitiated .
+
+oc:kn_019f1459 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any LinkedIn automation workflow" ;
+    oc:directiveContent "Verify the social-mcp server is connected with valid LinkedIn credentials and that daily outreach limits have not been exceeded before initiating any campaign." ;
+    oc:hasRationale "LinkedIn enforces strict daily limits on connections and messages; exceeding these triggers rate limits or account suspension." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1783f31b a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When managing LinkedIn lead lists and prioritizing outreach" ;
+    oc:directiveContent "Score leads on a composite of profile completeness, engagement behavior, and ICP fit before initiating outreach — hot leads (>75) get immediate follow-up, warm (50-75) get nurtured, cold (<50) are deprioritized." ;
+    oc:hasRationale "Tiered lead scoring prevents wasting outreach quota on low-fit prospects and focuses effort on high-conversion opportunities." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_331e54ff a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing any automated LinkedIn action" ;
+    oc:directiveContent "All outreach actions (connection requests, messages, comments) create permanent LinkedIn activity traces tied to the authenticated account and may affect account reputation scores." ;
+    oc:hasRationale "LinkedIn monitors automated behavior patterns; excessive or poorly-timed automation can lead to account restrictions or bans." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_55652ac1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating LinkedIn post content" ;
+    oc:directiveContent "Post content must use strong hooks on the first line — the first 210 characters determine whether the post is truncated in feeds." ;
+    oc:hasRationale "LinkedIn's feed algorithm truncates posts after ~210 characters; the hook determines whether users click 'see more', directly impacting engagement rates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_683e36fc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scheduling LinkedIn content for individuals or company pages" ;
+    oc:directiveContent "Optimal posting frequency is 3-5 times per week, targeting Tuesday through Thursday at 08:00, 12:00, or 17:30." ;
+    oc:hasRationale "B2B audiences are most active mid-week during business hours; consistency signals algorithm favorability." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7df597e0 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing LinkedIn outreach or message sequences" ;
+    oc:directiveContent "Lead outreach sequences must include wait periods (2-5 days between messages) and value-add steps before any ask." ;
+    oc:hasRationale "LinkedIn's Terms of Service penalize aggressive outreach; staged sequences with delays build trust and reduce connection rejection rates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_964adf65 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When automating engagement or comment responses on LinkedIn" ;
+    oc:directiveContent "Never use generic or copy-pasted comments for engagement — LinkedIn's algorithm and users penalize inauthentic interaction." ;
+    oc:hasRationale "Generic comments damage credibility and can trigger LinkedIn's spam detection, potentially resulting in account restrictions." ;
+    oc:severityLevel "HIGH" .
+

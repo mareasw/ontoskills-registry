@@ -1,0 +1,86 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_jira_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "jira-automation" ;
+    skos:broader "Project management automation system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/jira-automation" ;
+    oc:contentHash "28f1cffdeea48063736100d8baa0d4bbcf179e47bd837fca1208604ab07e16c0" ;
+    oc:differentia "Automates Jira workflows including issue lifecycle management, sprint planning, JQL-based reporting, and cross-platform integrations via MCP tools" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "jira_create_issue",
+        "jira_search",
+        "jira_transition",
+        "jira_update_issue" ;
+    oc:hasArgumentHint "workflow type (issue management, sprint planning, reporting, automation rules) with parameters" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate Jira project management workflows, sprint planning, issue tracking, and reporting" ;
+    oc:hasName "jira-automation" ;
+    oc:impartsKnowledge oc:kn_18357426,
+        oc:kn_ad0089a6,
+        oc:kn_c1f753e3,
+        oc:kn_ec896a1f,
+        oc:kn_f6a89e1d,
+        oc:kn_fcf33855 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate Jira workflows",
+        "build JQL queries for issue tracking",
+        "configure Jira automation rules",
+        "create Jira bug reports and feature requests",
+        "generate sprint reports and velocity metrics",
+        "manage Jira issues and sprints" ;
+    oc:yieldsState oc:IssuesCreated,
+        oc:ReportGenerated,
+        oc:SprintConfigured .
+
+oc:kn_18357426 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining custom workflow transitions" ;
+    oc:directiveContent "Transitions between workflow states should enforce conditions (e.g., story_points_set before moving to Ready for Dev, has_linked_pr before Code Review, all_reviewers_approved before QA)." ;
+    oc:hasRationale "Transition conditions ensure issues have required information before advancing, preventing incomplete work from progressing." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ad0089a6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning sprints and committing to story point targets" ;
+    oc:directiveContent "Include a 10% buffer in sprint story point targets for unplanned work, and base capacity planning on actual available hours (team_size × hours_per_day × sprint_days)." ;
+    oc:hasRationale "Unplanned work is inevitable; a buffer prevents overcommitment and improves sprint completion rates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c1f753e3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring sprint boards and workflow states" ;
+    oc:directiveContent "Enforce WIP limits on board columns (e.g., In Progress: 6, In Review: 4) to prevent bottlenecks and context switching." ;
+    oc:hasRationale "WIP limits expose bottlenecks and force the team to swarm on completing work before starting new items." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ec896a1f a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When designing automation rules with cross-issue or cross-platform effects" ;
+    oc:directiveContent "Automation rules can trigger cascading actions: transitioning a parent Story to Done auto-transitions subtasks, and PR merges can auto-close linked issues." ;
+    oc:hasRationale "Cascading automations save time but can close issues prematurely if subtasks still have unresolved work; always verify cascade scope." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f6a89e1d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring or modifying Jira workflow automation rules" ;
+    oc:directiveContent "Do not skip transition validators and conditions to fast-track issues through the workflow, as this circumvents quality gates and creates invisible debt." ;
+    oc:hasRationale "Bypassing validators (like requiring a linked PR before Code Review) undermines the workflow's role as a quality control mechanism." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fcf33855 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or estimating Jira issues" ;
+    oc:directiveContent "Keep issues small enough to complete in 1-2 days; break down larger work into subtasks." ;
+    oc:hasRationale "Smaller issues are easier to estimate, track, and complete within a sprint, improving velocity predictability." ;
+    oc:severityLevel "MEDIUM" .
+

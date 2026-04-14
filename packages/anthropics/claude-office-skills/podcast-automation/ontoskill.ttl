@@ -1,0 +1,115 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_podcast_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "podcast-automation" ;
+    skos:broader "Automation workflow" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/podcast-automation" ;
+    oc:contentHash "4ff8a224f04f64082fb32c8dee4428fd9efd16415b57f452c2592f52a52bf722" ;
+    oc:dependsOnSkill oc:skill_transcription_automation ;
+    oc:differentia "that orchestrates the full podcast production lifecycle from recording through editing, publishing, RSS feed management, and multi-platform distribution" ;
+    oc:handlesFailure oc:AudioProcessingError,
+        oc:DistributionFailed,
+        oc:RSSFeedError ;
+    oc:hasArgumentHint "episode metadata and audio files" ;
+    oc:hasCategory "multimedia" ;
+    oc:hasDescription "Automate podcast production workflows including recording, editing, publishing, and distribution" ;
+    oc:hasName "podcast-automation" ;
+    oc:hasRequirement oc:req_2aa96e96,
+        oc:req_40e2dfa6,
+        oc:req_417cfc63,
+        oc:req_5244bff3,
+        oc:req_81743226,
+        oc:req_b7bc0ef8 ;
+    oc:impartsKnowledge oc:kn_220eb52f,
+        oc:kn_2c95617a,
+        oc:kn_307bf0aa,
+        oc:kn_32bda46e,
+        oc:kn_6cdad121,
+        oc:kn_6fec3301 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:AudioFilesAvailable,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "automate podcast production workflow",
+        "distribute podcast to platforms",
+        "generate show notes",
+        "manage RSS feeds",
+        "manage podcast guests",
+        "process podcast audio",
+        "publish podcast episodes",
+        "track podcast analytics" ;
+    oc:yieldsState oc:ContentDistributed,
+        oc:PodcastEpisodePublished,
+        oc:RSSFeedUpdated .
+
+oc:kn_220eb52f a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When producing any podcast episode from start to finish" ;
+    oc:directiveContent "Follow the sequential pipeline: Planning → Recording → Editing → Production (show notes/transcripts/chapters) → Distribution. Each stage depends on the previous one's output." ;
+    oc:hasRationale "Skipping stages or changing order leads to rework; for example, editing before mastering specs are defined causes remastering." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2c95617a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating episode show notes after production" ;
+    oc:directiveContent "Generate show notes that are SEO-optimized and include timestamps, key takeaways, guest info, and subscribe links to maximize discoverability." ;
+    oc:hasRationale "Detailed show notes improve search rankings, listener accessibility, and episode engagement; timestamps help retention." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_307bf0aa a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When publishing episodes and updating RSS feeds" ;
+    oc:directiveContent "Do not publish without first verifying the RSS feed enclosure URL is publicly accessible and the audio file MIME type is correctly set to audio/mpeg." ;
+    oc:hasRationale "Broken enclosure URLs or incorrect MIME types cause episodes to fail ingestion on Apple Podcasts, Spotify, and other directories." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_32bda46e a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing the publish action" ;
+    oc:directiveContent "Publishing an episode triggers automatic distribution to all configured primary platforms (Apple, Spotify) and social media promotion posts." ;
+    oc:hasRationale "Agents must be aware that publishing is not a preview—it immediately pushes content to live platforms and social channels." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6cdad121 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning and scheduling podcast episodes" ;
+    oc:directiveContent "Maintain a consistent publishing schedule (same day/time each week) and prepare guests 3 days in advance with a recording guide and topic outline." ;
+    oc:hasRationale "Consistency builds audience habits and improves algorithmic promotion on platforms; prepared guests produce higher-quality content." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6fec3301 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When processing and mastering podcast audio" ;
+    oc:directiveContent "Target -16 LUFS integrated loudness with true peak at -1 dBTP for podcast audio mastering to ensure consistent playback across platforms." ;
+    oc:hasRationale "Platform standards (Apple, Spotify) recommend -16 LUFS for stereo content; non-compliant audio gets platform-normalized and may lose dynamic range." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_2aa96e96 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Spotify for Podcasters API" .
+
+oc:req_40e2dfa6 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Podcast RSS 2.0 and Apple Podcasts RSS specification" .
+
+oc:req_417cfc63 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Audio mastering standards (-16 LUFS target loudness)" .
+
+oc:req_5244bff3 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "audio processing tools (noise reduction, normalization, compression, EQ)" .
+
+oc:req_81743226 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "media-mcp server (podcast_publish, audio_process, rss_generate, distribution_sync)" .
+
+oc:req_b7bc0ef8 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Apple Podcasts Connect API" .
+

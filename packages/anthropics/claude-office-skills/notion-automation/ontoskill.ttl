@@ -1,0 +1,98 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_notion_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "notion-automation" ;
+    skos:broader "Automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/notion-automation" ;
+    oc:contentHash "e002e983d48203c872ebfc9093c2757303b8c74c96f0d96ace67ff28b27b974d" ;
+    oc:differentia "Automates Notion database workflows with cross-platform integrations, templates, triggers, and bidirectional sync patterns" ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "workflow description or Notion database name (e.g., \"set up content calendar automation\", \"sync Notion with Slack tasks\")" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Notion database automation - sync, templates, workflows, and cross-platform integrations" ;
+    oc:hasName "notion-automation" ;
+    oc:impartsKnowledge oc:kn_5e979f5b,
+        oc:kn_67e671b2,
+        oc:kn_849e74ce,
+        oc:kn_ace9757e,
+        oc:kn_d1c6da10,
+        oc:kn_e6a4955b,
+        oc:kn_e7736111,
+        oc:kn_f0195826 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate notion databases",
+        "build cross-platform integrations with notion",
+        "configure bidirectional calendar sync with notion",
+        "create notion pages from forms or triggers",
+        "create notion workflow automations",
+        "generate email digests from notion data",
+        "set up notion database templates",
+        "sync notion with slack calendar and crm" ;
+    oc:yieldsState oc:CrossPlatformSynced,
+        oc:NotionDatabaseCreated,
+        oc:WorkflowAutomated .
+
+oc:kn_5e979f5b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any new Notion database for team use" ;
+    oc:directiveContent "Structure Notion databases with typed properties (select, multi_select, person, date, relation) before defining automations, and include multiple views (Board, Calendar, Timeline, Table) for different team workflows." ;
+    oc:hasRationale "Well-typed properties enable reliable filtering and sorting in automations; multiple views accommodate different team members' workflow preferences" .
+
+oc:kn_67e671b2 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When handling webhook-based triggers from forms or Slack reactions" ;
+    oc:directiveContent "Form submission and Slack reaction triggers can produce duplicate Notion pages if the same event is processed twice. Include deduplication logic using unique identifiers (e.g., source URL + timestamp)." ;
+    oc:hasRationale "Webhook delivery is often at-least-once; without deduplication, duplicate database entries corrupt reporting and confuse teams" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_849e74ce a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing API payloads for notion_create_page or notion_update_database" ;
+    oc:directiveContent "The Notion API requires specific property type formats: title uses nested text.content arrays, select uses name objects, and page children must follow the block object structure with type-specific wrappers." ;
+    oc:hasRationale "The Notion API is strictly typed; malformed property objects will cause 400 errors and workflow failures" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ace9757e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining Slack notification actions in Notion workflows" ;
+    oc:directiveContent "Do not create automations without considering notification fatigue — use targeted channels, DMs for individuals, and avoid broadcasting every status change to team-wide channels." ;
+    oc:hasRationale "Excessive automated notifications lead to alert blindness and team members ignoring important signals" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d1c6da10 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running any Notion automation that depends on the notion-mcp MCP server" ;
+    oc:directiveContent "Verify MCP server (notion-mcp) is available and the target database ID exists before executing any Notion automation workflow." ;
+    oc:hasRationale "Workflows will fail silently or with unclear errors if the MCP server is not connected or the database doesn't exist" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e6a4955b a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When designing any multi-step Notion automation with cross-platform actions" ;
+    oc:directiveContent "Notion automations can trigger external actions: sending Slack messages, creating calendar events, posting to social platforms, and sending emails. Each workflow step may produce irreversible external notifications." ;
+    oc:hasRationale "Agents must be aware that automations have real-world effects beyond Notion; test with non-production channels first" .
+
+oc:kn_e7736111 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When setting up cross-platform sync workflows between Notion and external tools" ;
+    oc:directiveContent "Use bidirectional sync patterns for Calendar↔Notion and GitHub↔Notion integrations, defining separate trigger-action pairs for each direction to avoid infinite loops." ;
+    oc:hasRationale "Bidirectional sync without proper trigger scoping can cause recursive update loops between systems" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f0195826 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating Notion pages from informal sources such as Slack messages, emails, or form submissions" ;
+    oc:directiveContent "Use AI extraction (action item parsing, date inference, priority inference) when converting unstructured inputs like Slack messages into structured Notion tasks." ;
+    oc:hasRationale "Unstructured input requires intelligent parsing to populate structured Notion properties correctly; raw text rarely maps cleanly to database fields" .
+

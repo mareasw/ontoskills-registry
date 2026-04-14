@@ -1,0 +1,94 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_cover_letter a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "cover-letter" ;
+    skos:broader "document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/cover-letter" ;
+    oc:contentHash "aaa666c97b5723234f95c1b3ecd1537d202bbf4ac5accfb04d661dae730cb5df" ;
+    oc:differentia "that creates personalized cover letters tailored to specific job applications using structured templates and writing guidance" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InsufficientContext,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "docx_to_pdf" ;
+    oc:hasArgumentHint "job role, company, and relevant experience details" ;
+    oc:hasCategory "hr" ;
+    oc:hasDescription ">" ;
+    oc:hasName "cover-letter" ;
+    oc:hasRequirement oc:req_00941dea,
+        oc:req_82bf9fff,
+        oc:req_dee1dc90,
+        oc:req_f21af262 ;
+    oc:impartsKnowledge oc:kn_20433b40,
+        oc:kn_27a19386,
+        oc:kn_55a2ce99,
+        oc:kn_807b34af,
+        oc:kn_c1a7e9b7 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:JobPostingProvided,
+        oc:UserExperienceProvided ;
+    oc:resolvesIntent "create cover letter",
+        "draft a career-change cover letter",
+        "generate a referral cover letter",
+        "write a cover letter for a job application",
+        "write an entry-level cover letter" ;
+    oc:yieldsState oc:CoverLetterGenerated,
+        oc:DocumentCreated .
+
+oc:kn_20433b40 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting any cover letter" ;
+    oc:directiveContent "Never repeat the resume verbatim in a cover letter — add new insights and narrative context rather than summarizing what the resume already states." ;
+    oc:hasRationale "A cover letter that merely restates the resume provides zero incremental value and wastes the reader's time, reducing interview chances." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_27a19386 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing value proposition paragraphs" ;
+    oc:directiveContent "Always quantify achievements with specific metrics — replace vague claims like 'increased sales' with 'grew sales 45% YoY, adding $2M in revenue'." ;
+    oc:hasRationale "Quantified achievements are dramatically more credible and memorable than generic statements, providing concrete evidence of capability." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_55a2ce99 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before generating a cover letter" ;
+    oc:directiveContent "The skill cannot access actual job postings — the user must provide the job posting text or describe the role. Output should always be reviewed for accuracy of dates and details." ;
+    oc:hasRationale "Without the actual job posting, the generated letter cannot be properly tailored and may misalign with the employer's requirements." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_807b34af a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any cover letter" ;
+    oc:directiveContent "Every cover letter must follow the 4-part structure: Opening Hook, Value Proposition (2 paragraphs), Why This Company, and Strong Close — keep to one page (3-4 paragraphs, 250-450 words)." ;
+    oc:hasRationale "This structure balances attention-grabbing with substance, demonstrates company research, and respects the hiring manager's limited reading time." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c1a7e9b7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing the opening paragraph" ;
+    oc:directiveContent "Avoid generic openings like 'I am writing to apply for...' or 'To whom it may concern' — always use a compelling, specific opening that demonstrates research or a personal connection." ;
+    oc:hasRationale "Generic openings fail to differentiate the candidate and signal lack of effort or genuine interest in the specific role." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_00941dea a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_docx" .
+
+oc:req_82bf9fff a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "docx_to_pdf" .
+
+oc:req_dee1dc90 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "User should provide relevant experience details" .
+
+oc:req_f21af262 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "User must provide job posting text or role description" .
+

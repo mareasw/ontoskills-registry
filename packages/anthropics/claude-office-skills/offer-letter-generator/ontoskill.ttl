@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_offer_letter_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "offer-letter-generator" ;
+    skos:broader "Document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/offer-letter-generator" ;
+    oc:contentHash "3137b49ccfe4c0aa4f664e8b1821201db40491833908d6e1212ef2e9cda641dd" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that creates formal employment offer letters with compensation details and legal compliance awareness" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "docx_to_pdf",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "candidate name, job title, start date, compensation, employment type, reporting manager" ;
+    oc:hasCategory "hr" ;
+    oc:hasDescription "Create formal employment offer letters with compensation and terms" ;
+    oc:hasName "offer-letter-generator" ;
+    oc:impartsKnowledge oc:kn_0ea2b58c,
+        oc:kn_6ef28db4,
+        oc:kn_7bf327fd,
+        oc:kn_a5cb26cb,
+        oc:kn_ae1f520f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create offer letter",
+        "create offer letter with compensation details",
+        "draft job offer letter",
+        "generate employment offer" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0ea2b58c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring any offer letter output" ;
+    oc:directiveContent "Use clear, straightforward language and include all material terms: position, compensation, benefits, contingencies, deadlines, and a signature acceptance block." ;
+    oc:hasRationale "Clarity reduces candidate confusion, minimizes back-and-forth, and creates a positive candidate experience while ensuring all essential terms are documented." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6ef28db4 a oc:KnowledgeNode,
+        oc:RequiresHumanClarification ;
+    oc:appliesToContext "When the offer includes non-standard equity terms, involves international candidates, or involves jurisdictions with unfamiliar employment law" ;
+    oc:directiveContent "Complex equity arrangements, international offers, and jurisdiction-specific employment law requirements need legal or HR review before the letter is sent." ;
+    oc:hasRationale "This skill provides template guidance, not legal advice. Employment laws vary significantly by jurisdiction and complex compensation structures carry legal risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7bf327fd a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating an offer letter" ;
+    oc:directiveContent "Verify that all six required fields are provided before generating: candidate name, job title, start date, compensation, employment type, and reporting manager." ;
+    oc:hasRationale "Missing any required field produces an incomplete or invalid offer letter that cannot be sent to a candidate." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a5cb26cb a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any offer letter content" ;
+    oc:directiveContent "Never make promises outside standard terms, include discriminatory language, or omit contingencies in offer letters." ;
+    oc:hasRationale "Promises outside standard terms can create unintended legal obligations; discriminatory language violates employment law; missing contingencies expose the company to risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ae1f520f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting offer letters for US-based employees or roles involving equity compensation" ;
+    oc:directiveContent "Offer letters are generally not employment contracts. Include at-will employment disclaimer (US) and ensure equity terms reference the full agreement." ;
+    oc:hasRationale "Without proper disclaimers, an offer letter could be construed as a binding employment contract, creating legal liability." ;
+    oc:severityLevel "CRITICAL" .
+

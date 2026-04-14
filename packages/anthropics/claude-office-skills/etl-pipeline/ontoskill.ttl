@@ -1,0 +1,131 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_etl_pipeline a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "etl-pipeline" ;
+    skos:broader "Data pipeline automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/etl-pipeline" ;
+    oc:contentHash "c5f44f367844b670f0ef35eda5944db57bcaf273cfa4b34d201b1f64c1e30d6f" ;
+    oc:dependsOnSkill oc:skill_database_sync ;
+    oc:differentia "that designs and orchestrates Extract, Transform, Load workflows across multiple database and API sources into analytics warehouses with quality validation and monitoring" ;
+    oc:extends oc:skill_data_pipeline ;
+    oc:handlesFailure oc:ExtractionFailed,
+        oc:LoadFailed,
+        oc:QualityCheckFailed,
+        oc:TransformationError ;
+    oc:hasArgumentHint "source configuration, transformation rules, target schema, and schedule" ;
+    oc:hasCategory "data-pipeline" ;
+    oc:hasDescription "Design and automate Extract, Transform, Load data pipelines for data integration and analytics" ;
+    oc:hasName "etl-pipeline" ;
+    oc:hasRequirement oc:req_02d52cb2,
+        oc:req_38a821c7,
+        oc:req_4c5364a8,
+        oc:req_6a8ef22a,
+        oc:req_81586938,
+        oc:req_9bdc6e21,
+        oc:req_f0bbf577 ;
+    oc:impartsKnowledge oc:kn_1ebb05d5,
+        oc:kn_52792d63,
+        oc:kn_56206f79,
+        oc:kn_5c058457,
+        oc:kn_8c4822ec,
+        oc:kn_8d9641e1,
+        oc:kn_d908d340 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DatabaseConnected,
+        oc:NetworkAvailable,
+        oc:SourceSchemaDefined ;
+    oc:resolvesIntent "automate data integration",
+        "build data pipeline",
+        "configure data quality validation",
+        "create data pipeline orchestration",
+        "design ETL pipeline",
+        "extract transform load data",
+        "set up data warehouse loading" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:DataLoaded,
+        oc:DataTransformed,
+        oc:PipelineComplete .
+
+oc:kn_1ebb05d5 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring load operations to BigQuery, Snowflake, or Redshift" ;
+    oc:directiveContent "Do not load data without partitioning and clustering configuration on large target tables." ;
+    oc:hasRationale "Unpartitioned large tables lead to expensive full-table scans, slow query performance, and higher warehouse costs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_52792d63 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When defining pipeline orchestration DAGs" ;
+    oc:directiveContent "Define DAG tasks with explicit dependencies so that extraction tasks run in parallel where possible, transformation waits for all required extractions, and loading waits for transformation completion." ;
+    oc:hasRationale "Proper dependency management maximizes parallelism for performance while guaranteeing data correctness through sequential ordering where needed." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_56206f79 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any ETL pipeline DAG" ;
+    oc:directiveContent "Ensure all pipeline tasks are idempotent — re-running a pipeline for the same execution date must produce the same result without duplication." ;
+    oc:hasRationale "Idempotent pipelines are safe to retry on failure without producing duplicate or inconsistent data in the warehouse." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_5c058457 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When configuring error handling for pipeline tasks" ;
+    oc:directiveContent "Configure retry with exponential backoff (max 3 attempts) and a dead letter queue for failed records, preserving them for investigation and reprocessing." ;
+    oc:hasRationale "Transient failures (network timeouts, rate limits) are common in ETL; retry with backoff handles them gracefully while dead letter queues ensure no data is silently lost." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8c4822ec a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing a new or modified pipeline for the first time" ;
+    oc:directiveContent "Verify source connectivity, validate transformation rules against sample data, and confirm target schema compatibility before running a pipeline in production." ;
+    oc:hasRationale "Testing with sample data catches schema mismatches, transformation errors, and connectivity issues before they impact production data." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8d9641e1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before loading transformed data into the target warehouse" ;
+    oc:directiveContent "Apply data quality validation rules (null checks, uniqueness, referential integrity, range checks, freshness) at the transform stage before loading into the warehouse." ;
+    oc:hasRationale "Catching data quality issues before loading prevents corrupt or invalid data from entering the analytics warehouse where it would affect downstream reporting and decisions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d908d340 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring extraction from database sources" ;
+    oc:directiveContent "Use incremental extraction with a key column (e.g., updated_at) rather than full table scans whenever source data supports it." ;
+    oc:hasRationale "Incremental loading reduces extraction time, source database load, and network transfer by only fetching new or changed records." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_02d52cb2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "mongodb_aggregate" .
+
+oc:req_38a821c7 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "bigquery_load" .
+
+oc:req_4c5364a8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "snowflake_api" .
+
+oc:req_6a8ef22a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "mysql_query" .
+
+oc:req_81586938 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "SQL and data transformation" .
+
+oc:req_9bdc6e21 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "data-mcp MCP server" .
+
+oc:req_f0bbf577 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "postgres_query" .
+

@@ -1,0 +1,96 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_data_pipeline a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "data-pipeline" ;
+    skos:broader "ETL workflow automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/data-pipeline" ;
+    oc:contentHash "ea5875f400e8ce99d3b0a90baa5723d7cd3761ecdd00e2f14bd5c1ff4acfcd9b" ;
+    oc:dependsOnSkill oc:skill_data_analysis,
+        oc:skill_sheets_automation ;
+    oc:differentia "orchestrates data extraction from multiple sources, transformation and cleaning, and loading into destinations with scheduling, monitoring, and data quality checks, following n8n data workflow template patterns" ;
+    oc:handlesFailure oc:DataQualityViolation,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:SchemaMismatch ;
+    oc:hasArgumentHint "pipeline description (e.g. 'daily sales data pipeline', 'ETL from Shopify to BigQuery')" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Data pipeline and ETL automation - extract, transform, load workflows for data integration and analytics" ;
+    oc:hasName "data-pipeline" ;
+    oc:hasPackageName "data-pipeline" ;
+    oc:impartsKnowledge oc:kn_1988fb1a,
+        oc:kn_34e6da08,
+        oc:kn_3b307318,
+        oc:kn_3e9129e8,
+        oc:kn_578b613e,
+        oc:kn_a4a59c2b,
+        oc:kn_c9abee7c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate data integration",
+        "build data pipeline",
+        "create ETL workflow",
+        "extract transform load data",
+        "monitor data quality",
+        "schedule data pipeline" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:DataLoaded,
+        oc:DataTransformed,
+        oc:PipelineCompleted .
+
+oc:kn_1988fb1a a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before loading transformed data into any destination" ;
+    oc:directiveContent "Validate schema, required fields, field types, and allowed values before loading data. Include statistical checks: null rate < 5%, duplicate rate < 1%, and value ranges." ;
+    oc:hasRationale "Schema validation and statistical quality gates catch data corruption upstream before it propagates to production systems or dashboards." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_34e6da08 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When configuring extractors or loaders with authentication credentials" ;
+    oc:directiveContent "Connection strings, API tokens, and bearer credentials must be referenced via environment variables or secret managers, never hardcoded in pipeline configurations." ;
+    oc:hasRationale "Hardcoded credentials in pipeline YAML configs are a common source of credential leaks in version control and shared workflow definitions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3b307318 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building quick or one-off data pipelines" ;
+    oc:directiveContent "Do not skip data quality checks even for small or ad-hoc pipelines. Never load data without validating required fields, null rates, and business rule constraints." ;
+    oc:hasRationale "Skipping quality checks on small pipelines leads to silent data corruption that compounds when these pipelines are promoted to production schedules." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3e9129e8 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a pipeline stage fails due to transient errors (network timeouts, rate limits)" ;
+    oc:directiveContent "Configure retries with exponential backoff (max 3 attempts) and alert only on final failure. Pipeline dependencies should enforce completion order before downstream stages execute." ;
+    oc:hasRationale "Exponential backoff handles transient failures gracefully while preventing alert fatigue from temporary issues that self-resolve." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_578b613e a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing any data pipeline" ;
+    oc:directiveContent "Always follow the Extract → Transform → Load pattern as a sequential, stateful pipeline. Each stage should be independently testable and resumable after failure." ;
+    oc:hasRationale "Separating ETL into distinct stages enables fault isolation, incremental retries, and monitoring per stage rather than debugging monolithic failures." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a4a59c2b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring load/write operations to any destination" ;
+    oc:directiveContent "Design pipelines with idempotent load operations using upsert semantics (on_conflict_update) or append-only with deduplication keys, so re-running a pipeline does not produce duplicate records." ;
+    oc:hasRationale "Idempotent pipelines are safe to re-run after failures without manual data cleanup, which is essential for scheduled production workflows." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c9abee7c a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After every pipeline execution" ;
+    oc:directiveContent "Monitor four key metrics: rows_processed, execution_time, error_count, and data_freshness. Set anomaly alerts for row count deviations > 50%, unexpected schema changes, and stale data exceeding threshold." ;
+    oc:hasRationale "These metrics provide comprehensive observability into pipeline health — catching volume anomalies, performance degradation, and staleness before stakeholders notice." ;
+    oc:severityLevel "MEDIUM" .
+

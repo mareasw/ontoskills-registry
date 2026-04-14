@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_expense_report a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "expense-report" ;
+    skos:broader "Document template skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/expense-report" ;
+    oc:contentHash "ae29c4fe716a9da8548dc2d88dda650e35573c24266f42f222fe8693b8f54e3d" ;
+    oc:differentia "organizes business expenses into categorized reports for reimbursement, tax preparation, and accounting using structured templates with standard business expense categories" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "analyze_spreadsheet",
+        "create_xlsx",
+        "read_xlsx" ;
+    oc:hasArgumentHint "expense descriptions, receipts, or transaction list with optional purpose and date range" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription ">" ;
+    oc:hasName "expense-report" ;
+    oc:hasPackageName "expense-report" ;
+    oc:impartsKnowledge oc:kn_3af74cb9,
+        oc:kn_5c01db0c,
+        oc:kn_b447910b,
+        oc:kn_c1c789d5,
+        oc:kn_d26324a2 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "categorize business expenses",
+        "create expense report",
+        "generate monthly expense summary",
+        "organize expenses for tax preparation",
+        "prepare reimbursement report",
+        "summarize travel expenses" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_3af74cb9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any expense report output" ;
+    oc:directiveContent "Always include receipt status tracking (✓ received, needed, optional) and an action items checklist for missing documentation." ;
+    oc:hasRationale "Receipt completeness is essential for reimbursement approval and audit compliance; missing receipts are the most common cause of report rejection." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5c01db0c a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When calculating mileage reimbursements or applying IRS category rules" ;
+    oc:directiveContent "The IRS mileage rate ($0.67/mile for 2024) and tax deduction percentages cited in templates may be outdated — always verify current rates before using." ;
+    oc:hasRationale "IRS rates change annually and tax regulations vary by jurisdiction; stale rates produce incorrect reports." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b447910b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating reports involving tax deductions, IRS categories, or multi-currency conversions" ;
+    oc:directiveContent "Do not provide definitive tax advice or guarantee exchange rate accuracy — always recommend verification with a qualified professional." ;
+    oc:hasRationale "Tax regulations and exchange rates change frequently; incorrect advice could have legal or financial consequences." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c1c789d5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When receiving expense information from users" ;
+    oc:directiveContent "Cannot scan or read receipt images directly; requires expense data to be provided as text, descriptions, or structured input." ;
+    oc:hasRationale "The skill operates on structured data, not image recognition, so users must transcribe or provide receipt details in text form." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d26324a2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing multi-currency or international travel expenses" ;
+    oc:directiveContent "Use the date-of-expense exchange rate for currency conversion and always document the rate source (bank, XE.com, etc.), keeping both original and converted amounts." ;
+    oc:hasRationale "Using the wrong date's rate introduces financial discrepancies; auditors and tax authorities require rate documentation." ;
+    oc:severityLevel "MEDIUM" .
+

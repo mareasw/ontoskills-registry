@@ -1,0 +1,99 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_cv_builder a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "cv-builder" ;
+    skos:broader "Document Generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/cv-builder" ;
+    oc:contentHash "08e9a3df2689e0994f0064b0437df0fb716ec71f8534998cd40a80b916d4125c" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that produces professional CVs/resumes from structured YAML data using the rendercv engine with multiple theme support" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAlias "cv-generator",
+        "resume-builder",
+        "resume-generator" ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "career information (experience, education, skills) and optional theme selection" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "cv-builder" ;
+    oc:hasPackageName "cv-builder" ;
+    oc:hasPayload oc:payload_08e9a3df2689e099 ;
+    oc:hasRequirement oc:req_2009a44b,
+        oc:req_41e714c9,
+        oc:req_a77159c3 ;
+    oc:impartsKnowledge oc:kn_250d6b0b,
+        oc:kn_5156fd78,
+        oc:kn_627dee4a,
+        oc:kn_6f4e807c,
+        oc:kn_bd0c44cd ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build a technical resume",
+        "convert career information to formatted PDF",
+        "create a professional CV or resume",
+        "generate a resume from structured data",
+        "update an existing CV with new experience" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_250d6b0b a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing rendercv render" ;
+    oc:directiveContent "Verify rendercv is installed (pip install rendercv) and that the YAML file passes rendercv's validation before rendering." ;
+    oc:hasRationale "Missing dependencies or malformed YAML will fail at render time; catching these early saves the user from waiting for an inevitable error." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5156fd78 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When generating any CV/resume YAML" ;
+    oc:directiveContent "Define CV data in rendercv's YAML schema with cv.sections for summary, experience, education, and skills; use the design block to control theme, font, font_size, page_size, and color." ;
+    oc:hasRationale "Adhering to the rendercv schema ensures valid parsing and consistent PDF output across all supported themes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_627dee4a a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When iteratively updating a CV" ;
+    oc:directiveContent "Running rendercv render on the same YAML input always produces identical PDF output, making it safe to re-render after edits." ;
+    oc:hasRationale "Deterministic output means the agent can safely re-generate without creating divergent versions." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_6f4e807c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a CV design theme" ;
+    oc:directiveContent "Available themes are limited to: classic, sb2nov, moderncv, engineeringresumes. Custom themes are not supported without forking rendercv." ;
+    oc:hasRationale "rendercv only ships with these four built-in themes; requesting an unsupported theme will cause a rendering error." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bd0c44cd a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing CV content in YAML" ;
+    oc:directiveContent "Do not embed raw HTML, LaTeX, or markdown formatting within YAML field values — rendercv handles layout automatically via themes." ;
+    oc:hasRationale "Manual formatting directives in field values break rendercv's template engine and produce garbled output." ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_08e9a3df2689e099 a oc:ExecutionPayload ;
+    oc:code "pip install rendercv && rendercv render cv.yaml" ;
+    oc:executor "shell" ;
+    oc:timeout 60000 .
+
+oc:req_2009a44b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "rendercv (pip install rendercv)" .
+
+oc:req_41e714c9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "office-mcp MCP server" .
+
+oc:req_a77159c3 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "YAML syntax for rendercv CV structure" .
+

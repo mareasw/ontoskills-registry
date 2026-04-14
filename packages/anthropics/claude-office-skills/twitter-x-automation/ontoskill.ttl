@@ -1,0 +1,103 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_twitter_x_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "twitter-x-automation" ;
+    skos:broader "Social media automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/twitter-x-automation" ;
+    oc:contentHash "79b20cd0986bc915cbe7907af21243ba5a523616df20a38147fc520865d07cc2" ;
+    oc:differentia "that manages Twitter/X content pipeline, engagement, analytics, and audience growth through configurable workflows and templates" ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimitExceeded ;
+    oc:hasAllowedTool "twitter_analytics",
+        "twitter_dm",
+        "twitter_post",
+        "twitter_search" ;
+    oc:hasArgumentHint "workflow type (post, engage, analyze, grow) with optional content or schedule parameters" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Automate Twitter/X social media workflows including posting, engagement, analytics, and audience growth" ;
+    oc:hasName "twitter-x-automation" ;
+    oc:impartsKnowledge oc:kn_2799f2d5,
+        oc:kn_547fe81b,
+        oc:kn_8578c558,
+        oc:kn_a1d1cb94,
+        oc:kn_aa443ce7,
+        oc:kn_ba29f1c0,
+        oc:kn_dad0c0c5,
+        oc:kn_e75169b7 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze twitter analytics",
+        "automate twitter DMs",
+        "automate twitter engagement",
+        "create twitter threads",
+        "grow twitter audience",
+        "manage twitter content calendar",
+        "schedule tweets" ;
+    oc:yieldsState oc:AnalyticsReported,
+        oc:EngagementTracked,
+        oc:TweetPublished .
+
+oc:kn_2799f2d5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing any tweet or thread content" ;
+    oc:directiveContent "Always include a hook in the first line, use line breaks for readability, include a CTA, and attach media (3x engagement boost)." ;
+    oc:hasRationale "Twitter's fast-scrolling feed requires immediate attention capture; media and formatting significantly increase engagement" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_547fe81b a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When scheduling tweets or planning content timing" ;
+    oc:directiveContent "Optimal posting times are 08:00, 12:00, 17:00, and 21:00 on weekdays; 10:00, 14:00, and 20:00 on weekends. Thread content outperforms single tweets (45% vs 35% of top impressions)." ;
+    oc:hasRationale "Aligning posts with audience active hours maximizes impressions and engagement rates" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_8578c558 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any Twitter automation workflow" ;
+    oc:directiveContent "Never post duplicate content, perform automated bulk unfollowing, or use inauthentic engagement tactics. Always disclose sponsored content." ;
+    oc:hasRationale "Violating Twitter's automation policies risks account suspension and damages brand credibility" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a1d1cb94 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning a Twitter content strategy" ;
+    oc:directiveContent "Post 5-7 times per day with a content mix of 60% original, 25% replies, 15% retweets. Use 1-2 hashtags per tweet, placed at the end." ;
+    oc:hasRationale "This mix balances reach, engagement, and community building while avoiding spam-like behavior" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_aa443ce7 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When enabling auto-engagement or DM workflows" ;
+    oc:directiveContent "Engagement automation (auto-reply, DM sequences) modifies public-facing account behavior visible to real users. Test with small audiences first." ;
+    oc:hasRationale "Poorly configured automation can send inappropriate or repetitive messages, damaging brand reputation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ba29f1c0 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing any tweet posting workflow" ;
+    oc:directiveContent "Tweet posting is NOT idempotent — each invocation creates a new tweet. Thread creation is also non-idempotent. Always verify content before posting." ;
+    oc:hasRationale "Accidental duplicate posts clutter the timeline and can appear spammy, risking rate limits and reputation damage" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dad0c0c5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When automating any Twitter posting, DM, or follow workflow" ;
+    oc:directiveContent "Twitter rate limits: 2400 tweets/day, 1000 DMs/day, 400 follows/day. Do not exceed these thresholds or the account risks suspension." ;
+    oc:hasRationale "Exceeding rate limits triggers API errors and can result in account suspension or shadowbanning" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e75169b7 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing a batch tweet or thread posting workflow" ;
+    oc:directiveContent "Before any automated posting session, verify: tweet content fits within 280 chars for singles, thread has 10 or fewer tweets, media count does not exceed 4 per tweet, and scheduled times align with audience active hours." ;
+    oc:hasRationale "Catching content and formatting errors before posting prevents public-facing mistakes that cannot be cleanly undone" ;
+    oc:severityLevel "MEDIUM" .
+

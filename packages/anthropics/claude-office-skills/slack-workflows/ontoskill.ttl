@@ -1,0 +1,115 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_slack_workflows a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slack-workflows" ;
+    skos:broader "Automation workflow builder" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/slack-workflows" ;
+    oc:contentHash "41cb2808954f86771793adcc50aa586ebc62dbfe298443eeafb9dd28d7fcc00d" ;
+    oc:differentia "Creates Slack-based workflow automations for notifications, standups, approvals, incident response, and cross-platform integrations using n8n patterns" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "workflow description (e.g. 'set up deal win notification', 'create standup bot', 'build expense approval flow')" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Slack automation and workflow builder - notifications, standup bots, approval flows, and cross-platform integrations" ;
+    oc:hasName "slack-workflows" ;
+    oc:hasRequirement oc:req_224c9342,
+        oc:req_30dc9d21,
+        oc:req_4c7d6c78,
+        oc:req_6f977cba,
+        oc:req_9d6568e5,
+        oc:req_fd65b260 ;
+    oc:impartsKnowledge oc:kn_7f80142b,
+        oc:kn_84d70eaf,
+        oc:kn_af75bfa0,
+        oc:kn_ecf145a2,
+        oc:kn_ef9b534c,
+        oc:kn_ff25bc15 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate new hire onboarding in slack",
+        "automate slack notifications",
+        "build approval workflow in slack",
+        "build incident response workflow in slack",
+        "create custom slash commands",
+        "create standup bot workflow",
+        "manage slack channel lifecycle",
+        "set up cross-platform slack integrations" ;
+    oc:yieldsState oc:ChannelCreated,
+        oc:NotificationSent,
+        oc:WorkflowCreated .
+
+oc:kn_7f80142b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building incident response or alerting workflows" ;
+    oc:directiveContent "Structure incident response workflows by severity level with distinct automation paths per tier — critical gets war rooms and paging, high gets ticket creation, low gets next-business-day notification." ;
+    oc:hasRationale "Severity-tiered responses prevent alert fatigue while ensuring critical issues get immediate attention" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_84d70eaf a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When automating channel management or onboarding flows" ;
+    oc:directiveContent "Channel creation and member-adding workflows must be idempotent — check if a channel already exists before creating it, and check membership before adding." ;
+    oc:hasRationale "Duplicate channels or duplicate-add errors create confusion and Slack API errors" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_af75bfa0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any approval or escalation workflow" ;
+    oc:directiveContent "Use tiered routing rules for approval workflows based on value thresholds (e.g., < $100 to direct manager, >= $100 to department head, >= $1000 sequential multi-approver)." ;
+    oc:hasRationale "Tiered routing prevents bottlenecking on low-value requests while ensuring proper oversight for significant ones" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ecf145a2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing any Slack message template" ;
+    oc:directiveContent "Always use Slack mrkdwn (not standard Markdown) for message formatting — use *bold* not **bold**, and use block-style layouts with emoji separators for readability." ;
+    oc:hasRationale "Slack uses its own mrkdwn dialect; standard Markdown will render incorrectly and look unprofessional" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ef9b534c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any workflow that requires human response" ;
+    oc:directiveContent "Include timeout and escalation paths in all approval and response-collection workflows — default to reminders at 1 hour and escalation at 24-48 hours." ;
+    oc:hasRationale "Unattended requests create process bottlenecks; escalation ensures nothing falls through the cracks" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ff25bc15 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When configuring cross-platform integration workflows" ;
+    oc:directiveContent "Cross-platform sync workflows produce side effects in external systems — a Slack notification may trigger HubSpot updates, Jira ticket creation, or Stripe follow-ups." ;
+    oc:hasRationale "Agents and users must be aware that Slack workflows are not isolated; they can trigger cascading actions in connected platforms" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_224c9342 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Slack mrkdwn formatting" .
+
+oc:req_30dc9d21 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "slack_post_message" .
+
+oc:req_4c7d6c78 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "n8n automation patterns" .
+
+oc:req_6f977cba a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "slack-mcp server" .
+
+oc:req_9d6568e5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "slack_create_channel" .
+
+oc:req_fd65b260 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "slack_workflow_trigger" .
+

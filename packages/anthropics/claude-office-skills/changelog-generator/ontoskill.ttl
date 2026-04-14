@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_changelog_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "changelog-generator" ;
+    skos:broader "Documentation generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/changelog-generator" ;
+    oc:contentHash "c14dad66efd1676b20b5d9fb7c41dfc4fff5c654f8575ac4382072bd055bb954" ;
+    oc:differentia "that transforms git commits, feature lists, or code changes into structured changelogs following conventional commit and semantic versioning standards" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "commits, feature list, or diff description" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Generate release notes from git commits, updates, or feature lists" ;
+    oc:hasName "changelog-generator" ;
+    oc:impartsKnowledge oc:kn_4beda4c8,
+        oc:kn_4dbd4585,
+        oc:kn_962ecdc7,
+        oc:kn_ec78bd19,
+        oc:kn_f2bedbf9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create release notes from feature list",
+        "format changelog following Keep a Changelog convention",
+        "generate changelog from git commits",
+        "summarize code changes into changelog entry" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_4beda4c8 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating any changelog" ;
+    oc:directiveContent "Verify that input includes sufficient detail: commit messages with conventional commit prefixes, or a structured feature list with change types. Ensure version number and date are available." ;
+    oc:hasRationale "Insufficient input leads to vague or incomplete changelogs; conventional commit types (feat, fix, docs, etc.) enable proper categorization into Added/Fixed/Changed/Security sections" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4dbd4585 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — before generating any changelog" ;
+    oc:directiveContent "This skill cannot access git repositories directly. It requires commit messages or change descriptions as input text. It also cannot automatically verify semantic versioning correctness." ;
+    oc:hasRationale "The skill operates on provided text input only, not on live repository state; technical details should be verified by developers" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_962ecdc7 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any changelog or release notes" ;
+    oc:directiveContent "Write changelog entries from the user's perspective, being specific about what changed and including relevant issue/PR numbers. Group related changes logically." ;
+    oc:hasRationale "User-facing changelogs must be understandable by non-developers; vague entries like 'various fixes' erode trust and reduce the value of the changelog" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ec78bd19 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring and organizing changelog content" ;
+    oc:directiveContent "Organize changes by impact (most important first), group logically by feature area or type, maintain consistent formatting throughout, and date every version entry." ;
+    oc:hasRationale "Consistent structure and prioritization helps readers quickly find relevant information and understand the significance of changes" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f2bedbf9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing user-facing release notes or public changelogs" ;
+    oc:directiveContent "Never use technical jargon in user-facing notes, include internal-only changes in public changelogs, be vague about changes, or include raw commit hashes in user documentation." ;
+    oc:hasRationale "Technical jargon and internal noise make changelogs inaccessible to end users and stakeholders who need to understand what changed" ;
+    oc:severityLevel "MEDIUM" .
+

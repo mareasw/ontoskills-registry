@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_google_ads_manager a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "google-ads-manager" ;
+    skos:broader "Campaign management system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/google-ads-manager" ;
+    oc:contentHash "b89dbb06feec523343cac23379803d4c68f4ed7dad01ef466e19d21994a2e44a" ;
+    oc:dependsOnSkill oc:skill_ads_copywriter ;
+    oc:differentia "that structures, executes, and optimizes Google Ads campaigns across keyword research, ad copy, bidding, and performance reporting" ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "campaign brief, product description, or performance data" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Google Ads campaign management - campaign setup, keyword research, bid optimization, and performance reporting" ;
+    oc:hasName "google-ads-manager" ;
+    oc:hasPackageName "google-ads-manager" ;
+    oc:impartsKnowledge oc:kn_0badaa9c,
+        oc:kn_3429a135,
+        oc:kn_36948054,
+        oc:kn_9d497d7c,
+        oc:kn_f57c3b87 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet ;
+    oc:resolvesIntent "analyze campaign metrics",
+        "create google ads campaign",
+        "generate ad copy in RSA format",
+        "optimize ad bidding strategy",
+        "report on google ads performance",
+        "research keywords for ads",
+        "set up campaign structure with ad groups and negatives" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0badaa9c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or optimizing any campaign" ;
+    oc:directiveContent "Never run campaigns without account-level negative keywords (free, cheap, download, jobs, salary, tutorial, open source) and always review search term reports to add new negatives." ;
+    oc:hasRationale "Without negative keywords, spend is wasted on irrelevant clicks that will never convert, inflating CPA and draining budget." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3429a135 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "After campaign launch, as ongoing maintenance" ;
+    oc:directiveContent "Run weekly optimization tasks (review search terms for negatives/new keywords, check Quality Scores <6, pause low-CTR ads, adjust bids) and monthly tasks (competitor analysis, landing page review, audience review, budget reallocation to top performers)." ;
+    oc:hasRationale "Google Ads performance degrades without regular optimization; systematic cadence prevents wasted spend and captures new opportunities." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_36948054 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up any Google Ads account or campaign structure" ;
+    oc:directiveContent "Structure campaigns into Brand, Non-Brand Search, Competitor, and Performance Max tiers with themed ad groups containing 15-20 keywords max grouped by same intent and similar landing page." ;
+    oc:hasRationale "Proper campaign hierarchy ensures budget control, targeted messaging, and clean performance attribution across distinct intent segments." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9d497d7c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing or recommending a bidding strategy" ;
+    oc:directiveContent "Select bidding strategy based on account maturity and goals: Maximize Conversions for new campaigns, Target CPA when you have 30+ conversions/month, Target ROAS for ecommerce with value tracking, and Manual CPC only for small budgets or keyword testing." ;
+    oc:hasRationale "Smart bidding requires sufficient conversion data to optimize effectively; wrong strategy selection wastes budget or limits volume." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f57c3b87 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any Google Ads RSA ad copy" ;
+    oc:directiveContent "Responsive Search Ads require minimum 3 headlines (up to 15, max 30 chars each) and minimum 2 descriptions (up to 4, max 90 chars each). Pin keyword/benefit headlines to Position 1, value props to Position 2, and CTAs to Position 3." ;
+    oc:hasRationale "Google enforces these limits at upload; improper pinning or character counts cause rejection or suboptimal ad assembly." ;
+    oc:severityLevel "CRITICAL" .
+

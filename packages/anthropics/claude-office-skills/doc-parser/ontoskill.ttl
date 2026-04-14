@@ -1,0 +1,113 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_doc_parser a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "doc-parser" ;
+    skos:broader "Document parser" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/doc-parser" ;
+    oc:contentHash "59508a2991414432831153e666b55fa12d3e2321b62ac84f5f313cf8a57ab3d9" ;
+    oc:differentia "that uses IBM's docling library to extract structured content from PDFs, Word docs, images, and HTML while preserving layout, tables, and figures" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "file-path or document to parse" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "doc-parser" ;
+    oc:hasRequirement oc:req_19120c81,
+        oc:req_6fc37157,
+        oc:req_9281a780,
+        oc:req_c37f263b ;
+    oc:impartsKnowledge oc:kn_0d3380ac,
+        oc:kn_1ee17e84,
+        oc:kn_24f3173a,
+        oc:kn_53fb8ff1,
+        oc:kn_8bf162c1,
+        oc:kn_9a7b3895,
+        oc:kn_9b20e9f0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze document layout and structure",
+        "convert documents to markdown or structured data",
+        "extract figures and captions from documents",
+        "extract tables from PDFs and Word documents",
+        "parse academic papers, financial reports, and contracts",
+        "parse documents and extract structured content" ;
+    oc:yieldsState oc:DocumentParsed,
+        oc:StructuredDataExtracted .
+
+oc:kn_0d3380ac a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing documents with known limitations" ;
+    oc:directiveContent "Encrypted PDFs are not supported by docling. Very large documents may require chunking. Complex nested tables may need manual review after extraction." ;
+    oc:hasRationale "These are hard technical limits of the docling library that cannot be worked around programmatically." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1ee17e84 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When parsing multiple documents in parallel" ;
+    oc:directiveContent "For batch processing, use ThreadPoolExecutor with max_workers=4 and always wrap individual document processing in try/except to isolate failures." ;
+    oc:hasRationale "Parallel processing with error isolation prevents one bad document from failing the entire batch." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_24f3173a a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When planning document processing workloads" ;
+    oc:directiveContent "GPU is recommended for best performance. For CPU-only environments, expect significantly slower parsing especially for OCR-heavy documents." ;
+    oc:hasRationale "docling uses deep learning models for layout analysis and OCR which benefit greatly from GPU acceleration." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_53fb8ff1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up DocumentConverter for specific document types" ;
+    oc:directiveContent "Configure the pipeline options for your document type: enable do_ocr for scanned documents, do_table_structure for table extraction, and do_cell_matching for precise table cells." ;
+    oc:hasRationale "Default pipeline may miss content in specialized documents; tailored configuration maximizes extraction quality." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8bf162c1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting tables from documents with complex layouts" ;
+    oc:directiveContent "Do not assume table extraction is always accurate for complex nested or merged-cell tables. Always verify extracted table data against the source document." ;
+    oc:hasRationale "Complex nested tables may have cells merged incorrectly or hierarchy misinterpreted, leading to data corruption." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9a7b3895 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before any document parsing operation" ;
+    oc:directiveContent "Install docling before parsing: run 'pip install docling' or 'pip install docling[all]' for full functionality including OCR support." ;
+    oc:hasRationale "docling is a required dependency; without it, no parsing can occur. The OCR extra is needed for scanned documents." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9b20e9f0 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After parsing any document" ;
+    oc:directiveContent "Verify parsing success by checking that extracted content includes expected sections, tables have correct row/column counts, and markdown output preserves document hierarchy." ;
+    oc:hasRationale "Silent partial failures are possible; structural validation ensures completeness." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_19120c81 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "office-mcp" .
+
+oc:req_6fc37157 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "docling[ocr]" .
+
+oc:req_9281a780 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "docling" .
+
+oc:req_c37f263b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "document structure analysis" .
+

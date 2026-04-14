@@ -1,0 +1,124 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_nda_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "nda-generator" ;
+    skos:broader "Legal document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/nda-generator" ;
+    oc:contentHash "d3c648d08e14cb3a6992583c2152f02cb67f559551aea7c6eeeace10b0c60716" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that creates customized Non-Disclosure Agreements (one-way or mutual) for various business contexts with jurisdiction-aware clauses and multi-language support" ;
+    oc:extends oc:skill_docx_manipulation ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "create_docx",
+        "docx_to_pdf",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "context, parties, information type, NDA type (one-way or mutual), jurisdiction" ;
+    oc:hasCategory "legal" ;
+    oc:hasDescription ">" ;
+    oc:hasName "nda-generator" ;
+    oc:hasPackageName "nda-generator" ;
+    oc:hasRequirement oc:req_3c9e87b4,
+        oc:req_58d218f4,
+        oc:req_c3c6fcaa ;
+    oc:impartsKnowledge oc:kn_1a96974d,
+        oc:kn_3bd1f802,
+        oc:kn_5654187e,
+        oc:kn_6aa44aaa,
+        oc:kn_bcbd1103,
+        oc:kn_c0f18a7b,
+        oc:kn_db3e1d99,
+        oc:kn_e264d683,
+        oc:kn_f1c720ba ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create NDA",
+        "create mutual NDA",
+        "create one-way NDA",
+        "customize NDA for contractor",
+        "customize NDA for investor meeting",
+        "draft confidentiality agreement",
+        "generate non-disclosure agreement" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1a96974d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining the appropriate NDA structure for a given business context" ;
+    oc:directiveContent "Match the NDA type to the situation: use one-way (unilateral) when only one party discloses (investor pitches, contractor hiring), and mutual (bilateral) when both parties share information (partnerships, M&A, joint ventures)." ;
+    oc:hasRationale "Using the wrong NDA type creates gaps in protection or imposes unnecessary obligations, reducing the agreement's practical effectiveness." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3bd1f802 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When drafting any NDA" ;
+    oc:directiveContent "Always include the five standard exclusions: publicly known information, previously known information, independently developed information, third-party received information without restriction, and legally required disclosures." ;
+    oc:hasRationale "Standard exclusions protect the receiving party from unfair claims and make the NDA more likely to be signed and enforced." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5654187e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing governing law for any NDA" ;
+    oc:directiveContent "Select governing law jurisdiction based on where the parties operate and where enforcement is most likely needed. Common US choices include Delaware (business-friendly), New York (commercial center), and California (employee-friendly, non-competes void)." ;
+    oc:hasRationale "Jurisdiction choice significantly impacts enforceability and the legal framework applied to disputes." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6aa44aaa a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After generating any NDA document" ;
+    oc:directiveContent "After generating the NDA, verify it contains: proper party identification, recitals, definition of confidential information, obligations, exclusions, term/duration, return/destruction requirements, remedies, general provisions, governing law, and signature blocks." ;
+    oc:hasRationale "Missing clauses create legal gaps that could render the agreement unenforceable or ineffective." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bcbd1103 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting the confidentiality period in any NDA" ;
+    oc:directiveContent "Avoid unreasonable confidentiality durations (e.g., 10+ years for non-trade-secret information). Use 2-5 years for general information and indefinite only for trade secrets." ;
+    oc:hasRationale "Courts may refuse to enforce unreasonably long confidentiality periods, rendering the entire agreement weaker." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c0f18a7b a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When collecting input parameters from the user" ;
+    oc:directiveContent "The skill assumes users provide accurate party names, context, and jurisdiction information. It cannot verify the legal standing or identity of parties." ;
+    oc:hasRationale "The quality of the generated NDA depends entirely on the accuracy of user-provided information; incorrect inputs produce legally flawed documents." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_db3e1d99 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining the scope of confidential information in any NDA" ;
+    oc:directiveContent "Never create an NDA with an overly broad definition of 'confidential information' — if everything is marked confidential, the NDA may be deemed unenforceable by courts." ;
+    oc:hasRationale "Courts routinely invalidate NDAs where the definition of confidential information is unreasonably broad, as it creates an unfair burden on the receiving party." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e264d683 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any NDA document" ;
+    oc:directiveContent "This skill generates templates, NOT legal advice. Always disclaim that enforceability varies by jurisdiction and complex situations require attorney review." ;
+    oc:hasRationale "AI-generated legal documents carry inherent risk; users must understand they are templates requiring professional legal validation for high-stakes situations." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f1c720ba a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating any NDA document" ;
+    oc:directiveContent "Before generating an NDA, confirm: (1) the NDA type (one-way or mutual), (2) both parties' names and addresses, (3) the purpose of information sharing, (4) the desired jurisdiction, and (5) any special requirements like trade secret protection." ;
+    oc:hasRationale "Incomplete information leads to generic NDAs that may not adequately protect the parties' specific interests." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_3c9e87b4 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Understanding of NDA types (unilateral vs bilateral)" .
+
+oc:req_58d218f4 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "office-mcp MCP server with create_docx, fill_docx_template, docx_to_pdf tools" .
+
+oc:req_c3c6fcaa a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Jurisdiction-specific legal requirements for NDAs" .
+

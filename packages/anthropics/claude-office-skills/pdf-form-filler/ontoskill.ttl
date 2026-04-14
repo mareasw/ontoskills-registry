@@ -1,0 +1,90 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_form_filler a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-form-filler" ;
+    skos:broader "PDF form processing skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-form-filler" ;
+    oc:contentHash "14f3a317fe7ef6bc88b3f4cc8661376dc601fce50aca352ee7546df4f860fb63" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "fills PDF form fields programmatically, extracts form data, and batch-processes forms using data mapping templates with validation" ;
+    oc:handlesFailure oc:FieldNotFound,
+        oc:FormFlattened,
+        oc:InvalidInput,
+        oc:PDFSecured ;
+    oc:hasArgumentHint "PDF file path and field data or extraction request" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Fill out PDF forms programmatically and extract form data" ;
+    oc:hasName "pdf-form-filler" ;
+    oc:impartsKnowledge oc:kn_197f2e4b,
+        oc:kn_3bf8070c,
+        oc:kn_4d8626bb,
+        oc:kn_58b5f7cb,
+        oc:kn_9ed3cb06,
+        oc:kn_a0ab0755,
+        oc:kn_d6363b99 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:PDFHasFormFields ;
+    oc:resolvesIntent "batch fill multiple PDF forms from spreadsheet data",
+        "create form-filling data mapping templates",
+        "extract form field data from PDF",
+        "fill PDF form with data",
+        "validate form data before filling" ;
+    oc:yieldsState oc:FormDataExtracted,
+        oc:PDFFormFilled .
+
+oc:kn_197f2e4b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before attempting to fill any PDF form" ;
+    oc:directiveContent "Flattened PDF forms cannot be edited or filled programmatically. Verify the form has active AcroForm fields before attempting to fill." ;
+    oc:hasRationale "Flattening merges form fields into static page content, making them non-interactive and unrecoverable for programmatic filling." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3bf8070c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filling forms that contain signature fields" ;
+    oc:directiveContent "Do not assume digital signature fields can be filled with plain data. Signatures require proper certificates or image-based approaches." ;
+    oc:hasRationale "Signature fields have special cryptographic requirements and cannot be filled like regular text fields, leading to errors if treated as such." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4d8626bb a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up form filling workflows, especially batch operations" ;
+    oc:directiveContent "Use a field mapping template (YAML/JSON) to decouple source data schema from PDF field names, enabling reuse across different data sources." ;
+    oc:hasRationale "Decoupling data schemas from field names through templates enables the same form to be filled from multiple data sources without rewriting mapping logic." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_58b5f7cb a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When filling forms with formula/calculated fields" ;
+    oc:directiveContent "Complex calculated fields in PDF forms may not auto-update when other fields are filled programmatically. Verify calculated values after filling." ;
+    oc:hasRationale "PDF JavaScript calculations may not trigger during programmatic filling, leaving calculated fields stale or incorrect." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9ed3cb06 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before batch or single form fill operations" ;
+    oc:directiveContent "Validate all form data against field rules (email format, phone digits, date format, cross-field dependencies) before initiating the fill operation." ;
+    oc:hasRationale "Pre-fill validation catches data quality issues early, preventing wasted processing time and partial fills that are hard to correct after the fact." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a0ab0755 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When working with PDF forms from external sources" ;
+    oc:directiveContent "Secured or password-protected PDFs may prevent programmatic form filling. Check document permissions before processing." ;
+    oc:hasRationale "Document security settings can block all modifications including form field writes, causing silent failures or permission errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d6363b99 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When mapping data to PDF form fields" ;
+    oc:directiveContent "Field names in the PDF form must match exactly the names used in the data mapping; even minor mismatches will cause fields to be skipped." ;
+    oc:hasRationale "PDF form fields are identified by exact name strings — partial or fuzzy matching is not supported, so mismatched names silently fail." ;
+    oc:severityLevel "CRITICAL" .
+

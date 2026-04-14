@@ -1,0 +1,92 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_invoice_organizer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "invoice-organizer" ;
+    skos:broader "Financial document management system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/invoice-organizer" ;
+    oc:contentHash "b45ce2c25bd852d0bb73d285bab9af36c5649cf1e89ca6c03bb1e676cc5cac2f" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "Extracts, categorizes, and tracks invoice and receipt data with filing conventions and reporting" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "create_xlsx",
+        "extract_text_from_pdf",
+        "read_xlsx" ;
+    oc:hasArgumentHint "invoice file (PDF) or folder path, or a reporting request like \"show unpaid invoices\" or \"summarize Q1 expenses\"" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Organize, categorize, and track invoices and receipts" ;
+    oc:hasName "invoice-organizer" ;
+    oc:impartsKnowledge oc:kn_0ab3c23b,
+        oc:kn_599bdb8e,
+        oc:kn_5a599948,
+        oc:kn_65f64c74,
+        oc:kn_a00631a4,
+        oc:kn_cb4f5639,
+        oc:kn_d176c01c ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "categorize expenses automatically",
+        "extract data from invoices and receipts",
+        "generate expense and tax preparation reports",
+        "organize invoice files by vendor and date",
+        "summarize invoices by category or time period",
+        "track invoice payment status" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:DocumentCreated .
+
+oc:kn_0ab3c23b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user expects automated filing or accounting system integration" ;
+    oc:directiveContent "Cannot perform actual file operations, integrate directly with accounting software, or verify exchange rates — output is advisory only." ;
+    oc:hasRationale "The skill provides structured guidance and templates but relies on the agent and MCP tools for actual operations; overpromising would lead to incorrect expectations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_599bdb8e a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When organizing or renaming invoice and receipt files" ;
+    oc:directiveContent "Use the naming convention YYYY-MM-DD_Vendor_Amount_InvoiceNumber.pdf and folder structure by year and category for consistent invoice filing." ;
+    oc:hasRationale "Consistent naming and folder structure enables quick lookups, chronological sorting, and audit readiness." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5a599948 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When generating tax preparation reports or advising on deductible expenses" ;
+    oc:directiveContent "Tax advice generated from this skill should come from professionals — the skill flags deductibility categories but is not a substitute for CPA guidance." ;
+    oc:hasRationale "Tax regulations are jurisdiction-specific and change frequently; incorrect tax advice can result in penalties or audit failures." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_65f64c74 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When extracting, storing, or reporting on invoice data" ;
+    oc:directiveContent "Invoice and receipt data contains sensitive financial information (vendor tax IDs, bank account numbers, payment references) — handle with appropriate confidentiality." ;
+    oc:hasRationale "Financial documents contain PII and banking details that must be protected from unauthorized access or disclosure." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a00631a4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing any new invoice or batch of receipts" ;
+    oc:directiveContent "Extract structured fields (vendor, invoice number, dates, line items, tax, total, currency) first, then categorize, then track payment status — follow the extraction → categorization → tracking → reporting pipeline." ;
+    oc:hasRationale "Ordered processing ensures data quality at each stage; categorization depends on clean extraction, and tracking depends on consistent categorization." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cb4f5639 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before using extracted invoice data for tracking or reporting" ;
+    oc:directiveContent "Verify OCR quality before relying on extracted data — poor scans or image-based PDFs may produce inaccurate amounts, dates, or vendor names." ;
+    oc:hasRationale "OCR quality directly affects data extraction accuracy; bad OCR cascades into incorrect categorization, totals, and potentially flawed tax reports." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d176c01c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying auto-categorization rules to extracted invoice data" ;
+    oc:directiveContent "Do not treat auto-categorized expenses as final — categories may need manual adjustment, especially for medium-confidence matches or ambiguous vendors." ;
+    oc:hasRationale "Vendor-name-based rules have medium confidence for generic matches and can miscategorize, leading to inaccurate reports and tax deductions." ;
+    oc:severityLevel "MEDIUM" .
+

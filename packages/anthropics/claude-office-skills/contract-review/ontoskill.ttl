@@ -1,0 +1,95 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_contract_review a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "contract-review" ;
+    skos:broader "Legal document analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/contract-review" ;
+    oc:contentHash "a2b0695ecd83236e4a234a485567fc5ed9c9881a18dec692f91f486daf8be36c" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that identifies contract risks, checks completeness, and provides negotiation recommendations across multiple jurisdictions" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "contract file (PDF/DOCX/TXT) + party role + optional jurisdiction and concerns" ;
+    oc:hasCategory "legal" ;
+    oc:hasDescription "Analyze contracts for risks, check completeness, and provide actionable recommendations. Supports employment contracts, NDAs, service agreements, and more." ;
+    oc:hasName "contract-review" ;
+    oc:hasPackageName "contract-review" ;
+    oc:impartsKnowledge oc:kn_0816dd54,
+        oc:kn_11e04356,
+        oc:kn_1ecfb7fe,
+        oc:kn_364661fb,
+        oc:kn_38876df9,
+        oc:kn_8bd82fbf,
+        oc:kn_8eaabc71,
+        oc:kn_bdc640bc ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "analyze contract completeness",
+        "check contract against jurisdiction-specific rules",
+        "get negotiation recommendations for contracts",
+        "identify unfavorable contract clauses",
+        "review contract for risks" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0816dd54 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before beginning any contract analysis" ;
+    oc:directiveContent "Always ask for the user's party role (employee, contractor, buyer, seller) and jurisdiction before analyzing. Risk assessment is highly dependent on which party the user represents and applicable law." ;
+    oc:hasRationale "A clause that is risky for an employee (e.g., broad IP assignment) may be favorable for an employer. Jurisdiction determines enforceability of non-competes, termination rights, and data protection requirements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_11e04356 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting contract analysis results" ;
+    oc:directiveContent "Structure risk findings in three tiers: High (red flags like unlimited liability, broad IP assignment), Medium (yellow flags like auto-renewal traps, broad non-competes), and Low (missing audit rights). Each finding should include the exact quote, problem explanation, impact, and specific recommendation." ;
+    oc:hasRationale "Three-tier severity classification helps users prioritize negotiation efforts and provides clear actionable guidance at each level." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1ecfb7fe a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When providing final recommendations" ;
+    oc:directiveContent "This skill's knowledge may not reflect the latest legal changes. Laws, regulations, and court interpretations change frequently. Some risks are industry-specific and may require expert review beyond the 15+ standard risk patterns covered." ;
+    oc:hasRationale "Legal landscapes evolve rapidly (e.g., FTC non-compete ban proposal, state minimum wage changes) and stale guidance could be misleading." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_364661fb a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Every contract review output" ;
+    oc:directiveContent "This skill provides general guidance, not legal advice. Always include a disclaimer that analysis is for informational purposes only and does not constitute legal advice. For high-stakes contracts (M&A, major deals), recommend consulting a qualified attorney." ;
+    oc:hasRationale "AI-generated legal analysis carries liability risk and cannot replace professional legal counsel, especially for high-stakes transactions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_38876df9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "As part of every contract review" ;
+    oc:directiveContent "Check contract completeness against a standard checklist: essential elements (parties, effective date, term, scope, compensation, termination), important clauses (confidentiality, IP, liability limits, indemnification, governing law, dispute resolution), and execution requirements (signatures, dates, witnesses)." ;
+    oc:hasRationale "A contract missing essential elements may be unenforceable or create ambiguity that leads to disputes. Completeness checking catches risks that clause-level analysis might miss." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8bd82fbf a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing contracts with non-compete clauses under US jurisdiction, especially California" ;
+    oc:directiveContent "Never flag a non-compete as enforceable in California — non-competes are void under Business & Professions Code 16600 regardless of duration. Similarly, the FTC has proposed a nationwide ban (pending)." ;
+    oc:hasRationale "Incorrectly advising that a non-compete is enforceable in California would be materially wrong and could mislead the user into accepting unnecessary restrictions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8eaabc71 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When jurisdiction is specified or can be inferred from governing law clause" ;
+    oc:directiveContent "Jurisdiction-specific rules must be applied correctly: US has at-will employment default (except Montana); EU requires GDPR compliance and mandates working time limits; China requires written contracts within 30 days and mandatory social insurance; UK has statutory rights that cannot be contracted out of." ;
+    oc:hasRationale "Legal rules vary dramatically across jurisdictions and applying wrong rules gives dangerously misleading results." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bdc640bc a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When a contract file is provided for review" ;
+    oc:directiveContent "Verify the contract document is in a supported format (PDF, DOCX, TXT) and contains extractable text. Use MCP tools extract_text_from_pdf or extract_text_from_docx to parse the document before analysis. Scanned PDFs may require OCR." ;
+    oc:hasRationale "Contract analysis requires readable text; scanned images or corrupted files will produce empty or erroneous results." ;
+    oc:severityLevel "HIGH" .
+

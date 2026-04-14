@@ -1,0 +1,99 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_doc_pipeline a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "doc-pipeline" ;
+    skos:broader "document processing pipeline orchestrator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/doc-pipeline" ;
+    oc:contentHash "4fd5f29f240842b77ea2bd26e15381b6d6e6be96ef04d1d86198b80a4451c171" ;
+    oc:dependsOnSkill oc:skill_docx_manipulation,
+        oc:skill_pdf_extraction,
+        oc:skill_xlsx_manipulation ;
+    oc:differentia "chains multiple document operations (extract, transform, convert) into reusable multi-stage workflows with data flowing between stages" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:StageExecutionFailed ;
+    oc:hasArgumentHint "pipeline description in natural language (e.g., 'PDF → Extract Text → Translate → Generate DOCX')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Chain document operations into reusable pipelines" ;
+    oc:hasName "doc-pipeline" ;
+    oc:hasRequirement oc:req_47a90164,
+        oc:req_6caa6449,
+        oc:req_99341ad8,
+        oc:req_e18dc245,
+        oc:req_fd635a4a ;
+    oc:impartsKnowledge oc:kn_2b675181,
+        oc:kn_536e4f64,
+        oc:kn_6761d555,
+        oc:kn_9ce38986,
+        oc:kn_b2acff36 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "automate multi-step document transformations",
+        "chain document operations into a pipeline",
+        "convert documents through multiple stages",
+        "create reusable document processing workflows" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:PipelineCompleted .
+
+oc:kn_2b675181 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running or troubleshooting pipelines" ;
+    oc:directiveContent "Use intermediate outputs at each stage for debugging and auditability." ;
+    oc:hasRationale "Intermediate outputs let you inspect data at each transformation step, making it possible to isolate which stage introduced an error." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_536e4f64 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating reusable pipeline definitions" ;
+    oc:directiveContent "Make pipelines configurable via YAML or JSON declarations rather than hardcoding operations in code." ;
+    oc:hasRationale "Declarative pipeline definitions separate configuration from logic, enabling non-technical users to modify pipelines and supporting version control of pipeline specs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6761d555 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any document pipeline" ;
+    oc:directiveContent "Each pipeline stage should have a single responsibility — one well-defined transformation per stage." ;
+    oc:hasRationale "Single-responsibility stages are easier to debug, test, reuse, and compose into new pipelines." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9ce38986 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building multi-stage pipelines" ;
+    oc:directiveContent "Implement stage-level error handling so that a failure in one stage does not silently corrupt downstream stages." ;
+    oc:hasRationale "Without per-stage error boundaries, failures propagate and produce incorrect or incomplete outputs that are hard to diagnose." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b2acff36 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing any pipeline" ;
+    oc:directiveContent "Each pipeline stage transforms and passes data forward; intermediate file artifacts may be created at each stage." ;
+    oc:hasRationale "Awareness of intermediate artifacts is important for disk space management, temp file cleanup, and understanding the pipeline's footprint." ;
+    oc:severityLevel "LOW" .
+
+oc:req_47a90164 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "openpyxl" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python-docx" .
+
+oc:req_99341ad8 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "jinja2" .
+
+oc:req_e18dc245 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python-pptx" .
+
+oc:req_fd635a4a a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "reportlab" .
+

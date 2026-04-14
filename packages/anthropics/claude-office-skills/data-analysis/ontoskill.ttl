@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_data_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "data-analysis" ;
+    skos:broader "Data analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/data-analysis" ;
+    oc:contentHash "d6253356f12cdb3bafd7c6bcdb622f163b6f1536d16f0b570608987f0f53106b" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that provides structured workflows for analyzing spreadsheet data, generating statistical insights, creating visualizations, and building reports from Excel/CSV sources" ;
+    oc:extends oc:skill_xlsx_manipulation ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "analyze_spreadsheet",
+        "create_chart",
+        "create_xlsx",
+        "pivot_table",
+        "read_xlsx",
+        "xlsx_to_json" ;
+    oc:hasArgumentHint "file-path (xlsx/csv/xls) with optional analysis_goal and output_format" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Analyze spreadsheet data, generate insights, create visualizations, and build reports from Excel/CSV data." ;
+    oc:hasName "data-analysis" ;
+    oc:hasPackageName "data-analysis" ;
+    oc:impartsKnowledge oc:kn_5c8c24b2,
+        oc:kn_7078bd5e,
+        oc:kn_7490d9eb,
+        oc:kn_7ff8a7e8,
+        oc:kn_894ec084,
+        oc:kn_cef8e086 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "analyze spreadsheet data",
+        "build reports from Excel or CSV data",
+        "create data visualizations",
+        "explore and profile datasets",
+        "generate insights from data",
+        "generate spreadsheet formulas",
+        "perform statistical analysis" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_5c8c24b2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When recommending or creating visualizations" ;
+    oc:directiveContent "Choose chart type based on data relationship: line for trends, bar for comparison, histogram for distribution, scatter for correlation, pie for part-of-whole." ;
+    oc:hasRationale "Wrong chart types obscure the actual data relationship and mislead the audience." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_7078bd5e a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "During execution of any analysis task" ;
+    oc:directiveContent "Cannot directly execute code on data; analysis is guided through MCP tools (read_xlsx, analyze_spreadsheet, create_chart, pivot_table)." ;
+    oc:hasRationale "The skill relies on MCP server tools rather than local code execution, which bounds what operations are possible." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7490d9eb a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting statistical findings or recommendations" ;
+    oc:directiveContent "Do not present analysis findings without cross-checking against other data sources or considering context like industry benchmarks and seasonality." ;
+    oc:hasRationale "Unvalidated findings can lead to incorrect business decisions; context grounds analysis in reality." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7ff8a7e8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When working with very large or complex datasets" ;
+    oc:directiveContent "Large datasets may require sampling, complex statistical models need specialized tools, and real-time data requires live connections." ;
+    oc:hasRationale "This skill operates within computational and tooling limits; exceeding them produces unreliable results." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_894ec084 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any data visualization or chart" ;
+    oc:directiveContent "Keep visualizations simple with one main message per chart, clear labels for title/axes/legend, and appropriate scales that don't truncate misleadingly." ;
+    oc:hasRationale "Overloaded or poorly labeled charts confuse rather than clarify, defeating the purpose of visualization." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cef8e086 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting any data analysis workflow" ;
+    oc:directiveContent "Always clean data first — handle missing values and duplicates before performing any analysis." ;
+    oc:hasRationale "Dirty data leads to misleading insights and erodes trust in the analysis results." ;
+    oc:severityLevel "HIGH" .
+

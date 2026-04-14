@@ -1,0 +1,100 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_hr_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "hr-automation" ;
+    skos:broader "Workflow automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/hr-automation" ;
+    oc:contentHash "0db98ca7a81ba646394e5b57804daf78031241bbd6dc2e43d92c9a1db642e6d0" ;
+    oc:dependsOnSkill oc:skill_applicant_screening ;
+    oc:differentia "Orchestrates the full employee lifecycle from recruiting through onboarding, management, and offboarding using HRIS/ATS integrations" ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "airtable",
+        "asana",
+        "bamboohr_api",
+        "google_calendar",
+        "greenhouse_api",
+        "notion",
+        "slack",
+        "workday_api" ;
+    oc:hasArgumentHint "workflow request describing the HR process to automate (e.g., 'create onboarding checklist', 'set up PTO approval workflow', 'automate offboarding')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "HR workflow automation - recruiting, onboarding, employee management, and offboarding processes" ;
+    oc:hasName "hr-automation" ;
+    oc:hasPackageName "hr-automation" ;
+    oc:impartsKnowledge oc:kn_0cf9b632,
+        oc:kn_5f89dd15,
+        oc:kn_6076e55c,
+        oc:kn_65e8cfeb,
+        oc:kn_6d217380,
+        oc:kn_8dd8bc8e,
+        oc:kn_cd00353c ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "automate employee offboarding and access revocation",
+        "automate performance review cycles",
+        "automate recruiting pipeline and applicant tracking",
+        "create employee onboarding workflows and checklists",
+        "manage time-off requests and approvals",
+        "schedule interviews and collect feedback",
+        "track HR compliance document deadlines" ;
+    oc:yieldsState oc:HRProcessAutomated,
+        oc:NotificationsEnabled,
+        oc:WorkflowConfigured .
+
+oc:kn_0cf9b632 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring AI resume screening automation thresholds" ;
+    oc:directiveContent "Never auto-reject candidates without human review on borderline scores (5-7). Only auto-reject below score 5 and auto-advance above score 8." ;
+    oc:hasRationale "Aggressive auto-rejection thresholds can filter out qualified candidates with non-traditional backgrounds and create diversity/legal risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5f89dd15 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring compliance tracking and document collection automations" ;
+    oc:directiveContent "I-9 documents must be completed within 3 days of start date, W-4 and direct deposit by first payroll, and benefits election within 30 days — these deadlines are legally mandated and non-negotiable." ;
+    oc:hasRationale "Failure to meet I-9 and other federal document deadlines creates legal liability and potential fines for the organization." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6076e55c a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When executing any offboarding or termination workflow" ;
+    oc:directiveContent "Access revocation must be audited and documented: verify no remaining access across email, SSO, VPN, physical access, credit cards, tool licenses, shared drives, code repositories, and customer systems within 24 hours." ;
+    oc:hasRationale "Incomplete access revocation is a leading cause of data breaches by former employees. A compliance report must be generated after revocation." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_65e8cfeb a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any employee onboarding workflow" ;
+    oc:directiveContent "Structure onboarding as a time-phased checklist (Day -14, -7, -1, Day 1, Week 1, Month 1) with separate task owners (employee, manager, IT) and escalating reminders at 50%, 80%, and 100% of deadline." ;
+    oc:hasRationale "Distributed ownership with escalation ensures no tasks fall through cracks and accountability is clear across departments." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6d217380 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building onboarding automations that may be retried or triggered multiple times" ;
+    oc:directiveContent "Account creation and provisioning steps should be idempotent — re-running the onboarding workflow should not duplicate accounts or send duplicate welcome emails." ;
+    oc:hasRationale "HR workflows are often triggered by multiple systems (HRIS, ATS, manual entry). Idempotent operations prevent creating ghost accounts or flooding new hires with duplicate communications." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8dd8bc8e a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When configuring time-off request workflows" ;
+    oc:directiveContent "Route PTO approvals conditionally: requests ≤3 days go to direct manager only; requests >3 days require both manager and HR approval. Set 48-hour response deadline with auto-escalation." ;
+    oc:hasRationale "Tiered approval reduces manager burden on routine requests while ensuring HR visibility on extended absences that impact capacity planning." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cd00353c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When automating involuntary termination offboarding workflows" ;
+    oc:directiveContent "Begin offboarding automation with access revocation before knowledge transfer — security containment takes priority over transition niceties." ;
+    oc:hasRationale "Immediate revocation of SSO, VPN, email, and physical access prevents data exfiltration during the notice period." ;
+    oc:severityLevel "CRITICAL" .
+

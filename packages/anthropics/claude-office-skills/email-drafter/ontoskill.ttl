@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_email_drafter a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "email-drafter" ;
+    skos:broader "Communication generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/email-drafter" ;
+    oc:contentHash "d114f96eb643c3c3072bdff7aa4ddedfe6ab4f30f68e53853f71be960e55a22f" ;
+    oc:differentia "that drafts professional business emails with context-appropriate tone, structure, and templates for various workplace scenarios" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "email scenario with recipient, relationship, purpose, and key points" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription ">" ;
+    oc:hasName "email-drafter" ;
+    oc:impartsKnowledge oc:kn_012e8295,
+        oc:kn_27db1c63,
+        oc:kn_5669912b,
+        oc:kn_6814b392,
+        oc:kn_9b1db0ca ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:resolvesIntent "apologize via email",
+        "compose email response",
+        "decline request politely",
+        "draft professional email",
+        "follow up via email",
+        "write business email",
+        "write cold outreach email" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_012e8295 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When drafting any business email" ;
+    oc:directiveContent "Every professional email should follow this structure: greeting (relationship-appropriate), opening (context/reference), body (main message by priority), call to action (clear next steps), closing (appropriate sign-off), and signature." ;
+    oc:hasRationale "A consistent structure ensures clarity, professionalism, and that no critical element (like a call to action) is omitted." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_27db1c63 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting any email subject line" ;
+    oc:directiveContent "Subject lines should be clear, specific, action-oriented, and under 50 characters. Avoid vague subjects like 'Hello' or 'Quick question', ALL CAPS, excessive punctuation, and misleading clickbait." ;
+    oc:hasRationale "Subject lines are the first thing recipients see and determine whether the email gets opened. Vague or misleading subjects reduce trust and response rates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5669912b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting apology or issue resolution emails" ;
+    oc:directiveContent "Never include excuses when writing apology or issue resolution emails. Briefly explain what happened, then focus on corrective actions and preventive measures." ;
+    oc:hasRationale "Excuses undermine accountability and erode trust. Recipients want to see ownership and a plan to prevent recurrence, not deflection." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6814b392 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using this skill for any email" ;
+    oc:directiveContent "This skill generates drafts only — it cannot send emails. All drafts must be reviewed for accuracy of names, dates, and details. Not suitable for legal or highly sensitive communications without human review." ;
+    oc:hasRationale "Automated email drafts may contain hallucinated details or miss organization-specific norms. Human review prevents embarrassing or legally risky communications." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9b1db0ca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting email tone and structure for any scenario" ;
+    oc:directiveContent "Match tone to audience relationship: professional-warm for clients, direct-friendly for internal teams, concise-respectful for executives (bottom-line first), engaging-value-focused for cold outreach, empathetic-clear for difficult news, and polite-persistent for follow-ups." ;
+    oc:hasRationale "Tone mismatch undermines the email's effectiveness — too casual with executives signals disrespect, too formal with peers creates unnecessary friction." ;
+    oc:severityLevel "HIGH" .
+

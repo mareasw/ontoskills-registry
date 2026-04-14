@@ -1,0 +1,78 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_amazon_seller a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "amazon-seller" ;
+    skos:broader "E-commerce automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/amazon-seller" ;
+    oc:contentHash "9cb7d917b801d55257e6e61d520f86501b5d756cddd1baac9840ff23ce3c7e37" ;
+    oc:dependsOnSkill oc:skill_shopify_automation,
+        oc:skill_woocommerce_automation ;
+    oc:differentia "automates Amazon seller operations including FBA inventory management, order processing, dynamic pricing, PPC advertising, and sales analytics via the Amazon SP-API" ;
+    oc:handlesFailure oc:APIRateLimited,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "operation type (inventory|listings|pricing|advertising|orders|analytics) and product/SKU details" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate Amazon seller operations including inventory, orders, pricing, and advertising management" ;
+    oc:hasName "amazon-seller" ;
+    oc:impartsKnowledge oc:kn_4aac3193,
+        oc:kn_5ddb04d4,
+        oc:kn_8bfcccfe,
+        oc:kn_965a7208,
+        oc:kn_e75eaf5f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate order fulfillment for FBA and FBM",
+        "manage amazon inventory and FBA shipments",
+        "monitor and adjust competitive pricing for buy box",
+        "optimize product listings with keywords and pricing",
+        "run and optimize amazon PPC advertising campaigns",
+        "track sales performance and profit margins" ;
+    oc:yieldsState oc:CampaignsOptimized,
+        oc:InventorySynced,
+        oc:ListingsUpdated,
+        oc:OrdersProcessed .
+
+oc:kn_4aac3193 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When managing customer communications and review requests" ;
+    oc:directiveContent "Respond to all buyer messages within 24 hours and request reviews 7 days after delivery only if no return has been requested and no negative feedback exists." ;
+    oc:hasRationale "Amazon requires 24-hour response times and prohibits review solicitation on negative experiences; violations risk account suspension." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5ddb04d4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or optimizing product listings" ;
+    oc:directiveContent "Amazon title field has a maximum of 200 characters and must not contain promotional phrases; bullet points should be exactly 5, starting with the key benefit." ;
+    oc:hasRationale "Amazon enforces strict listing guidelines; non-compliant listings get suppressed, losing all visibility and sales." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8bfcccfe a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring dynamic pricing or buy box competition rules" ;
+    oc:directiveContent "Never set a price floor below cost + Amazon fees; always enforce a minimum profit price in dynamic pricing rules to prevent selling at a loss." ;
+    oc:hasRationale "Automated price wars can drive prices below profitability if no floor is set, especially with aggressive competitors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_965a7208 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When managing FBA inventory levels and reorder planning" ;
+    oc:directiveContent "Use 30 days of supply as the reorder point with 90 days target stock and 21 days lead time; flag inventory older than 180 days for removal or promotion." ;
+    oc:hasRationale "Stockouts kill ranking momentum while excess inventory incurs long-term storage fees; these thresholds balance both risks." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e75eaf5f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring Amazon advertising campaigns" ;
+    oc:directiveContent "PPC campaigns should follow a three-tier structure: Auto campaigns for keyword discovery, Exact match for top performers, and Phrase/Broad for mid-tier and discovery, with a target ACoS of 25%." ;
+    oc:hasRationale "This layered approach maximizes keyword discovery while controlling spend efficiency across the sales funnel." ;
+    oc:severityLevel "HIGH" .
+

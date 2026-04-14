@@ -1,0 +1,137 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_asana_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "asana-automation" ;
+    skos:broader "Project management automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/asana-automation" ;
+    oc:contentHash "7111764115713c2f70a57a6e6b838ea1c41003f6cbee5fd80bb4b877a6e33b68" ;
+    oc:differentia "that orchestrates Asana workflows including task lifecycle management, project templates, workload balancing, custom field configuration, intake forms, reporting dashboards, and cross-platform integrations with Slack and GitHub" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAlias "asana",
+        "asana project management",
+        "asana workflow" ;
+    oc:hasAllowedTool "asana_create_task",
+        "asana_search",
+        "asana_sections",
+        "asana_update_task" ;
+    oc:hasArgumentHint "workflow description or task details (e.g., 'create a feature launch project', 'show team workload', 'set up automation rules')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate Asana project management workflows, task tracking, team collaboration, and reporting" ;
+    oc:hasName "asana-automation" ;
+    oc:hasRequirement oc:req_206e1996,
+        oc:req_a17ea62e,
+        oc:req_b48cbdf8,
+        oc:req_b61eb0ca,
+        oc:req_ee25074f,
+        oc:req_f18a109a ;
+    oc:impartsKnowledge oc:kn_12cae9f2,
+        oc:kn_36822be0,
+        oc:kn_4e5d4dd9,
+        oc:kn_620c04c5,
+        oc:kn_a244648f,
+        oc:kn_b24d1a2a,
+        oc:kn_c311395f,
+        oc:kn_c31f2f3f ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate asana task management and workflows",
+        "configure asana automation rules and custom fields",
+        "create asana project templates and sprint boards",
+        "generate project portfolio reports and dashboards",
+        "integrate asana with slack and github",
+        "manage team workload and capacity in asana",
+        "set up intake forms and request routing in asana" ;
+    oc:yieldsState oc:ProjectConfigured,
+        oc:ReportGenerated,
+        oc:TaskCreated,
+        oc:WorkloadBalanced .
+
+oc:kn_12cae9f2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or updating tasks in Asana" ;
+    oc:directiveContent "Use a single assignee per task to maintain clear accountability and avoid diffusion of responsibility." ;
+    oc:hasRationale "Single ownership prevents tasks from falling through the cracks and makes workload tracking accurate." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_36822be0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring new Asana projects or templates" ;
+    oc:directiveContent "Custom fields (Priority, Status, Department, Story Points, Type) must be used consistently across all projects to enable cross-project reporting and portfolio dashboards." ;
+    oc:hasRationale "Inconsistent custom fields break portfolio-level aggregation and make cross-project comparisons unreliable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e5d4dd9 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any Asana automation workflow" ;
+    oc:directiveContent "Verify Asana API authentication, workspace access, and target project existence before attempting any task or project operations." ;
+    oc:hasRationale "Failed API calls due to auth or missing resources cause partial state updates that are hard to clean up." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_620c04c5 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When managing any task pipeline in Asana" ;
+    oc:directiveContent "Follow the 6-stage task lifecycle: New Request → Triage & Prioritize → Assign & Schedule → In Progress → Review → Complete." ;
+    oc:hasRationale "A structured lifecycle ensures no stage is skipped and provides predictable progression for reporting." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a244648f a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating or naming tasks" ;
+    oc:directiveContent "Use action verbs for task names and be specific about deliverables (e.g., 'Write API documentation for auth endpoint' not 'Docs')." ;
+    oc:hasRationale "Clear task names reduce ambiguity and improve search, triage, and reporting accuracy." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b24d1a2a a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When configuring or modifying automation rules" ;
+    oc:directiveContent "Automation rules trigger side effects: section moves can auto-assign tasks, add followers, set custom fields, and send notifications. Be aware of cascading automations when modifying project structure." ;
+    oc:hasRationale "Unintended automation chains can spam followers, reassign tasks incorrectly, or create duplicate notifications." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c311395f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating tasks or configuring intake forms" ;
+    oc:directiveContent "Do not skip setting due dates on tasks or leave them as optional on critical request forms — every actionable task needs a deadline." ;
+    oc:hasRationale "Tasks without due dates accumulate indefinitely and become invisible in timeline and overdue tracking views." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c31f2f3f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing team workload and capacity views" ;
+    oc:directiveContent "Flag team members at or above 100% capacity (like 110% workload) and generate rebalancing suggestions such as reassigning tasks, extending deadlines, or adding resources." ;
+    oc:hasRationale "Overloaded team members are a leading cause of missed deadlines and quality issues; proactive rebalancing prevents burnout." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_206e1996 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "asana_sections" .
+
+oc:req_a17ea62e a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Asana API access via MCP server (project-mcp)" .
+
+oc:req_b48cbdf8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "asana_update_task" .
+
+oc:req_b61eb0ca a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "asana_search" .
+
+oc:req_ee25074f a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "asana_create_task" .
+
+oc:req_f18a109a a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Asana workspace/project structure and terminology" .
+

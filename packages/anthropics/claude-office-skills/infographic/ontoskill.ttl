@@ -1,0 +1,76 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_infographic a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "infographic" ;
+    skos:broader "Design specification generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/infographic" ;
+    oc:contentHash "6eab12dbae1d671d865d8cc263bba4f79a0f44ed41693fd71b8af0a40bd8d3cf" ;
+    oc:differentia "Plans infographic layouts, content structure, and visual hierarchies as design specifications for designer implementation, without producing actual graphic files" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "topic, key message, target audience, platform, data/statistics" ;
+    oc:hasCategory "visualization" ;
+    oc:hasDescription "Design infographic layouts and content structure. Plan visual storytelling with data, icons, and text hierarchy for impactful information design." ;
+    oc:hasName "infographic" ;
+    oc:impartsKnowledge oc:kn_2190b7e7,
+        oc:kn_3e55c668,
+        oc:kn_ace12493,
+        oc:kn_cc3df79a,
+        oc:kn_efdf1ed1,
+        oc:kn_f04c5545 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create infographic content structure",
+        "design infographic layout",
+        "generate infographic wireframes and design specs",
+        "plan visual storytelling with data",
+        "recommend infographic color schemes and typography" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2190b7e7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying dimensions for target platform" ;
+    oc:directiveContent "Use platform-appropriate dimensions: Instagram Post 1080×1080, Instagram Story 1080×1920, Pinterest 1000×1500, Twitter 1200×675, LinkedIn 1200×627, Facebook 1200×630. Print requires 300 DPI resolution." ;
+    oc:hasRationale "Wrong dimensions cause distortion, cropping, or unreadable content when published to the intended platform." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3e55c668 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting user expectations about output capabilities" ;
+    oc:directiveContent "This skill cannot create actual graphic files, generate images directly, or produce final production-ready assets. It outputs design specifications that must be implemented by a designer using tools like Canva, Piktochart, Venngage, Adobe Illustrator, or Figma." ;
+    oc:hasRationale "The skill is a specification/planning tool, not a production tool. Users must understand the output requires designer implementation to avoid disappointment." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ace12493 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning infographic design spec generation" ;
+    oc:directiveContent "Before generating a design spec, confirm with the user: topic/subject, key message or takeaway, target audience, target platform (social media, print, web), and any data or statistics to include." ;
+    oc:hasRationale "Missing any of these inputs results in generic, unfocused designs that don't meet the user's actual communication needs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cc3df79a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining content density and layout spacing" ;
+    oc:directiveContent "Do not overcrowd the infographic with too much information. Focus on one main message, round numbers, highlight key figures, and use generous white space to group related items." ;
+    oc:hasRationale "Information overload defeats the purpose of an infographic, which is to simplify complex data into a visually digestible format. Overcrowding reduces comprehension." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_efdf1ed1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring any infographic layout" ;
+    oc:directiveContent "Always enforce a strict visual hierarchy: Title (largest, most prominent) → Key Statistics (large numbers with context) → Section Headings (clear divisions) → Body Content (readable size) → Sources (smallest, bottom)." ;
+    oc:hasRationale "Visual hierarchy guides the viewer's eye through information in order of importance, ensuring the key message is communicated before supporting details." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f04c5545 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user provides topic but has not specified infographic type" ;
+    oc:directiveContent "Choose infographic type based on content nature: Statistical for data/research, Timeline for chronological info, Process for step-by-step flows, Comparison for side-by-side analysis, Geographic for location data, Hierarchical for org structures, List for ranked items." ;
+    oc:hasRationale "Matching infographic type to content nature maximizes clarity and impact — wrong type choices obscure the message rather than amplify it." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,2826 @@
+{
+  "package_id": "anthropics/claude-office-skills",
+  "version": "0.11.0",
+  "trust_tier": "verified",
+  "source_kind": "ontology",
+  "modules": [
+    "academic-search/ontoskill.ttl",
+    "ads-copywriter/ontoskill.ttl",
+    "ai-agent-builder/ontoskill.ttl",
+    "ai-slides/ontoskill.ttl",
+    "airtable-automation/ontoskill.ttl",
+    "amazon-seller/ontoskill.ttl",
+    "apple-shortcuts-integration/ontoskill.ttl",
+    "applicant-screening/ontoskill.ttl",
+    "asana-automation/ontoskill.ttl",
+    "batch-convert/ontoskill.ttl",
+    "batch-processor/ontoskill.ttl",
+    "brand-guidelines-generator/ontoskill.ttl",
+    "browser-automation/ontoskill.ttl",
+    "calendar-automation/ontoskill.ttl",
+    "changelog-generator/ontoskill.ttl",
+    "chart-designer/ontoskill.ttl",
+    "chat-with-pdf/ontoskill.ttl",
+    "clickup-automation/ontoskill.ttl",
+    "company-research/ontoskill.ttl",
+    "competitive-analysis/ontoskill.ttl",
+    "content-research-writer/ontoskill.ttl",
+    "contract-review/README.ttl",
+    "contract-review/ontoskill.ttl",
+    "contract-template/ontoskill.ttl",
+    "cover-letter/ontoskill.ttl",
+    "crm-automation/ontoskill.ttl",
+    "crypto-report/ontoskill.ttl",
+    "customer-success/ontoskill.ttl",
+    "cv-builder/ontoskill.ttl",
+    "data-analysis/ontoskill.ttl",
+    "data-extractor/ontoskill.ttl",
+    "data-pipeline/ontoskill.ttl",
+    "database-sync/ontoskill.ttl",
+    "dcf-valuation/ontoskill.ttl",
+    "deep-research/ontoskill.ttl",
+    "dev-slides/ontoskill.ttl",
+    "devops-automation/ontoskill.ttl",
+    "diagram-creator/ontoskill.ttl",
+    "discord-bot/ontoskill.ttl",
+    "doc-parser/ontoskill.ttl",
+    "doc-pipeline/ontoskill.ttl",
+    "docusign-automation/ontoskill.ttl",
+    "docx-manipulation/ontoskill.ttl",
+    "email-classifier/ontoskill.ttl",
+    "email-drafter/ontoskill.ttl",
+    "email-marketing/ontoskill.ttl",
+    "etl-pipeline/ontoskill.ttl",
+    "excel-automation/ontoskill.ttl",
+    "expense-report/ontoskill.ttl",
+    "expense-tracker/ontoskill.ttl",
+    "facebook-meta-ads/ontoskill.ttl",
+    "file-organizer/ontoskill.ttl",
+    "financial-modeling/ontoskill.ttl",
+    "form-builder/ontoskill.ttl",
+    "gmail-workflows/ontoskill.ttl",
+    "google-ads-manager/ontoskill.ttl",
+    "home-assistant-automation/ontoskill.ttl",
+    "hr-automation/ontoskill.ttl",
+    "html-slides/ontoskill.ttl",
+    "html-to-ppt/ontoskill.ttl",
+    "image-generation/ontoskill.ttl",
+    "infographic/ontoskill.ttl",
+    "intercom-automation/ontoskill.ttl",
+    "investment-memo/ontoskill.ttl",
+    "invoice-automation/ontoskill.ttl",
+    "invoice-generator/README.ttl",
+    "invoice-generator/ontoskill.ttl",
+    "invoice-organizer/ontoskill.ttl",
+    "invoice-template/ontoskill.ttl",
+    "jira-automation/ontoskill.ttl",
+    "job-description-generator/ontoskill.ttl",
+    "layout-analyzer/ontoskill.ttl",
+    "lead-qualification/ontoskill.ttl",
+    "lead-research-assistant/ontoskill.ttl",
+    "lead-routing/ontoskill.ttl",
+    "linear-automation/ontoskill.ttl",
+    "linkedin-automation/ontoskill.ttl",
+    "mailchimp-automation/ontoskill.ttl",
+    "mcp-hub/ontoskill.ttl",
+    "md-slides/ontoskill.ttl",
+    "md-to-office/ontoskill.ttl",
+    "meeting-notes/ontoskill.ttl",
+    "microsoft-teams-automation/ontoskill.ttl",
+    "monday.com-automation/ontoskill.ttl",
+    "n8n-workflow/ontoskill.ttl",
+    "nda-generator/README.ttl",
+    "nda-generator/ontoskill.ttl",
+    "news-monitor/ontoskill.ttl",
+    "notion-automation/ontoskill.ttl",
+    "obsidian-automation/ontoskill.ttl",
+    "offer-letter-generator/ontoskill.ttl",
+    "office-mcp/ontoskill.ttl",
+    "office-to-md/ontoskill.ttl",
+    "pdf-compress/ontoskill.ttl",
+    "pdf-converter/ontoskill.ttl",
+    "pdf-extraction/ontoskill.ttl",
+    "pdf-form-filler/ontoskill.ttl",
+    "pdf-merge-split/ontoskill.ttl",
+    "pdf-ocr-extraction/ontoskill.ttl",
+    "pdf-to-docx/ontoskill.ttl",
+    "pdf-watermark/ontoskill.ttl",
+    "pipedrive-automation/ontoskill.ttl",
+    "podcast-automation/ontoskill.ttl",
+    "ppt-visual/ontoskill.ttl",
+    "pptx-manipulation/ontoskill.ttl",
+    "proposal-writer/ontoskill.ttl",
+    "quickbooks-automation/ontoskill.ttl",
+    "report-generator/ontoskill.ttl",
+    "resume-tailor/README.ttl",
+    "resume-tailor/ontoskill.ttl",
+    "saas-metrics/ontoskill.ttl",
+    "security-monitoring/ontoskill.ttl",
+    "seo-optimizer/ontoskill.ttl",
+    "sheets-automation/ontoskill.ttl",
+    "shopify-automation/ontoskill.ttl",
+    "skill-name/README.ttl",
+    "skill-name/ontoskill.ttl",
+    "slack-workflows/ontoskill.ttl",
+    "smart-ocr/ontoskill.ttl",
+    "social-publisher/ontoskill.ttl",
+    "spotify-automation/ontoskill.ttl",
+    "stock-analysis/ontoskill.ttl",
+    "stripe-payments/ontoskill.ttl",
+    "subscription-management/ontoskill.ttl",
+    "suspicious-email-analyzer/ontoskill.ttl",
+    "table-extractor/ontoskill.ttl",
+    "telegram-bot/ontoskill.ttl",
+    "template-engine/ontoskill.ttl",
+    "tiktok-marketing/ontoskill.ttl",
+    "transcription-automation/ontoskill.ttl",
+    "trello-automation/ontoskill.ttl",
+    "twilio-sms-automation/ontoskill.ttl",
+    "twitter-x-automation/ontoskill.ttl",
+    "weather-automation/ontoskill.ttl",
+    "web-search/ontoskill.ttl",
+    "webhook-automation/ontoskill.ttl",
+    "weekly-report/ontoskill.ttl",
+    "whatsapp-automation/ontoskill.ttl",
+    "woocommerce-automation/ontoskill.ttl",
+    "xlsx-manipulation/ontoskill.ttl",
+    "youtube-automation/ontoskill.ttl",
+    "zendesk-automation/ontoskill.ttl"
+  ],
+  "skills": [
+    {
+      "id": "pdf-form-filler",
+      "path": "pdf-form-filler/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Fill out PDF forms programmatically and extract form data",
+      "category": "document",
+      "intents": [
+        "batch fill multiple PDF forms from spreadsheet data",
+        "create form-filling data mapping templates",
+        "extract form field data from PDF",
+        "fill PDF form with data",
+        "validate form data before filling"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "lead-routing",
+      "path": "lead-routing/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Intelligent lead assignment and routing - AI-powered scoring, territory mapping, round-robin distribution, and workload balancing",
+      "category": "automation",
+      "intents": [
+        "assign leads by territory or industry",
+        "balance workload across sales team",
+        "configure lead routing rules",
+        "manage SLA for lead response times",
+        "route leads to sales reps",
+        "score and prioritize leads"
+      ],
+      "depends_on_skills": [
+        "crm-automation"
+      ]
+    },
+    {
+      "id": "microsoft-teams-automation",
+      "path": "microsoft-teams-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Microsoft Teams messaging, meetings, channels, and workflow integrations",
+      "category": "automation",
+      "intents": [
+        "automate CI/CD notifications via Teams",
+        "build Teams approval workflows",
+        "configure Teams bot commands",
+        "create Teams channels",
+        "schedule Teams meetings",
+        "send Teams messages",
+        "send webhook notifications to Teams"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "smart-ocr",
+      "path": "smart-ocr/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "extract multilingual text from images",
+        "extract text from images",
+        "ocr scanned documents",
+        "ocr scanned pdf files",
+        "read text from photos and screenshots"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "subscription-management",
+      "path": "subscription-management/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "SaaS subscription lifecycle management - billing, upgrades, downgrades, churn prevention, and revenue optimization",
+      "category": "finance",
+      "intents": [
+        "build health scoring models",
+        "create churn prevention workflows",
+        "create dunning sequences",
+        "design upgrade and downgrade flows",
+        "manage subscription lifecycle",
+        "optimize subscription revenue",
+        "prevent customer churn",
+        "set up billing automation"
+      ],
+      "depends_on_skills": [
+        "saas-metrics"
+      ]
+    },
+    {
+      "id": "crm-automation",
+      "path": "crm-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "CRM workflow automation for HubSpot, Salesforce, Pipedrive - lead management, deal tracking, and multi-CRM synchronization",
+      "category": "automation",
+      "intents": [
+        "automate CRM workflows",
+        "capture and enrich leads",
+        "create automated sales sequences",
+        "generate sales pipeline reports",
+        "score and route leads",
+        "synchronize data across CRMs",
+        "track deal stages"
+      ],
+      "depends_on_skills": [
+        "lead-routing"
+      ]
+    },
+    {
+      "id": "layout-analyzer",
+      "path": "layout-analyzer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "analyze document layout",
+        "detect layout elements in documents",
+        "determine reading order of document pages",
+        "extract document structure",
+        "identify tables and figures in documents"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "email-classifier",
+      "path": "email-classifier/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automatically categorize emails by type, priority, and required action",
+      "category": "productivity",
+      "intents": [
+        "batch process multiple emails with sorting",
+        "classify emails by category and priority",
+        "create custom email classification rules",
+        "detect spam and phishing indicators",
+        "organize inbox by urgency and action required"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "form-builder",
+      "path": "form-builder/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build interactive document forms and questionnaires using docassemble",
+      "category": "document",
+      "intents": [
+        "build questionnaire",
+        "create conditional document form",
+        "create interactive form",
+        "design multi-step form",
+        "generate docassemble interview YAML"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "podcast-automation",
+      "path": "podcast-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate podcast production workflows including recording, editing, publishing, and distribution",
+      "category": "multimedia",
+      "intents": [
+        "automate podcast production workflow",
+        "distribute podcast to platforms",
+        "generate show notes",
+        "manage RSS feeds",
+        "manage podcast guests",
+        "process podcast audio",
+        "publish podcast episodes",
+        "track podcast analytics"
+      ],
+      "depends_on_skills": [
+        "transcription-automation"
+      ]
+    },
+    {
+      "id": "notion-automation",
+      "path": "notion-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Notion database automation - sync, templates, workflows, and cross-platform integrations",
+      "category": "productivity",
+      "intents": [
+        "automate notion databases",
+        "build cross-platform integrations with notion",
+        "configure bidirectional calendar sync with notion",
+        "create notion pages from forms or triggers",
+        "create notion workflow automations",
+        "generate email digests from notion data",
+        "set up notion database templates",
+        "sync notion with slack calendar and crm"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "weather-automation",
+      "path": "weather-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate weather-based workflows, forecasts, alerts, and location-aware notifications",
+      "category": "automation",
+      "intents": [
+        "automate weather-triggered workflows",
+        "get current weather conditions for a location",
+        "integrate weather data with calendar and smart home systems",
+        "retrieve weather forecasts",
+        "set up weather alerts and notifications"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "doc-parser",
+      "path": "doc-parser/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "analyze document layout and structure",
+        "convert documents to markdown or structured data",
+        "extract figures and captions from documents",
+        "extract tables from PDFs and Word documents",
+        "parse academic papers, financial reports, and contracts",
+        "parse documents and extract structured content"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "report-generator",
+      "path": "report-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Generate professional data reports with charts, tables, and visualizations",
+      "category": "document",
+      "intents": [
+        "build executive summary with charts",
+        "create KPI dashboard",
+        "create sales report from data",
+        "generate professional data report",
+        "produce data analysis report"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "email-drafter",
+      "path": "email-drafter/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "productivity",
+      "intents": [
+        "apologize via email",
+        "compose email response",
+        "decline request politely",
+        "draft professional email",
+        "follow up via email",
+        "write business email",
+        "write cold outreach email"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "pdf-to-docx",
+      "path": "pdf-to-docx/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Convert PDF files to editable Word documents using pdf2docx",
+      "category": "document",
+      "intents": [
+        "batch convert PDFs to Word documents",
+        "convert PDF to Word",
+        "convert PDF to docx",
+        "convert specific PDF pages to Word",
+        "extract editable text from PDF"
+      ],
+      "depends_on_skills": [
+        "pdf-converter",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "lead-research-assistant",
+      "path": "lead-research-assistant/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Research company and contact information for sales outreach",
+      "category": "sales",
+      "intents": [
+        "build contact profile for personalized outreach",
+        "create company briefing for sales call",
+        "find decision-maker contact information",
+        "prioritize leads by fit score",
+        "research company for sales outreach"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "invoice-organizer",
+      "path": "invoice-organizer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Organize, categorize, and track invoices and receipts",
+      "category": "finance",
+      "intents": [
+        "categorize expenses automatically",
+        "extract data from invoices and receipts",
+        "generate expense and tax preparation reports",
+        "organize invoice files by vendor and date",
+        "summarize invoices by category or time period",
+        "track invoice payment status"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "proposal-writer",
+      "path": "proposal-writer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create compelling business proposals that win deals and partnerships",
+      "category": "sales",
+      "intents": [
+        "create business proposal",
+        "create grant application",
+        "draft partnership proposal",
+        "generate project quote",
+        "respond to RFP/RFI",
+        "write sales proposal"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "quickbooks-automation",
+      "path": "quickbooks-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate QuickBooks accounting workflows including invoicing, expenses, reporting, and bank reconciliation",
+      "category": "finance",
+      "intents": [
+        "automate QuickBooks invoicing and billing",
+        "create recurring invoices and automation rules",
+        "generate financial reports",
+        "reconcile bank accounts",
+        "sync e-commerce and payroll data with QuickBooks",
+        "track and categorize expenses"
+      ],
+      "depends_on_skills": [
+        "expense-tracker",
+        "invoice-automation"
+      ]
+    },
+    {
+      "id": "etl-pipeline",
+      "path": "etl-pipeline/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Design and automate Extract, Transform, Load data pipelines for data integration and analytics",
+      "category": "data-pipeline",
+      "intents": [
+        "automate data integration",
+        "build data pipeline",
+        "configure data quality validation",
+        "create data pipeline orchestration",
+        "design ETL pipeline",
+        "extract transform load data",
+        "set up data warehouse loading"
+      ],
+      "depends_on_skills": [
+        "data-pipeline",
+        "database-sync"
+      ]
+    },
+    {
+      "id": "transcription-automation",
+      "path": "transcription-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate audio/video transcription, meeting notes, subtitle generation, and content processing",
+      "category": "automation",
+      "intents": [
+        "automate podcast transcription",
+        "create meeting notes from recordings",
+        "generate subtitles from media",
+        "perform speaker diarization",
+        "transcribe audio or video files",
+        "transcribe in multiple languages"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "expense-report",
+      "path": "expense-report/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "finance",
+      "intents": [
+        "categorize business expenses",
+        "create expense report",
+        "generate monthly expense summary",
+        "organize expenses for tax preparation",
+        "prepare reimbursement report",
+        "summarize travel expenses"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "company-research",
+      "path": "company-research/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Conduct comprehensive company research and due diligence. Analyze business model, competitive landscape, management, and market position.",
+      "category": "research",
+      "intents": [
+        "analyze business model",
+        "assess investment suitability",
+        "conduct company due diligence",
+        "generate company research report",
+        "perform competitive landscape analysis",
+        "research a company"
+      ],
+      "depends_on_skills": [
+        "competitive-analysis",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "nda-generator",
+      "path": "nda-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "legal",
+      "intents": [
+        "create NDA",
+        "create mutual NDA",
+        "create one-way NDA",
+        "customize NDA for contractor",
+        "customize NDA for investor meeting",
+        "draft confidentiality agreement",
+        "generate non-disclosure agreement"
+      ],
+      "depends_on_skills": [
+        "docx-manipulation",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "academic-search",
+      "path": "academic-search/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Search and analyze academic literature. Find papers, understand research methodologies, and synthesize academic findings for research projects.",
+      "category": "research",
+      "intents": [
+        "analyze research papers",
+        "assess research methodologies",
+        "formulate search queries for academic databases",
+        "identify research gaps",
+        "manage academic citations",
+        "search academic literature",
+        "structure literature reviews"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "facebook-meta-ads",
+      "path": "facebook-meta-ads/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Facebook and Instagram advertising campaigns, audience targeting, and performance optimization",
+      "category": "marketing",
+      "intents": [
+        "create facebook ad campaigns",
+        "create lookalike audiences",
+        "generate ad performance reports",
+        "manage ad budgets and bidding",
+        "optimize meta ads performance",
+        "run creative a/b tests",
+        "set up meta pixel tracking",
+        "target audiences on facebook and instagram"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "lead-qualification",
+      "path": "lead-qualification/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Score and qualify leads based on criteria and fit",
+      "category": "sales",
+      "intents": [
+        "evaluate leads against qualification criteria",
+        "generate lead qualification reports",
+        "identify deal-breakers and green flags in leads",
+        "prioritize sales pipeline",
+        "score and qualify leads"
+      ],
+      "depends_on_skills": [
+        "xlsx-manipulation"
+      ]
+    },
+    {
+      "id": "webhook-automation",
+      "path": "webhook-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build and manage webhook-based integrations for real-time event processing and API connections",
+      "category": "automation",
+      "intents": [
+        "create webhook endpoint",
+        "debug webhooks",
+        "implement webhook retry and error handling",
+        "process webhook events",
+        "route events to handlers",
+        "set up webhook integrations with Stripe/GitHub/Slack",
+        "transform webhook payloads",
+        "verify webhook signatures"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "pdf-extraction",
+      "path": "pdf-extraction/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Extract text, tables, and metadata from PDFs using pdfplumber",
+      "category": "document",
+      "intents": [
+        "convert PDF tables to CSV or Excel",
+        "extract metadata from PDF",
+        "extract structured data from invoices and reports",
+        "extract tables from PDF",
+        "extract text from PDF",
+        "parse PDF documents by region or font"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "data-pipeline",
+      "path": "data-pipeline/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Data pipeline and ETL automation - extract, transform, load workflows for data integration and analytics",
+      "category": "development",
+      "intents": [
+        "automate data integration",
+        "build data pipeline",
+        "create ETL workflow",
+        "extract transform load data",
+        "monitor data quality",
+        "schedule data pipeline"
+      ],
+      "depends_on_skills": [
+        "data-analysis",
+        "sheets-automation"
+      ]
+    },
+    {
+      "id": "changelog-generator",
+      "path": "changelog-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Generate release notes from git commits, updates, or feature lists",
+      "category": "productivity",
+      "intents": [
+        "create release notes from feature list",
+        "format changelog following Keep a Changelog convention",
+        "generate changelog from git commits",
+        "summarize code changes into changelog entry"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "applicant-screening",
+      "path": "applicant-screening/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Screen job applications against requirements and score candidates",
+      "category": "hr",
+      "intents": [
+        "batch screen multiple applicants",
+        "evaluate resumes against job criteria",
+        "identify top candidates for interviews",
+        "score and rank candidates for a position",
+        "screen job applications against requirements"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "data-extractor",
+      "path": "data-extractor/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "batch process multiple documents",
+        "build searchable document corpus",
+        "chunk documents for RAG applications",
+        "convert unstructured documents to JSON",
+        "extract data from emails",
+        "extract text and tables from documents",
+        "parse structured data from PDFs and other formats"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "chat-with-pdf",
+      "path": "chat-with-pdf/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Answer questions about PDF content, summarize, and extract information",
+      "category": "document",
+      "intents": [
+        "ask questions about PDF content",
+        "compare information across multiple PDFs",
+        "extract specific data from PDFs",
+        "summarize PDF documents"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "saas-metrics",
+      "path": "saas-metrics/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "SaaS business metrics analysis - MRR, ARR, Churn, LTV, CAC, cohort analysis, and investor reporting",
+      "category": "finance",
+      "intents": [
+        "analyze MRR and ARR",
+        "analyze SaaS segmentation",
+        "build cohort analysis",
+        "calculate SaaS metrics",
+        "compute unit economics LTV CAC",
+        "forecast SaaS revenue",
+        "generate investor metrics report",
+        "measure churn and retention"
+      ],
+      "depends_on_skills": [
+        "financial-modeling"
+      ]
+    },
+    {
+      "id": "tiktok-marketing",
+      "path": "tiktok-marketing/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "TikTok content strategy, video creation workflows, posting optimization, and analytics. Based on n8n automation templates.",
+      "category": "marketing",
+      "intents": [
+        "automate tiktok content pipeline with n8n",
+        "create tiktok content strategy",
+        "generate video scripts for tiktok",
+        "identify tiktok trends",
+        "optimize tiktok posting schedule",
+        "research tiktok hashtags",
+        "track tiktok analytics"
+      ],
+      "depends_on_skills": [
+        "social-publisher"
+      ]
+    },
+    {
+      "id": "database-sync",
+      "path": "database-sync/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate database synchronization, replication, migration, and cross-platform data integration",
+      "category": "automation",
+      "intents": [
+        "configure change data capture",
+        "migrate database schema and data",
+        "monitor database replication status",
+        "replicate data between databases",
+        "resolve data sync conflicts",
+        "set up cross-database data integration",
+        "sync databases"
+      ],
+      "depends_on_skills": [
+        "etl-pipeline"
+      ]
+    },
+    {
+      "id": "pdf-watermark",
+      "path": "pdf-watermark/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Add watermarks, page numbers, headers, and footers to PDFs",
+      "category": "document",
+      "intents": [
+        "add Bates numbering to legal documents",
+        "add watermark to PDF",
+        "apply stamps to PDF",
+        "batch watermark PDFs",
+        "create PDF headers and footers",
+        "insert page numbers in PDF"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "cv-builder",
+      "path": "cv-builder/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "build a technical resume",
+        "convert career information to formatted PDF",
+        "create a professional CV or resume",
+        "generate a resume from structured data",
+        "update an existing CV with new experience"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "docusign-automation",
+      "path": "docusign-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate document signing workflows, envelope management, and e-signature processes",
+      "category": "automation",
+      "intents": [
+        "automate contract signing workflow",
+        "bulk send documents for signature",
+        "create docusign envelope",
+        "manage signing templates",
+        "send document for signature",
+        "set up signing webhooks",
+        "track envelope status"
+      ],
+      "depends_on_skills": [
+        "contract-review"
+      ]
+    },
+    {
+      "id": "suspicious-email-analyzer",
+      "path": "suspicious-email-analyzer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze emails for phishing, scam indicators, and security threats",
+      "category": "productivity",
+      "intents": [
+        "analyze email for phishing",
+        "assess email authenticity",
+        "check email for security threats",
+        "detect scam indicators in email",
+        "identify suspicious links"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "spotify-automation",
+      "path": "spotify-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Spotify music playback, playlist management, and audio analysis workflows",
+      "category": "media",
+      "intents": [
+        "analyze audio features",
+        "automate music workflows",
+        "control spotify playback",
+        "create smart playlists",
+        "discover music on spotify",
+        "manage spotify playlists"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "ads-copywriter",
+      "path": "ads-copywriter/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Multi-platform ad copy generation for Google Ads, Meta/Facebook, TikTok, LinkedIn with A/B testing variants",
+      "category": "marketing",
+      "intents": [
+        "apply copywriting frameworks to ad creation",
+        "create A/B testing variants for ads",
+        "generate ad copy for multiple platforms",
+        "optimize ad copy for platform-specific character limits",
+        "write Facebook/Meta ad copy",
+        "write Google Ads responsive search ad copy",
+        "write LinkedIn ad copy",
+        "write TikTok ad copy"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "data-analysis",
+      "path": "data-analysis/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze spreadsheet data, generate insights, create visualizations, and build reports from Excel/CSV data.",
+      "category": "finance",
+      "intents": [
+        "analyze spreadsheet data",
+        "build reports from Excel or CSV data",
+        "create data visualizations",
+        "explore and profile datasets",
+        "generate insights from data",
+        "generate spreadsheet formulas",
+        "perform statistical analysis"
+      ],
+      "depends_on_skills": [
+        "xlsx-manipulation",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "web-search",
+      "path": "web-search/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Formulate effective web search queries, analyze search results, and synthesize findings. Optimize search strategies for different types of information needs.",
+      "category": "research",
+      "intents": [
+        "evaluate source reliability",
+        "find information on the web",
+        "formulate web search queries",
+        "optimize search strategy",
+        "synthesize search results"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "pdf-compress",
+      "path": "pdf-compress/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Reduce PDF file size while maintaining acceptable quality",
+      "category": "document",
+      "intents": [
+        "balance pdf quality vs file size",
+        "batch compress multiple pdfs",
+        "compress pdf file size",
+        "optimize pdf for web or email",
+        "reduce pdf for specific use case"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "airtable-automation",
+      "path": "airtable-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Airtable database automation - views, automations, integrations, and workflow triggers",
+      "category": "productivity",
+      "intents": [
+        "build airtable integration workflows",
+        "configure airtable views",
+        "create airtable automations",
+        "design airtable base",
+        "set up airtable reporting and dashboards",
+        "write airtable formulas and rollups"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "asana-automation",
+      "path": "asana-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Asana project management workflows, task tracking, team collaboration, and reporting",
+      "category": "automation",
+      "intents": [
+        "automate asana task management and workflows",
+        "configure asana automation rules and custom fields",
+        "create asana project templates and sprint boards",
+        "generate project portfolio reports and dashboards",
+        "integrate asana with slack and github",
+        "manage team workload and capacity in asana",
+        "set up intake forms and request routing in asana"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "cover-letter",
+      "path": "cover-letter/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "hr",
+      "intents": [
+        "create cover letter",
+        "draft a career-change cover letter",
+        "generate a referral cover letter",
+        "write a cover letter for a job application",
+        "write an entry-level cover letter"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "ai-slides",
+      "path": "ai-slides/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Generate complete presentations with AI - from outline to polished slides",
+      "category": "document",
+      "intents": [
+        "build training slides",
+        "create presentation from topic",
+        "create slide deck from outline",
+        "generate pitch deck",
+        "make quarterly review presentation"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "financial-modeling",
+      "path": "financial-modeling/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build integrated financial models with 3-statement projections. Create income statement, balance sheet, and cash flow models with proper linkages.",
+      "category": "finance",
+      "intents": [
+        "build debt schedule",
+        "build financial model",
+        "create 3-statement projection",
+        "create scenario analysis",
+        "forecast income statement",
+        "generate cash flow statement",
+        "model working capital requirements",
+        "project balance sheet"
+      ],
+      "depends_on_skills": [
+        "3-statement-model",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "telegram-bot",
+      "path": "telegram-bot/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Telegram bot development - chatbots, notifications, AI assistants, and group automation",
+      "category": "development",
+      "intents": [
+        "automate telegram group management",
+        "build notification alert bot for telegram",
+        "build telegram chatbot",
+        "create telegram bot",
+        "integrate AI with telegram bot",
+        "set up telegram notifications"
+      ],
+      "depends_on_skills": [
+        "discord-bot"
+      ]
+    },
+    {
+      "id": "html-slides",
+      "path": "html-slides/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "presentation",
+      "intents": [
+        "build interactive slides",
+        "create HTML presentation",
+        "create web-based slideshow with animations",
+        "generate reveal.js presentation"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "shopify-automation",
+      "path": "shopify-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Shopify e-commerce automation - inventory management, order processing, customer workflows, and analytics",
+      "category": "automation",
+      "intents": [
+        "automate customer segmentation and post-purchase engagement",
+        "automate order processing and fulfillment workflows",
+        "automate shopify inventory management and low stock alerts",
+        "generate e-commerce analytics and sales reports",
+        "recover abandoned carts with automated email sequences",
+        "synchronize inventory and pricing across multiple sales channels"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "linear-automation",
+      "path": "linear-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Linear issue tracking, cycle planning, roadmap management, and engineering workflows",
+      "category": "automation",
+      "intents": [
+        "configure automation triggers for issue workflows",
+        "create linear issues and sub-issues",
+        "generate cycle dashboards and analytics",
+        "integrate linear with github and CI/CD pipelines",
+        "manage issue lifecycle from triage to done",
+        "organize issues with labels and projects",
+        "plan and manage sprint cycles",
+        "track team velocity and generate reports"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "office-to-md",
+      "path": "office-to-md/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "batch convert Office files to Markdown",
+        "convert Excel spreadsheets to Markdown tables",
+        "convert PowerPoint presentations to Markdown notes",
+        "convert Word documents to Markdown",
+        "create AI-ready document corpus from Office files",
+        "extract text from PDFs as Markdown"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "resume-tailor",
+      "path": "resume-tailor/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "hr",
+      "intents": [
+        "improve resume bullet points with quantified achievements",
+        "match resume to job description",
+        "optimize resume for ATS",
+        "reframe experience for career change",
+        "tailor resume for job application"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "twilio-sms-automation",
+      "path": "twilio-sms-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate SMS communications, two-way messaging, notifications, and voice workflows with Twilio",
+      "category": "automation",
+      "intents": [
+        "automate voice calls",
+        "build IVR menus",
+        "create SMS campaigns",
+        "handle two-way SMS conversations",
+        "manage phone numbers",
+        "send SMS messages",
+        "set up two-factor authentication",
+        "track SMS delivery and analytics"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "customer-success",
+      "path": "customer-success/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Customer success management - onboarding, health scoring, QBRs, expansion playbooks, and retention strategies",
+      "category": "sales",
+      "intents": [
+        "assess churn risk and plan save offers",
+        "build expansion and upsell playbooks",
+        "create health scores for customer accounts",
+        "design customer onboarding programs",
+        "develop retention and churn prevention strategies",
+        "generate QBR presentations and templates"
+      ],
+      "depends_on_skills": [
+        "crm-automation",
+        "saas-metrics",
+        "subscription-management"
+      ]
+    },
+    {
+      "id": "devops-automation",
+      "path": "devops-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "DevOps and IT Ops automation - CI/CD, monitoring, incident management, and infrastructure workflows",
+      "category": "devops",
+      "intents": [
+        "automate CI/CD pipelines",
+        "automate infrastructure provisioning",
+        "configure monitoring and alerting",
+        "create postmortem reports",
+        "manage incidents",
+        "set up deployment notifications"
+      ],
+      "depends_on_skills": [
+        "slack-workflows"
+      ]
+    },
+    {
+      "id": "dcf-valuation",
+      "path": "dcf-valuation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build Discounted Cash Flow (DCF) valuation models. Calculate intrinsic value with customizable assumptions. Generate professional valuation reports.",
+      "category": "finance",
+      "intents": [
+        "build DCF valuation model",
+        "calculate WACC for valuation",
+        "calculate intrinsic value of a company",
+        "estimate company worth using discounted cash flows",
+        "generate DCF sensitivity analysis"
+      ],
+      "depends_on_skills": [
+        "financial-modeling",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "zendesk-automation",
+      "path": "zendesk-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate customer support workflows with Zendesk ticket management, routing, and analytics",
+      "category": "automation",
+      "intents": [
+        "analyze support metrics and agent performance",
+        "automate zendesk ticket triage and routing",
+        "configure zendesk macros and bulk operations",
+        "generate auto-responses for common support issues",
+        "integrate zendesk with slack and jira",
+        "manage SLA policies and monitor breaches"
+      ],
+      "depends_on_skills": [
+        "slack-workflows"
+      ]
+    },
+    {
+      "id": "skill-name",
+      "path": "skill-name/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "A clear, concise description of what this skill does (1-2 sentences). Focus on the VALUE it provides to the user.",
+      "category": "development",
+      "intents": [
+        "create new skills from a standardized template",
+        "scaffold a skill with proper metadata and section structure"
+      ],
+      "depends_on_skills": [
+        "skill-development"
+      ]
+    },
+    {
+      "id": "linkedin-automation",
+      "path": "linkedin-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate LinkedIn marketing, lead generation, content publishing, and professional networking",
+      "category": "marketing",
+      "intents": [
+        "automate LinkedIn marketing",
+        "create LinkedIn content",
+        "generate B2B leads on LinkedIn",
+        "manage LinkedIn company page",
+        "run LinkedIn outreach campaigns",
+        "track LinkedIn analytics"
+      ],
+      "depends_on_skills": [
+        "social-publisher"
+      ]
+    },
+    {
+      "id": "sheets-automation",
+      "path": "sheets-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Google Sheets automation workflows - data sync, task management, reporting dashboards, and multi-platform integrations",
+      "category": "productivity",
+      "intents": [
+        "automate google sheets workflows",
+        "capture form responses into crm and sheets",
+        "create reporting dashboards in google sheets",
+        "generate automated reports from sheets data",
+        "set up task management with slack reminders from sheets",
+        "sync data from multiple sources to google sheets",
+        "track inventory with alerts from google sheets"
+      ],
+      "depends_on_skills": [
+        "crm-automation",
+        "data-analysis",
+        "gmail-workflows"
+      ]
+    },
+    {
+      "id": "deep-research",
+      "path": "deep-research/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Conduct comprehensive research on any topic. Synthesize information from multiple angles, provide structured analysis, and generate detailed research reports.",
+      "category": "research",
+      "intents": [
+        "analyze a topic using PESTEL or 5W1H frameworks",
+        "conduct multi-perspective analysis",
+        "generate structured research reports",
+        "research any topic comprehensively",
+        "synthesize information from multiple angles"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "home-assistant-automation",
+      "path": "home-assistant-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate smart home devices and create intelligent home automation workflows with Home Assistant",
+      "category": "automation",
+      "intents": [
+        "automate smart home devices",
+        "control lights climate and media devices",
+        "create home automation workflows",
+        "monitor home energy and security",
+        "set up home scenes and routines"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "brand-guidelines-generator",
+      "path": "brand-guidelines-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create and maintain brand style guides for consistent visual identity",
+      "category": "marketing",
+      "intents": [
+        "create brand color palette documentation",
+        "create brand guidelines",
+        "define brand voice and tone rules",
+        "document brand identity",
+        "generate a style guide",
+        "update existing brand guidelines"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "mcp-hub",
+      "path": "mcp-hub/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Access 1200+ AI Agent tools via Model Context Protocol (MCP)",
+      "category": "automation",
+      "intents": [
+        "access external resources via MCP protocol",
+        "configure MCP server connections",
+        "discover MCP tools and servers",
+        "integrate MCP servers with Claude"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "email-marketing",
+      "path": "email-marketing/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Email marketing automation - campaign creation, sequence building, A/B testing, deliverability optimization, and analytics",
+      "category": "marketing",
+      "intents": [
+        "build email sequence",
+        "create email campaign",
+        "create newsletter templates",
+        "create re-engagement sequences",
+        "design welcome series",
+        "draft promotional emails",
+        "generate email performance report",
+        "optimize email deliverability",
+        "run A/B tests on emails",
+        "segment email list",
+        "set up cart abandonment emails"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "trello-automation",
+      "path": "trello-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Trello board management, card workflows, power-ups, and team collaboration",
+      "category": "automation",
+      "intents": [
+        "automate Trello board management",
+        "configure Trello board templates for sprints or content calendars",
+        "create and manage Trello cards and lists",
+        "generate Trello board analytics and reports",
+        "integrate Trello with Slack and power-ups",
+        "set up Butler automation rules for Trello"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "invoice-template",
+      "path": "invoice-template/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Generate professional PDF invoices from templates",
+      "category": "finance",
+      "intents": [
+        "batch generate monthly invoices",
+        "create invoices from order data",
+        "create recurring invoices",
+        "customize invoice templates per client",
+        "generate PDF invoices"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "batch-convert",
+      "path": "batch-convert/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Batch convert documents between multiple formats using a unified pipeline",
+      "category": "document",
+      "intents": [
+        "batch convert PDFs to Word documents",
+        "convert documents between formats in bulk",
+        "convert entire folders of files to a target format",
+        "export markdown files to PDF and HTML",
+        "migrate legacy documents to modern formats"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "pdf-ocr-extraction",
+      "path": "pdf-ocr-extraction/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Extract text from scanned PDFs using optical character recognition",
+      "category": "document",
+      "intents": [
+        "OCR a document image",
+        "batch process scanned documents for text extraction",
+        "digitize paper documents",
+        "extract text from scanned PDF",
+        "make PDF searchable"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "gmail-workflows",
+      "path": "gmail-workflows/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Gmail with intelligent workflows - attachment management, email organization, auto-archiving, and Google Drive integration",
+      "category": "productivity",
+      "intents": [
+        "auto-archive invoices from email",
+        "automate gmail workflows",
+        "create gmail automation rules",
+        "organize emails with smart labeling",
+        "save email attachments to google drive",
+        "track email metrics and generate reports"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "meeting-notes",
+      "path": "meeting-notes/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "productivity",
+      "intents": [
+        "convert raw notes to structured document",
+        "create meeting minutes from transcript",
+        "extract action items from meeting",
+        "organize meeting notes",
+        "summarize meeting decisions and key points"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "intercom-automation",
+      "path": "intercom-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Intercom customer messaging, support workflows, user engagement, and product tours",
+      "category": "support",
+      "intents": [
+        "automate intercom customer messaging",
+        "build product tours",
+        "configure conversation routing rules",
+        "create user segments in intercom",
+        "design onboarding campaigns",
+        "generate support metrics and engagement reports",
+        "set up bot response flows",
+        "sync intercom with CRM and Slack"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "template-engine",
+      "path": "template-engine/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Auto-fill document templates with data - mail merge for any format",
+      "category": "document",
+      "intents": [
+        "auto-fill forms with user data",
+        "create certificates from templates",
+        "generate personalized reports from data",
+        "mail merge for bulk letters and contracts",
+        "populate document templates with variable data"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "monday-com-automation",
+      "path": "monday.com-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Monday.com workflows, board management, team collaboration, and cross-board integrations",
+      "category": "automation",
+      "intents": [
+        "automate monday.com workflows",
+        "build monday.com dashboards and views",
+        "configure monday.com cross-board sync",
+        "create and manage monday.com boards",
+        "integrate monday.com with slack and email",
+        "set up monday.com automation recipes"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "youtube-automation",
+      "path": "youtube-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate YouTube content workflows including video management, analytics, scheduling, and channel optimization",
+      "category": "marketing",
+      "intents": [
+        "automate cross-platform video distribution",
+        "manage YouTube comments and community engagement",
+        "manage YouTube playlists",
+        "optimize video metadata and SEO for YouTube",
+        "schedule YouTube content calendar",
+        "track YouTube channel analytics and performance",
+        "upload and publish YouTube videos"
+      ],
+      "depends_on_skills": [
+        "social-publisher"
+      ]
+    },
+    {
+      "id": "md-to-office",
+      "path": "md-to-office/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "batch convert markdown files to office formats",
+        "convert markdown to pdf",
+        "convert markdown to powerpoint presentation",
+        "convert markdown to word document",
+        "generate styled documents from markdown using templates"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "seo-optimizer",
+      "path": "seo-optimizer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "SEO strategy and optimization - keyword research, on-page SEO, technical audits, content optimization, and rank tracking",
+      "category": "marketing",
+      "intents": [
+        "analyze search intent for keywords",
+        "create content briefs for SEO",
+        "improve on-page SEO elements",
+        "optimize content for search engines",
+        "perform technical SEO audit",
+        "research SEO keywords",
+        "track and report SEO rankings"
+      ],
+      "depends_on_skills": [
+        "seo-audit"
+      ]
+    },
+    {
+      "id": "image-generation",
+      "path": "image-generation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create effective AI image generation prompts for DALL-E, Midjourney, and Stable Diffusion. Generate prompts for various styles and use cases.",
+      "category": "visualization",
+      "intents": [
+        "create image generation prompts",
+        "create negative prompts to avoid unwanted elements",
+        "generate style-specific image prompts",
+        "optimize prompts for specific AI art platforms"
+      ],
+      "depends_on_skills": [
+        "ppt-visual"
+      ]
+    },
+    {
+      "id": "stripe-payments",
+      "path": "stripe-payments/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Stripe payment processing, subscription management, invoicing, and financial reporting",
+      "category": "finance",
+      "intents": [
+        "automate invoicing and dunning",
+        "configure customer portal",
+        "handle webhook events",
+        "issue refunds",
+        "manage subscriptions",
+        "prevent fraud with Stripe Radar",
+        "process payments via Stripe",
+        "track revenue analytics and MRR"
+      ],
+      "depends_on_skills": [
+        "invoice-automation",
+        "saas-metrics",
+        "subscription-management"
+      ]
+    },
+    {
+      "id": "md-slides",
+      "path": "md-slides/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "build pitch deck using markdown",
+        "convert markdown to slides",
+        "convert notes to presentation",
+        "create presentation from markdown",
+        "generate PDF slides from outline"
+      ],
+      "depends_on_skills": [
+        "html-to-ppt"
+      ]
+    },
+    {
+      "id": "weekly-report",
+      "path": "weekly-report/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "productivity",
+      "intents": [
+        "create weekly status report",
+        "draft client progress update",
+        "format accomplishments and blockers for stakeholders",
+        "generate team rollup report",
+        "write executive weekly summary"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "slack-workflows",
+      "path": "slack-workflows/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Slack automation and workflow builder - notifications, standup bots, approval flows, and cross-platform integrations",
+      "category": "productivity",
+      "intents": [
+        "automate new hire onboarding in slack",
+        "automate slack notifications",
+        "build approval workflow in slack",
+        "build incident response workflow in slack",
+        "create custom slash commands",
+        "create standup bot workflow",
+        "manage slack channel lifecycle",
+        "set up cross-platform slack integrations"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "browser-automation",
+      "path": "browser-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate web browser interactions, scraping, testing, and workflow automation with Puppeteer/Playwright",
+      "category": "automation",
+      "intents": [
+        "automate web browser interactions",
+        "capture screenshots of web pages",
+        "extract structured data from web pages",
+        "fill and submit web forms automatically",
+        "run end-to-end browser tests",
+        "scrape web data from pages"
+      ],
+      "depends_on_skills": [
+        "deep-research",
+        "etl-pipeline",
+        "web-search"
+      ]
+    },
+    {
+      "id": "contract-template",
+      "path": "contract-template/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "build service agreement template",
+        "create contract template",
+        "create rental agreement template",
+        "design contract with variable terms and logic",
+        "generate NDA template"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "docx-manipulation",
+      "path": "docx-manipulation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create, edit, and manipulate Word documents programmatically using python-docx",
+      "category": "document",
+      "intents": [
+        "add tables and formatting to word document",
+        "convert content to styled word document",
+        "create word document",
+        "edit docx file",
+        "fill docx template with data",
+        "generate report in docx"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "pptx-manipulation",
+      "path": "pptx-manipulation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "add charts to slides",
+        "add slides with charts and tables",
+        "create data-driven reports as presentations",
+        "create pitch decks",
+        "create powerpoint presentation",
+        "edit pptx file",
+        "extract text from presentation",
+        "generate slides from data"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "woocommerce-automation",
+      "path": "woocommerce-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate WooCommerce e-commerce operations including orders, inventory, customers, and marketing",
+      "category": "automation",
+      "intents": [
+        "automate woocommerce email campaigns",
+        "automate woocommerce orders",
+        "create woocommerce coupons and promotions",
+        "generate sales and inventory reports",
+        "manage woocommerce customers and segments",
+        "recover abandoned carts",
+        "sync woocommerce inventory"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "crypto-report",
+      "path": "crypto-report/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze cryptocurrency projects with tokenomics, on-chain metrics, and market analysis. Generate comprehensive crypto research reports.",
+      "category": "finance",
+      "intents": [
+        "analyze cryptocurrency project",
+        "assess crypto investment thesis",
+        "compare crypto projects",
+        "evaluate tokenomics",
+        "generate crypto research report"
+      ],
+      "depends_on_skills": [
+        "investment-memo",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "ai-agent-builder",
+      "path": "ai-agent-builder/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build AI agents with tools, memory, and multi-step reasoning - ChatGPT, Claude, Gemini integration patterns",
+      "category": "development",
+      "intents": [
+        "build AI agents with tools and memory",
+        "create multi-step reasoning agents",
+        "design AI agent architecture",
+        "design conversation flows for AI agents",
+        "implement tool calling patterns for AI agents",
+        "integrate AI agents with Slack, Telegram, and web platforms"
+      ],
+      "depends_on_skills": [
+        "n8n-workflow"
+      ]
+    },
+    {
+      "id": "clickup-automation",
+      "path": "clickup-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate ClickUp workspace management, task workflows, time tracking, and team productivity",
+      "category": "automation",
+      "intents": [
+        "automate ClickUp task management",
+        "configure ClickUp views and dashboards",
+        "create and manage ClickUp tasks",
+        "integrate ClickUp with Slack and GitHub",
+        "manage ClickUp goals and OKRs",
+        "set up ClickUp workflow automations",
+        "track time in ClickUp"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "whatsapp-automation",
+      "path": "whatsapp-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "WhatsApp Business automation - customer support, notifications, chatbots, and broadcast messaging",
+      "category": "automation",
+      "intents": [
+        "automate WhatsApp customer support",
+        "build WhatsApp chatbot flows",
+        "create WhatsApp broadcast campaigns",
+        "integrate WhatsApp with n8n workflows",
+        "send WhatsApp notifications",
+        "set up WhatsApp Business API"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "file-organizer",
+      "path": "file-organizer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Organize and rename files based on content analysis",
+      "category": "productivity",
+      "intents": [
+        "categorize files by type",
+        "create folder structures for projects",
+        "identify and handle duplicate files",
+        "organize files by content analysis",
+        "rename files with consistent naming conventions"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "pdf-merge-split",
+      "path": "pdf-merge-split/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Combine multiple PDFs or split into separate files",
+      "category": "document",
+      "intents": [
+        "batch merge or split multiple PDFs",
+        "delete or insert pages in a PDF",
+        "extract specific pages from a PDF",
+        "merge multiple PDFs into a single file",
+        "reorder pages within a PDF",
+        "rotate pages in a PDF",
+        "split a PDF into separate documents"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "jira-automation",
+      "path": "jira-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Jira project management workflows, sprint planning, issue tracking, and reporting",
+      "category": "automation",
+      "intents": [
+        "automate Jira workflows",
+        "build JQL queries for issue tracking",
+        "configure Jira automation rules",
+        "create Jira bug reports and feature requests",
+        "generate sprint reports and velocity metrics",
+        "manage Jira issues and sprints"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "n8n-workflow",
+      "path": "n8n-workflow/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate document workflows with n8n - 7800+ workflow templates",
+      "category": "automation",
+      "intents": [
+        "automate document workflows",
+        "build multi-step document automation with conditional logic",
+        "chain document operations into pipelines",
+        "integrate document processing with external apps",
+        "watch folders and trigger document processing"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "pipedrive-automation",
+      "path": "pipedrive-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Pipedrive CRM workflows including deal management, pipeline tracking, and sales reporting",
+      "category": "crm",
+      "intents": [
+        "automate sales pipeline workflows",
+        "configure pipedrive automations and triggers",
+        "generate sales reports and forecasts",
+        "manage deals in pipedrive",
+        "sync pipedrive with slack and calendar",
+        "track activities and follow-ups"
+      ],
+      "depends_on_skills": [
+        "crm-automation"
+      ]
+    },
+    {
+      "id": "table-extractor",
+      "path": "table-extractor/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "batch extract tables from multiple PDFs",
+        "convert PDF tables to structured data",
+        "extract borderless tables from PDF",
+        "extract financial tables from reports",
+        "extract tables from PDF",
+        "extract tabular data from PDF to Excel/CSV/JSON"
+      ],
+      "depends_on_skills": [
+        "pdf-extraction",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "competitive-analysis",
+      "path": "competitive-analysis/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze competitors systematically. Compare products, features, pricing, positioning, and market strategies. Generate comprehensive competitive intelligence reports.",
+      "category": "research",
+      "intents": [
+        "analyze competitors",
+        "compare products and features",
+        "create battle cards for sales",
+        "generate competitive intelligence reports",
+        "map competitive positioning",
+        "perform SWOT analysis on competitors"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "pdf-converter",
+      "path": "pdf-converter/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Convert PDF files to and from Word, Excel, Image, and other formats",
+      "category": "document",
+      "intents": [
+        "batch convert PDFs",
+        "convert PDF to Excel",
+        "convert PDF to Word",
+        "convert PDF to images",
+        "convert documents to PDF",
+        "extract images from PDF"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "infographic",
+      "path": "infographic/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Design infographic layouts and content structure. Plan visual storytelling with data, icons, and text hierarchy for impactful information design.",
+      "category": "visualization",
+      "intents": [
+        "create infographic content structure",
+        "design infographic layout",
+        "generate infographic wireframes and design specs",
+        "plan visual storytelling with data",
+        "recommend infographic color schemes and typography"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "chart-designer",
+      "path": "chart-designer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Design effective data visualizations and charts. Generate chart configurations for ECharts, Chart.js, and other libraries. Create dashboards and reports.",
+      "category": "visualization",
+      "intents": [
+        "apply chart best practices",
+        "choose a chart type for data",
+        "create dashboard layout",
+        "design a chart",
+        "design data visualization",
+        "generate Chart.js configuration",
+        "generate ECharts configuration",
+        "get color palette for charts"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "obsidian-automation",
+      "path": "obsidian-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Obsidian knowledge management, note linking, and personal knowledge base workflows",
+      "category": "productivity",
+      "intents": [
+        "automate note-taking workflows",
+        "create obsidian notes from templates",
+        "explore knowledge graph connections",
+        "generate daily and meeting notes",
+        "link knowledge notes automatically",
+        "search obsidian vault"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "batch-processor",
+      "path": "batch-processor/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Process multiple documents in bulk with parallel execution",
+      "category": "automation",
+      "intents": [
+        "batch rename and organize files",
+        "convert documents in bulk",
+        "extract text from multiple files",
+        "mass update document properties",
+        "process hundreds of files with parallel execution"
+      ],
+      "depends_on_skills": [
+        "office-mcp",
+        "batch-convert"
+      ]
+    },
+    {
+      "id": "offer-letter-generator",
+      "path": "offer-letter-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create formal employment offer letters with compensation and terms",
+      "category": "hr",
+      "intents": [
+        "create offer letter",
+        "create offer letter with compensation details",
+        "draft job offer letter",
+        "generate employment offer"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "investment-memo",
+      "path": "investment-memo/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Write professional investment memorandums for VC, PE, or public market investments. Structure thesis, risks, and recommendations clearly.",
+      "category": "finance",
+      "intents": [
+        "create deal memo",
+        "draft IC memo",
+        "generate PE investment memo",
+        "generate VC investment memo",
+        "write investment memorandum",
+        "write investment thesis"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "social-publisher",
+      "path": "social-publisher/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Multi-platform social media publishing automation - schedule, post, and track content across TikTok, Instagram, YouTube, LinkedIn, and more",
+      "category": "marketing",
+      "intents": [
+        "batch publish weekly content to multiple platforms",
+        "generate platform-specific captions and hashtags",
+        "publish content to multiple social media platforms",
+        "schedule social media posts with optimal timing",
+        "track social media analytics across platforms"
+      ],
+      "depends_on_skills": [
+        "tiktok-marketing"
+      ]
+    },
+    {
+      "id": "apple-shortcuts-integration",
+      "path": "apple-shortcuts-integration/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create and trigger Apple Shortcuts for iOS/macOS automation and cross-platform workflows",
+      "category": "automation",
+      "intents": [
+        "automate iOS and macOS workflows",
+        "create Apple Notes",
+        "create Apple Reminders",
+        "manage Calendar events",
+        "run Apple Shortcuts",
+        "sync data across Apple and third-party apps"
+      ],
+      "depends_on_skills": [
+        "calendar-automation"
+      ]
+    },
+    {
+      "id": "expense-tracker",
+      "path": "expense-tracker/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate expense tracking, receipt processing, approval workflows, and reimbursement management",
+      "category": "finance",
+      "intents": [
+        "check expense policy compliance",
+        "generate spending analytics",
+        "manage approval workflows",
+        "process receipts",
+        "process reimbursements",
+        "submit expense reports",
+        "track expenses"
+      ],
+      "depends_on_skills": [
+        "invoice-automation"
+      ]
+    },
+    {
+      "id": "amazon-seller",
+      "path": "amazon-seller/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Amazon seller operations including inventory, orders, pricing, and advertising management",
+      "category": "automation",
+      "intents": [
+        "automate order fulfillment for FBA and FBM",
+        "manage amazon inventory and FBA shipments",
+        "monitor and adjust competitive pricing for buy box",
+        "optimize product listings with keywords and pricing",
+        "run and optimize amazon PPC advertising campaigns",
+        "track sales performance and profit margins"
+      ],
+      "depends_on_skills": [
+        "shopify-automation",
+        "woocommerce-automation"
+      ]
+    },
+    {
+      "id": "job-description-generator",
+      "path": "job-description-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "hr",
+      "intents": [
+        "create job description",
+        "draft job requirements",
+        "generate job posting",
+        "write inclusive job description"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "stock-analysis",
+      "path": "stock-analysis/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze stocks with fundamental and technical analysis. Supports US, China A-shares, and Hong Kong markets. Generate investment reports with key metrics.",
+      "category": "finance",
+      "intents": [
+        "analyze stock fundamentals",
+        "assess investment risk",
+        "compare stocks against peers",
+        "evaluate valuation metrics",
+        "generate stock analysis report",
+        "perform technical stock analysis"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "news-monitor",
+      "path": "news-monitor/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Set up news monitoring strategies, analyze news coverage, and synthesize current events. Create news digests and media analysis reports.",
+      "category": "research",
+      "intents": [
+        "analyze media coverage",
+        "configure news alerts",
+        "create news digest",
+        "generate media analysis report",
+        "monitor competitor news",
+        "set up news monitoring strategy",
+        "track brand mentions"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "twitter-x-automation",
+      "path": "twitter-x-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Twitter/X social media workflows including posting, engagement, analytics, and audience growth",
+      "category": "marketing",
+      "intents": [
+        "analyze twitter analytics",
+        "automate twitter DMs",
+        "automate twitter engagement",
+        "create twitter threads",
+        "grow twitter audience",
+        "manage twitter content calendar",
+        "schedule tweets"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "calendar-automation",
+      "path": "calendar-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Google Calendar and Outlook automation - scheduling optimization, meeting workflows, time blocking, and Slack/Sheets integration",
+      "category": "productivity",
+      "intents": [
+        "automate calendar scheduling and meeting management",
+        "automate meeting preparation with attendee research",
+        "create smart time blocking schedules",
+        "generate calendar analytics and weekly reports",
+        "handle Calendly bookings with CRM integration",
+        "set up daily calendar digest to Slack"
+      ],
+      "depends_on_skills": [
+        "gmail-workflows",
+        "task-management"
+      ]
+    },
+    {
+      "id": "google-ads-manager",
+      "path": "google-ads-manager/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Google Ads campaign management - campaign setup, keyword research, bid optimization, and performance reporting",
+      "category": "marketing",
+      "intents": [
+        "analyze campaign metrics",
+        "create google ads campaign",
+        "generate ad copy in RSA format",
+        "optimize ad bidding strategy",
+        "report on google ads performance",
+        "research keywords for ads",
+        "set up campaign structure with ad groups and negatives"
+      ],
+      "depends_on_skills": [
+        "ads-copywriter"
+      ]
+    },
+    {
+      "id": "invoice-generator",
+      "path": "invoice-generator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create professional invoices with proper formatting for freelancers and small businesses. Supports multiple currencies and tax calculations.",
+      "category": "finance",
+      "intents": [
+        "calculate invoice taxes",
+        "create invoice",
+        "create invoice with VAT or GST",
+        "generate professional invoice"
+      ],
+      "depends_on_skills": [
+        "invoice-template",
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "diagram-creator",
+      "path": "diagram-creator/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create professional diagrams using Mermaid, PlantUML, and other text-based diagram tools. Generate flowcharts, sequence diagrams, architecture diagrams, and more.",
+      "category": "development",
+      "intents": [
+        "build class diagram for OOP design",
+        "convert diagram descriptions to Mermaid or PlantUML code",
+        "create ER diagram for database design",
+        "create flowchart or process diagram",
+        "create git graph for branch visualization",
+        "create state diagram for workflow",
+        "design architecture or system diagram",
+        "generate Gantt chart for project timeline",
+        "generate mind map for brainstorming",
+        "generate sequence diagram for API interactions"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "discord-bot",
+      "path": "discord-bot/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Discord bot development - community management, moderation, notifications, and AI integration",
+      "category": "automation",
+      "intents": [
+        "build discord ticket system",
+        "build moderation bot",
+        "configure discord notifications",
+        "create discord bot",
+        "create welcome system for discord server",
+        "design slash commands for discord",
+        "integrate AI with discord bot",
+        "set up discord community features"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "doc-pipeline",
+      "path": "doc-pipeline/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Chain document operations into reusable pipelines",
+      "category": "automation",
+      "intents": [
+        "automate multi-step document transformations",
+        "chain document operations into a pipeline",
+        "convert documents through multiple stages",
+        "create reusable document processing workflows"
+      ],
+      "depends_on_skills": [
+        "docx-manipulation",
+        "pdf-extraction",
+        "xlsx-manipulation"
+      ]
+    },
+    {
+      "id": "dev-slides",
+      "path": "dev-slides/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "document",
+      "intents": [
+        "build technical talk slides with code examples",
+        "create developer presentation slides",
+        "create workshop slides with live code execution",
+        "generate Slidev markdown presentations"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "contract-review",
+      "path": "contract-review/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Analyze contracts for risks, check completeness, and provide actionable recommendations. Supports employment contracts, NDAs, service agreements, and more.",
+      "category": "legal",
+      "intents": [
+        "analyze contract completeness",
+        "check contract against jurisdiction-specific rules",
+        "get negotiation recommendations for contracts",
+        "identify unfavorable contract clauses",
+        "review contract for risks"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "xlsx-manipulation",
+      "path": "xlsx-manipulation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Create, edit, and manipulate Excel spreadsheets programmatically using openpyxl",
+      "category": "document",
+      "intents": [
+        "add conditional formatting to spreadsheet",
+        "add formulas to spreadsheet",
+        "build dashboard in excel",
+        "create charts in excel",
+        "create excel spreadsheet",
+        "create report template in excel",
+        "edit xlsx file",
+        "format spreadsheet cells",
+        "import data into xlsx"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "security-monitoring",
+      "path": "security-monitoring/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate security monitoring, threat detection, incident response, and compliance workflows",
+      "category": "security",
+      "intents": [
+        "analyze security logs",
+        "check compliance status",
+        "create security alerts",
+        "detect anomalies in security logs",
+        "generate security reports",
+        "monitor security threats",
+        "respond to security incidents"
+      ],
+      "depends_on_skills": [
+        "devops-automation"
+      ]
+    },
+    {
+      "id": "ppt-visual",
+      "path": "ppt-visual/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Design presentation visuals and slide layouts. Create visual concepts, suggest graphics, and provide design specifications for impactful PowerPoint slides.",
+      "category": "document",
+      "intents": [
+        "create visual concepts for presentations",
+        "design slide layouts",
+        "generate presentation design specifications",
+        "recommend color schemes and typography for slides",
+        "redesign text-heavy slides into visual layouts"
+      ],
+      "depends_on_skills": [
+        "ai-slides",
+        "md-slides",
+        "pptx-manipulation"
+      ]
+    },
+    {
+      "id": "content-research-writer",
+      "path": "content-research-writer/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Research topics and write content like blog posts, articles, and copy",
+      "category": "marketing",
+      "intents": [
+        "create how-to guides",
+        "create research briefs",
+        "generate SEO-optimized content",
+        "research topics for content",
+        "write blog posts",
+        "write listicles",
+        "write long-form articles"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "html-to-ppt",
+      "path": "html-to-ppt/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Convert HTML/Markdown to PowerPoint presentations using Marp",
+      "category": "document",
+      "intents": [
+        "convert html to pptx",
+        "convert markdown to powerpoint",
+        "create presentation with marp themes",
+        "create slides from markdown outline",
+        "generate pdf slide deck from markdown"
+      ],
+      "depends_on_skills": [
+        "office-mcp"
+      ]
+    },
+    {
+      "id": "office-mcp",
+      "path": "office-mcp/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "MCP server with 39 tools for Word, Excel, PowerPoint, PDF, OCR operations",
+      "category": "document",
+      "intents": [
+        "analyze spreadsheets with statistics and pivot tables",
+        "batch convert multiple files between formats",
+        "convert between document formats (PDF, DOCX, XLSX, CSV, Markdown, HTML)",
+        "create office documents (Word, Excel, PowerPoint)",
+        "extract text and data from PDFs and Office files",
+        "fill document templates with data",
+        "merge, split, and manipulate PDF files",
+        "perform OCR on scanned PDFs and images"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "hr-automation",
+      "path": "hr-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "HR workflow automation - recruiting, onboarding, employee management, and offboarding processes",
+      "category": "automation",
+      "intents": [
+        "automate employee offboarding and access revocation",
+        "automate performance review cycles",
+        "automate recruiting pipeline and applicant tracking",
+        "create employee onboarding workflows and checklists",
+        "manage time-off requests and approvals",
+        "schedule interviews and collect feedback",
+        "track HR compliance document deadlines"
+      ],
+      "depends_on_skills": [
+        "applicant-screening"
+      ]
+    },
+    {
+      "id": "invoice-automation",
+      "path": "invoice-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate invoice generation, sending, tracking, and payment reconciliation across accounting platforms",
+      "category": "finance",
+      "intents": [
+        "automate invoice sending and payment reminders",
+        "generate invoices from customer data and line items",
+        "reconcile payments across accounting platforms",
+        "set up recurring invoices",
+        "track payment status and generate aging reports"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "mailchimp-automation",
+      "path": "mailchimp-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Automate Mailchimp email marketing campaigns, audience management, automations, and analytics",
+      "category": "marketing",
+      "intents": [
+        "analyze campaign performance",
+        "automate email workflows",
+        "create email campaign",
+        "create welcome series",
+        "generate campaign reports",
+        "manage audience segments",
+        "set up A/B testing",
+        "set up abandoned cart recovery"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "excel-automation",
+      "path": "excel-automation/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": ">",
+      "category": "automation",
+      "intents": [
+        "automate excel workflows",
+        "batch process Excel files",
+        "create Excel add-ins with UDFs",
+        "generate reports from Excel templates",
+        "run VBA macros from Python",
+        "update live excel dashboards"
+      ],
+      "depends_on_skills": [
+        "xlsx-manipulation"
+      ]
+    }
+  ],
+  "embedding_files": [
+    "academic-search/intents.json",
+    "ads-copywriter/intents.json",
+    "ai-agent-builder/intents.json",
+    "ai-slides/intents.json",
+    "airtable-automation/intents.json",
+    "amazon-seller/intents.json",
+    "apple-shortcuts-integration/intents.json",
+    "applicant-screening/intents.json",
+    "asana-automation/intents.json",
+    "batch-convert/intents.json",
+    "batch-processor/intents.json",
+    "brand-guidelines-generator/intents.json",
+    "browser-automation/intents.json",
+    "calendar-automation/intents.json",
+    "changelog-generator/intents.json",
+    "chart-designer/intents.json",
+    "chat-with-pdf/intents.json",
+    "clickup-automation/intents.json",
+    "company-research/intents.json",
+    "competitive-analysis/intents.json",
+    "content-research-writer/intents.json",
+    "contract-review/intents.json",
+    "contract-template/intents.json",
+    "cover-letter/intents.json",
+    "crm-automation/intents.json",
+    "crypto-report/intents.json",
+    "customer-success/intents.json",
+    "cv-builder/intents.json",
+    "data-analysis/intents.json",
+    "data-extractor/intents.json",
+    "data-pipeline/intents.json",
+    "database-sync/intents.json",
+    "dcf-valuation/intents.json",
+    "deep-research/intents.json",
+    "dev-slides/intents.json",
+    "devops-automation/intents.json",
+    "diagram-creator/intents.json",
+    "discord-bot/intents.json",
+    "doc-parser/intents.json",
+    "doc-pipeline/intents.json",
+    "docusign-automation/intents.json",
+    "docx-manipulation/intents.json",
+    "email-classifier/intents.json",
+    "email-drafter/intents.json",
+    "email-marketing/intents.json",
+    "etl-pipeline/intents.json",
+    "excel-automation/intents.json",
+    "expense-report/intents.json",
+    "expense-tracker/intents.json",
+    "facebook-meta-ads/intents.json",
+    "file-organizer/intents.json",
+    "financial-modeling/intents.json",
+    "form-builder/intents.json",
+    "gmail-workflows/intents.json",
+    "google-ads-manager/intents.json",
+    "home-assistant-automation/intents.json",
+    "hr-automation/intents.json",
+    "html-slides/intents.json",
+    "html-to-ppt/intents.json",
+    "image-generation/intents.json",
+    "infographic/intents.json",
+    "intercom-automation/intents.json",
+    "investment-memo/intents.json",
+    "invoice-automation/intents.json",
+    "invoice-generator/intents.json",
+    "invoice-organizer/intents.json",
+    "invoice-template/intents.json",
+    "jira-automation/intents.json",
+    "job-description-generator/intents.json",
+    "layout-analyzer/intents.json",
+    "lead-qualification/intents.json",
+    "lead-research-assistant/intents.json",
+    "lead-routing/intents.json",
+    "linear-automation/intents.json",
+    "linkedin-automation/intents.json",
+    "mailchimp-automation/intents.json",
+    "mcp-hub/intents.json",
+    "md-slides/intents.json",
+    "md-to-office/intents.json",
+    "meeting-notes/intents.json",
+    "microsoft-teams-automation/intents.json",
+    "monday.com-automation/intents.json",
+    "n8n-workflow/intents.json",
+    "nda-generator/intents.json",
+    "news-monitor/intents.json",
+    "notion-automation/intents.json",
+    "obsidian-automation/intents.json",
+    "offer-letter-generator/intents.json",
+    "office-mcp/intents.json",
+    "office-to-md/intents.json",
+    "pdf-compress/intents.json",
+    "pdf-converter/intents.json",
+    "pdf-extraction/intents.json",
+    "pdf-form-filler/intents.json",
+    "pdf-merge-split/intents.json",
+    "pdf-ocr-extraction/intents.json",
+    "pdf-to-docx/intents.json",
+    "pdf-watermark/intents.json",
+    "pipedrive-automation/intents.json",
+    "podcast-automation/intents.json",
+    "ppt-visual/intents.json",
+    "pptx-manipulation/intents.json",
+    "proposal-writer/intents.json",
+    "quickbooks-automation/intents.json",
+    "report-generator/intents.json",
+    "resume-tailor/intents.json",
+    "saas-metrics/intents.json",
+    "security-monitoring/intents.json",
+    "seo-optimizer/intents.json",
+    "sheets-automation/intents.json",
+    "shopify-automation/intents.json",
+    "skill-name/intents.json",
+    "slack-workflows/intents.json",
+    "smart-ocr/intents.json",
+    "social-publisher/intents.json",
+    "spotify-automation/intents.json",
+    "stock-analysis/intents.json",
+    "stripe-payments/intents.json",
+    "subscription-management/intents.json",
+    "suspicious-email-analyzer/intents.json",
+    "table-extractor/intents.json",
+    "telegram-bot/intents.json",
+    "template-engine/intents.json",
+    "tiktok-marketing/intents.json",
+    "transcription-automation/intents.json",
+    "trello-automation/intents.json",
+    "twilio-sms-automation/intents.json",
+    "twitter-x-automation/intents.json",
+    "weather-automation/intents.json",
+    "web-search/intents.json",
+    "webhook-automation/intents.json",
+    "weekly-report/intents.json",
+    "whatsapp-automation/intents.json",
+    "woocommerce-automation/intents.json",
+    "xlsx-manipulation/intents.json",
+    "youtube-automation/intents.json",
+    "zendesk-automation/intents.json"
+  ]
+}

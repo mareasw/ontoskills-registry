@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_content_research_writer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "content-research-writer" ;
+    skos:broader "Content creation methodology" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/content-research-writer" ;
+    oc:contentHash "a9304db88f34f7cdb839e06dd492f7f3d72350dd63f6dfcf51884591df19859b" ;
+    oc:differentia "that combines topic research with structured writing templates for blogs, articles, and marketing copy with SEO optimization" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_docx",
+        "md_to_docx" ;
+    oc:hasArgumentHint "topic, content type, audience, tone, word count" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Research topics and write content like blog posts, articles, and copy" ;
+    oc:hasName "content-research-writer" ;
+    oc:impartsKnowledge oc:kn_45f79b32,
+        oc:kn_a956554d,
+        oc:kn_b8f5c8a7,
+        oc:kn_d2127263,
+        oc:kn_d8f72a5a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "create how-to guides",
+        "create research briefs",
+        "generate SEO-optimized content",
+        "research topics for content",
+        "write blog posts",
+        "write listicles",
+        "write long-form articles" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_45f79b32 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When writing SEO-optimized content" ;
+    oc:directiveContent "Follow the SEO checklist: primary keyword in title (under 60 chars), meta description 150-160 chars, keyword in first 100 words, 1-2% keyword density, subheadings every 300 words, and short paragraphs of 2-4 sentences." ;
+    oc:hasRationale "SEO best practices ensure content is discoverable and readable; deviation reduces search visibility and reader engagement." .
+
+oc:kn_a956554d a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any content creation task" ;
+    oc:directiveContent "Before writing, confirm the target audience, desired tone (professional/conversational/educational/persuasive/playful), content format, word count target, and any brand voice guidelines." ;
+    oc:hasRationale "Content without clear audience and tone parameters will lack focus and require extensive revision." .
+
+oc:kn_b8f5c8a7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any content format" ;
+    oc:directiveContent "Always hook the reader in the first sentence, use specific data over vague claims, and end with a clear takeaway or call to action." ;
+    oc:hasRationale "These five best practices (hook early, be specific, use examples, break it up, end strong) are the foundation of effective content writing." .
+
+oc:kn_d2127263 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When including statistics, data points, or expert quotes in content" ;
+    oc:directiveContent "Never publish statistics or data from research without independent verification, as the skill cannot guarantee accuracy of sourced claims." ;
+    oc:hasRationale "Unverified data damages credibility and can expose the publisher to reputational or legal risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d8f72a5a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scoping content research and creation tasks" ;
+    oc:directiveContent "Cannot access paywalled sources, cannot guarantee SEO rankings, and can only describe visual content rather than create it." ;
+    oc:hasRationale "These are hard limitations of the skill that affect research depth and content completeness; users must supplement with their own access or tools." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,109 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_whatsapp_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "whatsapp-automation" ;
+    skos:broader "messaging automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/whatsapp-automation" ;
+    oc:contentHash "e0f9726231be347f071c785b0b1d66dbec36647d2c7b39e2112abf0bca61b84a" ;
+    oc:differentia "automates WhatsApp Business communications including customer support chatbots, order notifications, broadcast campaigns, and AI-powered response flows via the WhatsApp Business API" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAlias "wa-automation",
+        "whatsapp-bot",
+        "whatsapp-business" ;
+    oc:hasArgumentHint "workflow type (e.g., 'order notifications', 'customer support chatbot', 'broadcast campaign')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "WhatsApp Business automation - customer support, notifications, chatbots, and broadcast messaging" ;
+    oc:hasName "whatsapp-automation" ;
+    oc:hasRequirement oc:req_5556b7a2,
+        oc:req_6fa418fd,
+        oc:req_aed46073,
+        oc:req_cfbe110d,
+        oc:req_d4d4864a ;
+    oc:impartsKnowledge oc:kn_0fbc0df5,
+        oc:kn_467a09ae,
+        oc:kn_4eb61685,
+        oc:kn_7f838c01,
+        oc:kn_a13cb61b,
+        oc:kn_acd27b4f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate WhatsApp customer support",
+        "build WhatsApp chatbot flows",
+        "create WhatsApp broadcast campaigns",
+        "integrate WhatsApp with n8n workflows",
+        "send WhatsApp notifications",
+        "set up WhatsApp Business API" ;
+    oc:yieldsState oc:MessageSent,
+        oc:WorkflowDeployed .
+
+oc:kn_0fbc0df5 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When configuring AI-powered chatbot responses" ;
+    oc:directiveContent "AI chatbot responses may hallucinate order or product information. Always escalate to a human agent when the AI cannot confidently answer, and never fabricate order statuses or product details." ;
+    oc:hasRationale "Fabricating order/product information erodes customer trust and creates liability" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_467a09ae a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing chatbot responses, notifications, or any outbound messages" ;
+    oc:directiveContent "Keep WhatsApp responses concise and use emojis appropriately. The platform favors short, scannable messages over long-form content." ;
+    oc:hasRationale "WhatsApp is a mobile-first messaging platform where users expect quick, digestible interactions" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4eb61685 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating broadcast campaigns or promotional messaging" ;
+    oc:directiveContent "Never send broadcast messages without verified opt-in consent from recipients. Always include STOP opt-out instructions in marketing messages." ;
+    oc:hasRationale "WhatsApp has strict anti-spam policies; violations can result in phone number banning and loss of Business API access" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7f838c01 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any broadcast campaign send" ;
+    oc:directiveContent "Before launching broadcast campaigns, verify: audience segment is correct, frequency limits are configured, quiet hours respect recipient timezones, and templates are approved." ;
+    oc:hasRationale "Prevents accidental spam, regulatory violations, and negative customer experience" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a13cb61b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any WhatsApp Business message template for notifications or broadcasts" ;
+    oc:directiveContent "All message templates must be submitted to Meta Business Manager and approved (24-48h turnaround) before they can be used for outbound messages." ;
+    oc:hasRationale "WhatsApp enforces strict template approval to prevent spam; unapproved templates will be rejected by the API" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_acd27b4f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building customer support chatbot flows" ;
+    oc:directiveContent "Design chatbot flows with clear numeric menu options and keyword triggers to ensure reliable routing, and always include a human agent handoff path." ;
+    oc:hasRationale "Numeric menus reduce ambiguity in user intent detection, and human handoff prevents customer frustration with AI limitations" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_5556b7a2 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Meta Business Account" .
+
+oc:req_6fa418fd a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "WhatsApp Business API (Meta Developer Portal)" .
+
+oc:req_aed46073 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "n8n (optional, for workflow integration)" .
+
+oc:req_cfbe110d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "WhatsApp message template approval process (24-48h)" .
+
+oc:req_d4d4864a a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "WHATSAPP_PHONE_ID" .
+

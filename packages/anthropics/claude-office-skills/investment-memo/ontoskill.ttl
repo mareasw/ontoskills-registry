@@ -1,0 +1,83 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_investment_memo a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "investment-memo" ;
+    skos:broader "Document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/investment-memo" ;
+    oc:contentHash "5d57d59b87944cdd060061b2043da4f7e9b23c9930a4cfb24e05a080e8fa19b3" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that produces structured investment memorandums for VC, PE, or public market investments with thesis, risk, and recommendation sections" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:TemplateNotFound ;
+    oc:hasAllowedTool "create_docx",
+        "docx_to_pdf",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "investment context (type: VC/PE/Public/Credit, company overview, deal terms)" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Write professional investment memorandums for VC, PE, or public market investments. Structure thesis, risks, and recommendations clearly." ;
+    oc:hasName "investment-memo" ;
+    oc:impartsKnowledge oc:kn_3750f23f,
+        oc:kn_69784519,
+        oc:kn_7c55f34f,
+        oc:kn_b3e371c0,
+        oc:kn_c9162522,
+        oc:kn_d3abad2d ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:OfficeMCPAvailable ;
+    oc:resolvesIntent "create deal memo",
+        "draft IC memo",
+        "generate PE investment memo",
+        "generate VC investment memo",
+        "write investment memorandum",
+        "write investment thesis" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_3750f23f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the Returns Analysis section" ;
+    oc:directiveContent "Present returns analysis using at minimum three scenarios (Bull, Base, Bear) with exit value, multiple, IRR, and probability-weighted outcomes." ;
+    oc:hasRationale "Scenario-based returns analysis is the standard format for investment committee deliberation and enables probabilistic thinking about outcomes" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_69784519 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When writing the Risk Analysis section of any memo" ;
+    oc:directiveContent "Always include a risk/mitigant matrix with Likelihood (H/M/L) and Impact (H/M/L) ratings alongside each identified risk." ;
+    oc:hasRationale "Investment committees expect quantified risk assessment with mitigants; bare risk lists without likelihood/impact lack decision-making utility" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7c55f34f a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the user expects the memo to reflect current market conditions or validated financial data" ;
+    oc:directiveContent "All analysis is based solely on user-provided information; the skill does not verify data accuracy, access live market data, or conduct independent research." ;
+    oc:hasRationale "The quality of the output memo is entirely dependent on the quality and completeness of the input data provided by the user" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b3e371c0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — this is a structural limitation of the skill" ;
+    oc:directiveContent "The skill cannot conduct primary due diligence, access proprietary deal data, or provide investment recommendations as professional advice." ;
+    oc:hasRationale "The skill is a document structuring tool, not a substitute for professional investment judgment or primary research" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c9162522 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "Before beginning memo generation" ;
+    oc:directiveContent "Gather three categories of input before drafting: (1) investment context (type, amount, criteria), (2) due diligence findings (financials, market, team, risks), and (3) memo format preference (Standard IC, Deal Summary, Quick Take, or Follow-on)." ;
+    oc:hasRationale "Incomplete inputs lead to generic memos that lack the specificity IC members need for informed decisions" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d3abad2d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining memo structure and section ordering" ;
+    oc:directiveContent "Structure the memo differently based on investment type: use the 9-section VC template for venture deals and the 12-section PE template for buyout/LBO deals." ;
+    oc:hasRationale "VC and PE audiences have different informational priorities — VC focuses on team, traction, and market timing; PE focuses on financials, value creation, and returns analysis" ;
+    oc:severityLevel "MEDIUM" .
+

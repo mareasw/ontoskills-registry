@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_weekly_report a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "weekly-report" ;
+    skos:broader "Report generation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/weekly-report" ;
+    oc:contentHash "8244126f6429c1852cea40bd06cccfe76bdd6a919ea86194234d5ca897bb937c" ;
+    oc:differentia "provides structured templates and writing guidelines for weekly status reports across multiple audience types (individual, team, executive, client)" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "week's accomplishments, blockers, next-week plans, and target audience" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription ">" ;
+    oc:hasName "weekly-report" ;
+    oc:hasPackageName "weekly-report" ;
+    oc:impartsKnowledge oc:kn_478f6207,
+        oc:kn_48366ad9,
+        oc:kn_62116b99,
+        oc:kn_7b44b6fd,
+        oc:kn_d1a08548 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create weekly status report",
+        "draft client progress update",
+        "format accomplishments and blockers for stakeholders",
+        "generate team rollup report",
+        "write executive weekly summary" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_478f6207 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing the next week priorities section" ;
+    oc:directiveContent "Keep next week plans realistic by limiting to top 3-5 items, noting dependencies and risks/assumptions." ;
+    oc:hasRationale "Overcommitting in plans undermines credibility and makes progress tracking unreliable" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_48366ad9 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When reporting blockers in any report template" ;
+    oc:directiveContent "For blockers, always include: the specific issue, its impact (delays, dependencies), what help is needed, and any attempted solutions." ;
+    oc:hasRationale "Incomplete blocker descriptions prevent stakeholders from taking action, turning blockers into unresolved issues rather than solvable problems" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_62116b99 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a report template based on the target audience" ;
+    oc:directiveContent "Match report template to audience: Individual for personal updates, Team Rollup for lead summaries, Executive for leadership (with RAG status and financial summary), Client for external progress updates." ;
+    oc:hasRationale "Different audiences need different levels of detail, tone, and focus — executives need TL;DR and risk summaries, clients need milestone tracking and input requests" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7b44b6fd a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any accomplishments section of a weekly report" ;
+    oc:directiveContent "Start accomplishments with action verbs (Completed, Delivered, Launched, Resolved) and quantify impact with specific outcomes linked to business value." ;
+    oc:hasRationale "Vague accomplishment descriptions like 'Worked on X' fail to communicate actual progress and value to stakeholders, making reports ineffective" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d1a08548 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, before generating any report" ;
+    oc:directiveContent "This skill cannot access actual work systems, calendars, or project management tools — it relies entirely on user-provided information." ;
+    oc:hasRationale "Reports generated without verified data may contain inaccuracies; users must review for accuracy before sending" ;
+    oc:severityLevel "MEDIUM" .
+

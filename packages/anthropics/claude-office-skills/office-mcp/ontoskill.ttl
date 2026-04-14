@@ -1,0 +1,154 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_office_mcp a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "office-mcp" ;
+    skos:broader "MCP server" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/office-mcp" ;
+    oc:contentHash "f08b6d21aa5ac87d277f84b701d95c324a365d28020b7394d20dee229a7688c9" ;
+    oc:differentia "provides 39 tools for Word, Excel, PowerPoint, PDF, and OCR document operations via the Model Context Protocol" ;
+    oc:handlesFailure oc:ConversionFailed,
+        oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "file path or document operation description" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "MCP server with 39 tools for Word, Excel, PowerPoint, PDF, OCR operations" ;
+    oc:hasName "office-mcp" ;
+    oc:hasPackageName "office-mcp" ;
+    oc:hasRequirement oc:req_1522d156,
+        oc:req_15579d17,
+        oc:req_1968a509,
+        oc:req_1de886eb,
+        oc:req_1fe0eb25,
+        oc:req_25b74be5,
+        oc:req_2eda303f,
+        oc:req_4cd3bc67,
+        oc:req_57886265,
+        oc:req_668d7ef9,
+        oc:req_67a42dfe,
+        oc:req_8365a822,
+        oc:req_90b8eb52,
+        oc:req_9e364f46,
+        oc:req_f283cade ;
+    oc:impartsKnowledge oc:kn_038da2c4,
+        oc:kn_10c4c133,
+        oc:kn_304f3103,
+        oc:kn_5f695edd,
+        oc:kn_aea3ae8f ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:NodeAvailable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze spreadsheets with statistics and pivot tables",
+        "batch convert multiple files between formats",
+        "convert between document formats (PDF, DOCX, XLSX, CSV, Markdown, HTML)",
+        "create office documents (Word, Excel, PowerPoint)",
+        "extract text and data from PDFs and Office files",
+        "fill document templates with data",
+        "merge, split, and manipulate PDF files",
+        "perform OCR on scanned PDFs and images" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:DocumentCreated,
+        oc:FileConverted .
+
+oc:kn_038da2c4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting more than one file at a time" ;
+    oc:directiveContent "Use the batch_convert tool when processing multiple files rather than invoking individual conversion tools in sequence." ;
+    oc:hasRationale "Batch conversion is more efficient and handles file discovery, format detection, and error aggregation in a single invocation rather than requiring sequential tool calls." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_10c4c133 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using ocr_pdf or ocr_image tools" ;
+    oc:directiveContent "The OCR functionality is powered by tesseract.js, a pure JavaScript implementation that requires no native binary installation, unlike system Tesseract." ;
+    oc:hasRationale "This eliminates platform-specific installation headaches and makes the MCP server portable across operating systems without requiring system-level OCR dependencies." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_304f3103 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-executing any tool operation" ;
+    oc:directiveContent "Read and analysis operations (read_xlsx, extract_text_from_pdf, get_pdf_metadata, analyze_spreadsheet, etc.) are idempotent and safe to re-run. Write and conversion operations (create_xlsx, merge_pdfs, create_pptx) will overwrite existing output files." ;
+    oc:hasRationale "Agents need to know which operations are safe to retry without side effects versus those that may overwrite artifacts on repeated invocation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5f695edd a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before first use of any office-mcp tool" ;
+    oc:directiveContent "Before using this MCP server, ensure Node.js is installed, npm dependencies are built (npm install && npm run build), and the server is configured in the MCP client's configuration file." ;
+    oc:hasRationale "The MCP server must be built and registered with the client (e.g., Claude Desktop) before any of its 39 tools become available. Missing this step results in tool-not-found errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_aea3ae8f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Word or HTML to PDF format" ;
+    oc:directiveContent "docx_to_pdf and html_to_pdf require an external tool and cannot function standalone without additional system dependencies." ;
+    oc:hasRationale "These two conversion tools are the only ones in the 39-tool suite that cannot operate purely with the bundled npm dependencies, requiring the user to install separate system-level tools." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_1522d156 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "mammoth" .
+
+oc:req_15579d17 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "turndown" .
+
+oc:req_1968a509 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "external PDF converter (for docx_to_pdf, html_to_pdf)" .
+
+oc:req_1de886eb a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "marked" .
+
+oc:req_1fe0eb25 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npm (Node Package Manager)" .
+
+oc:req_25b74be5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pizzip" .
+
+oc:req_2eda303f a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdf-lib" .
+
+oc:req_4cd3bc67 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pptxgenjs" .
+
+oc:req_57886265 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Node.js runtime" .
+
+oc:req_668d7ef9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "docx" .
+
+oc:req_67a42dfe a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdf-parse" .
+
+oc:req_8365a822 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "xlsx" .
+
+oc:req_90b8eb52 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "tesseract.js" .
+
+oc:req_9e364f46 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "jszip" .
+
+oc:req_f283cade a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "docxtemplater" .
+

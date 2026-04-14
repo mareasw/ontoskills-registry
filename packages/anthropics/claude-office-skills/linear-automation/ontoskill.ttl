@@ -1,0 +1,110 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_linear_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "linear-automation" ;
+    skos:broader "project management automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/linear-automation" ;
+    oc:contentHash "4bf51e65fae79eab17e3ac43f496699140317bb2a67e2168e0a631d77ae120f3" ;
+    oc:differentia "that manages Linear issue tracking, cycle planning, roadmap management, and engineering workflows via MCP server integration" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "issue details, cycle configuration, or workflow action" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate Linear issue tracking, cycle planning, roadmap management, and engineering workflows" ;
+    oc:hasName "linear-automation" ;
+    oc:hasRequirement oc:req_47409dfb,
+        oc:req_5ce79c1b,
+        oc:req_db31face,
+        oc:req_e50ae2c2,
+        oc:req_ec28951f ;
+    oc:impartsKnowledge oc:kn_20f7601d,
+        oc:kn_2f4a452a,
+        oc:kn_58d18e5c,
+        oc:kn_7ac82809,
+        oc:kn_83f783ff,
+        oc:kn_dcb521fe ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "configure automation triggers for issue workflows",
+        "create linear issues and sub-issues",
+        "generate cycle dashboards and analytics",
+        "integrate linear with github and CI/CD pipelines",
+        "manage issue lifecycle from triage to done",
+        "organize issues with labels and projects",
+        "plan and manage sprint cycles",
+        "track team velocity and generate reports" ;
+    oc:yieldsState oc:CyclePlanned,
+        oc:IssueCreated,
+        oc:IssueUpdated,
+        oc:ReportGenerated .
+
+oc:kn_20f7601d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When issues are moved to In Progress status" ;
+    oc:directiveContent "Never skip linking PRs, commits, and docs to Linear issues. Issues without linked PRs after 48 hours should trigger reminders." ;
+    oc:hasRationale "Unlinked work creates traceability gaps, making it impossible to audit what code changes relate to which requirements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2f4a452a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning cycle/sprint scope" ;
+    oc:directiveContent "Configure cycle planning with a 20% buffer and 8 points capacity per engineer per 2-week cycle. Do not overcommit beyond planned capacity." ;
+    oc:hasRationale "Including buffer accounts for unplanned work and estimation inaccuracy, protecting team commitment and completion rates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_58d18e5c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or updating issues in Linear" ;
+    oc:directiveContent "Follow the standard Linear issue lifecycle: Backlog → Todo → In Progress → In Review → Done. Each status transition should be intentional and automated where possible." ;
+    oc:hasRationale "Consistent issue lifecycle tracking ensures team visibility, accurate velocity measurement, and predictable delivery workflows." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7ac82809 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When configuring Linear workspace automations" ;
+    oc:directiveContent "Leverage automation triggers for status transitions: auto-assign on start, auto-add to cycle on sprint-ready label, auto-close on PR merge. Let integrations drive status updates rather than manual changes." ;
+    oc:hasRationale "Automation reduces manual overhead, ensures consistent status hygiene, and keeps the team focused on actual work rather than ticket management." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_83f783ff a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating new issues in Linear" ;
+    oc:directiveContent "Use structured issue templates (Bug Report, Feature Request, Epic Breakdown) with consistent labeling and required fields. Always include acceptance criteria for features and reproduction steps for bugs." ;
+    oc:hasRationale "Standardized templates reduce ambiguity, speed up triage, and ensure no critical information is missing from issues." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dcb521fe a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing automated issue creation workflows" ;
+    oc:directiveContent "Issue creation and updates are not idempotent by default. Re-running a create operation will produce duplicate issues unless guarded by duplicate detection logic." ;
+    oc:hasRationale "Duplicate issues create confusion in backlog grooming and inflate velocity metrics, so workflows should check for existing issues before creating." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_47409dfb a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "linear_create_issue" .
+
+oc:req_5ce79c1b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "linear_cycles" .
+
+oc:req_db31face a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "linear_update_issue" .
+
+oc:req_e50ae2c2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "linear_search" .
+
+oc:req_ec28951f a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Linear GraphQL API access via project-mcp server" .
+

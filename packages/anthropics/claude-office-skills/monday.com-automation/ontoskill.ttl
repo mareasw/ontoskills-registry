@@ -1,0 +1,122 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_monday_com_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "monday-com-automation" ;
+    skos:broader "project management automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/monday.com-automation" ;
+    oc:contentHash "00f3d9c6b4e9395c4c3c65a5759ef392bd8bf52ab2aff68f888b9a5c0dbff467" ;
+    oc:differentia "that orchestrates Monday.com boards, items, automations, dashboards, and cross-platform integrations via GraphQL API" ;
+    oc:handlesFailure oc:APIError,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "monday_create_item",
+        "monday_query",
+        "monday_update_item",
+        "monday_webhooks" ;
+    oc:hasArgumentHint "automation task description (e.g., 'create a CRM board', 'set up SLA warning automation', 'add Slack integration')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate Monday.com workflows, board management, team collaboration, and cross-board integrations" ;
+    oc:hasName "monday-com-automation" ;
+    oc:hasPackageName "monday-com-automation" ;
+    oc:hasRequirement oc:req_11c9a256,
+        oc:req_1b741f75,
+        oc:req_59b3b121,
+        oc:req_cd97d5ba,
+        oc:req_d507cb1f ;
+    oc:impartsKnowledge oc:kn_1b1b122c,
+        oc:kn_3b680e27,
+        oc:kn_5076bbbd,
+        oc:kn_5485b278,
+        oc:kn_73416f6c,
+        oc:kn_a4445114,
+        oc:kn_c4cac823 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate monday.com workflows",
+        "build monday.com dashboards and views",
+        "configure monday.com cross-board sync",
+        "create and manage monday.com boards",
+        "integrate monday.com with slack and email",
+        "set up monday.com automation recipes" ;
+    oc:yieldsState oc:AutomationConfigured,
+        oc:BoardCreated,
+        oc:DashboardCreated,
+        oc:ItemsCreated .
+
+oc:kn_1b1b122c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Monday.com automation recipes" ;
+    oc:directiveContent "Do not create excessive automation rules on a single board — too many automations cause race conditions and make debugging difficult. Keep automations focused and non-overlapping." ;
+    oc:hasRationale "Overlapping triggers can fire conflicting actions, leading to inconsistent board state and notification spam." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3b680e27 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before creating items, updating columns, or configuring automations via the API" ;
+    oc:directiveContent "Verify the Monday.com API token is configured and the target board/workspace IDs are correct before executing any mutations." ;
+    oc:hasRationale "Incorrect board IDs or missing authentication will silently fail or modify the wrong workspace." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_5076bbbd a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When configuring integrations with Slack or email" ;
+    oc:directiveContent "Automation recipes with notification actions will send Slack messages or emails to real users. Test automations on a sandbox board before deploying to production boards." ;
+    oc:hasRationale "Misconfigured automations can spam team channels or send confusing emails to stakeholders." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5485b278 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing API mutations for create_item or change_column_value" ;
+    oc:directiveContent "Monday.com uses GraphQL API; column values must be passed as JSON strings. The column_values parameter requires escaped JSON (e.g., '{\"status\":\"Working on it\",\"person\":\"12345\"}')." ;
+    oc:hasRationale "Failing to properly escape JSON column values results in API parsing errors and failed mutations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_73416f6c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating multiple boards within a workspace" ;
+    oc:directiveContent "Standardize column names and types across boards to enable mirror columns and cross-board sync. Use consistent naming conventions (e.g., 'Status', 'Owner', 'Due Date')." ;
+    oc:hasRationale "Inconsistent columns break cross-board integrations, mirror columns, and dashboard aggregations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a4445114 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up workflow automation on a board" ;
+    oc:directiveContent "Use built-in automation recipes for common patterns (status change notifications, due date reminders, auto-assignment) before creating custom recipes." ;
+    oc:hasRationale "Built-in recipes are optimized, well-tested, and consume fewer resources than custom automations with complex conditions." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_c4cac823 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any Monday.com board structure" ;
+    oc:directiveContent "Use groups for workflow stages, not arbitrary categorization. Groups should reflect the lifecycle of an item (e.g., New Leads → Qualified → Proposal → Won/Lost)." ;
+    oc:hasRationale "Grouping by workflow stage enables Kanban-style views and status-driven automations that move items through the pipeline automatically." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_11c9a256 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "monday_webhooks" .
+
+oc:req_1b741f75 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "monday_update_item" .
+
+oc:req_59b3b121 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Monday.com API token" .
+
+oc:req_cd97d5ba a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "monday_query" .
+
+oc:req_d507cb1f a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "monday_create_item" .
+

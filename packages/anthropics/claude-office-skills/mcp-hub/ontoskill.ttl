@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_mcp_hub a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "mcp-hub" ;
+    skos:broader "Integration hub" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/mcp-hub" ;
+    oc:contentHash "25106ab19d8fe3f1fefff849a1c059a984187a45b57b9319633f82b745fdd6be" ;
+    oc:differentia "that provides access to 1200+ MCP (Model Context Protocol) servers for extending AI agent capabilities with filesystems, databases, APIs, and document processing tools" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "description of what you want to accomplish with MCP tools" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Access 1200+ AI Agent tools via Model Context Protocol (MCP)" ;
+    oc:hasName "mcp-hub" ;
+    oc:impartsKnowledge oc:kn_139ea0c5,
+        oc:kn_4660cd23,
+        oc:kn_4ab5e79f,
+        oc:kn_59064743,
+        oc:kn_c5a6ece3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "access external resources via MCP protocol",
+        "configure MCP server connections",
+        "discover MCP tools and servers",
+        "integrate MCP servers with Claude" ;
+    oc:yieldsState oc:MCPServerConfigured,
+        oc:MCPToolsDiscovered .
+
+oc:kn_139ea0c5 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing multi-step automation workflows" ;
+    oc:directiveContent "Combine multiple MCP servers to build complex workflows — e.g., use filesystem + puppeteer for PDF generation from local files." ;
+    oc:hasRationale "Individual MCP servers provide focused capabilities; composing them enables sophisticated end-to-end workflows." .
+
+oc:kn_4660cd23 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring MCP server connections" ;
+    oc:directiveContent "Only enable MCP servers you actually need — minimize the attack surface by not connecting unnecessary servers." ;
+    oc:hasRationale "Each enabled MCP server expands the capabilities available to the agent and correspondingly increases security exposure." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4ab5e79f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using MCP-integrated tools in any skill" ;
+    oc:directiveContent "MCP tools become available to Claude automatically once the server is configured — no manual tool registration is needed." ;
+    oc:hasRationale "The MCP protocol handles tool discovery and registration transparently, allowing the agent to invoke tools without setup overhead." .
+
+oc:kn_59064743 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting which MCP servers to enable" ;
+    oc:directiveContent "Prefer official MCP servers (e.g., @modelcontextprotocol/* packages) over community-built alternatives when available." ;
+    oc:hasRationale "Official servers are maintained by the MCP protocol team and have undergone more rigorous security review." .
+
+oc:kn_c5a6ece3 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "Before enabling any new MCP server" ;
+    oc:directiveContent "Always check server permissions before enabling an MCP server — understand what resources it can access." ;
+    oc:hasRationale "MCP servers can access filesystems, databases, and APIs; unchecked permissions could lead to unauthorized data access or modification." ;
+    oc:severityLevel "CRITICAL" .
+

@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_ads_copywriter a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ads-copywriter" ;
+    skos:broader "Copywriting engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/ads-copywriter" ;
+    oc:contentHash "87d1a2c7e1b87a645655ef333d8ef34ea180c6bbe3e2b4384b06f432f145621f" ;
+    oc:differentia "generates multi-platform ad copy with platform-specific character limits, copywriting frameworks, and A/B testing variants for Google Ads, Meta/Facebook, TikTok, and LinkedIn" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "product or service description with target platform(s)" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Multi-platform ad copy generation for Google Ads, Meta/Facebook, TikTok, LinkedIn with A/B testing variants" ;
+    oc:hasName "ads-copywriter" ;
+    oc:hasPackageName "ads-copywriter" ;
+    oc:impartsKnowledge oc:kn_0e5ce354,
+        oc:kn_2dabed08,
+        oc:kn_c45fca91,
+        oc:kn_e45c955b,
+        oc:kn_e78d7515 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "apply copywriting frameworks to ad creation",
+        "create A/B testing variants for ads",
+        "generate ad copy for multiple platforms",
+        "optimize ad copy for platform-specific character limits",
+        "write Facebook/Meta ad copy",
+        "write Google Ads responsive search ad copy",
+        "write LinkedIn ad copy",
+        "write TikTok ad copy" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0e5ce354 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating Google Ads responsive search ad copy" ;
+    oc:directiveContent "Google Ads responsive search ads require 15 headlines (min 3) and 4 descriptions (min 2), with keyword inclusion in 3+ headlines, brand name in 2+ headlines, CTA in 2+ headlines, and numbers/stats in 2+ headlines." ;
+    oc:hasRationale "Google's algorithm assembles optimal combinations from provided assets; meeting these distribution requirements ensures the system has enough variety to find winning combinations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2dabed08 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing ad copy for any platform" ;
+    oc:directiveContent "Use structured copywriting frameworks (AIDA, PAS, BAB) to systematically craft ad copy that moves prospects through attention, interest, desire, and action stages." ;
+    oc:hasRationale "Frameworks provide repeatable structures proven to convert, reducing reliance on intuition and improving consistency across campaigns." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c45fca91 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating ad copy for any platform" ;
+    oc:directiveContent "Each ad platform has strict character limits that must be respected: Google Ads headlines 30 chars, descriptions 90 chars; Meta primary text 125 visible/500 max, headline 40 chars; TikTok ad text 100 chars; LinkedIn intro text 150 chars, headline 70 chars." ;
+    oc:hasRationale "Exceeding character limits causes ads to be truncated or rejected by the platform, wasting budget and reducing performance." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e45c955b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating ad copy for campaigns that will be performance-tested" ;
+    oc:directiveContent "Generate 3-5 A/B test variants per ad group, testing different elements: emotional vs rational headlines, soft vs hard CTAs, numbers vs testimonial social proof, scarcity vs deadline urgency, and primary vs secondary benefits." ;
+    oc:hasRationale "Systematic variant testing enables data-driven optimization rather than guessing which copy performs best; 95% statistical significance with 7-14 day test duration is the minimum standard." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e78d7515 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating multi-platform ad copy in a single session" ;
+    oc:directiveContent "Do not reuse the same copy style, tone, or structure across all platforms. TikTok requires casual, trend-aware captions with hashtags; LinkedIn demands professional, insight-driven intro text; Facebook supports longer storytelling formats." ;
+    oc:hasRationale "Platform-native copy dramatically outperforms cross-posted generic copy because each platform's audience has distinct expectations for tone, format, and engagement style." ;
+    oc:severityLevel "HIGH" .
+

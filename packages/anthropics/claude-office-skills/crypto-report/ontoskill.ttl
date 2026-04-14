@@ -1,0 +1,92 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_crypto_report a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "crypto-report" ;
+    skos:broader "Research Report Generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/crypto-report" ;
+    oc:contentHash "95ed2b5d9f8d9141467c0b46703f3199f6c5e97e71dab3b7660b13eb08be4487" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that analyzes cryptocurrency projects with tokenomics, on-chain metrics, and market analysis to produce comprehensive crypto research reports" ;
+    oc:extends oc:skill_investment_memo ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_chart",
+        "create_docx",
+        "create_xlsx" ;
+    oc:hasArgumentHint "token/project name and ticker (e.g., 'Ethereum ETH', 'Uniswap UNI')" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Analyze cryptocurrency projects with tokenomics, on-chain metrics, and market analysis. Generate comprehensive crypto research reports." ;
+    oc:hasName "crypto-report" ;
+    oc:hasPackageName "crypto-report" ;
+    oc:impartsKnowledge oc:kn_31b2925f,
+        oc:kn_5054b87c,
+        oc:kn_85ed6f52,
+        oc:kn_a1b13ee1,
+        oc:kn_a822aeb0,
+        oc:kn_ae126c52,
+        oc:kn_f523e1c4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze cryptocurrency project",
+        "assess crypto investment thesis",
+        "compare crypto projects",
+        "evaluate tokenomics",
+        "generate crypto research report" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_31b2925f a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When performing the valuation section of a crypto report" ;
+    oc:directiveContent "Apply valuation using relative metrics (MC/TVL, FDV/Revenue, P/S ratio) and token value accrual mechanisms (fee distribution, buyback/burn, staking rewards, governance). Always provide both bull and bear case valuations." ;
+    oc:hasRationale "Crypto lacks traditional cash flow valuation models, so relative metrics and dual-scenario analysis provide balanced perspective" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5054b87c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning a new crypto analysis, determine which scope the user wants" ;
+    oc:directiveContent "Structure analysis around four scopes: Quick Overview (token summary), Deep Dive (comprehensive protocol analysis), Tokenomics Focus (supply/distribution), or Technical Review (protocol mechanics/security). Match scope to user's stated needs." ;
+    oc:hasRationale "Crypto projects span many dimensions and scoping prevents overwhelming the user while ensuring relevant depth" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_85ed6f52 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing tokenomics analysis on any crypto token" ;
+    oc:directiveContent "When evaluating token distribution, flag team allocation >25% and investor allocation >30% as concerning. Community allocation should ideally be 40-60%. Higher community allocation indicates better decentralization." ;
+    oc:hasRationale "Concentrated holdings create sell pressure risk and governance centralization, which are leading indicators of token value decline" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a1b13ee1 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When performing risk analysis section" ;
+    oc:directiveContent "Red flags to systematically check for: anonymous team, unaudited contracts, high team allocation, no real utility, concentrated holdings. Any two or more red flags should significantly lower the project's rating." ;
+    oc:hasRationale "These red flags correlate strongly with crypto project failures and scams; systematic checking prevents oversight" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a822aeb0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — these are hard capability boundaries of this skill" ;
+    oc:directiveContent "Cannot access real-time prices or on-chain data, predict price movements, provide investment advice, or audit smart contracts. Analysis is based solely on publicly available information provided by the user." ;
+    oc:hasRationale "Crypto markets are highly volatile and the skill lacks real-time data feeds, so users must supply their own on-chain data and understand outputs are not financial advice" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ae126c52 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating ratings, conclusions, or investment thesis sections" ;
+    oc:directiveContent "Never flag a project as bullish or bearish without supporting the rating with specific on-chain metrics, competitive positioning, and identified risk factors. Always include a disclaimer that the report is not financial advice." ;
+    oc:hasRationale "Unsubstantiated ratings in crypto are irresponsible given market volatility and regulatory scrutiny around investment advice" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f523e1c4 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating any crypto report" ;
+    oc:directiveContent "Before starting analysis, gather: token/project name and ticker, blockchain network, project category (L1/L2/DeFi/NFT/etc.), and any specific metrics the user already has. Prompt for missing essential information." ;
+    oc:hasRationale "Crypto projects vary enormously by category (L1 metrics differ from DeFi metrics), so context determines which analytical framework to apply" ;
+    oc:severityLevel "MEDIUM" .
+

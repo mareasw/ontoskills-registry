@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_html_to_ppt a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "html-to-ppt" ;
+    skos:broader "Document converter" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/html-to-ppt" ;
+    oc:contentHash "7ff71c4314105d2bc6be93ffd82bfa28bf859aae78ab45218c3c7767d1eb1a5c" ;
+    oc:differentia "Converts HTML/Markdown to PowerPoint presentations using the Marp Markdown Presentation Ecosystem with CSS-based theming" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "markdown content or file path, optional theme name" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Convert HTML/Markdown to PowerPoint presentations using Marp" ;
+    oc:hasName "html-to-ppt" ;
+    oc:hasPackageName "html-to-ppt" ;
+    oc:impartsKnowledge oc:kn_05097de5,
+        oc:kn_1b07eae7,
+        oc:kn_768fa0c6,
+        oc:kn_bf41a2f8,
+        oc:kn_c115cdd3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "convert html to pptx",
+        "convert markdown to powerpoint",
+        "create presentation with marp themes",
+        "create slides from markdown outline",
+        "generate pdf slide deck from markdown" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_05097de5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When authoring or structuring Markdown content for slide conversion" ;
+    oc:directiveContent "Structure slides using '---' as slide separators and include 'marp: true' in YAML frontmatter. Use one idea per slide with a maximum of 6 bullet points." ;
+    oc:hasRationale "Marp requires '---' delimiters to split slides and the frontmatter directive to activate presentation mode. Overloaded slides reduce readability and impact." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1b07eae7 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When users request presentations with animations, video, or custom typography" ;
+    oc:directiveContent "Marp does not support complex PowerPoint animations, embedded video, or advanced PowerPoint-specific features. Custom fonts require CSS configuration via scoped styles." ;
+    oc:hasRationale "Marp generates slides from Markdown/CSS, which cannot express all native PowerPoint features. Setting correct expectations prevents disappointment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_768fa0c6 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When converting user-provided Markdown that may lack Marp directives" ;
+    oc:directiveContent "Always inject the Marp frontmatter ('---\\nmarp: true\\ntheme: {theme}\\n---') if not already present in the source Markdown before conversion." ;
+    oc:hasRationale "Without the marp: true directive, Marp CLI treats the input as plain Markdown and will not produce presentation-formatted output." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bf41a2f8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling or theming presentations" ;
+    oc:directiveContent "Use built-in themes (default, gaia, uncover) with theme classes (lead, invert) for consistent visual identity. Apply local directives via HTML comments (e.g., <!-- _class: lead -->) for per-slide customization." ;
+    oc:hasRationale "Consistent theming produces professional results. Local directives enable slide-level overrides without breaking the global theme." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c115cdd3 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before any Markdown-to-PPTX conversion" ;
+    oc:directiveContent "Verify Marp CLI is installed before attempting conversion by running 'marp --version'. Install via 'npm install -g @marp-team/marp-cli' or 'brew install marp-cli' if missing." ;
+    oc:hasRationale "Conversion will fail silently or with confusing errors if Marp CLI is not available on the system" ;
+    oc:severityLevel "CRITICAL" .
+

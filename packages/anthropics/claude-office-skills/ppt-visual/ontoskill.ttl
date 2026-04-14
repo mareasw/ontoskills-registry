@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_ppt_visual a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ppt-visual" ;
+    skos:broader "Visual design specification generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/ppt-visual" ;
+    oc:contentHash "e494941a87147dcc82e8aa60cf1a7ef3c3ed40ba4f50053a2a7cac5e355d6f95" ;
+    oc:dependsOnSkill oc:skill_pptx_manipulation ;
+    oc:differentia "Produces layout wireframes, color palettes, typography specs, and visual element recommendations for PowerPoint slides without creating actual files" ;
+    oc:extends oc:skill_ai_slides,
+        oc:skill_md_slides ;
+    oc:handlesFailure oc:AmbiguousContent,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "slide content, purpose, audience, and design direction" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Design presentation visuals and slide layouts. Create visual concepts, suggest graphics, and provide design specifications for impactful PowerPoint slides." ;
+    oc:hasName "ppt-visual" ;
+    oc:impartsKnowledge oc:kn_0cd318d1,
+        oc:kn_4a2a1faa,
+        oc:kn_96e4cfe5,
+        oc:kn_abce11d7,
+        oc:kn_cac6ca44,
+        oc:kn_d9f77dde,
+        oc:kn_dedf4b23 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ContentProvided ;
+    oc:resolvesIntent "create visual concepts for presentations",
+        "design slide layouts",
+        "generate presentation design specifications",
+        "recommend color schemes and typography for slides",
+        "redesign text-heavy slides into visual layouts" ;
+    oc:yieldsState oc:DesignSpecificationsGenerated .
+
+oc:kn_0cd318d1 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "At the start of every design engagement" ;
+    oc:directiveContent "Before generating design specs, confirm: slide content (text/bullets), presentation purpose, target audience, and preferred design direction (Minimalist/Corporate/Creative/Data-focused/Storytelling)." ;
+    oc:hasRationale "Design specifications must be tailored to context; without purpose and audience information, recommendations will be generic and ineffective." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4a2a1faa a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any presentation slide" ;
+    oc:directiveContent "One idea per slide — each slide should convey a single key message supported by visuals, never overcrowded with multiple concepts." ;
+    oc:hasRationale "Cognitive load theory shows audiences retain one key message per slide far better than multiple points competing for attention." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_96e4cfe5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When finalizing slide layouts and color choices" ;
+    oc:directiveContent "Leave generous margins — content should never touch slide edges. Test designs on actual projectors as colors render differently than on screens." ;
+    oc:hasRationale "Projectors clip edges and shift colors; margins ensure content safety and readability in real presentation environments." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_abce11d7 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When determining font sizes and element prominence on every slide" ;
+    oc:directiveContent "Establish visual hierarchy: Title (largest) → Key Point (prominent) → Supporting Details (smaller) → Source/Footer (smallest)." ;
+    oc:hasRationale "Visual hierarchy guides the audience's eye through content in the intended order of importance." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cac6ca44 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a user expects direct file output or image generation" ;
+    oc:directiveContent "This skill cannot create actual PPTX files, generate images, or set up complex animations — it outputs design specifications that require implementation with separate tools." ;
+    oc:hasRationale "The skill is purely a design specification advisor; users must use complementary tools (pptx-manipulation, image-generation) for implementation." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d9f77dde a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting text-heavy content into visual slide designs" ;
+    oc:directiveContent "Kill bullet points — replace them with visual elements like icons, metric cards, diagrams, or split layouts to make content more engaging." ;
+    oc:hasRationale "Bullet points are the most common cause of visually dull presentations; transforming them into visuals dramatically increases audience engagement." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dedf4b23 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When positioning primary visual elements on a slide layout" ;
+    oc:directiveContent "Use the Rule of Thirds grid to place key elements at intersection points rather than centering everything." ;
+    oc:hasRationale "Off-center placement following the thirds grid creates more dynamic and visually interesting compositions than static centering." ;
+    oc:severityLevel "MEDIUM" .
+

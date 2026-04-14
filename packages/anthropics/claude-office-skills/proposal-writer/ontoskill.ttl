@@ -1,0 +1,89 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_proposal_writer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "proposal-writer" ;
+    skos:broader "Document generation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/proposal-writer" ;
+    oc:contentHash "7304c88c71a272dcb3766ea87b3e0790fb64590abac554306af284a854d8ac9e" ;
+    oc:differentia "that creates structured, persuasive business proposals using templates for sales, partnership, and RFP scenarios" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "create_pptx",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "opportunity description, solution and pricing details, proposal type and length preference" ;
+    oc:hasCategory "sales" ;
+    oc:hasDescription "Create compelling business proposals that win deals and partnerships" ;
+    oc:hasName "proposal-writer" ;
+    oc:hasPackageName "proposal-writer" ;
+    oc:hasRequirement oc:req_12a5a4de,
+        oc:req_40f7a0e4,
+        oc:req_9ab25c9d ;
+    oc:impartsKnowledge oc:kn_2a9c0806,
+        oc:kn_54bffbc5,
+        oc:kn_55199ae0,
+        oc:kn_e4a0a6e4,
+        oc:kn_ef997521 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create business proposal",
+        "create grant application",
+        "draft partnership proposal",
+        "generate project quote",
+        "respond to RFP/RFI",
+        "write sales proposal" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2a9c0806 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When writing the solution, needs-assessment, and methodology sections" ;
+    oc:directiveContent "Focus the Solution section on outcomes rather than activities. Explain WHY the approach is chosen, not just WHAT will be done. Use the client's own language and terminology to demonstrate understanding." ;
+    oc:hasRationale "Clients buy outcomes, not processes. Mirroring their language builds rapport and shows you've listened, while explaining rationale demonstrates strategic thinking." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_54bffbc5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the pricing/investment section of a proposal" ;
+    oc:directiveContent "Offer multiple pricing options when possible, anchoring with the higher-value option first. Be transparent about inclusions and exclusions, and justify the investment." ;
+    oc:hasRationale "Anchoring with a higher option makes mid-tier options appear more reasonable, while transparency builds trust and reduces back-and-forth negotiation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_55199ae0 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing any proposal with an executive summary section" ;
+    oc:directiveContent "Always write the Executive Summary last, after the full proposal is complete, and make it compelling enough to stand alone. Lead with client benefits, not your features." ;
+    oc:hasRationale "The executive summary is often the only section decision-makers read; writing it last ensures it accurately reflects the full proposal and leading with benefits hooks the reader." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e4a0a6e4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — these are hard limitations of this skill" ;
+    oc:directiveContent "Cannot research specific clients, must rely on user-provided context. Pricing must be supplied by the user. Legal terms should be reviewed by counsel before sending." ;
+    oc:hasRationale "The skill has no external research capability; incorrect client assumptions or pricing could damage credibility. Unreviewed legal terms create liability." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ef997521 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing the call-to-action / next steps section" ;
+    oc:directiveContent "Make next steps crystal clear, remove friction to saying yes, create appropriate urgency, and always provide contact information for questions." ;
+    oc:hasRationale "A proposal that lacks clear next steps loses momentum; removing friction and creating urgency accelerates deal closure." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_12a5a4de a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "office-mcp MCP server with create_docx, fill_docx_template, create_pptx tools" .
+
+oc:req_40f7a0e4 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Pricing and budget information must be supplied by user" .
+
+oc:req_9ab25c9d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Client context, project requirements, and solution details must be provided by the user" .
+

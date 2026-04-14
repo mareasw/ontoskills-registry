@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_md_to_office a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "md-to-office" ;
+    skos:broader "document converter" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/md-to-office" ;
+    oc:contentHash "0513f298be11699f767b5ed6cec62d61d5bba56c40e4c0abe743ba257e8162ac" ;
+    oc:differentia "that transforms Markdown files into Office formats (DOCX, PPTX, PDF) using Pandoc with template support" ;
+    oc:handlesFailure oc:ConversionFailed,
+        oc:FileNotFound,
+        oc:ToolNotInstalled ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "markdown file path or content with target format (docx, pptx, pdf)" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "md-to-office" ;
+    oc:hasPackageName "md-to-office" ;
+    oc:hasRequirement oc:req_85946f9d,
+        oc:req_c2789dcc,
+        oc:req_d270aa39,
+        oc:req_ea6e089a ;
+    oc:impartsKnowledge oc:kn_1e266d4e,
+        oc:kn_3e1f1e17,
+        oc:kn_6bdc90e8,
+        oc:kn_902b3ac4,
+        oc:kn_ff1ec800 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "batch convert markdown files to office formats",
+        "convert markdown to pdf",
+        "convert markdown to powerpoint presentation",
+        "convert markdown to word document",
+        "generate styled documents from markdown using templates" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1e266d4e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When authoring markdown destined for office conversion" ;
+    oc:directiveContent "Use YAML frontmatter in markdown to specify document metadata (title, author, date, toc, geometry) for richer output." ;
+    oc:hasRationale "YAML frontmatter maps directly to document properties and PDF options, producing more professional output without manual post-editing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3e1f1e17 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting markdown to any office format for professional output" ;
+    oc:directiveContent "Always use reference templates (--reference-doc) for consistent branding and styling across converted documents." ;
+    oc:hasRationale "Templates ensure consistent fonts, colors, and layout across all generated documents, maintaining brand identity without manual post-processing." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6bdc90e8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing markdown intended for PPTX conversion" ;
+    oc:directiveContent "For PowerPoint slides, use ## for individual slides and # for section dividers. Use ::: notes blocks for speaker notes and columns environment for multi-column layouts." ;
+    oc:hasRationale "Pandoc's slide conversion maps heading levels to slide/section structure; correct heading hierarchy is essential for proper slide generation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_902b3ac4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting markdown to PPTX or complex DOCX formats" ;
+    oc:directiveContent "PowerPoint animations are not supported by Pandoc's markdown-to-pptx conversion. Complex Word formatting may also not convert perfectly." ;
+    oc:hasRationale "Pandoc's conversion is structural and does not support proprietary animation or advanced formatting features native to Office applications." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ff1ec800 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When converting markdown to PDF format" ;
+    oc:directiveContent "PDF conversion requires a LaTeX engine (xelatex, pdflatex) or wkhtmltopdf installed; without one, PDF output will fail." ;
+    oc:hasRationale "Pandoc does not include a built-in PDF renderer and delegates to external engines. Missing engines cause silent failures or cryptic errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_85946f9d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Pandoc command-line options and conversion flags" .
+
+oc:req_c2789dcc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandoc" .
+
+oc:req_d270aa39 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "wkhtmltopdf" .
+
+oc:req_ea6e089a a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "LaTeX (xelatex/pdflatex)" .
+

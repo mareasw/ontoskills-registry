@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_diagram_creator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "diagram-creator" ;
+    skos:broader "Diagram generation tool" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/diagram-creator" ;
+    oc:contentHash "e4d100887db47954da15053edae4d7e503039b0765863ec575ac58406685cc84" ;
+    oc:differentia "that creates professional text-based diagrams using Mermaid, PlantUML, D2, and ASCII formats for flowcharts, sequence diagrams, architecture diagrams, ER diagrams, class diagrams, state diagrams, Gantt charts, mind maps, and git graphs" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "Description of the process, system, or concept to visualize, along with desired diagram type and format" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Create professional diagrams using Mermaid, PlantUML, and other text-based diagram tools. Generate flowcharts, sequence diagrams, architecture diagrams, and more." ;
+    oc:hasName "diagram-creator" ;
+    oc:hasRequirement oc:req_4c2fd927,
+        oc:req_94b7c853,
+        oc:req_aa3a6923,
+        oc:req_b40db959 ;
+    oc:impartsKnowledge oc:kn_361e84cc,
+        oc:kn_3fb6a4ae,
+        oc:kn_4e775c71,
+        oc:kn_7cdb5bd0,
+        oc:kn_95b1c7bb ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build class diagram for OOP design",
+        "convert diagram descriptions to Mermaid or PlantUML code",
+        "create ER diagram for database design",
+        "create flowchart or process diagram",
+        "create git graph for branch visualization",
+        "create state diagram for workflow",
+        "design architecture or system diagram",
+        "generate Gantt chart for project timeline",
+        "generate mind map for brainstorming",
+        "generate sequence diagram for API interactions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_361e84cc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any diagram type" ;
+    oc:directiveContent "Keep diagrams simple and don't overcrowd them; use consistent naming with clear descriptive labels and group related items using subgraphs or packages." ;
+    oc:hasRationale "Overcrowded diagrams lose clarity and fail to communicate effectively to the intended audience" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3fb6a4ae a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when setting user expectations about output capabilities" ;
+    oc:directiveContent "This skill generates text-based diagram code only — it cannot render images directly, create pixel-perfect custom designs, or generate raster images." ;
+    oc:hasRationale "Text-based diagram tools produce code that must be rendered by external tools; understanding this boundary prevents user frustration" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e775c71 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When producing diagrams for production or client-facing use" ;
+    oc:directiveContent "Complex layouts may need manual adjustment, styling is limited compared to design tools, and some diagram types are not supported in all tools." ;
+    oc:hasRationale "Text-based diagram tools have inherent layout and styling limitations that may require post-processing in dedicated design tools" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7cdb5bd0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing output format for a diagram" ;
+    oc:directiveContent "Choose Mermaid for web/markdown/GitHub compatibility, PlantUML for complex UML diagrams, ASCII for universal compatibility, and D2 for modern stylish diagrams." ;
+    oc:hasRationale "Each tool has different strengths and ecosystem compatibility; choosing the wrong one creates friction in the rendering pipeline" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_95b1c7bb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting which diagram type to generate" ;
+    oc:directiveContent "Match the diagram type to the concept being visualized: flowcharts for processes/decisions, sequence diagrams for API calls/interactions, architecture diagrams for system design, ER diagrams for data models, class diagrams for OOP structure, state diagrams for status workflows, Gantt charts for timelines." ;
+    oc:hasRationale "Using the wrong diagram type obscures rather than clarifies the intended information" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_4c2fd927 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "PlantUML syntax and diagram types" .
+
+oc:req_94b7c853 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Mermaid syntax and diagram types" .
+
+oc:req_aa3a6923 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Diagram type selection best practices" .
+
+oc:req_b40db959 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Mermaid Live Editor or compatible renderer for visual output" .
+

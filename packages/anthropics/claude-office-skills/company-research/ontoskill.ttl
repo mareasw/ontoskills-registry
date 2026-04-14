@@ -1,0 +1,76 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_company_research a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "company-research" ;
+    skos:broader "Research framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/company-research" ;
+    oc:contentHash "d4a16b89806361fd07c37c5365a248cb0a8f61d9de94c0a0d6aad4d24b6fd897" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that structures comprehensive company due diligence across business model, competitive landscape, market analysis, management, and risk dimensions" ;
+    oc:extends oc:skill_competitive_analysis ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_chart",
+        "create_docx",
+        "create_xlsx" ;
+    oc:hasArgumentHint "company name or ticker, with optional scope (quick-overview|standard|deep-dive) and use-case (investment|competitive-intel|partnership|m-and-a|market-entry)" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Conduct comprehensive company research and due diligence. Analyze business model, competitive landscape, management, and market position." ;
+    oc:hasName "company-research" ;
+    oc:impartsKnowledge oc:kn_16c3a572,
+        oc:kn_2899c803,
+        oc:kn_4e3a07d1,
+        oc:kn_a5f972f6,
+        oc:kn_c1b928a8 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze business model",
+        "assess investment suitability",
+        "conduct company due diligence",
+        "generate company research report",
+        "perform competitive landscape analysis",
+        "research a company" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_16c3a572 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — fundamental limitation of this skill" ;
+    oc:directiveContent "Cannot access proprietary databases, conduct primary research/interviews, or provide real-time data. Analysis is based solely on publicly available information." ;
+    oc:hasRationale "Users must understand the skill's boundaries to avoid relying on it for decisions requiring proprietary or real-time data sources." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_2899c803 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When starting any company research request" ;
+    oc:directiveContent "Always specify the research purpose (investment, partnership, competitive intel) upfront to tailor the analysis framework and depth." ;
+    oc:hasRationale "The purpose determines which frameworks and metrics are most relevant — investment decisions need financial depth, competitive intel needs positioning focus." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e3a07d1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When delivering any company research output" ;
+    oc:directiveContent "Do not present AI-generated company research as investment advice or a recommendation to buy, sell, or hold securities." ;
+    oc:hasRationale "Regulatory and ethical requirements mandate clear disclaimers that AI analysis does not replace professional due diligence or constitute financial advice." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a5f972f6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When scoping a new company research engagement" ;
+    oc:directiveContent "Offer four research depth levels: Quick Overview (1-page summary), Standard (comprehensive analysis), Deep Dive (detailed due diligence), and Specific Focus (targeted aspects only)." ;
+    oc:hasRationale "Matching depth to user needs avoids wasting effort on unnecessary detail while ensuring critical areas are covered for high-stakes decisions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c1b928a8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating company research deliverables" ;
+    oc:directiveContent "Structure research output using the standardized report template covering: Executive Summary, Business Overview, Market Analysis (TAM/SAM/SOM), Competitive Landscape (Porter's Five Forces, moat analysis), SWOT, Management & Governance, Financial Snapshot, and Risk Assessment." ;
+    oc:hasRationale "A consistent report structure ensures completeness, enables comparison across companies, and meets institutional research standards." ;
+    oc:severityLevel "MEDIUM" .
+

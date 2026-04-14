@@ -1,0 +1,51 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_dcf_valuation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "dcf-valuation" ;
+    skos:broader "Financial valuation model builder" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/dcf-valuation" ;
+    oc:contentHash "a141a2066fa735d92f1e752b2ae1674c84ca13c86827e5db96606001578feba4" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "Constructs Discounted Cash Flow models with WACC calculation, terminal value estimation, sensitivity analysis, and professional report generation" ;
+    oc:extends oc:skill_financial_modeling ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "apply_formula",
+        "create_chart",
+        "create_xlsx",
+        "read_xlsx" ;
+    oc:hasArgumentHint "company financial data (revenue, EBITDA, capex, D&A, shares outstanding, stock price) and assumptions (growth rates, margins, terminal growth, WACC)" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Build Discounted Cash Flow (DCF) valuation models. Calculate intrinsic value with customizable assumptions. Generate professional valuation reports." ;
+    oc:hasName "dcf-valuation" ;
+    oc:hasPackageName "dcf-valuation" ;
+    oc:impartsKnowledge oc:kn_5915610c,
+        oc:kn_f0d4be55 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "build DCF valuation model",
+        "calculate WACC for valuation",
+        "calculate intrinsic value of a company",
+        "estimate company worth using discounted cash flows",
+        "generate DCF sensitivity analysis" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_5915610c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting any DCF valuation results to the user" ;
+    oc:directiveContent "Never accept DCF output as investment advice. The model is explicitly for educational and informational purposes only and does not constitute investment recommendations." ;
+    oc:hasRationale "DCF models are based on assumptions that may not reflect reality; providing investment advice would create legal and ethical liability" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f0d4be55 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any complete DCF model" ;
+    oc:directiveContent "Always include sensitivity analysis on WACC and terminal growth rate, and cross-check results with comparable multiples (P/E, EV/EBITDA) for sanity checking." ;
+    oc:hasRationale "Terminal value often represents 60-80% of total enterprise value, making the model highly sensitive to WACC and terminal growth assumptions; cross-validation with market multiples provides a reality check" .
+

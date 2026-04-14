@@ -1,0 +1,79 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_browser_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "browser-automation" ;
+    skos:broader "Browser automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/browser-automation" ;
+    oc:contentHash "ded21e6a3951c34426a6cf12403960318b6784bc4d4f270123e174fb2c9605d8" ;
+    oc:dependsOnSkill oc:skill_deep_research,
+        oc:skill_etl_pipeline,
+        oc:skill_web_search ;
+    oc:differentia "that orchestrates web browser interactions including navigation, element interaction, data extraction, and screenshot capture using Puppeteer/Playwright patterns" ;
+    oc:handlesFailure oc:ElementNotFound,
+        oc:NavigationFailed,
+        oc:NetworkTimeout,
+        oc:SelectorTimeout ;
+    oc:hasArgumentHint "URLs, selectors, and action sequences for browser automation" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate web browser interactions, scraping, testing, and workflow automation with Puppeteer/Playwright" ;
+    oc:hasName "browser-automation" ;
+    oc:impartsKnowledge oc:kn_0e2e8108,
+        oc:kn_1ffe47b5,
+        oc:kn_5076b508,
+        oc:kn_8bfb2045,
+        oc:kn_eac866ee ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:BrowserLaunched,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate web browser interactions",
+        "capture screenshots of web pages",
+        "extract structured data from web pages",
+        "fill and submit web forms automatically",
+        "run end-to-end browser tests",
+        "scrape web data from pages" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:FormSubmitted,
+        oc:PageNavigated,
+        oc:ScreenshotCaptured .
+
+oc:kn_0e2e8108 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a page fails to load or an expected element is not found within the timeout period" ;
+    oc:directiveContent "Catch navigation failures and selector timeouts gracefully with retry logic or fallback selectors." ;
+    oc:hasRationale "Network conditions and dynamic page rendering are inherently unreliable; graceful error handling prevents entire automation workflows from crashing on transient failures." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1ffe47b5 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running scraping workflows that make repeated requests to a server" ;
+    oc:directiveContent "Never scrape at high frequency without rate limiting or respectful delays between requests." ;
+    oc:hasRationale "Aggressive scraping can overload servers, trigger rate-limit blocks, or result in IP bans, breaking the automation and potentially violating terms of service." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5076b508 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing selectors for element interaction or data extraction" ;
+    oc:directiveContent "Prefer data-testid attributes as selectors over CSS classes or DOM structure, as they are explicitly designed for stable automation hooks." ;
+    oc:hasRationale "CSS classes and DOM structure change frequently during UI redesigns, while data-testid attributes are intentionally stable and maintained for testing purposes." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8bfb2045 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running browser automation in CI/CD or production environments" ;
+    oc:directiveContent "Use headless mode for production automation runs and capture screenshots on test failures for debugging." ;
+    oc:hasRationale "Headless mode reduces resource consumption and is faster; failure screenshots provide critical visual context for diagnosing flaky or broken tests." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_eac866ee a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When navigating pages or interacting with dynamic content" ;
+    oc:directiveContent "Always use explicit wait strategies (waitForSelector, waitForNavigation) rather than arbitrary timeouts to synchronize with page state." ;
+    oc:hasRationale "Arbitrary sleeps are fragile and slow; explicit waits are reliable and efficient because they proceed as soon as the condition is met." ;
+    oc:severityLevel "HIGH" .
+

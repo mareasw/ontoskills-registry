@@ -1,0 +1,80 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_dev_slides a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "dev-slides" ;
+    skos:broader "Presentation generation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/dev-slides" ;
+    oc:contentHash "2b3c1de8084741cb599acb080f7779db176ea4389d11199f645d8ebe05314f94" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that creates developer-focused Slidev markdown presentations with live code demos, Vue components, Mermaid diagrams, and Monaco editor integration" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "create_pptx",
+        "md_to_pptx" ;
+    oc:hasArgumentHint "presentation topic or description, e.g. \"Vue.js workshop presentation\" or \"API onboarding slides\"" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "dev-slides" ;
+    oc:hasPackageName "dev-slides" ;
+    oc:impartsKnowledge oc:kn_64bed4a2,
+        oc:kn_6c66aa52,
+        oc:kn_8f7b7df8,
+        oc:kn_9400e9e8,
+        oc:kn_a3fa2a83,
+        oc:kn_bcdbdd2e ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build technical talk slides with code examples",
+        "create developer presentation slides",
+        "create workshop slides with live code execution",
+        "generate Slidev markdown presentations" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_64bed4a2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any Slidev presentation" ;
+    oc:directiveContent "Separate slides using triple-dash (---) separators; each separator starts a new slide, and frontmatter between separators configures that slide's layout and properties." ;
+    oc:hasRationale "Slide separators are the fundamental structural unit of Slidev markdown; incorrect separators break the entire presentation structure." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6c66aa52 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning a developer workshop or technical talk" ;
+    oc:directiveContent "Structure technical presentations with: cover slide → agenda/intro (two-cols with code preview) → content slides with code demos → live runnable code slides → closing/questions slide with center layout." ;
+    oc:hasRationale "This narrative arc maximizes engagement for developer audiences who expect both conceptual explanations and working code examples." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8f7b7df8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring code walkthroughs or progressive reveals" ;
+    oc:directiveContent "Use line highlighting syntax {all|1|2-3|4} on code blocks to reveal code step-by-step, and v-clicks component for bullet point animations." ;
+    oc:hasRationale "Step-by-step reveals improve audience comprehension during live technical presentations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9400e9e8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring presentation-level settings" ;
+    oc:directiveContent "The frontmatter configuration (theme, background, highlighter, lineNumbers, drawings, css) must be placed at the very top of the file using YAML syntax between triple-dash delimiters." ;
+    oc:hasRationale "Slidev parses the top-level frontmatter block for global settings; misplacement causes settings to be ignored or parsing errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a3fa2a83 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When choosing slide layouts for developer presentations" ;
+    oc:directiveContent "Use the two-cols layout with ::right:: separator for side-by-side content, image-right layout for image+content slides, and cover/intro/center layouts for structural slides." ;
+    oc:hasRationale "Proper layout selection creates professional-looking slides without manual CSS positioning." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bcdbdd2e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When including code examples in technical slides" ;
+    oc:directiveContent "Use {monaco} annotation for editable code blocks and {monaco-run} for runnable code in developer presentations to enable live coding demonstrations." ;
+    oc:hasRationale "Monaco editor integration is a key differentiator of Slidev for developer audiences, enabling interactive code demos that static code blocks cannot provide." ;
+    oc:severityLevel "HIGH" .
+

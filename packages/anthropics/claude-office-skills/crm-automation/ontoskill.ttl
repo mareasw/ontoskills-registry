@@ -1,0 +1,147 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_crm_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "crm-automation" ;
+    skos:broader "workflow automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/crm-automation" ;
+    oc:contentHash "d5369a99336f5e2ddc488ecd8f3e20f3f6b6930b812981d9eff43693e9ec9ce5" ;
+    oc:dependsOnSkill oc:skill_lead_routing ;
+    oc:differentia "orchestrates CRM operations across HubSpot, Salesforce, and Pipedrive with lead scoring, deal tracking, pipeline management, and multi-CRM synchronization" ;
+    oc:handlesFailure oc:APIRateLimited,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "CRM platform (hubspot|salesforce|pipedrive) and workflow type (lead-capture|deal-tracking|sync|scoring|sequence|report)" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "CRM workflow automation for HubSpot, Salesforce, Pipedrive - lead management, deal tracking, and multi-CRM synchronization" ;
+    oc:hasName "crm-automation" ;
+    oc:hasPackageName "crm-automation" ;
+    oc:hasRequirement oc:req_05a79562,
+        oc:req_79fbb476,
+        oc:req_80bcc3df,
+        oc:req_83487594,
+        oc:req_9fa8d574,
+        oc:req_ed12f443,
+        oc:req_eea13786 ;
+    oc:impartsKnowledge oc:kn_015cfbce,
+        oc:kn_07550fe9,
+        oc:kn_6fce9ffa,
+        oc:kn_949da8ac,
+        oc:kn_ac928e0a,
+        oc:kn_d9a24a49,
+        oc:kn_dbf142f2,
+        oc:kn_ef17b8f6,
+        oc:kn_f85726bd ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate CRM workflows",
+        "capture and enrich leads",
+        "create automated sales sequences",
+        "generate sales pipeline reports",
+        "score and route leads",
+        "synchronize data across CRMs",
+        "track deal stages" ;
+    oc:yieldsState oc:CRMContactCreated,
+        oc:CRMDealUpdated,
+        oc:CRMSyncCompleted,
+        oc:LeadRouted,
+        oc:LeadScored .
+
+oc:kn_015cfbce a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up lead capture and assignment workflows" ;
+    oc:directiveContent "Never skip lead scoring before routing — un-scored leads create noise and waste sales rep time." ;
+    oc:hasRationale "Routing unqualified leads to sales reps reduces conversion rates and rep productivity. Scoring ensures only qualified leads reach human follow-up." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_07550fe9 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After executing a lead capture → enrichment → assignment pipeline" ;
+    oc:directiveContent "A successful lead workflow results in: contact created in CRM, lead scored above threshold, assigned to correct team, and welcome sequence initiated within 1 hour." ;
+    oc:hasRationale "Time-to-response is critical in sales; leads contacted within 1 hour are 7x more likely to convert. The full pipeline must complete end-to-end." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6fce9ffa a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring multi-CRM synchronization workflows" ;
+    oc:directiveContent "Use a single CRM as the master source of truth for each data type (e.g., HubSpot for contacts, Salesforce for deals) and sync outward to avoid data conflicts." ;
+    oc:hasRationale "Master-slave sync pattern prevents conflicting updates and ensures data consistency across platforms." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_949da8ac a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When handling any CRM data containing personally identifiable information" ;
+    oc:directiveContent "All PII must be encrypted at rest, access must be role-based, and all changes must be audit-logged with GDPR consent tracking enabled." ;
+    oc:hasRationale "Regulatory compliance (GDPR, CCPA) requires these safeguards. Non-compliance creates legal liability and potential data breaches." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ac928e0a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When maintaining CRM data quality over time" ;
+    oc:directiveContent "Run data hygiene routines weekly (deduplication), daily (enrichment of missing fields), and monthly (archive stale records with >180 days inactivity)." ;
+    oc:hasRationale "Regular hygiene cycles prevent data decay, which is the primary cause of CRM automation failure and poor sales productivity." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d9a24a49 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When multi-CRM synchronization encounters conflicting data" ;
+    oc:directiveContent "When sync conflicts occur between CRMs, use 'most_recent_wins' resolution and log the conflict for manual review." ;
+    oc:hasRationale "Most-recent-wins is the safest automated resolution strategy; logging ensures no data is silently overwritten without audit trail." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dbf142f2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When syncing or importing contacts across CRM platforms" ;
+    oc:directiveContent "Always use email as the unique key for contact deduplication with a fuzzy match similarity threshold of 0.85 for company names." ;
+    oc:hasRationale "Email is the most stable unique identifier across CRMs; fuzzy matching on company names catches variant spellings while avoiding false matches." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ef17b8f6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When configuring deal stage progression rules" ;
+    oc:directiveContent "Deal stage automation triggers downstream actions: Slack notifications, task creation, manager alerts, legal notifications, and forecast updates that affect multiple systems." ;
+    oc:hasRationale "Understanding the cascade of side effects prevents unintended notifications and ensures all stakeholders are properly informed at each stage." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f85726bd a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any CRM automation workflow" ;
+    oc:directiveContent "Verify API credentials are valid and have not expired before initiating any CRM sync operation; rotate API keys quarterly." ;
+    oc:hasRationale "Expired credentials cause silent sync failures that corrupt data state. Quarterly rotation is a security best practice." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_05a79562 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Salesforce API credentials" .
+
+oc:req_79fbb476 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "HubSpot API credentials" .
+
+oc:req_80bcc3df a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "n8n workflow engine" .
+
+oc:req_83487594 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Pipedrive API credentials" .
+
+oc:req_9fa8d574 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Clearbit enrichment API" .
+
+oc:req_ed12f443 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Lead scoring methodology" .
+
+oc:req_eea13786 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "CRM data model (contacts, deals, stages)" .
+

@@ -1,0 +1,94 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_quickbooks_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "quickbooks-automation" ;
+    skos:broader "Accounting automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/quickbooks-automation" ;
+    oc:contentHash "9fa2cd3ac3f4a0af215959d1bb3eb1a742c5b2f491a2044a390220c48b574aff" ;
+    oc:dependsOnSkill oc:skill_expense_tracker,
+        oc:skill_invoice_automation ;
+    oc:differentia "that integrates QuickBooks workflows for invoicing, expense tracking, bank reconciliation, and financial reporting via MCP server tools" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "workflow type (invoice, expense, reconciliation, reporting) and relevant data" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Automate QuickBooks accounting workflows including invoicing, expenses, reporting, and bank reconciliation" ;
+    oc:hasName "quickbooks-automation" ;
+    oc:hasPackageName "quickbooks-automation" ;
+    oc:impartsKnowledge oc:kn_01f7da47,
+        oc:kn_29a8c8bd,
+        oc:kn_3cdd7170,
+        oc:kn_71eaf3bc,
+        oc:kn_9af038e9,
+        oc:kn_a26912c5,
+        oc:kn_ac916880 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate QuickBooks invoicing and billing",
+        "create recurring invoices and automation rules",
+        "generate financial reports",
+        "reconcile bank accounts",
+        "sync e-commerce and payroll data with QuickBooks",
+        "track and categorize expenses" ;
+    oc:yieldsState oc:AccountsReconciled,
+        oc:ExpensesTracked,
+        oc:InvoicesGenerated,
+        oc:ReportsGenerated .
+
+oc:kn_01f7da47 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing invoice creation or Shopify integration workflows" ;
+    oc:directiveContent "Creating invoices may trigger automatic email delivery, PDF attachments, and customer record creation. E-commerce sync may generate credit memos for refunds." ;
+    oc:hasRationale "Agents must be aware that invoice creation is not a silent operation — it sends emails and modifies customer records, which can affect customer-facing communications." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_29a8c8bd a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring receipt processing and auto-matching rules" ;
+    oc:directiveContent "Receipt auto-matching requires a minimum 95% confidence threshold based on amount exact match, date within 3 days, and vendor fuzzy match. Unmatched items should default to 'Ask Accountant' category." ;
+    oc:hasRationale "A high confidence threshold prevents misclassification of transactions, while the default category ensures ambiguous items get human review rather than silent errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3cdd7170 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When closing monthly books or processing bank feeds" ;
+    oc:directiveContent "Never skip bank reconciliation or leave unmatched transactions unresolved at month-end close. Do not categorize transactions without proper account mapping." ;
+    oc:hasRationale "Unresolved reconciliation differences propagate errors into financial statements and can compound over time, making later correction exponentially harder." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_71eaf3bc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing new transactions or setting up automation rules" ;
+    oc:directiveContent "Use historical categorization patterns and vendor-based automation rules to auto-categorize recurring transactions (e.g., Amazon → Office Supplies, Gusto → Payroll Expenses)." ;
+    oc:hasRationale "Auto-categorization reduces manual effort and ensures consistency in the chart of accounts, which is critical for accurate financial reporting." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9af038e9 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "When completing bank reconciliation" ;
+    oc:directiveContent "Successful reconciliation is indicated by zero difference between bank balance and QuickBooks balance, with all transactions matched and no outstanding items beyond normal float." ;
+    oc:hasRationale "A zero-difference reconciliation confirms all transactions are accounted for and the books are accurate for the period." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a26912c5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up QuickBooks company file structure and categorization" ;
+    oc:directiveContent "Use class tracking for department or project segmentation, and maintain a consistent standard chart of accounts across all entities." ;
+    oc:hasRationale "Class tracking enables multi-dimensional reporting without duplicating accounts, and consistency enables accurate consolidation and comparison." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ac916880 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When managing ongoing QuickBooks bookkeeping workflows" ;
+    oc:directiveContent "Review and match bank feed transactions daily, reconcile accounts monthly, and always attach receipts to transactions for audit readiness." ;
+    oc:hasRationale "Prompt daily matching prevents unmatched transactions from accumulating, while monthly reconciliation ensures financial accuracy for reporting periods." ;
+    oc:severityLevel "HIGH" .
+

@@ -1,0 +1,113 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_clickup_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "clickup-automation" ;
+    skos:broader "Automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/clickup-automation" ;
+    oc:contentHash "c91377f3eff2f96c213dd704cf3c50a7171d37f558446d4929a74b8531374b0d" ;
+    oc:differentia "Automates ClickUp workspace management, task workflows, time tracking, and team productivity" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "clickup_automation",
+        "clickup_list",
+        "clickup_space",
+        "clickup_task" ;
+    oc:hasArgumentHint "workspace action (e.g., 'create task', 'set up automation', 'track time', 'configure goals')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate ClickUp workspace management, task workflows, time tracking, and team productivity" ;
+    oc:hasName "clickup-automation" ;
+    oc:hasRequirement oc:req_9c466673,
+        oc:req_c2d4eac6,
+        oc:req_c55e1c62,
+        oc:req_c9cdc520,
+        oc:req_f01c1529 ;
+    oc:impartsKnowledge oc:kn_179763c5,
+        oc:kn_3d575097,
+        oc:kn_9729c468,
+        oc:kn_a698e92f,
+        oc:kn_a777767e,
+        oc:kn_ac2a87cc ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate ClickUp task management",
+        "configure ClickUp views and dashboards",
+        "create and manage ClickUp tasks",
+        "integrate ClickUp with Slack and GitHub",
+        "manage ClickUp goals and OKRs",
+        "set up ClickUp workflow automations",
+        "track time in ClickUp" ;
+    oc:yieldsState oc:AutomationConfigured,
+        oc:GoalsUpdated,
+        oc:TaskCreated,
+        oc:TimeTracked .
+
+oc:kn_179763c5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or updating tasks via the ClickUp API" ;
+    oc:directiveContent "ClickUp priorities are numeric: 1=Urgent, 2=High, 3=Normal, 4=Low. Time estimates must be specified in milliseconds. Due dates should be Unix timestamps in milliseconds." ;
+    oc:hasRationale "Incorrect data types and formats will cause API errors or silent misconfigurations in automations." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3d575097 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up or restructuring a ClickUp workspace" ;
+    oc:directiveContent "Design ClickUp workspaces following the hierarchy: Workspace → Space → Folder → List → Task → Subtask. Keep the hierarchy shallow to maintain navigability." ;
+    oc:hasRationale "A well-structured hierarchy enables efficient task organization, filtering, and reporting across teams." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9729c468 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any ClickUp automation skill operations" ;
+    oc:directiveContent "Verify ClickUp API access and workspace permissions before attempting any automation. Confirm that the target Space, Folder, and List IDs are correct and accessible." ;
+    oc:hasRationale "ClickUp API calls will fail silently or with cryptic errors if the authenticated user lacks workspace access or targets invalid resource IDs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a698e92f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring ClickUp workspace automation rules" ;
+    oc:directiveContent "Use built-in automations to reduce manual overhead: auto-assign on task creation, due date reminders, status change workflows, and subtask-completion triggers." ;
+    oc:hasRationale "Automations eliminate repetitive manual actions and ensure consistent process enforcement across the team." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a777767e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or modifying lists and task statuses" ;
+    oc:directiveContent "Avoid inconsistent status names across lists within the same Space. Standardize statuses to ensure automations and views work correctly." ;
+    oc:hasRationale "Inconsistent statuses break automation triggers that rely on status names and create confusion in cross-list views and dashboards." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ac2a87cc a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When connecting ClickUp with external tools" ;
+    oc:directiveContent "Configure integrations (Slack, GitHub) to create bidirectional sync: Slack for notifications and quick commands, GitHub for branch/PR status linking back to tasks." ;
+    oc:hasRationale "Bidirectional integrations keep context flowing between tools, reducing context-switching and ensuring task status reflects actual development progress." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_9c466673 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "clickup_space" .
+
+oc:req_c2d4eac6 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "clickup_task" .
+
+oc:req_c55e1c62 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "ClickUp API" .
+
+oc:req_c9cdc520 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "clickup_automation" .
+
+oc:req_f01c1529 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "clickup_list" .
+

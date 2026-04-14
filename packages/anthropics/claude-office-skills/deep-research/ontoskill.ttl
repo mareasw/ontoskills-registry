@@ -1,0 +1,87 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_deep_research a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "deep-research" ;
+    skos:broader "Research methodology" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/deep-research" ;
+    oc:contentHash "a8bbadbd3c25c4e9223af7b668589236da9405fbc3d1a95e32c3bccb3d5dce60" ;
+    oc:differentia "that provides a structured multi-phase framework for conducting comprehensive topic investigation, multi-perspective analysis, and synthesized report generation" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_docx",
+        "create_xlsx" ;
+    oc:hasArgumentHint "research question or topic with optional sub-questions, context, scope, and output format preferences" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Conduct comprehensive research on any topic. Synthesize information from multiple angles, provide structured analysis, and generate detailed research reports." ;
+    oc:hasName "deep-research" ;
+    oc:impartsKnowledge oc:kn_531ed741,
+        oc:kn_560dcead,
+        oc:kn_881c7338,
+        oc:kn_ba1037dc,
+        oc:kn_bdf5a083,
+        oc:kn_c81be606,
+        oc:kn_e5d3b27a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze a topic using PESTEL or 5W1H frameworks",
+        "conduct multi-perspective analysis",
+        "generate structured research reports",
+        "research any topic comprehensively",
+        "synthesize information from multiple angles" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_531ed741 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When conducting any research task of non-trivial depth" ;
+    oc:directiveContent "Follow the 5-phase methodology: Scoping → Information Gathering → Analysis → Synthesis → Reporting. Each phase has distinct objectives and should not be skipped." ;
+    oc:hasRationale "Skipping phases (e.g., jumping to synthesis without proper analysis) produces shallow or biased reports that lack rigor" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_560dcead a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing topics with contested or diverse viewpoints" ;
+    oc:directiveContent "Present multiple viewpoints in the Analysis & Discussion section, including counter-arguments with rebuttals. Use the Argument Mapping structure to show claim strength and source reliability." ;
+    oc:hasRationale "Single-perspective analysis introduces bias and fails to serve the user's need for balanced, decision-ready intelligence" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_881c7338 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — these are inherent limitations of this skill" ;
+    oc:directiveContent "Cannot access real-time web data, paywalled content, or conduct primary research (surveys, interviews). Knowledge has a training cutoff date. Cannot guarantee 100% accuracy of all synthesized facts." ;
+    oc:hasRationale "Users must understand these boundaries to calibrate their trust in the output and know when to seek additional verification or data sources" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ba1037dc a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "Before delivering any research report output" ;
+    oc:directiveContent "Verify that the final report includes: Executive Summary with key findings, at least 3 main sections, Analysis & Discussion with multiple perspectives, Conclusions, Recommendations, and Sources & Further Reading section." ;
+    oc:hasRationale "Incomplete reports missing standard sections fail to meet the skill's promise of comprehensive, structured research output" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bdf5a083 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting any research task" ;
+    oc:directiveContent "Always clarify the research question, scope, perspectives, timeframe, and desired depth before beginning information gathering. Use the 3-step parameter setup: define question, set parameters, specify output format." ;
+    oc:hasRationale "Ambiguous research parameters lead to unfocused, overly broad, or misaligned outputs that waste time and miss the user's actual need" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c81be606 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating final research reports" ;
+    oc:directiveContent "Never present synthesized findings without acknowledging limitations, knowledge cutoff date, potential biases, and the AI-assisted nature of the research. Always include a disclaimer that findings should be verified with primary sources for critical decisions." ;
+    oc:hasRationale "Presenting AI-synthesized information as definitive fact erodes trust and can lead to flawed decision-making based on unverified data" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e5d3b27a a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When selecting an analytical framework for a research project" ;
+    oc:directiveContent "Use PESTEL analysis for market/industry topics, 5W1H framework for general topics, and Argument Mapping for contested or controversial topics. Match the framework to the research question type." ;
+    oc:hasRationale "Choosing the wrong framework wastes effort and may miss critical dimensions of the topic; matching framework to topic type ensures comprehensive coverage" ;
+    oc:severityLevel "MEDIUM" .
+

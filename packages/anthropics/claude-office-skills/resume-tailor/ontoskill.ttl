@@ -1,0 +1,102 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_resume_tailor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "resume-tailor" ;
+    skos:broader "Resume optimization service" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/resume-tailor" ;
+    oc:contentHash "b0808cb5fcbf4d2ba9772212847e381bbf2f125d44be1c9b126ed1b059c80470" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "tailors resume content to specific job descriptions by analyzing ATS keyword requirements, mapping experience to role qualifications, and providing industry-specific formatting guidance" ;
+    oc:handlesFailure oc:InsufficientInput,
+        oc:ResumeFormatUnsupported ;
+    oc:hasAllowedTool "create_docx",
+        "extract_text_from_docx",
+        "extract_text_from_pdf" ;
+    oc:hasArgumentHint "resume text or file and job description text" ;
+    oc:hasCategory "hr" ;
+    oc:hasDescription ">" ;
+    oc:hasName "resume-tailor" ;
+    oc:hasRequirement oc:req_00941dea,
+        oc:req_2e9b09a2,
+        oc:req_2eca0e81,
+        oc:req_9fda19b0 ;
+    oc:impartsKnowledge oc:kn_0cf0c644,
+        oc:kn_35b3588b,
+        oc:kn_5cc60c9a,
+        oc:kn_711e6e2b,
+        oc:kn_86bbc7c0,
+        oc:kn_fe2b500e ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:JobDescriptionProvided,
+        oc:ResumeProvided ;
+    oc:resolvesIntent "improve resume bullet points with quantified achievements",
+        "match resume to job description",
+        "optimize resume for ATS",
+        "reframe experience for career change",
+        "tailor resume for job application" ;
+    oc:yieldsState oc:KeywordAnalysisComplete,
+        oc:ResumeTailored .
+
+oc:kn_0cf0c644 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When gathering input materials from the user" ;
+    oc:directiveContent "Request the full, unsummarized job description from the user rather than accepting a summary. Exact keywords from the original posting are critical for ATS optimization." ;
+    oc:hasRationale "Summarized job descriptions lose the exact keywords and phrasing that ATS systems scan for, undermining the core value of keyword optimization" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_35b3588b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing resume content for ATS compatibility" ;
+    oc:directiveContent "Use exact keywords from the job posting rather than synonyms or creative alternatives. ATS systems scan for literal keyword matches." ;
+    oc:hasRationale "Most large companies use ATS that rank candidates by keyword match percentage; creative synonyms will not be recognized and will lower the match score" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5cc60c9a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tailoring any resume" ;
+    oc:directiveContent "Never fabricate experience the candidate does not have, even to better match job requirements. Only reframe and reorganize existing truthful content." ;
+    oc:hasRationale "Fabricated experience is unethical, potentially illegal, and will be discovered during background checks or interviews" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_711e6e2b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When rewriting experience bullet points" ;
+    oc:directiveContent "Transform weak bullet points using the formula: [Power Verb] + [What] + [Quantified Result] + [How/Context]. Every achievement should be measurable." ;
+    oc:hasRationale "Quantified achievements demonstrate concrete impact and are far more compelling to both ATS systems and human reviewers than vague responsibility descriptions" .
+
+oc:kn_86bbc7c0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring the final tailored resume" ;
+    oc:directiveContent "Resume length should follow experience-based limits: 1 page for 0-5 years, 1-2 pages for 5-15 years, 2 pages max for 15+ years or executive roles." ;
+    oc:hasRationale "Recruiters spend limited time on each resume; exceeding expected length signals inability to be concise" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fe2b500e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When formatting the resume for submission" ;
+    oc:directiveContent "Use standard section headers (Experience, Education, Skills) and avoid creative alternatives. Submit in PDF or DOCX format only." ;
+    oc:hasRationale "ATS systems rely on standard header names to parse sections correctly; non-standard headers cause misclassification of content" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_00941dea a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_docx" .
+
+oc:req_2e9b09a2 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "extract_text_from_docx" .
+
+oc:req_2eca0e81 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "extract_text_from_pdf" .
+
+oc:req_9fda19b0 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "office-mcp" .
+

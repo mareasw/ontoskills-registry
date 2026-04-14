@@ -1,0 +1,78 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_meeting_notes a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "meeting-notes" ;
+    skos:broader "document structuring skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/meeting-notes" ;
+    oc:contentHash "ea9321f8538f3dfb79ab6ad5acbea40dfbf0ca85e0c63355147e0ae0c83024c1" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "transforms raw meeting notes, transcripts, or audio summaries into structured documentation with action items, decisions, and key takeaways" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx" ;
+    oc:hasArgumentHint "raw meeting notes, transcript, or meeting description" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription ">" ;
+    oc:hasName "meeting-notes" ;
+    oc:impartsKnowledge oc:kn_37f097f7,
+        oc:kn_8f5421dc,
+        oc:kn_dd4ead96,
+        oc:kn_e7c72f06,
+        oc:kn_e8366dce,
+        oc:kn_eadac2fc ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "convert raw notes to structured document",
+        "create meeting minutes from transcript",
+        "extract action items from meeting",
+        "organize meeting notes",
+        "summarize meeting decisions and key points" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_37f097f7 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — this is a fundamental limitation of the skill" ;
+    oc:directiveContent "Accuracy depends entirely on the quality of input notes. Cannot attend or record meetings, verify commitments or deadlines, or resolve ambiguous pronouns and acronyms without user clarification." ;
+    oc:hasRationale "The skill operates purely on text transformation without access to meeting context, so output reliability is bounded by input quality" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8f5421dc a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating structured meeting notes" ;
+    oc:directiveContent "Identify the meeting type (standup, project review, client call, etc.) and any required format/template before generating output to select the appropriate template and detail level." ;
+    oc:hasRationale "Meeting type determines template selection, detail level, and output format — getting this wrong produces mismatched documentation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dd4ead96 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing any raw meeting input to extract action items" ;
+    oc:directiveContent "Use linguistic cues to extract action items: 'We need to...', 'Someone should...', 'Can you...', 'Let's...', names + verbs, and deadline mentions indicate tasks." ;
+    oc:hasRationale "Raw meeting notes rarely label tasks explicitly; pattern-matching on common commitment language surfaces actionable items reliably" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e7c72f06 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When generating action item tables" ;
+    oc:directiveContent "Flag unassigned action items explicitly and default ownership to the meeting organizer when no owner is specified. Always include an Owner column in action item tables." ;
+    oc:hasRationale "Unassigned items are the primary cause of dropped follow-ups; explicit flagging ensures accountability and prevents tasks from falling through cracks" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e8366dce a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting output format based on meeting type" ;
+    oc:directiveContent "Offer multiple template formats tailored to meeting type: standard summary, quick standup, client meeting, and project review templates each serve different documentation needs." ;
+    oc:hasRationale "Different meeting contexts require different documentation structures — standups need brevity, client meetings need commitments tracking, project reviews need risk/issue tables" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_eadac2fc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When parsing meeting content for formal decisions" ;
+    oc:directiveContent "Identify decisions by looking for phrases like 'We've decided...', 'The decision is...', 'Going forward, we will...', 'Agreed:', 'Confirmed:', and consensus language." ;
+    oc:hasRationale "Decision language patterns distinguish conclusions from ongoing discussion, enabling accurate meeting documentation" ;
+    oc:severityLevel "MEDIUM" .
+

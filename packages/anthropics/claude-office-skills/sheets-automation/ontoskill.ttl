@@ -1,0 +1,125 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_sheets_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "sheets-automation" ;
+    skos:broader "Automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/sheets-automation" ;
+    oc:contentHash "59d5b3af3d234657865daab6cdc1105c4e09d1ad830967347c094bb7e30c649e" ;
+    oc:dependsOnSkill oc:skill_crm_automation,
+        oc:skill_data_analysis,
+        oc:skill_gmail_workflows ;
+    oc:differentia "Automates Google Sheets workflows for data synchronization, task management, reporting dashboards, and multi-platform integrations using n8n workflow patterns" ;
+    oc:handlesFailure oc:APIRateLimitExceeded,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAlias "google-sheets-automation",
+        "google-sheets-workflow",
+        "sheets-sync",
+        "sheets-workflow" ;
+    oc:hasAllowedTool "sheets_append",
+        "sheets_format",
+        "sheets_read",
+        "sheets_write" ;
+    oc:hasArgumentHint "workflow description or sheet automation request (e.g., 'set up task reminders', 'create sales dashboard', 'sync CRM data to sheets')" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Google Sheets automation workflows - data sync, task management, reporting dashboards, and multi-platform integrations" ;
+    oc:hasName "sheets-automation" ;
+    oc:hasPackageName "sheets-automation" ;
+    oc:hasRequirement oc:req_1093f519,
+        oc:req_15166c92,
+        oc:req_80bcc3df,
+        oc:req_97f69e44,
+        oc:req_af587936,
+        oc:req_b8a29706,
+        oc:req_ebb2a74a ;
+    oc:impartsKnowledge oc:kn_57e69aa8,
+        oc:kn_9167b9a9,
+        oc:kn_982f382e,
+        oc:kn_ac6cbe4d,
+        oc:kn_e15c2296 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate google sheets workflows",
+        "capture form responses into crm and sheets",
+        "create reporting dashboards in google sheets",
+        "generate automated reports from sheets data",
+        "set up task management with slack reminders from sheets",
+        "sync data from multiple sources to google sheets",
+        "track inventory with alerts from google sheets" ;
+    oc:yieldsState oc:DataSynchronized,
+        oc:NotificationSent,
+        oc:ReportGenerated,
+        oc:SheetUpdated .
+
+oc:kn_57e69aa8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up any Google Sheets automation" ;
+    oc:directiveContent "Design sheet workflows with clear column structures and consistent naming conventions so that automation triggers and formulas work reliably." ;
+    oc:hasRationale "Consistent structure ensures formulas like VLOOKUP, QUERY, and conditional formatting work across all rows without manual adjustment." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9167b9a9 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When syncing data from external sources like CRM, payment systems, or analytics platforms" ;
+    oc:directiveContent "Use append_row actions with deduplication checks rather than overwrite actions for data ingestion workflows, and wrap formulas in IFERROR to handle missing data gracefully." ;
+    oc:hasRationale "Re-running a sync should not duplicate rows or break downstream dashboards; idempotent writes ensure data integrity." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_982f382e a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before activating any multi-source data aggregation or notification workflow" ;
+    oc:directiveContent "Verify that all external API connections (HubSpot, Stripe, Slack, Google Analytics) are authenticated and that target spreadsheets exist with correct sheet names before activating any workflow." ;
+    oc:hasRationale "Missing API credentials or renamed sheets cause silent workflow failures that may go unnoticed until reports are overdue." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ac6cbe4d a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When configuring n8n schedule triggers for sheets automation" ;
+    oc:directiveContent "Schedule heavy data sync workflows during off-peak hours (e.g., 6:00 AM) and limit task reminder checks to reasonable intervals (e.g., every 15 minutes) to avoid API rate limits." ;
+    oc:hasRationale "Google Sheets API has rate limits; frequent polling or large batch operations during peak hours can cause throttling and workflow failures." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e15c2296 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building formulas or n8n workflow steps that reference sheet data" ;
+    oc:directiveContent "Avoid hardcoding cell references or data ranges in automation workflows; use named ranges or dynamic references instead." ;
+    oc:hasRationale "Hardcoded references break when rows are added or removed, causing silent data corruption in automated pipelines." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_1093f519 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Google Analytics API" .
+
+oc:req_15166c92 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "google-workspace-mcp" .
+
+oc:req_80bcc3df a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "n8n workflow engine" .
+
+oc:req_97f69e44 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Stripe API" .
+
+oc:req_af587936 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Google Sheets API (sheets_read, sheets_write, sheets_append, sheets_format)" .
+
+oc:req_b8a29706 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Slack API" .
+
+oc:req_ebb2a74a a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "HubSpot API" .
+

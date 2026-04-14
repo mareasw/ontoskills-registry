@@ -1,0 +1,79 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_database_sync a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "database-sync" ;
+    skos:broader "Data synchronization orchestrator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/database-sync" ;
+    oc:contentHash "922b9d9f5497116c932400e4545d29192709362ec6f03a1fd303e3fde76b6cfe" ;
+    oc:dependsOnSkill oc:skill_etl_pipeline ;
+    oc:differentia "that automates database replication, migration, and cross-platform integration with conflict resolution and CDC support" ;
+    oc:handlesFailure oc:ConflictResolutionFailed,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:SchemaConflict,
+        oc:SyncLagExceeded ;
+    oc:hasArgumentHint "source database config, target database config, sync rules, transformation mappings" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate database synchronization, replication, migration, and cross-platform data integration" ;
+    oc:hasName "database-sync" ;
+    oc:impartsKnowledge oc:kn_25fbaf53,
+        oc:kn_3ef75de1,
+        oc:kn_63f290e8,
+        oc:kn_b01c95cf,
+        oc:kn_d4dce990 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DatabaseConnectionEstablished,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "configure change data capture",
+        "migrate database schema and data",
+        "monitor database replication status",
+        "replicate data between databases",
+        "resolve data sync conflicts",
+        "set up cross-database data integration",
+        "sync databases" ;
+    oc:yieldsState oc:DatabaseSynced,
+        oc:MigrationCompleted,
+        oc:ReplicationConfigured .
+
+oc:kn_25fbaf53 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before and during any active sync job" ;
+    oc:directiveContent "Verify sync lag is below threshold (warning >60s, critical >300s) and monitor conflict_count and sync_errors_total metrics before and during sync operations." ;
+    oc:hasRationale "Sync lag indicates the replica is falling behind real-time; exceeding thresholds can mean the sync is failing to keep up with write volume, requiring intervention before data staleness impacts downstream consumers." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3ef75de1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any database migration or bi-directional sync operation" ;
+    oc:directiveContent "Never run a sync or migration without a backup of the target database and a defined conflict resolution strategy." ;
+    oc:hasRationale "Without backups, schema changes or failed syncs can cause irreversible data loss. Without conflict resolution, bi-directional syncs produce data corruption." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_63f290e8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring any database sync job" ;
+    oc:directiveContent "Use incremental sync with CDC (Change Data Capture) over full sync whenever possible to minimize data transfer and achieve near real-time replication." ;
+    oc:hasRationale "Full sync is resource intensive and requires downtime; incremental sync with CDC tracks only changes via timestamps, triggers, or logical replication, dramatically reducing load." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b01c95cf a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring source and target database connections" ;
+    oc:directiveContent "SSL must be required for all database connections and credentials must be sourced from a secret manager, never hardcoded." ;
+    oc:hasRationale "Database credentials are high-value targets; hardcoding them in config files or transmitting over unencrypted connections exposes the entire database to compromise." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d4dce990 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a conflict resolution strategy for bi-directional sync" ;
+    oc:directiveContent "For conflict resolution, prefer 'last_write_wins' for simple use cases, 'merge' for complex bi-directional syncs, and 'custom_rules' only when field-level semantics demand it." ;
+    oc:hasRationale "Over-engineering conflict resolution adds complexity; start simple and escalate strategies only when the data semantics (e.g., summing quantities, priority ordering statuses) require it." ;
+    oc:severityLevel "MEDIUM" .
+

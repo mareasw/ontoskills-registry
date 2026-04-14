@@ -1,0 +1,139 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_youtube_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "youtube-automation" ;
+    skos:broader "YouTube channel management automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/youtube-automation" ;
+    oc:contentHash "612541920be3b4a1e523606347091b8c53b584f67f35ff7fa79fb6029165da10" ;
+    oc:differentia "orchestrates video publishing, SEO optimization, analytics tracking, comment management, and cross-platform distribution workflows via YouTube MCP server" ;
+    oc:extends oc:skill_social_publisher ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "video file path, metadata, or analytics query" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Automate YouTube content workflows including video management, analytics, scheduling, and channel optimization" ;
+    oc:hasName "youtube-automation" ;
+    oc:hasRequirement oc:req_07973153,
+        oc:req_2ad2ccea,
+        oc:req_43dca1b6,
+        oc:req_63a646f7,
+        oc:req_b35af6bc,
+        oc:req_e3559d0c ;
+    oc:impartsKnowledge oc:kn_007b5493,
+        oc:kn_3df33b39,
+        oc:kn_6894b7c0,
+        oc:kn_7df2fc4a,
+        oc:kn_83de39ab,
+        oc:kn_a6d98e12,
+        oc:kn_bf665782,
+        oc:kn_c372fb20,
+        oc:kn_d1a900db ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate cross-platform video distribution",
+        "manage YouTube comments and community engagement",
+        "manage YouTube playlists",
+        "optimize video metadata and SEO for YouTube",
+        "schedule YouTube content calendar",
+        "track YouTube channel analytics and performance",
+        "upload and publish YouTube videos" ;
+    oc:yieldsState oc:AnalyticsRetrieved,
+        oc:SEOReportGenerated,
+        oc:VideoPublished .
+
+oc:kn_007b5493 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning and producing multiple YouTube videos" ;
+    oc:directiveContent "Use a batch production workflow: pre-production (research, scripts, demos), production (record intros, content, outros, B-roll), post-production (edit, thumbnails, descriptions, schedule) to maximize efficiency." ;
+    oc:hasRationale "Batch production reduces context-switching overhead and enables consistent publishing schedules across multiple videos per session." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3df33b39 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring video tags for YouTube upload" ;
+    oc:directiveContent "Never use irrelevant tags, competitor channel names, misleading tags, or excessive tags (>15) as this violates YouTube policy and harms discoverability." ;
+    oc:hasRationale "Tag spam can result in video demotion or channel strikes, and misleading tags erode audience trust." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6894b7c0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing YouTube video titles" ;
+    oc:directiveContent "Keep video titles under 60 characters, include power words, and consider adding brackets or parentheses to increase click-through rate." ;
+    oc:hasRationale "Titles over 60 characters get truncated in search results; brackets/parentheses have been shown to improve CTR by up to 33%." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7df2fc4a a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any video upload to YouTube" ;
+    oc:directiveContent "Before uploading, verify: video file format (MP4/MOV), metadata completeness (title, description, tags), thumbnail meets specs, privacy/scheduling settings are correct, and monetization preferences are configured." ;
+    oc:hasRationale "Incomplete uploads require re-processing and can lose initial momentum; YouTube's edit-after-publish has propagation delays." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_83de39ab a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When the cross-platform integration workflow is enabled" ;
+    oc:directiveContent "Publishing a video triggers cross-platform actions including social media posts (Twitter, LinkedIn), Discord notifications, website embeds, blog post creation, and email subscriber notifications." ;
+    oc:hasRationale "Agents must be aware of downstream effects to prevent unintended multi-platform broadcasts if video is still in draft or contains errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6d98e12 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing YouTube video descriptions" ;
+    oc:directiveContent "Structure descriptions with a hook in the first 150 characters (visible in search results), followed by natural keyword integration, timestamps, links/CTAs, and 3-5 hashtags maximum." ;
+    oc:hasRationale "The first 150 characters appear in search previews; well-structured descriptions improve both CTR and SEO indexing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bf665782 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or uploading video thumbnails" ;
+    oc:directiveContent "Thumbnail images must be exactly 1280x720 pixels, 16:9 aspect ratio, in PNG or JPG format, and under 2MB." ;
+    oc:hasRationale "YouTube enforces these specifications; non-conforming thumbnails will be rejected or auto-cropped, degrading visual quality." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c372fb20 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing video metadata for discovery" ;
+    oc:directiveContent "Front-load primary keywords in titles (first position), place them in the description first line, and set them as the first tag for optimal YouTube SEO." ;
+    oc:hasRationale "YouTube's algorithm weights keyword prominence heavily in ranking decisions; front-loading maximizes visibility." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d1a900db a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After executing a video upload workflow" ;
+    oc:directiveContent "Successful video publishing is confirmed by: video appears in channel with correct metadata, thumbnail displays correctly, scheduled publish time is set, and subscriber notifications are enabled." ;
+    oc:hasRationale "Partial failures (e.g., thumbnail not uploading, wrong privacy setting) can result in missed views during the critical first hours of publication." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_07973153 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "youtube_comments tool" .
+
+oc:req_2ad2ccea a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "youtube_update tool" .
+
+oc:req_43dca1b6 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "youtube-mcp MCP server" .
+
+oc:req_63a646f7 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "YouTube Data API v3" .
+
+oc:req_b35af6bc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "youtube_analytics tool" .
+
+oc:req_e3559d0c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "youtube_upload tool" .
+

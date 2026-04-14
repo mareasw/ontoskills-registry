@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_docx_manipulation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "docx-manipulation" ;
+    skos:broader "document manipulation engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/docx-manipulation" ;
+    oc:contentHash "bd2cb1d8ec7cc3a68a7003fe38d3e5e9488c28056c44689d304f9ff2e4dd9ad6" ;
+    oc:differentia "creates, edits, and manipulates Word (.docx) files programmatically using python-docx" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "description of desired Word document content and formatting, or path to existing .docx file" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Create, edit, and manipulate Word documents programmatically using python-docx" ;
+    oc:hasName "docx-manipulation" ;
+    oc:hasPackageName "python-docx" ;
+    oc:hasRequirement oc:req_6caa6449,
+        oc:req_9fda19b0,
+        oc:req_f2844fec ;
+    oc:impartsKnowledge oc:kn_08fbdff4,
+        oc:kn_127069d9,
+        oc:kn_4e22dd8a,
+        oc:kn_6470ee0f,
+        oc:kn_dfd1ec3f ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add tables and formatting to word document",
+        "convert content to styled word document",
+        "create word document",
+        "edit docx file",
+        "fill docx template with data",
+        "generate report in docx" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_08fbdff4 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When opening and editing existing .docx templates" ;
+    oc:directiveContent "Complex templates may lose some formatting when opened and re-saved via python-docx. Always validate output against the original template for fidelity." ;
+    oc:hasRationale "python-docx may not preserve all advanced Word formatting features (e.g., custom XML, embedded objects), which can degrade template quality on save." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_127069d9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When formatting any document element" ;
+    oc:directiveContent "Use built-in Word styles (Heading 1-9, Title, Quote, List Bullet, etc.) for consistent formatting rather than manually setting bold, italic, font size on each run." ;
+    oc:hasRationale "Styles ensure consistency across the document and make it easy to change formatting globally, while manual formatting creates fragile, inconsistent documents." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e22dd8a a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "Before generating any document programmatically" ;
+    oc:directiveContent "Plan the document structure and hierarchy (sections, headings, tables) before writing code. Structure first, then populate with content." ;
+    oc:hasRationale "Pre-planning the document hierarchy avoids rework and ensures logical flow, especially for complex reports with nested sections, tables, and images." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6470ee0f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When users request features beyond basic document creation and formatting" ;
+    oc:directiveContent "python-docx cannot execute macros or VBA code, has limited SmartArt/Charts support, cannot directly convert to PDF, and has limited track changes reading capability." ;
+    oc:hasRationale "These are fundamental library limitations — attempting unsupported operations will silently fail or produce corrupted output. Alternative tools must be used for these features." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dfd1ec3f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filling template documents with data" ;
+    oc:directiveContent "Do not leave template placeholders unfilled after processing a document. Always verify all {placeholder} tokens have been replaced with actual values." ;
+    oc:hasRationale "Unfilled placeholders in a final document appear unprofessional and can leak internal template structure to external recipients." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python-docx" .
+
+oc:req_9fda19b0 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "office-mcp" .
+
+oc:req_f2844fec a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "python programming" .
+

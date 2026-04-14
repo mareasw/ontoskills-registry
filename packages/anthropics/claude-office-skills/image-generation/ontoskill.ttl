@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_image_generation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "image-generation" ;
+    skos:broader "Prompt engineering framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/image-generation" ;
+    oc:contentHash "6b6933e727a0788ad92524fe84a581ecc81ae817b66b75f4fd305b0c5d7ae5e6" ;
+    oc:differentia "that crafts optimized image generation prompts for DALL-E, Midjourney, and Stable Diffusion with platform-specific syntax and style keyword references" ;
+    oc:extends oc:skill_ppt_visual ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "image description, purpose, style preferences, and target platform" ;
+    oc:hasCategory "visualization" ;
+    oc:hasDescription "Create effective AI image generation prompts for DALL-E, Midjourney, and Stable Diffusion. Generate prompts for various styles and use cases." ;
+    oc:hasName "image-generation" ;
+    oc:impartsKnowledge oc:kn_1a9b3911,
+        oc:kn_9b4635bb,
+        oc:kn_b9b9fa7f,
+        oc:kn_de316f7b,
+        oc:kn_f04b62b9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create image generation prompts",
+        "create negative prompts to avoid unwanted elements",
+        "generate style-specific image prompts",
+        "optimize prompts for specific AI art platforms" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1a9b3911 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting user expectations for image generation results" ;
+    oc:directiveContent "This skill cannot generate images directly, cannot guarantee exact output, cannot predict AI interpretation, and cannot bypass platform content policies." ;
+    oc:hasRationale "AI image generation is inherently non-deterministic and platform-constrained. Setting accurate expectations prevents user frustration and repeated failed attempts." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9b4635bb a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When the initial generated image doesn't match the user's vision" ;
+    oc:directiveContent "Iterate on prompts by refining based on initial results. Use consistent seeds for variations when the platform supports it, and generate multiple prompt variations to increase the chance of a satisfactory result." ;
+    oc:hasRationale "Prompt engineering is an iterative process. Systematic refinement and variation generation is more effective than trying to craft the perfect prompt on the first attempt." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b9b9fa7f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing prompts for any image generation task" ;
+    oc:directiveContent "Be specific with subjects ('golden retriever' not 'dog'), describe what you want positively, use quality modifiers ('professional', 'detailed', '8k'), and always specify composition and lighting." ;
+    oc:hasRationale "Specificity reduces ambiguity in AI interpretation, and quality modifiers act as output-quality anchors that guide the model toward higher-fidelity results." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_de316f7b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When crafting prompts for any AI image generation platform" ;
+    oc:directiveContent "Use the structured prompt template: [Subject] + [Action/State] + [Environment] + [Style] + [Technical Parameters] to build comprehensive image generation prompts." ;
+    oc:hasRationale "A structured template ensures all visual dimensions (composition, lighting, color, mood) are addressed, leading to more predictable and higher-quality outputs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f04b62b9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When switching between DALL-E 3, Midjourney, and Stable Diffusion" ;
+    oc:directiveContent "Do not use a single prompt style across all platforms. DALL-E 3 prefers natural language, Midjourney uses keyword-based prompts with parameters, and Stable Diffusion uses weighted tokens with mandatory negative prompts." ;
+    oc:hasRationale "Each platform has fundamentally different prompt parsing engines. Using the wrong syntax style leads to suboptimal or misinterpreted results." ;
+    oc:severityLevel "CRITICAL" .
+

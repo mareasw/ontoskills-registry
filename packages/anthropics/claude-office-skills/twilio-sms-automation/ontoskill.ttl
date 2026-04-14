@@ -1,0 +1,133 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_twilio_sms_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "twilio-sms-automation" ;
+    skos:broader "Communication automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/twilio-sms-automation" ;
+    oc:contentHash "e8a0abab0de906fad83d83e57965db127880e3a4d4ea064c6a094a4788d247f5" ;
+    oc:differentia "Automates SMS, voice, and verification workflows using Twilio APIs with message templates, two-way messaging, bulk campaigns, and compliance management" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimited ;
+    oc:hasArgumentHint "phone number and message content, or workflow configuration" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate SMS communications, two-way messaging, notifications, and voice workflows with Twilio" ;
+    oc:hasName "twilio-sms-automation" ;
+    oc:hasRequirement oc:req_0ed10cdc,
+        oc:req_1e9d4e53,
+        oc:req_4584901e,
+        oc:req_5f6cc3a1,
+        oc:req_6a4ed517,
+        oc:req_cc2e07a5,
+        oc:req_e7cdc119,
+        oc:req_ed5b2b51 ;
+    oc:impartsKnowledge oc:kn_127e8f3a,
+        oc:kn_12a44e00,
+        oc:kn_1837820e,
+        oc:kn_1a368c00,
+        oc:kn_73adcf0e,
+        oc:kn_7648456b,
+        oc:kn_f2665b30 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate voice calls",
+        "build IVR menus",
+        "create SMS campaigns",
+        "handle two-way SMS conversations",
+        "manage phone numbers",
+        "send SMS messages",
+        "set up two-factor authentication",
+        "track SMS delivery and analytics" ;
+    oc:yieldsState oc:MessageSent,
+        oc:VerificationStarted,
+        oc:VoiceCallInitiated .
+
+oc:kn_127e8f3a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When sending any SMS campaign or notification" ;
+    oc:directiveContent "Always obtain explicit opt-in consent before sending SMS messages. Include STOP keyword in every outbound message for opt-out compliance." ;
+    oc:hasRationale "TCPA and CTIA regulations require explicit consent for SMS communications. Non-compliance can result in significant fines and carrier blocking." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_12a44e00 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When implementing Twilio Verify for two-factor authentication" ;
+    oc:directiveContent "Verification code attempts must be limited (max 5 attempts with 30-minute lockout). Use 6-digit codes with 10-minute expiry for 2FA flows." ;
+    oc:hasRationale "Unlimited verification attempts enable brute-force attacks. Rate limiting and short expiry protect against account takeover while maintaining usability." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1837820e a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When handling failed message deliveries" ;
+    oc:directiveContent "Implement retry logic for transient delivery failures with exponential backoff. Monitor delivery status callbacks to detect and address carrier blocks or rate limiting." ;
+    oc:hasRationale "Transient errors (carrier timeouts, temporary blocks) often resolve on retry. Without retry logic, deliverability suffers and campaigns underperform." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1a368c00 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scheduling or sending SMS campaigns" ;
+    oc:directiveContent "Respect quiet hours (default 21:00–09:00 recipient timezone). Do not send messages during these periods." ;
+    oc:hasRationale "Quiet hour violations trigger spam filters and carrier blocks, damaging delivery rates and sender reputation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_73adcf0e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any bulk SMS campaign or when adding new recipients" ;
+    oc:directiveContent "Never send bulk messages without first validating phone numbers using the Twilio Lookup API to check format, activity status, and line type (landline vs mobile)." ;
+    oc:hasRationale "Sending to invalid or landline numbers wastes money, increases failure rates, and can flag your account for review." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7648456b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scaling SMS campaigns beyond simple one-to-one messaging" ;
+    oc:directiveContent "Use Messaging Service SID (MG...) instead of a single phone number for high-throughput campaigns. Configure rate limiting at 10 messages/second with a daily limit of 5 per recipient." ;
+    oc:hasRationale "Messaging Services provide automatic sender selection, load balancing, and compliance features that prevent carrier throttling." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f2665b30 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing any SMS message content" ;
+    oc:directiveContent "Use template-based messages with variable substitution ({{variable}}) for consistency and testability. Keep messages under 160 characters to avoid segmentation." ;
+    oc:hasRationale "Templates ensure brand consistency, make A/B testing easy, and keeping under 160 chars avoids multi-segment messages that can cause delivery issues." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_0ed10cdc a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Twilio Auth Token" .
+
+oc:req_1e9d4e53 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "communication-mcp (twilio_send_sms, twilio_voice_call, twilio_lookup, twilio_verify)" .
+
+oc:req_4584901e a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Twilio Account SID" .
+
+oc:req_5f6cc3a1 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "TWILIO_AUTH_TOKEN" .
+
+oc:req_6a4ed517 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Messaging Service SID" .
+
+oc:req_cc2e07a5 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Twilio Phone Number" .
+
+oc:req_e7cdc119 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "TWILIO_ACCOUNT_SID" .
+
+oc:req_ed5b2b51 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Verify Service SID" .
+

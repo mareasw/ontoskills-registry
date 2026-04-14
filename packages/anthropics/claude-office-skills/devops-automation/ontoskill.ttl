@@ -1,0 +1,136 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_devops_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "devops-automation" ;
+    skos:broader "DevOps workflow automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/devops-automation" ;
+    oc:contentHash "d2e81003fad45daea08f4855758ad25db779c1633063b1094dd3ef103e3eb569" ;
+    oc:dependsOnSkill oc:skill_slack_workflows ;
+    oc:differentia "provides structured templates for CI/CD pipelines, monitoring/alerting, incident management, and infrastructure automation using YAML-based workflow definitions" ;
+    oc:handlesFailure oc:DeploymentFailed,
+        oc:HealthCheckFailed,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "devops task description (e.g., 'set up deployment notifications', 'configure alert routing', 'create incident workflow')" ;
+    oc:hasCategory "devops" ;
+    oc:hasDescription "DevOps and IT Ops automation - CI/CD, monitoring, incident management, and infrastructure workflows" ;
+    oc:hasName "devops-automation" ;
+    oc:hasPackageName "devops-automation" ;
+    oc:hasRequirement oc:req_5a061026,
+        oc:req_5afc7b47,
+        oc:req_8a51f057,
+        oc:req_8ad15c7b,
+        oc:req_96dcea9f,
+        oc:req_d5d3796f,
+        oc:req_d8fc1965,
+        oc:req_d93da47e,
+        oc:req_e136ad54,
+        oc:req_ed174964 ;
+    oc:impartsKnowledge oc:kn_0bf93253,
+        oc:kn_450df862,
+        oc:kn_a7f6e285,
+        oc:kn_bc5619a0,
+        oc:kn_f19cd7c5,
+        oc:kn_fff7e133 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate CI/CD pipelines",
+        "automate infrastructure provisioning",
+        "configure monitoring and alerting",
+        "create postmortem reports",
+        "manage incidents",
+        "set up deployment notifications" ;
+    oc:yieldsState oc:CICDPipelineConfigured,
+        oc:IncidentWorkflowCreated,
+        oc:InfrastructureProvisioned,
+        oc:MonitoringAlertsConfigured .
+
+oc:kn_0bf93253 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When triggering server provisioning workflows" ;
+    oc:directiveContent "Before provisioning infrastructure, validate that budget approval and security review are complete." ;
+    oc:hasRationale "Skipping approval gates leads to uncontrolled cloud spend and security vulnerabilities in newly created infrastructure." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_450df862 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "During active incident response" ;
+    oc:directiveContent "Use structured incident communication with 30-minute internal update cadence and external status page updates for customer visibility." ;
+    oc:hasRationale "Consistent communication cadence prevents information gaps, reduces stakeholder anxiety, and maintains customer trust during outages." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a7f6e285 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "After resolving an incident" ;
+    oc:directiveContent "Always schedule a postmortem after incident resolution and close the incident channel only after 24 hours to allow for delayed follow-up." ;
+    oc:hasRationale "Postmortems capture root causes and prevent recurrence; premature channel closure loses important context for action item tracking." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bc5619a0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring alert routing rules" ;
+    oc:directiveContent "Payment and authentication services should always receive severity-boosted routing — treat them as critical by default." ;
+    oc:hasRationale "Revenue-generating and security-critical services require faster response times; a delayed response to payment failures directly impacts revenue." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f19cd7c5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing deployment pipelines" ;
+    oc:directiveContent "Always define explicit rollback steps in every deployment pipeline — rollback should be triggered automatically on health check failure OR manually by an operator." ;
+    oc:hasRationale "Without a defined rollback procedure, failed deployments cause prolonged outages while teams scramble to figure out how to revert." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_fff7e133 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring production deployment stages" ;
+    oc:directiveContent "Never deploy to production without a manual approval gate, even if all CI checks pass." ;
+    oc:hasRationale "Automated tests cannot catch all regressions; a human approval step prevents catastrophic deployments to production." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_5a061026 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "datadog" .
+
+oc:req_5afc7b47 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "github_webhooks" .
+
+oc:req_8a51f057 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "YAML workflow syntax" .
+
+oc:req_8ad15c7b a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "cloudwatch" .
+
+oc:req_96dcea9f a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "aws_cli" .
+
+oc:req_d5d3796f a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "prometheus" .
+
+oc:req_d8fc1965 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "jenkins_trigger" .
+
+oc:req_d93da47e a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "kubernetes_api" .
+
+oc:req_e136ad54 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "github_api" .
+
+oc:req_ed174964 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "pagerduty" .
+

@@ -1,0 +1,98 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_tiktok_marketing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "tiktok-marketing" ;
+    skos:broader "marketing automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/tiktok-marketing" ;
+    oc:contentHash "71c1f07d89fb6c84e98e00caf36448e3824f44ce14402356b67a7a3a76148138" ;
+    oc:differentia "provides TikTok content strategy, video scripting, hashtag optimization, posting schedules, n8n workflow automation, and performance analytics in a structured framework" ;
+    oc:extends oc:skill_social_publisher ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "topic or goal for TikTok content (e.g., 'productivity tips for remote workers')" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "TikTok content strategy, video creation workflows, posting optimization, and analytics. Based on n8n automation templates." ;
+    oc:hasName "tiktok-marketing" ;
+    oc:impartsKnowledge oc:kn_1f66f6d7,
+        oc:kn_285707b5,
+        oc:kn_324db0c9,
+        oc:kn_a5fc67f9,
+        oc:kn_b192c09d,
+        oc:kn_b8363dea,
+        oc:kn_c0d8d627,
+        oc:kn_c723f5b9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate tiktok content pipeline with n8n",
+        "create tiktok content strategy",
+        "generate video scripts for tiktok",
+        "identify tiktok trends",
+        "optimize tiktok posting schedule",
+        "research tiktok hashtags",
+        "track tiktok analytics" ;
+    oc:yieldsState oc:TikTokAnalyticsTracked,
+        oc:TikTokContentCreated .
+
+oc:kn_1f66f6d7 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When identifying and acting on TikTok trends" ;
+    oc:directiveContent "Act on trends within 48 hours. Day 1-2 has highest potential, Day 3-5 is still good, Day 6+ is likely saturated. Only participate in trends with >500% sound usage growth and fewer than 10K uses." ;
+    oc:hasRationale "TikTok trends have a very short lifecycle; early participation is the primary driver of viral reach, while late participation gets lost in saturation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_285707b5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any TikTok video script" ;
+    oc:directiveContent "Structure every TikTok video as Hook (0-3s) → Content (3-50s) → CTA (last 2-3s). The hook must stop the scroll within the first 3 seconds using a question, shock statement, or list format." ;
+    oc:hasRationale "The first 3 seconds determine whether viewers keep watching; without a strong hook, even great content gets scrolled past." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_324db0c9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scripting TikTok video content" ;
+    oc:directiveContent "Do not deliver multiple messages in a single TikTok video. One clear message per video with pattern interrupts every 3-5 seconds to maintain attention." ;
+    oc:hasRationale "TikTok's short-form format rewards focused messaging; multiple messages dilute the hook promise and cause viewer drop-off." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a5fc67f9 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "When analyzing TikTok content performance" ;
+    oc:directiveContent "Track these key metrics: Watch Time >50%, Engagement Rate >5%, Share Rate >1%, Follow Rate >2%, Profile Visits >10% of views. If below targets, improve hooks for watch time, CTAs for engagement, and value proposition for follows." ;
+    oc:hasRationale "These benchmarks distinguish content that builds an audience from content that merely gets views; below-threshold metrics indicate specific content elements to fix." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b192c09d a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before publishing any TikTok video" ;
+    oc:directiveContent "Before publishing, verify the video has a scroll-stopping hook in the first 3 seconds, delivers on the hook's promise, includes a clear CTA in the last 2-3 seconds, has 5-7 hashtags in the optimal mix, and is scheduled for the audience's peak time slot." ;
+    oc:hasRationale "Skipping any of these elements materially reduces video performance; the checklist ensures consistent quality across all posts." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b8363dea a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning TikTok posting frequency" ;
+    oc:directiveContent "Post 2-3 videos per day at consistent time slots, never exceeding 5/day. Never go more than 24 hours without posting." ;
+    oc:hasRationale "Consistency builds audience habits and signals the algorithm you're an active creator, but quality degrades after 3/day and algorithmic penalty risk increases after 5/day." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c0d8d627 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When developing a TikTok content strategy" ;
+    oc:directiveContent "Build 4-6 content pillars with defined ratios: Educational (40%), Entertainment (30%), Promotional (15%), Community (15%). Each pillar should map to specific formats and a clear goal." ;
+    oc:hasRationale "A balanced pillar mix prevents audience fatigue, maintains algorithmic favor, and ensures content serves different business objectives rather than being one-dimensional." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c723f5b9 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When adding hashtags to any TikTok post" ;
+    oc:directiveContent "Use 5-7 hashtags per post with a mix of niche-specific (2-3), trending (1-2), branded (1), and community (1) hashtags. Rotate bottom performers weekly." ;
+    oc:hasRationale "The mix of high, medium, and low reach hashtags balances discoverability in crowded feeds with niche targeting, while the total count of 5-7 is TikTok's algorithmic sweet spot." ;
+    oc:severityLevel "MEDIUM" .
+

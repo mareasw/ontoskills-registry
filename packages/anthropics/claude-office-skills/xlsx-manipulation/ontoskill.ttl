@@ -1,0 +1,91 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_xlsx_manipulation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "xlsx-manipulation" ;
+    skos:broader "Spreadsheet manipulation tool" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/xlsx-manipulation" ;
+    oc:contentHash "05de36cdd24c8d8344aa4b6c59b9ffc495c8afe8e056c06961186e403965a74f" ;
+    oc:differentia "that creates, edits, and formats Excel (.xlsx) files programmatically using openpyxl with support for formulas, charts, conditional formatting, data validation, and styling" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "apply_formula",
+        "create_chart",
+        "create_xlsx",
+        "python",
+        "read_xlsx" ;
+    oc:hasArgumentHint "spreadsheet description or file path with data, formulas, or formatting requirements" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Create, edit, and manipulate Excel spreadsheets programmatically using openpyxl" ;
+    oc:hasName "xlsx-manipulation" ;
+    oc:hasPackageName "xlsx-manipulation" ;
+    oc:hasRequirement oc:req_47a90164,
+        oc:req_7e9ca2f5 ;
+    oc:impartsKnowledge oc:kn_01271c14,
+        oc:kn_02f3200c,
+        oc:kn_39433005,
+        oc:kn_99c30541,
+        oc:kn_c7a804ca ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add conditional formatting to spreadsheet",
+        "add formulas to spreadsheet",
+        "build dashboard in excel",
+        "create charts in excel",
+        "create excel spreadsheet",
+        "create report template in excel",
+        "edit xlsx file",
+        "format spreadsheet cells",
+        "import data into xlsx" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_01271c14 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When writing data to cells in bulk" ;
+    oc:directiveContent "Minimize cell-by-cell operations by using batch operations (e.g., ws.append() for rows, assigning lists to ranges) for better performance on large spreadsheets." ;
+    oc:hasRationale "Cell-by-cell operations are significantly slower for large datasets; batch operations reduce round-trips to the worksheet internal model." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_02f3200c a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing existing .xlsx files" ;
+    oc:directiveContent "Loading and re-saving an existing workbook preserves its content but may alter some formatting or lose unsupported features. Always work on a copy when modifying existing files." ;
+    oc:hasRationale "openpyxl does not perfectly round-trip all Excel features; unsupported features may be silently dropped during load/save cycles." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_39433005 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating spreadsheets with complex layouts or corporate styling" ;
+    oc:directiveContent "Use .xlsx templates for complex formatting rather than building all styles programmatically. Start from a pre-formatted template and fill in data." ;
+    oc:hasRationale "Templates reduce code complexity and ensure visual consistency with existing document standards." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_99c30541 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building large or complex spreadsheets" ;
+    oc:directiveContent "Save large workbooks incrementally during processing rather than only at the end. Use named ranges for clarity in formulas, and add data validation to cells that require constrained input." ;
+    oc:hasRationale "Incremental saves prevent data loss on long operations. Named ranges make formulas self-documenting. Data validation prevents input errors in distributed spreadsheets." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c7a804ca a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning spreadsheet features that require VBA, pivot tables, sparklines, or external connections" ;
+    oc:directiveContent "openpyxl cannot execute VBA macros, has limited pivot table support, no sparkline support, cannot handle external data connections, and lacks some advanced chart types." ;
+    oc:hasRationale "These limitations are inherent to the openpyxl library and cannot be worked around without switching to a different tool like xlwings or COM automation." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_47a90164 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "openpyxl" .
+
+oc:req_7e9ca2f5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python" .
+

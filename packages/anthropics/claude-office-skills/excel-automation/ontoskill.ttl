@@ -1,0 +1,108 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_excel_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "excel-automation" ;
+    skos:broader "Excel automation engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/excel-automation" ;
+    oc:contentHash "cfdee54f7a399b2297ed1f4f850e169147fc7944273620696f08c64be4891354" ;
+    oc:differentia "uses xlwings to interact with live Excel instances for real-time control, VBA execution, dashboard updates, and complex workflow automation" ;
+    oc:extends oc:skill_xlsx_manipulation ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "description of Excel automation task and whether live interaction or file processing is needed" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription ">" ;
+    oc:hasName "excel-automation" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_746aacc9,
+        oc:req_a48214ac,
+        oc:req_beb43b72,
+        oc:req_fe6b6a53 ;
+    oc:impartsKnowledge oc:kn_13881d62,
+        oc:kn_1d5041fd,
+        oc:kn_6a244de8,
+        oc:kn_9d50e4e2,
+        oc:kn_c100d880,
+        oc:kn_daedd82b ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "automate excel workflows",
+        "batch process Excel files",
+        "create Excel add-ins with UDFs",
+        "generate reports from Excel templates",
+        "run VBA macros from Python",
+        "update live excel dashboards" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:DocumentUpdated .
+
+oc:kn_13881d62 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running any batch update, dashboard refresh, or multi-step Excel operation" ;
+    oc:directiveContent "Disable screen updating, set calculation to manual, and suppress display alerts before performing batch operations, then restore all settings afterward." ;
+    oc:hasRationale "These optimizations prevent Excel from re-rendering and recalculating after every single change, dramatically improving performance." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1d5041fd a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing batch data operations on Excel ranges" ;
+    oc:directiveContent "Never read or write data cell-by-cell in a loop; always use array operations to read/write entire ranges at once." ;
+    oc:hasRationale "Cell-by-cell operations via xlwings COM calls are orders of magnitude slower than bulk array read/write operations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6a244de8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting the appropriate Python library for an Excel task" ;
+    oc:directiveContent "Use xlwings for live Excel interaction (dashboards, VBA, real-time updates) and openpyxl for server-side file processing without Excel installed." ;
+    oc:hasRationale "Each library has distinct strengths: xlwings excels at live control while openpyxl excels at headless file manipulation and server deployment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9d50e4e2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between xlwings and openpyxl for an Excel automation task" ;
+    oc:directiveContent "xlwings requires Microsoft Excel to be installed on the machine; it cannot run in pure server-side or headless environments without Excel." ;
+    oc:hasRationale "xlwings operates via COM interop with the live Excel application, unlike openpyxl which works directly with the file format." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c100d880 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When attempting to run VBA macros or access VBProject components via xlwings" ;
+    oc:directiveContent "VBA macro execution requires Excel trust settings to be configured to allow programmatic access to the VBA project object model." ;
+    oc:hasRationale "Excel's security model restricts programmatic VBA access by default to prevent macro-based malware; this must be explicitly enabled." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_daedd82b a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When opening Excel workbooks or creating App instances programmatically" ;
+    oc:directiveContent "Always wrap xlwings operations in try/finally blocks to ensure workbooks are closed and the Excel application is quit even on failure." ;
+    oc:hasRationale "Orphaned Excel processes consume system resources and can lock files, preventing subsequent operations from succeeding." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "numpy" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pandas" .
+
+oc:req_a48214ac a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "xlwings" .
+
+oc:req_beb43b72 a oc:RequirementHardware ;
+    oc:isOptional false ;
+    oc:requirementValue "Microsoft Excel installed" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "matplotlib" .
+

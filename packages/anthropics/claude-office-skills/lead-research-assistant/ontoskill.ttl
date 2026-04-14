@@ -1,0 +1,89 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_lead_research_assistant a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "lead-research-assistant" ;
+    skos:broader "research methodology" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/lead-research-assistant" ;
+    oc:contentHash "7c0d09f63500832f023a0c7b35b6801a8568bfd33807d44cb4f2c04efb6d647b" ;
+    oc:differentia "structures company and contact intelligence gathering into templated sales outreach briefings with lead scoring" ;
+    oc:handlesFailure oc:DataNotFound,
+        oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_docx",
+        "xlsx_to_json" ;
+    oc:hasArgumentHint "company name, contact name, or list of leads to research" ;
+    oc:hasCategory "sales" ;
+    oc:hasDescription "Research company and contact information for sales outreach" ;
+    oc:hasName "lead-research-assistant" ;
+    oc:hasRequirement oc:req_00941dea,
+        oc:req_5428699c,
+        oc:req_9b39cf0b ;
+    oc:impartsKnowledge oc:kn_0425c258,
+        oc:kn_6174ab8f,
+        oc:kn_6b2197c9,
+        oc:kn_aa25189f,
+        oc:kn_c6637483 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "build contact profile for personalized outreach",
+        "create company briefing for sales call",
+        "find decision-maker contact information",
+        "prioritize leads by fit score",
+        "research company for sales outreach" ;
+    oc:yieldsState oc:ContactProfiled,
+        oc:LeadResearched,
+        oc:LeadsPrioritized .
+
+oc:kn_0425c258 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When conducting company research" ;
+    oc:directiveContent "Research should follow a defined sequence: company website → LinkedIn → recent news (6 months) → press releases → job postings → review sites → social media." ;
+    oc:hasRationale "This sequence maximizes information yield by progressing from authoritative sources to contextual signals." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6174ab8f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When researching any company or contact" ;
+    oc:directiveContent "Use only publicly available information for lead research; never access paid databases or private data sources." ;
+    oc:hasRationale "Respecting privacy boundaries and data access limitations ensures ethical compliance and avoids legal risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6b2197c9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating and ranking multiple leads" ;
+    oc:directiveContent "Prioritize leads using a weighted scoring model across five dimensions: Company Size (25%), Industry Fit (20%), Tech Stack (20%), Timing Signals (20%), and Contact Level (15%)." ;
+    oc:hasRationale "Weighted multi-factor scoring reduces bias and ensures leads are prioritized on objective, actionable criteria." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_aa25189f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating research deliverables" ;
+    oc:directiveContent "Structure all research output using standardized templates: Company Brief, Contact Profile, and Lead Prioritization formats." ;
+    oc:hasRationale "Consistent templates ensure completeness, comparability across leads, and readiness for sales handoff." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c6637483 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When researching private companies or individual contacts" ;
+    oc:directiveContent "Private companies will have limited publicly available data, and contact details (email, phone) may not be discoverable through public sources." ;
+    oc:hasRationale "Setting expectations about data availability prevents overpromising and guides fallback strategies." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_00941dea a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_docx" .
+
+oc:req_5428699c a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "web search for company and contact information" .
+
+oc:req_9b39cf0b a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "xlsx_to_json" .
+

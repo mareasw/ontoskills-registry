@@ -1,0 +1,110 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_report_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "report-generator" ;
+    skos:broader "Report generation system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/report-generator" ;
+    oc:contentHash "de31d873ebe45a7f66a40ad24ebcef75385ed2c3e4faadf66470b0d71ec320df" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that creates professional data reports with charts, tables, KPI dashboards, and visualizations from structured data sources" ;
+    oc:handlesFailure oc:DataFormatError,
+        oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "create_chart",
+        "create_docx",
+        "create_pptx",
+        "create_xlsx" ;
+    oc:hasArgumentHint "data source (CSV/Excel/JSON path or description) and report type" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Generate professional data reports with charts, tables, and visualizations" ;
+    oc:hasName "report-generator" ;
+    oc:hasRequirement oc:req_4c8562a3,
+        oc:req_746aacc9,
+        oc:req_82f4d01f,
+        oc:req_9fda19b0,
+        oc:req_fe6b6a53 ;
+    oc:impartsKnowledge oc:kn_05a8d43f,
+        oc:kn_3a325487,
+        oc:kn_5f383b9e,
+        oc:kn_614bd549,
+        oc:kn_8f96849a,
+        oc:kn_e9300899 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DataAvailable,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "build executive summary with charts",
+        "create KPI dashboard",
+        "create sales report from data",
+        "generate professional data report",
+        "produce data analysis report" ;
+    oc:yieldsState oc:ChartsGenerated,
+        oc:DocumentCreated .
+
+oc:kn_05a8d43f a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating a report" ;
+    oc:directiveContent "Verify that the input data source is accessible and contains the expected columns/fields before beginning report generation." ;
+    oc:hasRationale "Early validation prevents wasted computation on malformed or missing data, providing clear error messages to the user." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3a325487 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When loading input data for report generation" ;
+    oc:directiveContent "Reports must accept multiple input formats (CSV, Excel, JSON, or described data) and gracefully handle format detection." ;
+    oc:hasRationale "Data sources vary across organizations; rigid format requirements create adoption friction." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5f383b9e a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When choosing report output format" ;
+    oc:directiveContent "Use a multi-format output strategy: HTML for interactive viewing, PDF for distribution, and DOCX/PPTX for editable deliverables via the office-mcp tools." ;
+    oc:hasRationale "Different stakeholders need different formats — executives may want PDF summaries while analysts need editable spreadsheets." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_614bd549 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any professional data report" ;
+    oc:directiveContent "Reports should include a standard structure: executive summary, KPI dashboard, detailed analysis, charts, and recommendations." ;
+    oc:hasRationale "A consistent structure ensures reports are scannable and actionable for stakeholders, regardless of data domain." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8f96849a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing report generation code" ;
+    oc:directiveContent "Do not generate reports with hardcoded data values; always derive metrics dynamically from the input dataset." ;
+    oc:hasRationale "Hardcoded values make reports stale and incorrect when data changes, undermining report credibility." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e9300899 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building report KPIs and dashboards" ;
+    oc:directiveContent "Always compute key metrics (totals, averages, growth rates, top performers) before generating visualizations to ensure charts reflect accurate summary statistics." ;
+    oc:hasRationale "Pre-computing metrics avoids visualizing raw data without context, which can mislead report consumers." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_4c8562a3 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Report design principles" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_82f4d01f a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Data analysis fundamentals" .
+
+oc:req_9fda19b0 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "office-mcp" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "matplotlib" .
+

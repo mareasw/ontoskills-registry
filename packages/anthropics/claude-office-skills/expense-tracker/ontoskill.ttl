@@ -1,0 +1,92 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_expense_tracker a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "expense-tracker" ;
+    skos:broader "Expense management automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/expense-tracker" ;
+    oc:contentHash "274d1692684f836a799fb149411fcd15c6975b8c3b9b67c3273b791aad0b28a4" ;
+    oc:dependsOnSkill oc:skill_invoice_automation ;
+    oc:differentia "processes receipts through OCR extraction, auto-categorization, policy compliance checking, approval workflow routing, and reimbursement tracking within corporate finance operations" ;
+    oc:handlesFailure oc:ApprovalRejected,
+        oc:OCRFailed,
+        oc:PolicyViolation ;
+    oc:hasArgumentHint "receipt image, expense details, or report period" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Automate expense tracking, receipt processing, approval workflows, and reimbursement management" ;
+    oc:hasName "expense-tracker" ;
+    oc:impartsKnowledge oc:kn_2a3ecf23,
+        oc:kn_44d035b6,
+        oc:kn_6d579681,
+        oc:kn_ae88e55f,
+        oc:kn_b13d7f97,
+        oc:kn_d55dda25,
+        oc:kn_e902056d ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "check expense policy compliance",
+        "generate spending analytics",
+        "manage approval workflows",
+        "process receipts",
+        "process reimbursements",
+        "submit expense reports",
+        "track expenses" ;
+    oc:yieldsState oc:ExpenseReportGenerated,
+        oc:PolicyComplianceChecked,
+        oc:ReimbursementRequested .
+
+oc:kn_2a3ecf23 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a policy compliance check identifies a soft violation" ;
+    oc:directiveContent "For soft policy violations (e.g., per-person meal limit slightly exceeded), flag for review, notify the submitter, and allow written justification rather than rejecting outright." ;
+    oc:hasRationale "Allowing justification for minor violations reduces friction while still maintaining oversight; hard violations should be rejected with manager notification." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_44d035b6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before submitting any expense report" ;
+    oc:directiveContent "Never submit an expense report without first running policy compliance checks against the approval matrix and spending limits." ;
+    oc:hasRationale "Skipping compliance checks leads to rejected reports, delayed reimbursements, and potential escalation for repeated violations." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6d579681 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining approval routing for expenses" ;
+    oc:directiveContent "Route approvals based on the tiered amount matrix: auto-approve under $100, direct manager for $100-$500, add department head for $500-$2000, and include finance director above $2000." ;
+    oc:hasRationale "Tiered approval prevents bottlenecks on small expenses while ensuring appropriate oversight on larger spend." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ae88e55f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing receipt images through OCR" ;
+    oc:directiveContent "Always extract vendor name, total amount, transaction date, and payment method as required OCR fields; line items, tax, tip, currency, and receipt number are optional but valuable when present." ;
+    oc:hasRationale "Required fields ensure minimum viable expense data for compliance and reimbursement; optional fields enrich the record for audit trails and detailed reporting." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b13d7f97 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "After expense submission or receipt processing" ;
+    oc:directiveContent "Processing expenses triggers downstream effects: notification to approvers, credit card reconciliation flagging, and budget variance updates for the department." ;
+    oc:hasRationale "Expense processing is not isolated — it impacts approval queues, financial reconciliation, and departmental budget tracking." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d55dda25 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating expense submissions" ;
+    oc:directiveContent "Receipts are required for all expenses over $25; expenses submitted without required receipts must be flagged and cannot proceed to approval." ;
+    oc:hasRationale "The $25 receipt threshold is a hard compliance rule — missing receipts create audit risk and may violate tax regulations." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e902056d a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When ingesting receipts from multiple sources (uploads, email, credit card sync)" ;
+    oc:directiveContent "Receipt OCR extraction should use receipt_number or a hash of vendor+date+amount to deduplicate, preventing the same receipt from being processed twice." ;
+    oc:hasRationale "Duplicate expense entries inflate reports, cause over-reimbursement, and create reconciliation failures." ;
+    oc:severityLevel "HIGH" .
+

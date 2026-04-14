@@ -1,0 +1,149 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_shopify_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "shopify-automation" ;
+    skos:broader "e-commerce workflow automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/shopify-automation" ;
+    oc:contentHash "a354dcf3493c9f3c77cb91dbc886c6fe48de38f616366e018e57e8c62f8c557a" ;
+    oc:differentia "integrates Shopify store operations including inventory management, order processing, customer lifecycle workflows, multi-channel synchronization, and analytics reporting based on n8n workflow templates" ;
+    oc:handlesFailure oc:APIRateLimited,
+        oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "shopify_customers",
+        "shopify_inventory",
+        "shopify_orders",
+        "shopify_products" ;
+    oc:hasArgumentHint "shopify workflow type (e.g., 'inventory alerts', 'order processing', 'customer segmentation', 'cart recovery', 'sales report')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Shopify e-commerce automation - inventory management, order processing, customer workflows, and analytics" ;
+    oc:hasName "shopify-automation" ;
+    oc:hasRequirement oc:req_1a93a60a,
+        oc:req_1bd6bbb8,
+        oc:req_3c1dee29,
+        oc:req_7f0d78cf,
+        oc:req_a51626d3,
+        oc:req_c1bd42b0,
+        oc:req_ca659a14,
+        oc:req_d5c6cc1d,
+        oc:req_e604c92e ;
+    oc:impartsKnowledge oc:kn_2070889e,
+        oc:kn_2cfab697,
+        oc:kn_37402392,
+        oc:kn_4ed3013a,
+        oc:kn_72ca148a,
+        oc:kn_b0069641,
+        oc:kn_e9bf731a,
+        oc:kn_f2e8c54f ;
+    oc:isUserInvocable true ;
+    oc:nature "automation" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate customer segmentation and post-purchase engagement",
+        "automate order processing and fulfillment workflows",
+        "automate shopify inventory management and low stock alerts",
+        "generate e-commerce analytics and sales reports",
+        "recover abandoned carts with automated email sequences",
+        "synchronize inventory and pricing across multiple sales channels" ;
+    oc:yieldsState oc:CustomerSegmented,
+        oc:InventorySynced,
+        oc:OrderProcessed,
+        oc:ShopifyConnected .
+
+oc:kn_2070889e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring multi-channel price synchronization" ;
+    oc:directiveContent "Apply channel-specific markup/discount rules when syncing prices: Amazon +15%, eBay +10%, wholesale -30% to account for platform fees and customer segments." ;
+    oc:hasRationale "Each channel has different fee structures and customer expectations; uniform pricing leads to margin erosion on high-fee platforms or uncompetitive pricing on others." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2cfab697 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing the cart abandonment recovery sequence" ;
+    oc:directiveContent "Never send all three abandoned cart recovery emails if the cart has already been recovered or the customer has made a new purchase." ;
+    oc:hasRationale "Sending recovery emails to customers who already purchased creates a confusing and annoying experience that harms brand perception." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_37402392 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When updating inventory after order fulfillment" ;
+    oc:directiveContent "Inventory decrement operations must be idempotent — decrementing stock for the same order twice must not reduce inventory further." ;
+    oc:hasRationale "Webhook retries or duplicate order events can trigger multiple inventory updates, causing phantom stock depletion and false stockouts." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4ed3013a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing new Shopify orders through the fulfillment pipeline" ;
+    oc:directiveContent "Order validation must check fraud score, inventory availability, and payment capture status before any fulfillment actions are taken." ;
+    oc:hasRationale "Skipping validation can result in shipping fraudulent orders, overselling unavailable products, or fulfilling unpaid orders — all causing financial loss." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_72ca148a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring multi-channel inventory synchronization" ;
+    oc:directiveContent "Maintain a buffer stock (default 5 units) when syncing inventory across multiple sales channels to prevent overselling on secondary platforms." ;
+    oc:hasRationale "Without a buffer, concurrent orders across channels can exceed actual inventory, leading to overselling and cancelled orders which damage seller metrics." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b0069641 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing customer post-purchase engagement workflows" ;
+    oc:directiveContent "Time post-purchase engagement sequence carefully: review request at day 3, reminder with discount at day 7, related products at day 14, and replenishment reminder at day 30 for consumables." ;
+    oc:hasRationale "Properly timed touchpoints maximize review submission rates and repeat purchases without overwhelming the customer with communications." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e9bf731a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating predictive reorder points for inventory management" ;
+    oc:directiveContent "Use different safety factors for reorder points based on product velocity: 1.5x for high-velocity, 1.3x for normal, 1.1x for slow-moving items." ;
+    oc:hasRationale "Uniform safety factors either over-stock slow movers (tying up capital) or under-stock fast movers (causing stockouts). Velocity-based factors optimize working capital." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f2e8c54f a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any Shopify automation workflow" ;
+    oc:directiveContent "Verify Shopify MCP server connection and API credentials are valid before attempting any store operations." ;
+    oc:hasRationale "Silent authentication failures can cause workflows to appear successful while no actual store operations were performed." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_1a93a60a a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "n8n workflow automation platform" .
+
+oc:req_1bd6bbb8 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Google Sheets integration" .
+
+oc:req_3c1dee29 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Slack integration" .
+
+oc:req_7f0d78cf a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shopify_orders MCP tool" .
+
+oc:req_a51626d3 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shopify_customers MCP tool" .
+
+oc:req_c1bd42b0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shopify_inventory MCP tool" .
+
+oc:req_ca659a14 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Shopify Admin API" .
+
+oc:req_d5c6cc1d a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shopify-mcp MCP server" .
+
+oc:req_e604c92e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shopify_products MCP tool" .
+

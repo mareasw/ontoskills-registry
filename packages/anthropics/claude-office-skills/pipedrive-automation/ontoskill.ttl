@@ -1,0 +1,101 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pipedrive_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pipedrive-automation" ;
+    skos:broader "CRM workflow automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pipedrive-automation" ;
+    oc:contentHash "aa49ed71dd332f0f5ad4476f232c3c12382aca1129cce953e335a0e2d01f33b4" ;
+    oc:dependsOnSkill oc:skill_crm_automation ;
+    oc:differentia "Automates Pipedrive-specific deal management, pipeline tracking, activity workflows, and sales reporting via MCP server integration" ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "pipedrive_activity",
+        "pipedrive_deal",
+        "pipedrive_organization",
+        "pipedrive_person" ;
+    oc:hasArgumentHint "workflow name or pipedrive operation (e.g., 'create deal', 'pipeline report', 'automation setup')" ;
+    oc:hasCategory "crm" ;
+    oc:hasDescription "Automate Pipedrive CRM workflows including deal management, pipeline tracking, and sales reporting" ;
+    oc:hasName "pipedrive-automation" ;
+    oc:hasPackageName "pipedrive-automation" ;
+    oc:impartsKnowledge oc:kn_01733917,
+        oc:kn_591efa70,
+        oc:kn_60eb1471,
+        oc:kn_712b0948,
+        oc:kn_748ef213,
+        oc:kn_81a720a4,
+        oc:kn_87528ead,
+        oc:kn_d3e749e6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate sales pipeline workflows",
+        "configure pipedrive automations and triggers",
+        "generate sales reports and forecasts",
+        "manage deals in pipedrive",
+        "sync pipedrive with slack and calendar",
+        "track activities and follow-ups" ;
+    oc:yieldsState oc:ActivityLogged,
+        oc:DealCreated,
+        oc:PipelineReported .
+
+oc:kn_01733917 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When monitoring pipeline health" ;
+    oc:directiveContent "Never allow deals to stagnate past their stage-specific rotting threshold (7-14 days depending on stage) without action." ;
+    oc:hasRationale "Deal rotting indicates stalled momentum and leads to missed close dates and inaccurate forecasts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_591efa70 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Pipedrive automation workflows" ;
+    oc:directiveContent "Automate stage progression triggers to create follow-up activities and update custom fields whenever a deal moves stages." ;
+    oc:hasRationale "Automated stage transitions ensure consistent activity logging and no manual follow-ups are missed" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_60eb1471 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When setting up or modifying Pipedrive automations" ;
+    oc:directiveContent "The skill interacts with Pipedrive via an MCP server (crm-mcp) requiring authenticated API access; ensure credentials are not exposed in workflow configurations." ;
+    oc:hasRationale "CRM data contains sensitive customer and deal information that must be protected" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_712b0948 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When creating deals programmatically" ;
+    oc:directiveContent "Custom fields (Lead Source, Product Interest, Decision Timeline, etc.) must be explicitly set during deal creation or they will be empty, reducing reporting accuracy." ;
+    oc:hasRationale "Missing custom field data breaks win/loss analysis by source and other segment-based reporting" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_748ef213 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating or updating deals in Pipedrive" ;
+    oc:directiveContent "Every deal must have the five required fields populated: title, value, organization, stage, and owner. Do not create deals with missing required fields." ;
+    oc:hasRationale "Incomplete deals pollute pipeline data and undermine forecast accuracy" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_81a720a4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating forecasts or pipeline reports" ;
+    oc:directiveContent "Use stage-specific win probabilities (Lead In 10%, Contact Made 20%, Needs Defined 40%, Proposal Sent 60%, Negotiation 80%) to compute weighted pipeline value." ;
+    oc:hasRationale "Weighted pipeline values based on stage probability give more realistic revenue projections than raw totals" .
+
+oc:kn_87528ead a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When processing multiple deals or activities" ;
+    oc:directiveContent "Batch deal and activity operations when possible rather than making individual API calls for each record." ;
+    oc:hasRationale "Pipedrive API rate limits can be hit quickly with sequential calls, especially during bulk pipeline reviews" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_d3e749e6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When any customer interaction occurs" ;
+    oc:directiveContent "Log all customer interactions as activities (calls, meetings, emails, tasks, demos) with default durations and link them to the associated deal and organization." ;
+    oc:hasRationale "Complete activity logs enable accurate sales cycle analysis, rep performance measurement, and pipeline velocity calculations" .
+

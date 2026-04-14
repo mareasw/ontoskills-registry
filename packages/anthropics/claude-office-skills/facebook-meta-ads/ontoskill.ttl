@@ -1,0 +1,104 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_facebook_meta_ads a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "facebook-meta-ads" ;
+    skos:broader "Advertising automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/facebook-meta-ads" ;
+    oc:contentHash "5b9c5858cbc095d7f294c563815c9b447383b17df68c8bf1e604019abc24d8c3" ;
+    oc:differentia "manages Facebook and Instagram ad campaigns, audience targeting, creative optimization, pixel tracking, and performance reporting via Meta Ads API" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "meta_ads_create",
+        "meta_ads_report",
+        "meta_audience",
+        "meta_pixel" ;
+    oc:hasArgumentHint "campaign objectives, target audiences, ad creatives, or budget settings" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Automate Facebook and Instagram advertising campaigns, audience targeting, and performance optimization" ;
+    oc:hasName "facebook-meta-ads" ;
+    oc:impartsKnowledge oc:kn_05c0c2c9,
+        oc:kn_1235cd43,
+        oc:kn_482af4f3,
+        oc:kn_627a2767,
+        oc:kn_6eaceb9f,
+        oc:kn_7779348c,
+        oc:kn_8310007e,
+        oc:kn_e155f1ed ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "create facebook ad campaigns",
+        "create lookalike audiences",
+        "generate ad performance reports",
+        "manage ad budgets and bidding",
+        "optimize meta ads performance",
+        "run creative a/b tests",
+        "set up meta pixel tracking",
+        "target audiences on facebook and instagram" ;
+    oc:yieldsState oc:AdsRunning,
+        oc:CampaignCreated,
+        oc:PerformanceReportGenerated .
+
+oc:kn_05c0c2c9 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before launching any campaign with conversion objectives" ;
+    oc:directiveContent "Verify Meta Pixel implementation and Conversions API setup with deduplication enabled before launching conversion-optimized campaigns." ;
+    oc:hasRationale "Inaccurate conversion tracking wastes budget by optimizing toward wrong signals and producing unreliable ROAS data." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_1235cd43 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When configuring campaign automation and monitoring" ;
+    oc:directiveContent "Set up automated rules to pause underperforming ads (CPA > threshold) and scale winners (ROAS > threshold) with budget increase caps to prevent runaway spend." ;
+    oc:hasRationale "Automated rules prevent budget waste on poor performers while capitalizing on winners, reducing the need for constant manual oversight." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_482af4f3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up new audience targeting for campaigns" ;
+    oc:directiveContent "Start with broad audience targeting, then refine based on performance data rather than starting with narrow targeting." ;
+    oc:hasRationale "Broad audiences allow Meta's algorithm to find the best converters; starting too narrow restricts the learning phase and limits delivery." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_627a2767 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When setting up creative testing for new campaigns" ;
+    oc:directiveContent "Use Dynamic Creative Optimization (DCO) to systematically test multiple combinations of images, videos, headlines, primary text, and CTAs rather than manual A/B testing." ;
+    oc:hasRationale "DCO automates the combinatorial testing process, allowing Meta's algorithm to find the best-performing asset combinations faster than manual testing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6eaceb9f a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "During ongoing campaign monitoring and optimization" ;
+    oc:directiveContent "Monitor frequency metrics closely — when frequency exceeds 3, the audience is seeing the same ad too often (ad fatigue) and creative refresh is needed." ;
+    oc:hasRationale "High frequency leads to diminishing returns, increased costs, and negative brand perception. Automated rules should flag frequency > 3." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7779348c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating ad creatives and selecting formats" ;
+    oc:directiveContent "Design all ad creatives mobile-first, as the majority of Meta ad impressions occur on mobile devices (Feed, Stories, Reels)." ;
+    oc:hasRationale "Mobile placements dominate Meta's inventory; creatives not optimized for mobile suffer lower engagement and higher costs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8310007e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing ad copy for any Meta ad format" ;
+    oc:directiveContent "Primary text is limited to 125 characters, headlines to 40 characters, and descriptions to 30 characters for single image ads." ;
+    oc:hasRationale "Exceeding character limits will cause ad rejection or truncation, reducing ad effectiveness and requiring resubmission." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e155f1ed a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring budget allocation across ad sets" ;
+    oc:directiveContent "Allocate budgets with approximately 70% toward prospecting and 30% toward retargeting to maintain a healthy funnel balance." ;
+    oc:hasRationale "Over-investing in retargeting exhausts small audiences quickly, while under-investing limits retargeting ROAS which typically outperforms prospecting." ;
+    oc:severityLevel "MEDIUM" .
+

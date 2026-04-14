@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_form_builder a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "form-builder" ;
+    skos:broader "Document form generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/form-builder" ;
+    oc:contentHash "c39ac9e6214ad53fb07c3b48185065389061c927ba99c2d02160c30ec906ec57" ;
+    oc:differentia "that uses docassemble to create interactive, conditional questionnaires that adapt based on user answers and generate completed documents" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "form description and conditional logic requirements" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Build interactive document forms and questionnaires using docassemble" ;
+    oc:hasName "form-builder" ;
+    oc:hasPackageName "form-builder" ;
+    oc:impartsKnowledge oc:kn_0b427177,
+        oc:kn_701d5fda,
+        oc:kn_b9587675,
+        oc:kn_bbe0d09c,
+        oc:kn_cace2c5f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build questionnaire",
+        "create conditional document form",
+        "create interactive form",
+        "design multi-step form",
+        "generate docassemble interview YAML" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0b427177 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining form fields in docassemble" ;
+    oc:directiveContent "Do not forget to set 'datatype' on fields that require specific validation (email, integer, currency, date, yesno). Plain text fields will accept any input." ;
+    oc:hasRationale "Missing datatype declarations lead to unvalidated user input and downstream errors in document generation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_701d5fda a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building multi-path questionnaires with branching logic" ;
+    oc:directiveContent "Use conditional logic with 'if:' directives to show or hide question blocks based on prior answers, enabling adaptive form flow." ;
+    oc:hasRationale "Conditional blocks prevent users from seeing irrelevant questions, improving completion rates and data quality." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b9587675 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing docassemble interview YAML" ;
+    oc:directiveContent "Docassemble interviews must be valid YAML. Indentation errors, missing '---' separators, or incorrect field syntax will cause runtime failures." ;
+    oc:hasRationale "Docassemble parses YAML strictly; structural errors prevent the interview from loading at all, with unhelpful error messages." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bbe0d09c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When producing output documents from form answers" ;
+    oc:directiveContent "Use the 'attachment:' block in a mandatory question to generate the final document, referencing collected variables with ${ variable_name } Mako syntax." ;
+    oc:hasRationale "The attachment block is docassemble's primary mechanism for assembling final documents from collected interview data." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cace2c5f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any docassemble interview" ;
+    oc:directiveContent "Structure docassemble interviews as a sequence of YAML blocks separated by '---', where each block defines a question, logic, or attachment. Use 'mandatory: True' on the final screen to ensure completion." ;
+    oc:hasRationale "Docassemble processes interview blocks non-linearly, so mandatory blocks guarantee the user reaches the final screen regardless of navigation path." ;
+    oc:severityLevel "HIGH" .
+

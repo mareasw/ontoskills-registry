@@ -1,0 +1,108 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_n8n_workflow a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "n8n-workflow" ;
+    skos:broader "Workflow automation platform" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/n8n-workflow" ;
+    oc:contentHash "ccc53fe79b5e4e3f2432ff39563d2aef1c8a08ae3747dca8e45fb8a241c72524" ;
+    oc:differentia "Uses n8n node-based architecture with 7800+ templates and 400+ app integrations to chain document operations into automated pipelines" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "natural language description of desired workflow (e.g., \"Automate PDF → OCR → Translation → Email workflow\")" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate document workflows with n8n - 7800+ workflow templates" ;
+    oc:hasName "n8n-workflow" ;
+    oc:hasPackageName "n8n-workflow" ;
+    oc:hasRequirement oc:req_024b1f0e,
+        oc:req_47a90164,
+        oc:req_6caa6449,
+        oc:req_99341ad8,
+        oc:req_d2129275,
+        oc:req_e18dc245,
+        oc:req_fd635a4a ;
+    oc:impartsKnowledge oc:kn_270cd298,
+        oc:kn_573db419,
+        oc:kn_92d0eb6b,
+        oc:kn_e3ead45a,
+        oc:kn_fb28d7b5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate document workflows",
+        "build multi-step document automation with conditional logic",
+        "chain document operations into pipelines",
+        "integrate document processing with external apps",
+        "watch folders and trigger document processing" ;
+    oc:yieldsState oc:DocumentProcessed,
+        oc:WorkflowExecuted .
+
+oc:kn_270cd298 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting nodes for a workflow" ;
+    oc:directiveContent "Use the four key node types purposefully: Triggers to start, Document nodes to process files, Transform nodes to manipulate data, and Output nodes to deliver results." ;
+    oc:hasRationale "Proper node type selection ensures workflows are readable, maintainable, and leverage n8n's built-in capabilities rather than reinventing logic in Code nodes" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_573db419 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before moving any n8n workflow to production" ;
+    oc:directiveContent "Never deploy workflows to production without error handling nodes and sample data testing." ;
+    oc:hasRationale "Without error handling nodes, failures are silent and data loss can occur; testing with sample data catches edge cases before they impact real operations" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_92d0eb6b a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When configuring n8n nodes that require authentication" ;
+    oc:directiveContent "Store all credentials securely using n8n's built-in credential manager, never hardcode API keys or tokens in workflow nodes." ;
+    oc:hasRationale "Hardcoded credentials in workflow JSON are visible in exports and version control, creating a security exposure" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e3ead45a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When architecting n8n workflows" ;
+    oc:directiveContent "Structure workflows as Trigger → Action → Action → Output pipelines where data flows between nodes sequentially." ;
+    oc:hasRationale "n8n's node-based architecture is fundamentally a data flow graph; keeping the linear trigger-to-output pattern simplifies debugging and maintenance" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fb28d7b5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any new n8n workflow" ;
+    oc:directiveContent "Start with existing n8n community templates and customize as needed rather than building workflows from scratch." ;
+    oc:hasRationale "7800+ templates provide battle-tested patterns that reduce errors and accelerate implementation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_024b1f0e a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "n8n node types: Triggers, Document, Transform, Output" .
+
+oc:req_47a90164 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "openpyxl" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python-docx" .
+
+oc:req_99341ad8 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "jinja2" .
+
+oc:req_d2129275 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "n8n (self-hosted or cloud)" .
+
+oc:req_e18dc245 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python-pptx" .
+
+oc:req_fd635a4a a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "reportlab" .
+

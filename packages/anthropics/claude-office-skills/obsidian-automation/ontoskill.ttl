@@ -1,0 +1,107 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_obsidian_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "obsidian-automation" ;
+    skos:broader "knowledge management automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/obsidian-automation" ;
+    oc:contentHash "71c3232b9670420d22aa33131e5862ecd148d7142f62a0680d01eeafc9f8e431" ;
+    oc:differentia "that orchestrates Obsidian note creation, linking, templating, and graph analysis workflows for personal knowledge bases" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "note content, search query, template configuration, or link pattern" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Automate Obsidian knowledge management, note linking, and personal knowledge base workflows" ;
+    oc:hasName "obsidian-automation" ;
+    oc:hasRequirement oc:req_19e0c123,
+        oc:req_37ac0b93,
+        oc:req_3d69406c,
+        oc:req_837b0cba,
+        oc:req_a33e21ff,
+        oc:req_b54b0584,
+        oc:req_b89e882c ;
+    oc:impartsKnowledge oc:kn_5a2e9961,
+        oc:kn_8578ef3f,
+        oc:kn_a30c6163,
+        oc:kn_cb091b16,
+        oc:kn_f3458762 ;
+    oc:isUserInvocable true ;
+    oc:nature "concept" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "automate note-taking workflows",
+        "create obsidian notes from templates",
+        "explore knowledge graph connections",
+        "generate daily and meeting notes",
+        "link knowledge notes automatically",
+        "search obsidian vault" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:NotesLinked .
+
+oc:kn_5a2e9961 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When categorizing and connecting notes in the knowledge base" ;
+    oc:directiveContent "Use both tags and links strategically — tags for categorical grouping, links for relational connections between ideas." ;
+    oc:hasRationale "Tags and links serve complementary organizational purposes; over-relying on either reduces the graph's navigability" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8578ef3f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating new notes or importing content" ;
+    oc:directiveContent "Avoid creating orphan notes without incoming links — always connect new notes to the existing knowledge graph." ;
+    oc:hasRationale "Orphan notes become lost knowledge that is difficult to discover through graph exploration or backlink traversal" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a30c6163 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When creating any templated note type" ;
+    oc:directiveContent "Apply standardized templates for recurring note types (daily notes, meeting notes, book notes, research notes) to ensure consistent structure and metadata." ;
+    oc:hasRationale "Templates enforce consistency, enable Dataview queries, and reduce cognitive overhead for routine note creation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cb091b16 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or organizing any note in the Obsidian vault" ;
+    oc:directiveContent "Create atomic notes: one idea per note, with consistent naming conventions and liberal cross-linking between related ideas." ;
+    oc:hasRationale "Atomic notes enable granular knowledge graph traversal and make individual ideas reusable across contexts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f3458762 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running auto-linking or bulk note creation workflows" ;
+    oc:directiveContent "Auto-linking rules should check for existing links before creating duplicates, and note creation should verify the target note doesn't already exist." ;
+    oc:hasRationale "Duplicate links and notes fragment knowledge and make the graph noisy" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_19e0c123 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "obsidian_link" .
+
+oc:req_37ac0b93 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "obsidian_search" .
+
+oc:req_3d69406c a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Dataview plugin query syntax" .
+
+oc:req_837b0cba a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "obsidian_create_note" .
+
+oc:req_a33e21ff a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Obsidian vault structure and markdown conventions" .
+
+oc:req_b54b0584 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "notes-mcp MCP server" .
+
+oc:req_b89e882c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "obsidian_template" .
+

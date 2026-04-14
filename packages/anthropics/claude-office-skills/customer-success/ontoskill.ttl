@@ -1,0 +1,87 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_customer_success a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "customer-success" ;
+    skos:broader "Customer success management framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/customer-success" ;
+    oc:contentHash "c2325b03a2be8081452e66186857421404c8e1cf9205f3eec1f150b0b05fa7cc" ;
+    oc:dependsOnSkill oc:skill_subscription_management ;
+    oc:differentia "Provides structured methodologies for onboarding, health scoring, QBR creation, expansion playbooks, and retention strategies" ;
+    oc:extends oc:skill_crm_automation,
+        oc:skill_saas_metrics ;
+    oc:handlesFailure oc:ChurnRiskCritical,
+        oc:CustomerUnresponsive,
+        oc:InsufficientCustomerData ;
+    oc:hasArgumentHint "customer-name or account-id and task type (onboarding, health-score, qbr, expansion, retention)" ;
+    oc:hasCategory "sales" ;
+    oc:hasDescription "Customer success management - onboarding, health scoring, QBRs, expansion playbooks, and retention strategies" ;
+    oc:hasName "customer-success" ;
+    oc:impartsKnowledge oc:kn_07d3e232,
+        oc:kn_7c4924ae,
+        oc:kn_9717f35c,
+        oc:kn_97ba5256,
+        oc:kn_a1729879,
+        oc:kn_df89fac6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:CRMIntegrated,
+        oc:CustomerDataAvailable ;
+    oc:resolvesIntent "assess churn risk and plan save offers",
+        "build expansion and upsell playbooks",
+        "create health scores for customer accounts",
+        "design customer onboarding programs",
+        "develop retention and churn prevention strategies",
+        "generate QBR presentations and templates" ;
+    oc:yieldsState oc:ExpansionPlaybookReady,
+        oc:HealthScoreCalculated,
+        oc:OnboardingPlanCreated,
+        oc:QBRGenerated,
+        oc:RetentionStrategyDefined .
+
+oc:kn_07d3e232 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a customer shows high-risk churn indicators" ;
+    oc:directiveContent "Match save offers to churn reason: price concerns → discount with annual commitment; low usage → free intensive training or professional services; competitor threat → competitive discount with feature commitment; organizational change → contract flexibility or pause option." ;
+    oc:hasRationale "Generic save offers fail because they don't address the root cause; tailored offers demonstrate understanding and preserve the relationship even if the customer ultimately leaves." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7c4924ae a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When automated health score monitoring detects a threshold breach" ;
+    oc:directiveContent "Trigger a CSM call within 24 hours when health score drops below 40 (critical), within 48 hours when below 60 (at risk), and pause marketing emails to avoid irritating a dissatisfied customer." ;
+    oc:hasRationale "Rapid response to declining health scores is the single most effective churn prevention tactic; delays exponentially reduce save rates." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9717f35c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building or configuring customer health score models" ;
+    oc:directiveContent "Weight health score components as: product engagement 40%, relationship 25%, financial 20%, sentiment 15% to prioritize measurable usage signals over softer metrics." ;
+    oc:hasRationale "Product engagement is the strongest leading indicator of retention, while sentiment is important but lags behind behavioral signals." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_97ba5256 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When preparing for a Quarterly Business Review" ;
+    oc:directiveContent "Before any QBR, verify: success metrics vs targets, product usage trends, support ticket history, open feature requests, renewal timeline, and expansion signals for strategic discussion." ;
+    oc:hasRationale "QBRs are the highest-leverage touchpoint in customer success — unprepared QBRs erode trust and signal disengagement from the customer's outcomes." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a1729879 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When identifying upsell and cross-sell opportunities" ;
+    oc:directiveContent "Never wait until renewal time to discuss expansion — instead monitor expansion signals (approaching seat limits, champion advocacy, new department interest, funding rounds) and engage proactively." ;
+    oc:hasRationale "Late-stage expansion conversations feel transactional and desperate; proactive expansion driven by customer signals feels consultative and value-aligned." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df89fac6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing or executing customer onboarding programs" ;
+    oc:directiveContent "Structure onboarding in 5 phases over ~6 weeks: kickoff → implementation → training → launch → handoff, with explicit deliverables and checklists at each phase boundary." ;
+    oc:hasRationale "Structured phased onboarding ensures consistent delivery, clear accountability, and measurable progress toward first value achievement." ;
+    oc:severityLevel "HIGH" .
+

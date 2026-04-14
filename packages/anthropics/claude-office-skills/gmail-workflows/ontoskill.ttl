@@ -1,0 +1,95 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_gmail_workflows a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "gmail-workflows" ;
+    skos:broader "Email automation workflow designer" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/gmail-workflows" ;
+    oc:contentHash "a226e1245eb88d04fb55da9c4125b331df8e6177896b6c8224f7b9a3e4f65a70" ;
+    oc:differentia "that orchestrates Gmail with Google Drive through filter-process-organize-notify patterns using n8n or Google Apps Script" ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimitExceeded ;
+    oc:hasAllowedTool "gdrive_create_folder",
+        "gdrive_upload",
+        "gmail_apply_label",
+        "gmail_archive",
+        "gmail_get_attachments",
+        "gmail_search" ;
+    oc:hasArgumentHint "workflow-type (attachment-manager, invoice-archiver, client-organizer, email-analytics) and configuration preferences" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Automate Gmail with intelligent workflows - attachment management, email organization, auto-archiving, and Google Drive integration" ;
+    oc:hasName "gmail-workflows" ;
+    oc:impartsKnowledge oc:kn_096cea3e,
+        oc:kn_2605daf3,
+        oc:kn_27fdc7f7,
+        oc:kn_2e1a34a0,
+        oc:kn_539a8287,
+        oc:kn_8135a5fa,
+        oc:kn_e7aa6857 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "auto-archive invoices from email",
+        "automate gmail workflows",
+        "create gmail automation rules",
+        "organize emails with smart labeling",
+        "save email attachments to google drive",
+        "track email metrics and generate reports" ;
+    oc:yieldsState oc:EmailsProcessed,
+        oc:FilesUploaded,
+        oc:WorkflowConfigured .
+
+oc:kn_096cea3e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any new Gmail automation workflow" ;
+    oc:directiveContent "Follow the Filter → Process → Organize → Notify pattern as the canonical workflow structure for email automation." ;
+    oc:hasRationale "This four-stage pattern ensures emails are validated before processing, properly stored, and stakeholders are informed — minimizing errors and lost communications" .
+
+oc:kn_2605daf3 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "On API errors or workflow failures" ;
+    oc:directiveContent "When hitting rate limits, reduce trigger frequency and switch to batch processing. When permission errors occur, re-authorize OAuth credentials." ;
+    oc:hasRationale "Gmail API enforces strict rate limits; batch processing is the documented recovery path and OAuth tokens expire requiring re-authorization" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_27fdc7f7 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When setting up OAuth credentials and workflow execution" ;
+    oc:directiveContent "Request minimal OAuth scopes (gmail.readonly for reading, gmail.modify for labels/archive, drive.file for Drive) and never log email content." ;
+    oc:hasRationale "Over-privileged OAuth scopes increase blast radius of credential compromise; logging email content violates data privacy policies" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_2e1a34a0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring any Gmail trigger or filter rule" ;
+    oc:directiveContent "Always use specific sender filters and subject patterns to avoid processing spam or irrelevant emails in automated workflows." ;
+    oc:hasRationale "Broad filters cause noise, wasted API calls, and potential processing of sensitive or irrelevant emails" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_539a8287 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any Gmail automation workflow" ;
+    oc:directiveContent "Verify OAuth credentials are valid, Gmail API access is authorized, and target Drive folders exist or auto-creation is enabled before running workflows." ;
+    oc:hasRationale "Missing credentials or inaccessible folders cause silent failures that go unnoticed until stakeholders report missing files" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8135a5fa a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Gmail triggers and attachment extraction" ;
+    oc:directiveContent "Never set trigger polling frequency to less than 1 minute intervals or process attachments larger than 25MB without chunked upload." ;
+    oc:hasRationale "Aggressive polling causes Gmail API rate limits; large file uploads without chunking fail silently and waste storage quota" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e7aa6857 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Google Drive upload destinations" ;
+    oc:directiveContent "Use date-based folder structures (/{year}/{month}) and naming patterns ({filename}_{sender}_{date}) for uploaded attachments to ensure easy retrieval." ;
+    oc:hasRationale "Flat folder structures become unmanageable at scale; date-based hierarchies align with natural search and retention policies" .
+

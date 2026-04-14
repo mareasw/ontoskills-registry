@@ -1,0 +1,129 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_to_docx a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-to-docx" ;
+    skos:broader "Document converter" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-to-docx" ;
+    oc:contentHash "7bfebf3a6aa1a40faa71e9bbd0084e64c099e5ae358db864d1ed2d607fae92bf" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that converts PDF files to editable Word documents using pdf2docx, preserving layout, tables, images, and text formatting" ;
+    oc:extends oc:skill_pdf_converter ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "pdf-file-path [options: pages, output-path]" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Convert PDF files to editable Word documents using pdf2docx" ;
+    oc:hasName "pdf-to-docx" ;
+    oc:hasPackageName "pdf-to-docx" ;
+    oc:hasPayload oc:payload_7bfebf3a6aa1a40f ;
+    oc:hasRequirement oc:req_2b920d28,
+        oc:req_3b2e1010,
+        oc:req_68263e2f,
+        oc:req_7987f47d,
+        oc:req_d2bd96eb,
+        oc:req_d87817a6 ;
+    oc:impartsKnowledge oc:kn_0a031b95,
+        oc:kn_54d49ac8,
+        oc:kn_a0aa5a30,
+        oc:kn_d2ec7efa,
+        oc:kn_fb578a1a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "batch convert PDFs to Word documents",
+        "convert PDF to Word",
+        "convert PDF to docx",
+        "convert specific PDF pages to Word",
+        "extract editable text from PDF" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0a031b95 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When converting multiple PDFs or large documents" ;
+    oc:directiveContent "Batch conversion can use ThreadPoolExecutor with configurable max_workers (default 4). Page-by-page conversion with progress tracking is recommended for large documents." ;
+    oc:hasRationale "Parallel processing significantly reduces total conversion time for batch operations, while progress tracking provides user feedback for long-running conversions" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_54d49ac8 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When converting PDFs with complex formatting" ;
+    oc:directiveContent "Complex tables, watermarks, protected/encrypted PDFs, and non-standard fonts may not convert accurately. Protected PDFs require a password." ;
+    oc:hasRationale "pdf2docx has limitations with sophisticated layout structures and cannot bypass PDF security protections" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a0aa5a30 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting large PDFs or unfamiliar documents" ;
+    oc:directiveContent "Preview conversion with a few pages first before committing to full document conversion, especially for large or complex PDFs." ;
+    oc:hasRationale "Testing with a subset reveals layout issues, table complexity, and font problems before investing time in full conversion" .
+
+oc:kn_d2ec7efa a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before converting any PDF to Word" ;
+    oc:directiveContent "pdf2docx works best with native (text-based) PDFs. Scanned/image-based PDFs require OCR preprocessing before conversion for acceptable results." ;
+    oc:hasRationale "Native PDFs contain extractable text and layout metadata, while scanned PDFs are images that pdf2docx cannot parse without OCR" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fb578a1a a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing PDF to Word conversions" ;
+    oc:directiveContent "Running the same conversion multiple times produces identical output files, overwriting previous results. Always use context managers (with statement) to ensure proper resource cleanup." ;
+    oc:hasRationale "Proper resource cleanup prevents file handle leaks and ensures reproducible output" .
+
+oc:payload_7bfebf3a6aa1a40f a oc:ExecutionPayload ;
+    oc:code """from pdf2docx import Converter
+
+# Basic conversion
+with Converter('input.pdf') as cv:
+    cv.convert('output.docx')
+
+# Specific pages (0-indexed)
+with Converter('input.pdf') as cv:
+    cv.convert('output.docx', pages=[0, 1, 2])
+
+# With advanced options
+with Converter('input.pdf') as cv:
+    cv.convert(
+        'output.docx',
+        start=0,
+        end=None,
+        pages=None,
+        password=None,
+    )""" ;
+    oc:executor "python" ;
+    oc:timeout 120 .
+
+oc:req_2b920d28 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "office-mcp pdf_to_docx tool" .
+
+oc:req_3b2e1010 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pytesseract" .
+
+oc:req_68263e2f a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Pillow" .
+
+oc:req_7987f47d a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdf2docx Python library" .
+
+oc:req_d2bd96eb a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "PDF document structure" .
+
+oc:req_d87817a6 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pdf2image" .
+

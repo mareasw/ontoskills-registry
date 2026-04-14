@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_chart_designer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "chart-designer" ;
+    skos:broader "Data visualization design assistant" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/chart-designer" ;
+    oc:contentHash "967384fa0ed9c982c805f037335a73d452470f8d80d561adadca7f765c0b9b52" ;
+    oc:differentia "Recommends chart types and generates library-specific configurations (ECharts, Chart.js) with styling guidance based on visualization best practices" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "data description, visualization goal, audience context, and target library" ;
+    oc:hasCategory "visualization" ;
+    oc:hasDescription "Design effective data visualizations and charts. Generate chart configurations for ECharts, Chart.js, and other libraries. Create dashboards and reports." ;
+    oc:hasName "chart-designer" ;
+    oc:hasPackageName "chart-designer" ;
+    oc:impartsKnowledge oc:kn_3a54d6e2,
+        oc:kn_530dc0af,
+        oc:kn_e410d536,
+        oc:kn_f9c4a5ae,
+        oc:kn_ffaebe5a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DataAvailable ;
+    oc:resolvesIntent "apply chart best practices",
+        "choose a chart type for data",
+        "create dashboard layout",
+        "design a chart",
+        "design data visualization",
+        "generate Chart.js configuration",
+        "generate ECharts configuration",
+        "get color palette for charts" ;
+    oc:yieldsState oc:ChartConfigurationGenerated .
+
+oc:kn_3a54d6e2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing part-to-whole chart types" ;
+    oc:directiveContent "Use pie/donut charts only for 5 or fewer categories; for hierarchical proportions use treemap or sunburst; for composition over time use stacked area." ;
+    oc:hasRationale "Pie charts become unreadable with many slices; treemaps and stacked areas scale better for complex composition data" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_530dc0af a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any chart or visualization" ;
+    oc:directiveContent "Maximize data-ink ratio by removing unnecessary gridlines, minimizing chart junk, and letting data be the focus of the visualization." ;
+    oc:hasRationale "Following Tufte's data-ink ratio principle ensures the viewer's attention is directed at the meaningful data rather than decorative elements" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e410d536 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting color palettes for any chart type" ;
+    oc:directiveContent "Never use more than 7 colors in a single chart and always consider colorblind accessibility by using colorblind-friendly palettes." ;
+    oc:hasRationale "Excessive colors create cognitive overload and colorblind users (~8% of men) cannot distinguish many common palette combinations" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f9c4a5ae a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating comparison charts, especially bar charts" ;
+    oc:directiveContent "Bar chart y-axis must start at zero; use consistent scales when comparing multiple charts; sort data logically for readability." ;
+    oc:hasRationale "Non-zero baselines in bar charts exaggerate differences and mislead viewers; inconsistent scales make comparisons invalid" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ffaebe5a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — when delivering chart output to the user" ;
+    oc:directiveContent "This skill generates chart configurations but cannot render charts directly. Generated configs must be used in a rendering tool or library." ;
+    oc:hasRationale "The skill is a design and configuration generator, not a rendering engine; users must integrate configs into their application or dashboard" ;
+    oc:severityLevel "HIGH" .
+

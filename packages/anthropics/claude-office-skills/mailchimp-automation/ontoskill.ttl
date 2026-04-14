@@ -1,0 +1,103 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_mailchimp_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "mailchimp-automation" ;
+    skos:broader "Email marketing automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/mailchimp-automation" ;
+    oc:contentHash "b907dd493bb8eed7ca57a6944047b2bc31f65e4f3a2a830ce2ac08fad1eb0941" ;
+    oc:differentia "Automates Mailchimp campaigns, audience segmentation, email workflows, A/B testing, and analytics reporting" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "mailchimp_audience",
+        "mailchimp_automation",
+        "mailchimp_campaign",
+        "mailchimp_reports" ;
+    oc:hasArgumentHint "campaign-type or automation-task (e.g., 'create campaign', 'segment audience', 'abandoned cart', 'welcome series')" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Automate Mailchimp email marketing campaigns, audience management, automations, and analytics" ;
+    oc:hasName "mailchimp-automation" ;
+    oc:impartsKnowledge oc:kn_0fc8e04c,
+        oc:kn_27f274d3,
+        oc:kn_3bdce141,
+        oc:kn_65d9c2e2,
+        oc:kn_90553668,
+        oc:kn_950e1446,
+        oc:kn_f2a41975,
+        oc:kn_f78b1976 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze campaign performance",
+        "automate email workflows",
+        "create email campaign",
+        "create welcome series",
+        "generate campaign reports",
+        "manage audience segments",
+        "set up A/B testing",
+        "set up abandoned cart recovery" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:WorkflowConfigured .
+
+oc:kn_0fc8e04c a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When executing any email marketing campaign" ;
+    oc:directiveContent "Follow the campaign pipeline: Plan → Create Content → Configure → Test & Review → Schedule/Send → Analyze, and always review analytics to inform the next campaign." ;
+    oc:hasRationale "Skipping steps (especially testing) leads to errors in production; closing the loop with analysis drives continuous improvement" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_27f274d3 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing the send step in the campaign pipeline" ;
+    oc:directiveContent "Before sending any campaign, verify: subject line and preview text are set, tracking (opens, clicks, ecommerce) is enabled, recipient segment is correct, and template renders on mobile." ;
+    oc:hasRationale "Pre-send checks prevent common mistakes like sending to the wrong segment, broken links, or missing tracking that cannot be retroactively fixed" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3bdce141 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When monitoring audience health metrics" ;
+    oc:directiveContent "Dormant subscribers (no engagement in 90+ days) inflate list counts but hurt deliverability — implement re-engagement campaigns or remove them regularly." ;
+    oc:hasRationale "ISPs use engagement signals to determine inbox placement; high dormant rates trigger spam filtering for all subscribers" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_65d9c2e2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring campaign recipients" ;
+    oc:directiveContent "Never send campaigns without first segmenting the audience — blanket sends to entire lists degrade deliverability and engagement metrics." ;
+    oc:hasRationale "Segmented campaigns consistently outperform unsegmented ones; poor targeting increases unsubscribe rates and hurts sender reputation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_90553668 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up A/B testing for campaigns" ;
+    oc:directiveContent "A/B test subject lines on 20% of the audience first, then send the winning variant to the remaining 80%, using open rate as the default winning metric with a 4-hour wait period." ;
+    oc:hasRationale "Data-driven subject line selection significantly improves open rates; the 20/80 split balances statistical significance with reach" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_950e1446 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating email campaign content and templates" ;
+    oc:directiveContent "Design emails mobile-first since 38%+ of recipients open on mobile devices, and ensure all templates render correctly across desktop, mobile, and tablet." ;
+    oc:hasRationale "Mobile readers represent a significant portion of email engagement; poor mobile rendering leads to lower click-through rates and higher unsubscribes" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f2a41975 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When managing subscribers and creating campaigns via the API" ;
+    oc:directiveContent "Adding tags and updating subscriber merge fields are idempotent operations, but campaign creation is NOT — always check if a campaign already exists before creating a duplicate." ;
+    oc:hasRationale "Duplicate campaigns waste sends and confuse analytics; subscriber updates should be safely retryable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f78b1976 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any email campaign or automation workflow" ;
+    oc:directiveContent "Always comply with CAN-SPAM and GDPR regulations — include unsubscribe links, company address in footers, and honor opt-out requests promptly." ;
+    oc:hasRationale "Non-compliance carries legal penalties and can result in blacklisting of the sending domain" ;
+    oc:severityLevel "CRITICAL" .
+

@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_saas_metrics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "saas-metrics" ;
+    skos:broader "SaaS business metrics analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/saas-metrics" ;
+    oc:contentHash "ffec547c893333a927c1b78411abe73d11a44b888ca6460bca3ca50a01e9a04e" ;
+    oc:differentia "provides structured calculation templates, benchmarks, cohort analysis, and investor reporting for MRR, ARR, Churn, LTV, CAC, and unit economics" ;
+    oc:extends oc:skill_financial_modeling ;
+    oc:handlesFailure oc:InsufficientData,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "company metrics data or request for specific SaaS metric calculation" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "SaaS business metrics analysis - MRR, ARR, Churn, LTV, CAC, cohort analysis, and investor reporting" ;
+    oc:hasName "saas-metrics" ;
+    oc:impartsKnowledge oc:kn_4e58f72c,
+        oc:kn_6df197d0,
+        oc:kn_960b227c,
+        oc:kn_a34d62ac,
+        oc:kn_edfef732 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DataAvailable ;
+    oc:resolvesIntent "analyze MRR and ARR",
+        "analyze SaaS segmentation",
+        "build cohort analysis",
+        "calculate SaaS metrics",
+        "compute unit economics LTV CAC",
+        "forecast SaaS revenue",
+        "generate investor metrics report",
+        "measure churn and retention" ;
+    oc:yieldsState oc:MetricsComputed,
+        oc:ReportGenerated .
+
+oc:kn_4e58f72c a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When generating monthly or quarterly investor reports" ;
+    oc:directiveContent "For investor reporting, structure metrics as a dashboard with current vs. previous period comparisons, change indicators, and benchmarks. Include both the MRR waterfall and a goals-vs-actuals table." ;
+    oc:hasRationale "Investors need trend context, not just snapshots. The waterfall shows growth composition while goals-vs-actuals demonstrates execution against plan." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6df197d0 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing churn and retention" ;
+    oc:directiveContent "Never use a single average churn rate across all customer segments. Always segment churn analysis by plan tier, industry, and company size to identify which segments are healthy and which need intervention." ;
+    oc:hasRationale "Averaging churn across segments masks segment-specific problems — a 3.2% blended churn could hide 6% SMB churn (critical) and 1.5% enterprise churn (excellent)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_960b227c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating unit economics and acquisition efficiency" ;
+    oc:directiveContent "Use the LTV:CAC ratio and CAC payback period together as a unit economics health check. LTV:CAC > 3x and payback < 12 months (for mid-market) indicate a sustainable acquisition model." ;
+    oc:hasRationale "Either metric alone is insufficient — a high LTV:CAC with a long payback period creates cash flow risk, while a short payback with low LTV:CAC suggests under-investment in acquisition." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a34d62ac a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating or presenting MRR metrics" ;
+    oc:directiveContent "Always decompose MRR into its five components: New, Expansion, Reactivation, Contraction, and Churn — never report MRR as a single aggregate without the waterfall." ;
+    oc:hasRationale "The waterfall decomposition reveals the true growth dynamics and helps identify whether growth is driven by acquisition or expansion, and whether contraction/churn are manageable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_edfef732 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating retention and churn metrics" ;
+    oc:directiveContent "Net Revenue Retention (NRR) must include expansion revenue in the calculation. NRR > 100% indicates net expansion even with churn, which is the gold standard for SaaS health." ;
+    oc:hasRationale "Gross churn alone is misleading for SaaS businesses with expansion revenue. NRR captures the full revenue story from existing customers." ;
+    oc:severityLevel "CRITICAL" .
+

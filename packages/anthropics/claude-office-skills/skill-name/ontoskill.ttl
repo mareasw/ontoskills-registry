@@ -1,0 +1,67 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_skill_name a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "skill-name" ;
+    skos:broader "skill authoring template" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/skill-name" ;
+    oc:contentHash "d976de94ac11e0e7303ca4c2bc82e7470d11cf1945281a2742ff3d8ebb4c649e" ;
+    oc:differentia "defines the canonical structure, metadata schema, and section layout for creating new Claude Office skills, with frontmatter fields for categorization, MCP tool integration, input/output specification, and capability declarations" ;
+    oc:extends oc:skill_skill_development ;
+    oc:hasAllowedTool "office-mcp" ;
+    oc:hasArgumentHint "target skill name (kebab-case)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription """A clear, concise description of what this skill does (1-2 sentences). Focus on the VALUE it provides to the user.
+""" ;
+    oc:hasName "skill-name" ;
+    oc:hasPackageName "skill-name" ;
+    oc:impartsKnowledge oc:kn_0c1b64e5,
+        oc:kn_1cc7dcde,
+        oc:kn_23d947ec,
+        oc:kn_6f4217ec,
+        oc:kn_95fc8749 ;
+    oc:isUserInvocable false ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create new skills from a standardized template",
+        "scaffold a skill with proper metadata and section structure" .
+
+oc:kn_0c1b64e5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing skill content and scope" ;
+    oc:directiveContent "Skills are 'scenario-based solution guides' — they tell AI WHAT to do and HOW to do it, while MCP tools provide the WITH WHAT to accomplish tasks." ;
+    oc:hasRationale "Separating solution guidance (skills) from tool execution (MCP) enables skills to remain portable across tool implementations" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1cc7dcde a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When finalizing a skill for submission" ;
+    oc:directiveContent "Before submitting a skill, test it by copying SKILL.md content into a new Claude conversation, uploading a sample document, verifying expected behavior, and testing edge cases." ;
+    oc:hasRationale "Manual end-to-end testing catches gaps in instructions and domain knowledge that are invisible during authoring" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_23d947ec a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When naming or renaming a skill directory" ;
+    oc:directiveContent "Skill names must use lowercase kebab-case (e.g., expense-report, job-description) and avoid generic names like 'helper' or 'assistant'." ;
+    oc:hasRationale "Consistent naming conventions enable reliable skill discovery, routing, and programmatic access" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6f4217ec a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing the SKILL.md file for any new skill" ;
+    oc:directiveContent "The SKILL.md frontmatter must include: name, description, version, category, and MCP tool declarations. The body must include Overview, How to Use, Domain Knowledge, Output Format, Examples, and Limitations sections." ;
+    oc:hasRationale "The standardized schema ensures all skills are parseable, discoverable, and provide a consistent user experience" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_95fc8749 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When authoring any new skill" ;
+    oc:directiveContent "Each skill must solve one clear problem — be specific, embed domain expertise (not just instructions), show real-world examples, and acknowledge limitations." ;
+    oc:hasRationale "Focused skills with embedded knowledge produce more reliable and useful agent behavior than vague multi-purpose ones" ;
+    oc:severityLevel "HIGH" .
+

@@ -1,0 +1,75 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_batch_processor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "batch-processor" ;
+    skos:broader "document processing workflow" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/batch-processor" ;
+    oc:contentHash "48d1b3fc89ac8759be0dab2536d46882c353b90f4db94a9b8c38942ae936c8ee" ;
+    oc:dependsOnSkill oc:skill_batch_convert ;
+    oc:differentia "processes multiple documents in bulk with parallel execution, checkpointing, and progress tracking" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied,
+        oc:ProcessingError ;
+    oc:hasArgumentHint "operation description and file path(s) or directory" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Process multiple documents in bulk with parallel execution" ;
+    oc:hasName "batch-processor" ;
+    oc:hasPackageName "batch-processor" ;
+    oc:impartsKnowledge oc:kn_26ceda25,
+        oc:kn_568b6623,
+        oc:kn_6ef0f6f0,
+        oc:kn_7ea65e45,
+        oc:kn_ce68eb57 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "batch rename and organize files",
+        "convert documents in bulk",
+        "extract text from multiple files",
+        "mass update document properties",
+        "process hundreds of files with parallel execution" ;
+    oc:yieldsState oc:BatchComplete,
+        oc:DocumentsProcessed .
+
+oc:kn_26ceda25 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "During any batch processing execution" ;
+    oc:directiveContent "Use progress bars (tqdm) to provide real-time feedback on batch processing progress and log all failures for later review." ;
+    oc:hasRationale "User feedback and failure logging are essential for debugging partial failures and understanding job completion status." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_568b6623 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing more than a handful of files in bulk" ;
+    oc:directiveContent "Use parallel workers (ProcessPoolExecutor) to process multiple files concurrently, with max_workers set to CPU core count." ;
+    oc:hasRationale "Parallel execution dramatically reduces wall-clock time for I/O-bound and CPU-bound document operations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6ef0f6f0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running batch jobs on large file sets (dozens or hundreds of files)" ;
+    oc:directiveContent "Implement checkpointing by saving processed file status to a JSON file after each file, allowing resume from interruptions." ;
+    oc:hasRationale "Long-running batch jobs may be interrupted; checkpointing prevents reprocessing already-completed files and saves significant time." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7ea65e45 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running a batch job after interruption or failure" ;
+    oc:directiveContent "The checkpoint-based design makes batch processing idempotent — already-processed files are skipped on re-run." ;
+    oc:hasRationale "Idempotency ensures safe re-execution without duplicate side effects, which is critical for bulk operations that may be interrupted." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ce68eb57 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring ProcessPoolExecutor or any parallel processing pool" ;
+    oc:directiveContent "Never set worker counts excessively high — match to available CPU cores rather than using unlimited parallelism." ;
+    oc:hasRationale "Excessive workers cause resource contention, memory exhaustion, and degraded performance rather than speedup." ;
+    oc:severityLevel "MEDIUM" .
+

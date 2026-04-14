@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_file_organizer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "file-organizer" ;
+    skos:broader "File organization methodology" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/file-organizer" ;
+    oc:contentHash "4b77852292e95ba5e0b3f9d45a075fcbb740bb43156b34fc70396f6ba8d94d6e" ;
+    oc:differentia "that analyzes file contents and metadata to suggest categorization, naming conventions, folder structures, and duplicate handling" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "analyze_document_structure" ;
+    oc:hasArgumentHint "files or folder path to organize" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Organize and rename files based on content analysis" ;
+    oc:hasName "file-organizer" ;
+    oc:impartsKnowledge oc:kn_63e387ca,
+        oc:kn_6464c6c1,
+        oc:kn_897907d3,
+        oc:kn_b5a34fa0,
+        oc:kn_e0fa458c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "categorize files by type",
+        "create folder structures for projects",
+        "identify and handle duplicate files",
+        "organize files by content analysis",
+        "rename files with consistent naming conventions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_63e387ca a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When naming any file across all categories" ;
+    oc:directiveContent "Use date-first naming conventions (YYYY-MM-DD) to enable natural chronological sorting of files." ;
+    oc:hasRationale "Date-first naming ensures files sort chronologically in any file system without special tooling, making temporal discovery intuitive." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6464c6c1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any folder structure" ;
+    oc:directiveContent "Avoid deep folder nesting; keep hierarchy to a maximum of 3-4 levels deep." ;
+    oc:hasRationale "Flat hierarchies reduce navigation friction, make paths shorter and more memorable, and avoid 'where did I put this' problems." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_897907d3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating or suggesting filenames" ;
+    oc:directiveContent "Use underscores or hyphens instead of spaces in filenames; keep names concise but descriptive." ;
+    oc:hasRationale "Spaces cause issues in command-line environments, scripts, and URLs while reducing readability; underscores/hyphens are universally safe." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b5a34fa0 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When operating on file systems with mixed access controls or large volumes" ;
+    oc:directiveContent "Cannot access protected or encrypted files, and large file moves require manual execution." ;
+    oc:hasRationale "Protected files are inaccessible by design, and bulk file operations may exceed safe automated limits, requiring human-in-the-loop for critical moves." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e0fa458c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting organization plans to users" ;
+    oc:directiveContent "Do not assume perfect automated categorization; always recommend manual review for important files." ;
+    oc:hasRationale "Content-based categorization depends on file format support and cannot guarantee accuracy. Incorrect filing of critical documents (contracts, legal) can have serious consequences." ;
+    oc:severityLevel "CRITICAL" .
+

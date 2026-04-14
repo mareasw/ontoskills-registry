@@ -1,0 +1,83 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_extraction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-extraction" ;
+    skos:broader "PDF data extraction tool" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-extraction" ;
+    oc:contentHash "37080fdcb7f45a5d5d79f7cd0ebe36a77f4ce9fd99284561bc9ba1104a1b83f1" ;
+    oc:differentia "uses pdfplumber for character-level positioning, table detection, and visual debugging of native-text PDFs" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "extract_tables_from_pdf",
+        "extract_text_from_pdf" ;
+    oc:hasArgumentHint "file-path to PDF" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Extract text, tables, and metadata from PDFs using pdfplumber" ;
+    oc:hasName "pdf-extraction" ;
+    oc:hasRequirement oc:req_68263e2f,
+        oc:req_f08bdea9 ;
+    oc:impartsKnowledge oc:kn_01ce5316,
+        oc:kn_05666cc3,
+        oc:kn_1f0f9283,
+        oc:kn_542b5b49,
+        oc:kn_aed2f762 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "convert PDF tables to CSV or Excel",
+        "extract metadata from PDF",
+        "extract structured data from invoices and reports",
+        "extract tables from PDF",
+        "extract text from PDF",
+        "parse PDF documents by region or font" ;
+    oc:yieldsState oc:TablesExtracted,
+        oc:TextExtracted .
+
+oc:kn_01ce5316 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting from PDFs with many pages" ;
+    oc:directiveContent "Do not load all pages of a large PDF at once; process page by page to avoid memory issues." ;
+    oc:hasRationale "Large PDFs can consume significant memory if all pages are loaded simultaneously; iterative processing keeps memory usage bounded" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_05666cc3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before attempting extraction on any PDF" ;
+    oc:directiveContent "Cannot extract text from scanned or image-based PDFs; pdfplumber only works with native text PDFs. Use OCR first for scanned documents." ;
+    oc:hasRationale "pdfplumber reads embedded text objects, not pixel data, so scanned/image PDFs will return empty or None results" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_1f0f9283 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When attempting to open password-protected or encrypted PDFs" ;
+    oc:directiveContent "Some PDF encryption types are not supported by pdfplumber and will fail to open." ;
+    oc:hasRationale "pdfplumber has limited encryption support; certain DRM or permission-restricted PDFs cannot be processed" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_542b5b49 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting tables from PDFs with varying layouts" ;
+    oc:directiveContent "Tune table extraction settings (snap_tolerance, join_tolerance, vertical_strategy, horizontal_strategy) specifically for each PDF rather than using defaults." ;
+    oc:hasRationale "PDF table structures vary widely; default tolerance settings may miss rows/columns or merge adjacent tables, so per-document tuning yields more reliable results" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aed2f762 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When encountering complex or unfamiliar PDF layouts" ;
+    oc:directiveContent "Use visual debugging with page.to_image() and debug_tablefinder() to understand the PDF structure before writing extraction logic." ;
+    oc:hasRationale "Visual debugging reveals how pdfplumber interprets the document structure, making it easier to tune tolerance settings and identify table boundaries" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_68263e2f a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Pillow" .
+
+oc:req_f08bdea9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdfplumber" .
+

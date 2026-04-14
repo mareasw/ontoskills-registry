@@ -1,0 +1,81 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_brand_guidelines_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "brand-guidelines-generator" ;
+    skos:broader "Document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/brand-guidelines-generator" ;
+    oc:contentHash "82b213496203d40123d37cf68ead2530c98dc9e4fd17297afae308e061690e3e" ;
+    oc:differentia "that produces comprehensive brand style guides defining visual and verbal identity standards for consistent brand usage" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "create_pptx" ;
+    oc:hasArgumentHint "Company or brand name, optionally with existing brand elements (logo, colors, fonts)" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Create and maintain brand style guides for consistent visual identity" ;
+    oc:hasName "brand-guidelines-generator" ;
+    oc:hasRequirement oc:req_00941dea,
+        oc:req_813d0feb ;
+    oc:impartsKnowledge oc:kn_10fbd1c7,
+        oc:kn_6416c108,
+        oc:kn_d7a41390,
+        oc:kn_e0ed1af9,
+        oc:kn_f1cd7d6d ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create brand color palette documentation",
+        "create brand guidelines",
+        "define brand voice and tone rules",
+        "document brand identity",
+        "generate a style guide",
+        "update existing brand guidelines" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_10fbd1c7 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When documenting logo usage in brand guidelines" ;
+    oc:directiveContent "Logo usage rules must always include: clear space minimums, minimum sizes for print and digital, approved color versions (full color, reversed, monochrome), and explicit logo misuse examples (no stretching, rotation, color changes, effects, or busy backgrounds)." ;
+    oc:hasRationale "Clear logo usage rules prevent brand dilution and visual inconsistency across channels and vendors" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6416c108 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating voice and tone sections of brand guidelines" ;
+    oc:directiveContent "When defining brand voice, create a 'We Are / We Are Not' comparison table and map tone variations by context (Marketing, Support, Error Messages, Legal) to ensure writers understand nuance." ;
+    oc:hasRationale "Abstract voice descriptors alone are ambiguous; contrasting pairs and contextual examples make voice guidelines actionable for content creators" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d7a41390 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating brand guidelines from scratch" ;
+    oc:directiveContent "A complete brand guidelines document should include 8 core sections: Brand Overview, Logo Usage, Color Palette, Typography, Imagery, Voice & Tone, Applications, and Do's and Don'ts." ;
+    oc:hasRationale "These 8 sections cover all essential aspects of brand identity ensuring no critical element is overlooked" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e0ed1af9 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining color palettes and text/background combinations" ;
+    oc:directiveContent "All color specifications in brand guidelines must meet WCAG 2.1 AA contrast requirements — normal text requires 4.5:1 minimum and large text requires 3:1 minimum contrast ratio." ;
+    oc:hasRationale "Accessibility compliance ensures the brand is usable by people with visual impairments and meets legal requirements in many jurisdictions" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f1cd7d6d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, as a boundary of the skill's capabilities" ;
+    oc:directiveContent "This skill cannot create visual assets such as logos or images — it generates documentation and specifications only. Color specifications should be verified, typography licensing is the user's responsibility, and legal review is recommended for usage rights." ;
+    oc:hasRationale "The skill is a document generator, not a design tool; users must provide visual assets and verify technical/legal compliance independently" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_00941dea a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_docx" .
+
+oc:req_813d0feb a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_pptx" .
+

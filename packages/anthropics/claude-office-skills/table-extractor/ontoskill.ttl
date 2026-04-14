@@ -1,0 +1,97 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_table_extractor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "table-extractor" ;
+    skos:broader "PDF table extraction capability" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/table-extractor" ;
+    oc:contentHash "e7c1143ecf57122dcc6f0ace21d6844439901c34f7f2577897dc97cd267d2de6" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "uses camelot library to extract structured tabular data from PDF documents with support for bordered, borderless, and multi-page tables" ;
+    oc:extends oc:skill_pdf_extraction ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "pdf-file-path [--pages pages] [--flavor lattice|stream]" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "table-extractor" ;
+    oc:hasRequirement oc:req_746aacc9,
+        oc:req_7d57adbd,
+        oc:req_bb7adf55,
+        oc:req_d0e409dc ;
+    oc:impartsKnowledge oc:kn_4f0f25ef,
+        oc:kn_7517f689,
+        oc:kn_8afc908f,
+        oc:kn_94cf3130,
+        oc:kn_b67b2547 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "batch extract tables from multiple PDFs",
+        "convert PDF tables to structured data",
+        "extract borderless tables from PDF",
+        "extract financial tables from reports",
+        "extract tables from PDF",
+        "extract tabular data from PDF to Excel/CSV/JSON" ;
+    oc:yieldsState oc:DataStructured,
+        oc:TablesExtracted .
+
+oc:kn_4f0f25ef a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before attempting table extraction on a PDF" ;
+    oc:directiveContent "camelot cannot extract tables from encrypted PDFs, image-based PDFs (need OCR preprocessing), or rotated tables. Large PDFs should be processed page-by-page." ;
+    oc:hasRationale "These are hard limitations of the camelot library — encrypted PDFs block access, image-based content lacks text data, and rotated layouts break coordinate-based detection." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7517f689 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After extracting tables, before using or exporting results" ;
+    oc:directiveContent "Always check the accuracy score of extracted tables. Scores above 90% are reliable, below 80% should be skipped or manually reviewed." ;
+    oc:hasRationale "Low accuracy scores indicate misaligned columns, merged cell issues, or incorrect table boundaries, which lead to corrupted data if used without validation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8afc908f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing extracted table DataFrames" ;
+    oc:directiveContent "Do not assume the first row of extracted data is always the header. Inspect the first row to determine if it contains headers or data before promoting it." ;
+    oc:hasRationale "camelot returns raw cell data; the header row detection varies by table structure. Blindly promoting the first row can misalign columns and lose data." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_94cf3130 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When extracting tables that logically continue across multiple PDF pages" ;
+    oc:directiveContent "For multi-page tables that span across pages, group extracted tables by matching column structure and concatenate them with pd.concat, deduplicating repeated header rows." ;
+    oc:hasRationale "camelot extracts each page's table independently. Tables spanning pages will appear as separate objects that need to be reassembled by matching column signatures." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b67b2547 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting tables from an unknown PDF structure" ;
+    oc:directiveContent "Try the lattice method first for bordered tables and fall back to stream for borderless tables. If lattice accuracy is below 70%, switch to stream." ;
+    oc:hasRationale "Lattice detects lines/borders and is more reliable for standard tables, while stream uses text positioning which works for borderless tables but may produce false positives on bordered ones." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_7d57adbd a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "extract_tables_from_pdf" .
+
+oc:req_bb7adf55 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ghostscript" .
+
+oc:req_d0e409dc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "camelot-py[cv]" .
+

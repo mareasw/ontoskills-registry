@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_invoice_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "invoice-automation" ;
+    skos:broader "Invoice lifecycle management system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/invoice-automation" ;
+    oc:contentHash "bbe7822f6dd305642bb1c2e9d72a730f2d3781e3389c851119801afad6eefdaa" ;
+    oc:differentia "Automates generation, sending, tracking, and payment reconciliation across multiple accounting platforms with multi-currency support" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "customer data, line items, payment terms, template preferences" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Automate invoice generation, sending, tracking, and payment reconciliation across accounting platforms" ;
+    oc:hasName "invoice-automation" ;
+    oc:impartsKnowledge oc:kn_2911f3c6,
+        oc:kn_2a5ba317,
+        oc:kn_ae669111,
+        oc:kn_b43858c1,
+        oc:kn_dbc46f7e,
+        oc:kn_edaa10ad,
+        oc:kn_f12e8c13 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate invoice sending and payment reminders",
+        "generate invoices from customer data and line items",
+        "reconcile payments across accounting platforms",
+        "set up recurring invoices",
+        "track payment status and generate aging reports" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:PaymentTracked .
+
+oc:kn_2911f3c6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When generating or sending invoices via API" ;
+    oc:directiveContent "Invoice creation triggers downstream effects: client notification emails, accounting platform ledger entries, and auto-advance workflows in Stripe." ;
+    oc:hasRationale "Understanding side effects prevents duplicate communications and ensures ledger entries are intentional rather than accidental." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2a5ba317 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any invoice" ;
+    oc:directiveContent "Use consistent sequential invoice numbering (INV-YYYYMM-####) that is searchable and traceable across systems." ;
+    oc:hasRationale "Consistent numbering prevents duplicate invoices, simplifies auditing, and enables quick lookups during reconciliation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ae669111 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During payment reconciliation" ;
+    oc:directiveContent "When using fuzzy matching for bank feed reconciliation, require manual review for any match below 0.9 confidence and never auto-match customer name matches." ;
+    oc:hasRationale "Fuzzy matching errors can silently apply payments to wrong invoices, corrupting accounting records and creating audit issues." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b43858c1 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When setting up automated payment reminders" ;
+    oc:directiveContent "Configure a tiered reminder sequence: friendly reminder 3 days before due, payment due notice 1 day after, overdue notice at 7 days, and final notice at 30 days." ;
+    oc:hasRationale "Progressive escalation maximizes collection rates while preserving customer relationships at each stage." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dbc46f7e a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Ongoing invoice management operations" ;
+    oc:directiveContent "Reconcile payments against invoices weekly and maintain backup records in multiple systems." ;
+    oc:hasRationale "Weekly reconciliation prevents aging issues from compounding, while backup records protect against data loss and support audit compliance." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_edaa10ad a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating invoices with multi-currency or international customers" ;
+    oc:directiveContent "Verify that exchange rates are current (daily update) before generating multi-currency invoices, and confirm customer data is complete including billing address and tax region." ;
+    oc:hasRationale "Stale exchange rates produce inaccurate totals, and missing customer data causes delivery failures or tax miscalculations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f12e8c13 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating invoice templates" ;
+    oc:directiveContent "Always specify clear payment terms (e.g., Net 30) and accepted payment methods directly on the invoice." ;
+    oc:hasRationale "Ambiguous terms lead to delayed payments and disputes. Explicit terms set expectations and accelerate collection." ;
+    oc:severityLevel "HIGH" .
+

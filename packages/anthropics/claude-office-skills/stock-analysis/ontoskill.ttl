@@ -1,0 +1,102 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_stock_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "stock-analysis" ;
+    skos:broader "financial analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/stock-analysis" ;
+    oc:contentHash "99bdaf804ab16fc671632e918991e7518c0a31e3adb645e6957891838f46f14e" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that combines fundamental valuation metrics and technical indicators to generate structured stock analysis reports across US, China A-shares, and Hong Kong markets" ;
+    oc:handlesFailure oc:DataUnavailable,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "analyze_spreadsheet",
+        "create_chart",
+        "create_xlsx",
+        "read_xlsx" ;
+    oc:hasArgumentHint "ticker or stock code (e.g., AAPL, 600519.SH, 0700.HK)" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Analyze stocks with fundamental and technical analysis. Supports US, China A-shares, and Hong Kong markets. Generate investment reports with key metrics." ;
+    oc:hasName "stock-analysis" ;
+    oc:hasPackageName "stock-analysis" ;
+    oc:impartsKnowledge oc:kn_2e3bf2d3,
+        oc:kn_5105659c,
+        oc:kn_7c924fea,
+        oc:kn_846c4cb6,
+        oc:kn_a5d897ff,
+        oc:kn_b7d0491a,
+        oc:kn_bc1c2325,
+        oc:kn_cb03329c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DataAvailable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze stock fundamentals",
+        "assess investment risk",
+        "compare stocks against peers",
+        "evaluate valuation metrics",
+        "generate stock analysis report",
+        "perform technical stock analysis" ;
+    oc:yieldsState oc:AnalysisComplete,
+        oc:ReportGenerated .
+
+oc:kn_2e3bf2d3 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When executing any stock analysis" ;
+    oc:directiveContent "Follow the three-step workflow: (1) collect ticker/market/financial data, (2) select analysis type (quick/deep-dive/technical/peer-comparison), (3) deliver structured report with executive summary, metrics table, fundamental and technical sections, risk factors, and bull/bear thesis." ;
+    oc:hasRationale "Structured workflow ensures comprehensive coverage and consistent report quality across different stocks and markets" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5105659c a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When presenting analysis conclusions and investment thesis" ;
+    oc:directiveContent "Analysis does not account for insider information, pending announcements, or proprietary trading data. Valuation models carry inherent assumptions and limitations." ;
+    oc:hasRationale "Users must understand the blind spots to avoid over-relying on the analysis for critical investment decisions" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7c924fea a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any stock analysis report" ;
+    oc:directiveContent "Never present a stock analysis without the standard disclaimer that it does not constitute investment advice and past performance does not guarantee future results." ;
+    oc:hasRationale "Regulatory and legal compliance requires disclaimers on financial analysis to prevent misinterpretation as investment recommendations" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_846c4cb6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When using create_xlsx or create_chart tools" ;
+    oc:directiveContent "This skill may create Excel workbooks and charts as output artifacts when generating analysis reports via the office-mcp tools." ;
+    oc:hasRationale "Users should be aware that files will be written to disk as part of the analysis process" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a5d897ff a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any analysis" ;
+    oc:directiveContent "Verify that a valid stock ticker or financial data has been provided and the target market (US/China A-shares/Hong Kong) is identified before beginning analysis." ;
+    oc:hasRationale "Invalid or missing tickers lead to wasted effort; market identification determines which benchmarks and currency conventions apply" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b7d0491a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning a stock analysis interaction" ;
+    oc:directiveContent "Request that users provide recent financials, specify investment horizon, mention specific concerns, include peer companies for comparison, and specify market context for better analysis results." ;
+    oc:hasRationale "More context produces more accurate and relevant analysis; missing context leads to generic outputs that may miss the user's actual concerns" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bc1c2325 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — this is a hard boundary of the skill" ;
+    oc:directiveContent "Cannot provide real-time stock prices, investment advice, or guarantee future performance. Analysis is based on publicly available information only." ;
+    oc:hasRationale "The skill is informational only and must not be misconstrued as financial advice, which has legal and ethical implications" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cb03329c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating fundamental analysis metrics" ;
+    oc:directiveContent "Use industry-standard benchmarks for metric interpretation: P/E <15 undervalued, ROE >15% good capital efficiency, Debt/Equity <1 safe, Current Ratio >1.5 healthy liquidity, FCF Yield >5% attractive." ;
+    oc:hasRationale "Consistent benchmarks allow for reliable cross-company comparison and prevent arbitrary or inconsistent assessments" ;
+    oc:severityLevel "HIGH" .
+

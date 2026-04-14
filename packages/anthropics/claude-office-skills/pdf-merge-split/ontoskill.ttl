@@ -1,0 +1,76 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_merge_split a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-merge-split" ;
+    skos:broader "PDF manipulation utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-merge-split" ;
+    oc:contentHash "8cf5c099a30021485350e534174716d1d1d997494f204eb0dbc7ed745596b003" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that combines multiple PDFs into one file or splits PDFs into separate documents with page-level control" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "merge_pdfs",
+        "split_pdf" ;
+    oc:hasArgumentHint "PDF file paths and operation type (merge/split/extract/reorder) with page ranges" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Combine multiple PDFs or split into separate files" ;
+    oc:hasName "pdf-merge-split" ;
+    oc:hasPackageName "office-mcp" ;
+    oc:impartsKnowledge oc:kn_5c72c648,
+        oc:kn_b479c9a9,
+        oc:kn_b6a767e6,
+        oc:kn_e68118d6,
+        oc:kn_f769ab51 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "batch merge or split multiple PDFs",
+        "delete or insert pages in a PDF",
+        "extract specific pages from a PDF",
+        "merge multiple PDFs into a single file",
+        "reorder pages within a PDF",
+        "rotate pages in a PDF",
+        "split a PDF into separate documents" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_5c72c648 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When merging PDFs from different sources with potentially mismatched page sizes" ;
+    oc:directiveContent "When merging PDFs with different page sizes, verify compatibility first and consider standardizing page dimensions to avoid layout issues." ;
+    oc:hasRationale "Merging PDFs with different page sizes (e.g., Letter and A4) can cause unexpected rendering, blank areas, or content cropping in the combined document." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b479c9a9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing PDFs that may be encrypted or password-protected" ;
+    oc:directiveContent "Never attempt to merge or split password-protected PDFs without first removing the password protection." ;
+    oc:hasRationale "Password-protected PDFs require decryption before any manipulation; attempting operations without the password will fail silently or produce corrupted output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b6a767e6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when user requests PDF merge/split operations" ;
+    oc:directiveContent "Cannot perform actual file operations directly — provides guidance and plans rather than executing PDF modifications." ;
+    oc:hasRationale "The skill operates through MCP tools (merge_pdfs, split_pdf) or provides procedural guidance; it is not a standalone file processor." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e68118d6 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When processing PDFs over ~100 pages or files larger than ~50 MB" ;
+    oc:directiveContent "Very large PDF files should be processed in chunks rather than all at once to avoid memory issues and timeouts." ;
+    oc:hasRationale "Large PDF operations can exhaust available memory or exceed processing timeouts; chunked processing ensures reliable completion." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f769ab51 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before performing any merge, split, or page reordering operation" ;
+    oc:directiveContent "Always present a merge or split plan table to the user before executing, showing input files, page ranges, and expected output." ;
+    oc:hasRationale "Preview plans let users verify the operation is correct before committing, preventing accidental data loss or incorrect page arrangements." ;
+    oc:severityLevel "MEDIUM" .
+

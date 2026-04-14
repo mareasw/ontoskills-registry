@@ -1,0 +1,83 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_discord_bot a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "discord-bot" ;
+    skos:broader "Bot development framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/discord-bot" ;
+    oc:contentHash "8b8ba52612db8e41c544d6b22d741c91070ff6f93c4cdd2fca460b46771448d4" ;
+    oc:differentia "targets Discord platform for community management, moderation, notifications, and AI integration using n8n workflow patterns" ;
+    oc:handlesFailure oc:InvalidBotToken,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimitExceeded ;
+    oc:hasArgumentHint "bot feature description (e.g., 'welcome bot', 'moderation bot', 'notification workflow')" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Discord bot development - community management, moderation, notifications, and AI integration" ;
+    oc:hasName "discord-bot" ;
+    oc:impartsKnowledge oc:kn_1ef76662,
+        oc:kn_7a4617e0,
+        oc:kn_7b97225d,
+        oc:kn_7e0136d5,
+        oc:kn_da11628a,
+        oc:kn_e5ca832c ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DiscordBotTokenConfigured,
+        oc:DiscordDeveloperPortalAccess,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "build discord ticket system",
+        "build moderation bot",
+        "configure discord notifications",
+        "create discord bot",
+        "create welcome system for discord server",
+        "design slash commands for discord",
+        "integrate AI with discord bot",
+        "set up discord community features" ;
+    oc:yieldsState oc:DiscordBotConfigured,
+        oc:DiscordBotDeployed .
+
+oc:kn_1ef76662 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When sending automated messages or handling slash commands" ;
+    oc:directiveContent "Discord has strict rate limits: 5 messages per 5 seconds per channel, and slash command responses must be acknowledged within 3 seconds. Use deferred responses for long-running operations." ;
+    oc:hasRationale "Exceeding rate limits causes API errors and can get the bot temporarily blocked, breaking all functionality." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7a4617e0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When integrating AI chat or image generation features" ;
+    oc:directiveContent "Implement rate limiting on AI-powered bot features (e.g., 10 requests per minute per user) to prevent abuse and manage API costs." ;
+    oc:hasRationale "AI API calls are expensive and can be abused by users spamming commands, leading to unexpected costs and degraded performance." .
+
+oc:kn_7b97225d a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When configuring and deploying Discord bots" ;
+    oc:directiveContent "Bot tokens must never be committed to code repositories or shared publicly. Use environment variables or secret management. A leaked token allows full control of the bot." ;
+    oc:hasRationale "Compromised bot tokens can be used to read messages, impersonate the bot, and perform destructive actions across all servers the bot is in." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7e0136d5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any bot message output" ;
+    oc:directiveContent "Use Discord embeds (rich embeds) instead of plain text for all bot responses. Embeds provide structured, visually consistent output with fields, thumbnails, colors, and footers." ;
+    oc:hasRationale "Embeds are the standard UX pattern for Discord bots, providing better readability and visual hierarchy than plain text messages." .
+
+oc:kn_da11628a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building moderation commands" ;
+    oc:directiveContent "Never implement moderation actions (timeout, ban, warn) without logging them to a dedicated mod channel. All moderation actions must be auditable." ;
+    oc:hasRationale "Without audit logging, moderation actions are opaque and cannot be reviewed for abuse or corrected if applied incorrectly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e5ca832c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up any Discord bot" ;
+    oc:directiveContent "Discord bots require three privileged intents enabled in the Developer Portal: PRESENCE_INTENT, SERVER_MEMBERS_INTENT, and MESSAGE_CONTENT_INTENT. Without these, many core features like welcome messages and message content reading will not function." ;
+    oc:hasRationale "Discord's privileged intents are a gating requirement — bots cannot access member data or message content without them, causing silent failures." ;
+    oc:severityLevel "CRITICAL" .
+

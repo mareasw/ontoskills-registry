@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_airtable_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "airtable-automation" ;
+    skos:broader "Automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/airtable-automation" ;
+    oc:contentHash "da2dd2f0bc4ae05c641d2934a895b53c73ec1a5f974aabacb87221233a6713fd" ;
+    oc:differentia "that designs and configures Airtable bases with views, automations, integrations, formulas, rollups, and cross-platform workflows" ;
+    oc:hasAllowedTool "airtable_create_record",
+        "airtable_query",
+        "airtable_update_record" ;
+    oc:hasArgumentHint "description of airtable base or workflow to automate" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Airtable database automation - views, automations, integrations, and workflow triggers" ;
+    oc:hasName "airtable-automation" ;
+    oc:hasPackageName "airtable-automation" ;
+    oc:impartsKnowledge oc:kn_0bbefa19,
+        oc:kn_57ea600e,
+        oc:kn_5f4a26c2,
+        oc:kn_6b71fbf2,
+        oc:kn_a41f081c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "build airtable integration workflows",
+        "configure airtable views",
+        "create airtable automations",
+        "design airtable base",
+        "set up airtable reporting and dashboards",
+        "write airtable formulas and rollups" ;
+    oc:yieldsState oc:AutomationConfigured,
+        oc:DatabaseCreated,
+        oc:IntegrationActive .
+
+oc:kn_0bbefa19 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring views for any Airtable table" ;
+    oc:directiveContent "Use multiple view types (Grid, Kanban, Calendar, Gallery) to serve different stakeholder needs from the same underlying data." ;
+    oc:hasRationale "Different roles need different perspectives on the same data; Kanban suits workflow tracking, Calendar suits scheduling, Gallery suits visual presentations." .
+
+oc:kn_57ea600e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing Airtable formulas for status, progress, or date-based conditions" ;
+    oc:directiveContent "Use SWITCH formulas for status-based visual indicators and IF/AND combinations for conditional logic like overdue detection." ;
+    oc:hasRationale "SWITCH is cleaner and more maintainable than nested IF statements; combined with emoji outputs it provides at-a-glance readability in views." .
+
+oc:kn_5f4a26c2 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When building cross-platform workflows with n8n, Zapier, or built-in Airtable automations" ;
+    oc:directiveContent "Chain integrations in multi-step pipelines: trigger → enrich → score → route → update → notify, rather than single monolithic automations." ;
+    oc:hasRationale "Modular pipeline steps are easier to debug, modify, and extend than monolithic automation blocks." .
+
+oc:kn_6b71fbf2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding fields that represent calculated data like progress percentages, days remaining, or status aggregations" ;
+    oc:directiveContent "Do not store computed values as static fields when Airtable formulas or rollups can derive them dynamically." ;
+    oc:hasRationale "Static computed fields become stale and require manual updates or additional automations; formulas and rollups stay current automatically." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a41f081c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When designing or structuring any Airtable base" ;
+    oc:directiveContent "Design Airtable bases with proper relational structure: use link_to_records for relationships, rollups for aggregations, and formulas for computed fields." ;
+    oc:hasRationale "Proper relational design ensures data integrity, enables powerful cross-table queries, and avoids data duplication." ;
+    oc:severityLevel "HIGH" .
+

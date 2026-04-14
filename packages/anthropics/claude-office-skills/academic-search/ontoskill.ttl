@@ -1,0 +1,97 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_academic_search a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "academic-search" ;
+    skos:broader "Research methodology framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/academic-search" ;
+    oc:contentHash "99eb4f36a74b5f5dec63a6b93fafe8e7ebfca1b5aedf6cd07242ebe01db3d0d5" ;
+    oc:differentia "provides structured academic literature search strategies, paper analysis methods, and research synthesis guidance across disciplines and databases" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "research topic or question, optionally with academic field and scope" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Search and analyze academic literature. Find papers, understand research methodologies, and synthesize academic findings for research projects." ;
+    oc:hasName "academic-search" ;
+    oc:hasRequirement oc:req_00941dea,
+        oc:req_2eca0e81,
+        oc:req_50922183,
+        oc:req_6d35c97c,
+        oc:req_a00b9b0f ;
+    oc:impartsKnowledge oc:kn_2cf72fef,
+        oc:kn_73a10d4f,
+        oc:kn_8350f13f,
+        oc:kn_b157884e,
+        oc:kn_bca848ce ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze research papers",
+        "assess research methodologies",
+        "formulate search queries for academic databases",
+        "identify research gaps",
+        "manage academic citations",
+        "search academic literature",
+        "structure literature reviews" ;
+    oc:yieldsState oc:LiteratureSynthesized,
+        oc:SearchStrategyCreated .
+
+oc:kn_2cf72fef a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing search strategies for comprehensive literature reviews" ;
+    oc:directiveContent "Do not rely solely on a single database or a single set of search terms. Always use multiple databases and include synonyms/related terms." ;
+    oc:hasRationale "Single-database or single-query searches risk missing relevant work published in different venues or described with different terminology, leading to biased or incomplete reviews." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_73a10d4f a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When analyzing academic papers shared by the user" ;
+    oc:directiveContent "Apply the Three-Pass Reading Method: Pass 1 (5-10 min survey to decide relevance), Pass 2 (30-60 min for understanding main contributions), Pass 3 (hours for expert-level deep dive)." ;
+    oc:hasRationale "Progressive reading depth prevents wasting time on irrelevant papers and ensures thorough understanding of papers that matter, scaling effort to value." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8350f13f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — when setting user expectations about capability boundaries" ;
+    oc:directiveContent "This skill cannot access full-text papers, execute actual database searches, access paywalled journals, or verify citation counts in real-time." ;
+    oc:hasRationale "The skill provides guidance and analysis only; it operates as a methodological advisor, not as a direct search engine or journal access proxy." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b157884e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning any new academic literature search" ;
+    oc:directiveContent "Start with review/survey articles to understand the research landscape before diving into specific empirical papers." ;
+    oc:hasRationale "Review articles provide a synthesized overview of the field, helping identify key themes, seminal works, and research gaps efficiently before committing to deep reading of individual papers." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bca848ce a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When formulating academic search queries" ;
+    oc:directiveContent "Use the PICO framework (Population, Intervention, Comparison, Outcome) for medical/health searches, and concept mapping with synonyms for other disciplines." ;
+    oc:hasRationale "Structured search frameworks ensure comprehensive coverage of relevant literature by systematically expanding query terms and reducing false negatives." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_00941dea a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "create_docx" .
+
+oc:req_2eca0e81 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "extract_text_from_pdf" .
+
+oc:req_50922183 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Boolean search operators" .
+
+oc:req_6d35c97c a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Academic database landscape" .
+
+oc:req_a00b9b0f a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Citation formatting standards (APA, IEEE, Chicago)" .
+

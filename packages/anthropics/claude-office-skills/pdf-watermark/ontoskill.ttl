@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_watermark a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-watermark" ;
+    skos:broader "PDF overlay utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-watermark" ;
+    oc:contentHash "14c8795e468dc767e84762a95745c76d676344c7ec77b263fab7b5dc09d6ba6f" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "adds watermarks, page numbers, headers, footers, stamps, and Bates numbering to PDF documents via the office-mcp server" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "add_watermark_to_pdf" ;
+    oc:hasArgumentHint "PDF file path and watermark configuration (text/image, opacity, position, page range)" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Add watermarks, page numbers, headers, and footers to PDFs" ;
+    oc:hasName "pdf-watermark" ;
+    oc:hasPackageName "pdf-watermark" ;
+    oc:impartsKnowledge oc:kn_1e138f2c,
+        oc:kn_4b502230,
+        oc:kn_523539bb,
+        oc:kn_8020f4dd,
+        oc:kn_b5aa12a9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "add Bates numbering to legal documents",
+        "add watermark to PDF",
+        "apply stamps to PDF",
+        "batch watermark PDFs",
+        "create PDF headers and footers",
+        "insert page numbers in PDF" ;
+    oc:yieldsState oc:DocumentModified .
+
+oc:kn_1e138f2c a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When attempting to watermark a PDF that may have security restrictions" ;
+    oc:directiveContent "Some secured or password-protected PDFs prevent modifications including watermark insertion. Position may also vary with different page sizes within the same document." ;
+    oc:hasRationale "Security-restricted PDFs will cause modification failures, and mixed page sizes can lead to misaligned overlays." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4b502230 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring headers, footers, or page numbering" ;
+    oc:directiveContent "For headers and footers, use a 3-column layout (left/center/right) with dynamic fields like {page}, {date}, {filename} to create professional, consistent document metadata." ;
+    oc:hasRationale "A consistent 3-column layout with dynamic fields ensures uniformity across all pages and automatic metadata population." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_523539bb a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when invoking this skill" ;
+    oc:directiveContent "This skill cannot perform actual watermarking itself — it provides configuration guidance and relies on the office-mcp server's add_watermark_to_pdf tool for execution." ;
+    oc:hasRationale "The skill is a guidance/configuration layer, not a standalone processor; understanding this prevents misaligned expectations about its capabilities." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8020f4dd a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting watermark style for a document" ;
+    oc:directiveContent "Use appropriate watermark presets matched to document purpose: DRAFT (gray, 50%) for work-in-progress, CONFIDENTIAL (red, 30%) for sensitive documents, COPY (blue, 25%) for duplicates." ;
+    oc:hasRationale "Established presets communicate document status clearly and follow common professional conventions." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_b5aa12a9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring text or image watermarks" ;
+    oc:directiveContent "Do not apply watermarks at high opacity that obscures document content. Use 20-40% opacity for background watermarks and ensure text remains readable." ;
+    oc:hasRationale "Overly opaque watermarks defeat the purpose by making the underlying content unreadable, harming document usability." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,84 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_telegram_bot a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "telegram-bot" ;
+    skos:broader "Bot development framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/telegram-bot" ;
+    oc:contentHash "8cc18b140b88b346ca8854a67a3605bb6fcf8b1a65531cd51015e9f43cb29c89" ;
+    oc:dependsOnSkill oc:skill_discord_bot ;
+    oc:differentia "that creates Telegram bots for chatbots, notifications, AI assistants, and group automation via n8n workflows" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "bot type or description (e.g., 'notification bot for server alerts', 'AI assistant chatbot')" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Telegram bot development - chatbots, notifications, AI assistants, and group automation" ;
+    oc:hasName "telegram-bot" ;
+    oc:impartsKnowledge oc:kn_00ac4caa,
+        oc:kn_3401222c,
+        oc:kn_5b21caa6,
+        oc:kn_698a575a,
+        oc:kn_b8c61b3d,
+        oc:kn_d3d0ddb3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate telegram group management",
+        "build notification alert bot for telegram",
+        "build telegram chatbot",
+        "create telegram bot",
+        "integrate AI with telegram bot",
+        "set up telegram notifications" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_00ac4caa a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When setting up any new Telegram bot" ;
+    oc:directiveContent "Always create bots through @BotFather on Telegram using /newbot, and configure description, about text, user pic, and commands before deployment." ;
+    oc:hasRationale "Proper bot configuration through BotFather is the only sanctioned way to create Telegram bots and ensures correct API token generation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3401222c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before activating any Telegram bot workflow" ;
+    oc:directiveContent "Verify the bot token is valid by calling getUpdates endpoint before deploying workflows. Obtain chat IDs for all target channels/groups." ;
+    oc:hasRationale "Invalid tokens or unknown chat IDs are the most common deployment failures for Telegram bots" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5b21caa6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing message handling workflows" ;
+    oc:directiveContent "Route messages by type (command, photo, voice, document, location) before processing, using a switch/router pattern in n8n or equivalent." ;
+    oc:hasRationale "Separating message types ensures each handler receives appropriate input and enables multi-modal bot capabilities" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_698a575a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring bot credentials and tokens" ;
+    oc:directiveContent "Do not store the Telegram bot API token in plain text or commit it to version control. Use environment variables or secret management." ;
+    oc:hasRationale "Exposed bot tokens allow unauthorized control of the bot, enabling spam, data exfiltration, and impersonation" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b8c61b3d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When sending any message through a Telegram bot" ;
+    oc:directiveContent "Telegram messages have a maximum length of 4096 characters. Long messages must be split into multiple parts." ;
+    oc:hasRationale "Exceeding the message length limit causes API errors and failed deliveries" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d3d0ddb3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building alert and notification systems" ;
+    oc:directiveContent "Use severity-based routing for notification bots: critical alerts go to admin group and on-call user, warnings to team group, info to logging channel." ;
+    oc:hasRationale "Proper routing ensures the right people are notified at the right urgency level without alert fatigue" ;
+    oc:severityLevel "MEDIUM" .
+

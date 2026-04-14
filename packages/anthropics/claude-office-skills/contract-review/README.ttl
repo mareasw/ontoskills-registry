@@ -1,0 +1,64 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_contract_review_readme a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "readme" ;
+    skos:broader "Contract analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/contract-review" ;
+    oc:contentHash "77e05b3ad1ec64ffaec939ddd658f5fccc4128d3c20dedce159078c2b802066e" ;
+    oc:dependsOnSkill oc:skill_contract_review ;
+    oc:differentia "provides overview and quick-start guidance for identifying risks, checking completeness, and generating actionable recommendations in legal contracts across multiple jurisdictions" ;
+    oc:extends oc:skill_anthropics_claude_office_skills_contract_review ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_04481d07,
+        oc:kn_27f28d0b,
+        oc:kn_36d7654a,
+        oc:kn_4c6e1288,
+        oc:kn_c15f48df ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "analyze contract completeness",
+        "get negotiation recommendations for contracts",
+        "identify risk patterns in legal agreements",
+        "review contract for risks" ;
+    oc:yieldsState oc:DocumentAnalyzed .
+
+oc:kn_04481d07 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting contract review results" ;
+    oc:directiveContent "Risk findings should be categorized by severity (High/Medium/Low) with specific section references, issue descriptions, impact assessments, and actionable recommendations." ;
+    oc:hasRationale "Severity-categorized output with concrete recommendations enables efficient negotiation prioritization" .
+
+oc:kn_27f28d0b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When delivering contract analysis results" ;
+    oc:directiveContent "Output should include a risk assessment table summarizing key terms, their values, and associated risk levels, plus a prioritized list of must-fix items before signing." ;
+    oc:hasRationale "Structured tabular summary allows stakeholders to quickly grasp the most important terms and their risk implications" .
+
+oc:kn_36d7654a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing contracts from different legal jurisdictions" ;
+    oc:directiveContent "Supports US, EU, China, and UK jurisdictions, and works with English and Chinese language contracts." ;
+    oc:hasRationale "Jurisdiction awareness is critical for accurate risk assessment since legal requirements vary significantly across regions" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4c6e1288 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before initiating any contract review" ;
+    oc:directiveContent "Upload the contract file and ensure the SKILL.md content is loaded into Claude before starting the review." ;
+    oc:hasRationale "The skill requires both the skill definition and the contract document to produce meaningful analysis" .
+
+oc:kn_c15f48df a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing any contract" ;
+    oc:directiveContent "The contract review skill identifies 15+ common risk patterns and checks for missing contract elements to provide comprehensive analysis." ;
+    oc:hasRationale "Standardized risk pattern detection ensures consistent and thorough analysis across different contract types" ;
+    oc:severityLevel "MEDIUM" .
+

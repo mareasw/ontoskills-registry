@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_competitive_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "competitive-analysis" ;
+    skos:broader "Analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/competitive-analysis" ;
+    oc:contentHash "4c988e99e697fcd9c805d6d3f904c39778ff723d4f8694e5dff0ae7dcf535db6" ;
+    oc:differentia "that systematically compares competitors across products, features, pricing, positioning, and market strategies to generate strategic intelligence reports" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "create_chart",
+        "create_docx",
+        "create_xlsx" ;
+    oc:hasArgumentHint "company/product name, competitor list, analysis type (quick-comparison, full-profile, strategic-analysis, battle-card), and focus areas" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Analyze competitors systematically. Compare products, features, pricing, positioning, and market strategies. Generate comprehensive competitive intelligence reports." ;
+    oc:hasName "competitive-analysis" ;
+    oc:impartsKnowledge oc:kn_313b5701,
+        oc:kn_3cee5a23,
+        oc:kn_4b1634e8,
+        oc:kn_5e6bc633,
+        oc:kn_db3d45b7 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze competitors",
+        "compare products and features",
+        "create battle cards for sales",
+        "generate competitive intelligence reports",
+        "map competitive positioning",
+        "perform SWOT analysis on competitors" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_313b5701 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — fundamental limitation of this skill" ;
+    oc:directiveContent "Competitive analysis is limited to publicly available information. Cannot access competitor internal data, provide real-time pricing updates, or monitor competitor activity continuously." ;
+    oc:hasRationale "Users must understand the boundaries of competitive intelligence to avoid relying on stale or incomplete data for critical decisions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3cee5a23 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the user has not specified an analysis type or output format" ;
+    oc:directiveContent "Request battle cards when the analysis purpose is sales enablement, and request full strategic analysis with SWOT when the purpose is strategic planning or investment decisions." ;
+    oc:hasRationale "Matching output type to the underlying business purpose maximizes the utility of the competitive analysis." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4b1634e8 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When initiating a competitive analysis engagement" ;
+    oc:directiveContent "Begin by defining scope (your company, competitors, industry, geography, focus areas), then choose analysis type (quick comparison, full profile, strategic analysis, or battle card), then specify desired output format." ;
+    oc:hasRationale "A structured scoping phase prevents unfocused analysis and ensures the output matches the user's strategic needs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5e6bc633 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any competitive analysis report" ;
+    oc:directiveContent "Structure competitive analysis using established frameworks like Porter's Competitor Analysis (future goals, current strategy, assumptions, capabilities) and competitive positioning matrices to ensure systematic coverage." ;
+    oc:hasRationale "Established frameworks ensure no critical dimension of competition is overlooked and the analysis is rigorous enough for strategic decision-making." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_db3d45b7 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After generating a competitive analysis report" ;
+    oc:directiveContent "Competitive intelligence is time-sensitive. Always verify key data points before making strategic decisions based on the analysis." ;
+    oc:hasRationale "Markets change rapidly; data from the analysis may already be outdated by the time it's used. Validation prevents costly decisions based on stale intelligence." ;
+    oc:severityLevel "HIGH" .
+

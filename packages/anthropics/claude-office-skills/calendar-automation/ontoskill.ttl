@@ -1,0 +1,81 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_calendar_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "calendar-automation" ;
+    skos:broader "Calendar automation workflow generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/calendar-automation" ;
+    oc:contentHash "4931d2fcaea92470f5c8dff7eacf4e4978e4aa5793d7b4e163c963da324ad096" ;
+    oc:dependsOnSkill oc:skill_gmail_workflows,
+        oc:skill_task_management ;
+    oc:differentia "that orchestrates Google Calendar and Outlook meeting management, time blocking, daily digests, meeting prep, and calendar analytics via n8n-based workflow templates with Slack and Sheets integration" ;
+    oc:handlesFailure oc:CalendarAccessDenied,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "calendar_create_event",
+        "calendar_list_events",
+        "calendar_update",
+        "slack_notify" ;
+    oc:hasArgumentHint "workflow-type (e.g., 'daily digest', 'time blocking', 'meeting prep', 'calendly handler', 'analytics') or natural language description of desired calendar automation" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Google Calendar and Outlook automation - scheduling optimization, meeting workflows, time blocking, and Slack/Sheets integration" ;
+    oc:hasName "calendar-automation" ;
+    oc:hasPackageName "calendar-automation" ;
+    oc:impartsKnowledge oc:kn_0de55c58,
+        oc:kn_218444b9,
+        oc:kn_992cfb90,
+        oc:kn_a234f9b7,
+        oc:kn_f88146f9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "automate calendar scheduling and meeting management",
+        "automate meeting preparation with attendee research",
+        "create smart time blocking schedules",
+        "generate calendar analytics and weekly reports",
+        "handle Calendly bookings with CRM integration",
+        "set up daily calendar digest to Slack" ;
+    oc:yieldsState oc:CalendarWorkflowConfigured,
+        oc:DigestScheduled,
+        oc:TimeBlocksCreated .
+
+oc:kn_0de55c58 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing any calendar automation workflow, especially Calendly booking handlers" ;
+    oc:directiveContent "Calendar workflows create events, send Slack messages, log data to Google Sheets, and may update CRM records (HubSpot) — all of which are external side effects that persist beyond the workflow execution." ;
+    oc:hasRationale "Users must understand that these workflows modify external systems permanently; incorrect configuration can create duplicate events or send unwanted notifications" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_218444b9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring time blocking or scheduling automation workflows" ;
+    oc:directiveContent "Always enforce a minimum 15-minute buffer between meetings and cap daily meetings at 5 to protect focus time and prevent burnout." ;
+    oc:hasRationale "Back-to-back meetings reduce productivity and context-switching costs; buffer time allows for mental reset and preparation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_992cfb90 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When advising users on time blocking strategy" ;
+    oc:directiveContent "Use role-based schedule templates (Maker Schedule for ICs with dual deep-work blocks; Manager Schedule for leaders with extended meeting windows) as the starting point for time blocking rather than a one-size-fits-all approach." ;
+    oc:hasRationale "Maker and manager roles have fundamentally different time allocation needs; applying the wrong template reduces the effectiveness of protected focus time" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a234f9b7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When auto-generating time blocks for a weekly schedule" ;
+    oc:directiveContent "Never schedule focus time blocks during peak meeting hours (9-11 AM for makers, 9 AM-12 PM for managers) without first analyzing existing calendar commitments." ;
+    oc:hasRationale "Focus time must align with both existing commitments and the user's role-based schedule pattern (maker vs manager)" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f88146f9 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When building daily calendar digests or weekly analytics reports" ;
+    oc:directiveContent "Categorize events into meetings, focus time, 1:1s, and interviews before computing stats, as categorization drives meaningful digest insights and accurate analytics." ;
+    oc:hasRationale "Raw event lists lack actionable meaning; categorization enables productivity scoring, fragmentation analysis, and targeted recommendations" ;
+    oc:severityLevel "MEDIUM" .
+

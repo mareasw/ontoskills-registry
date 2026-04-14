@@ -1,0 +1,86 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_job_description_generator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "job-description-generator" ;
+    skos:broader "Document generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/job-description-generator" ;
+    oc:contentHash "bb5db33309bb6cb07e1aca6347e270d8036c79d04d94e0a03a3f4a590875f4f0" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "that produces professional, inclusive job descriptions with structured sections for responsibilities, requirements, benefits, and application instructions" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "create_docx",
+        "fill_docx_template" ;
+    oc:hasArgumentHint "job-title, department, level, employment-type, location, responsibilities, requirements" ;
+    oc:hasCategory "hr" ;
+    oc:hasDescription ">" ;
+    oc:hasName "job-description-generator" ;
+    oc:impartsKnowledge oc:kn_110661d5,
+        oc:kn_29709f99,
+        oc:kn_7079d97d,
+        oc:kn_73682614,
+        oc:kn_a83aabac,
+        oc:kn_cd8ef81e,
+        oc:kn_d6f067a0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create job description",
+        "draft job requirements",
+        "generate job posting",
+        "write inclusive job description" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_110661d5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing the 'What We Offer' section" ;
+    oc:directiveContent "Include a salary range whenever possible — it improves application rates by approximately 30%." ;
+    oc:hasRationale "Salary transparency builds trust, saves time for both parties, and is increasingly required by law in many jurisdictions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_29709f99 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting any job posting" ;
+    oc:directiveContent "Never use superlatives like 'Rockstar', 'Ninja', or 'Guru' in job descriptions; use 'Expert' or 'Specialist' instead." ;
+    oc:hasRationale "Superlatives exclude qualified candidates who don't identify with those terms and signal a bro-culture that reduces diversity in applicant pools." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7079d97d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any job description text" ;
+    oc:directiveContent "Avoid gendered pronouns (he/she), age-coded phrases ('young and energetic', 'digital native'), and exclusionary terms ('native English speaker', 'cultural fit')." ;
+    oc:hasRationale "These terms introduce bias and may violate equal opportunity employment laws in many jurisdictions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_73682614 a oc:KnowledgeNode,
+        oc:RequiresHumanClarification ;
+    oc:appliesToContext "When the job description is complete and ready for publication" ;
+    oc:directiveContent "Legal compliance of job descriptions cannot be guaranteed — always recommend HR or legal review before publishing." ;
+    oc:hasRationale "Employment law varies by jurisdiction and this skill cannot verify compliance with local labor regulations, anti-discrimination laws, or industry-specific requirements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a83aabac a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining the 'Required' qualifications section" ;
+    oc:directiveContent "Limit must-have requirements to 5-7 items. Excessive requirements discourage qualified candidates, especially women and underrepresented groups who tend to self-select out." ;
+    oc:hasRationale "Research shows that women typically apply only when meeting 100% of criteria, while men apply at 60%. Long requirement lists disproportionately reduce diverse applications." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cd8ef81e a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating a job description" ;
+    oc:directiveContent "Verify that all mandatory inputs are provided: job title, department, level, employment type, location, key responsibilities, and requirements before generating." ;
+    oc:hasRationale "Incomplete inputs produce vague or misleading job postings that fail to attract the right candidates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d6f067a0 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing job description prose" ;
+    oc:directiveContent "Use direct address ('you') instead of third-person references ('the ideal candidate') to create a more inviting, personal tone." ;
+    oc:hasRationale "Second-person language helps candidates envision themselves in the role, increasing engagement and application conversion." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,102 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_subscription_management a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "subscription-management" ;
+    skos:broader "SaaS subscription lifecycle management framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/subscription-management" ;
+    oc:contentHash "84d64e62fa17417ad730a53966c2f56ee85f7122f9bf39f2d1388a7a889f8612" ;
+    oc:dependsOnSkill oc:skill_saas_metrics ;
+    oc:differentia "provides structured workflows for billing operations, upgrade/downgrade flows, churn prevention, health scoring, dunning management, and revenue optimization across subscription lifecycles" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PaymentFailed,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "subscription task description, e.g. 'create a churn prevention workflow' or 'set up dunning sequence'" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "SaaS subscription lifecycle management - billing, upgrades, downgrades, churn prevention, and revenue optimization" ;
+    oc:hasName "subscription-management" ;
+    oc:hasPackageName "subscription-management" ;
+    oc:impartsKnowledge oc:kn_0c7b2f74,
+        oc:kn_38097be2,
+        oc:kn_3d906e87,
+        oc:kn_50816215,
+        oc:kn_93c712f0,
+        oc:kn_ac3ea02b,
+        oc:kn_df43d4bf,
+        oc:kn_e69cadf5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "build health scoring models",
+        "create churn prevention workflows",
+        "create dunning sequences",
+        "design upgrade and downgrade flows",
+        "manage subscription lifecycle",
+        "optimize subscription revenue",
+        "prevent customer churn",
+        "set up billing automation" ;
+    oc:yieldsState oc:ChurnWorkflowCreated,
+        oc:DunningSequenceConfigured,
+        oc:SubscriptionManaged .
+
+oc:kn_0c7b2f74 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing customer downgrade or cancellation requests" ;
+    oc:directiveContent "Never immediately apply a downgrade without first intercepting the request, collecting the reason, and offering retention alternatives such as pausing, discounting, or training." ;
+    oc:hasRationale "Direct downgrade without intervention loses recoverable revenue; tailored retention offers based on churn reason can save 25%+ of at-risk accounts." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_38097be2 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When monitoring subscription metrics and dunning effectiveness" ;
+    oc:directiveContent "Involuntary churn from payment failures can silently erode MRR; track involuntary churn rate separately with a target below 1% and monitor recovery rate by day to catch process degradation." ;
+    oc:hasRationale "Involuntary churn is entirely preventable with proper dunning, unlike voluntary churn, and is often overlooked in favor of product-led retention strategies." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3d906e87 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When designing payment failure recovery flows" ;
+    oc:directiveContent "Implement tiered dunning sequences starting with automatic payment retry and escalating through email, SMS, CSM calls, account suspension (day 21), and data deletion (day 90) with high-value accounts getting personal CSM outreach." ;
+    oc:hasRationale "Graduated escalation balances revenue recovery with customer experience; high-value accounts warrant human intervention to prevent permanent loss." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_50816215 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When handling mid-cycle subscription changes" ;
+    oc:directiveContent "Upgrade billing changes should be prorated and charged immediately; downgrade credits should be applied at next billing cycle, not retroactively, to maintain billing consistency." ;
+    oc:hasRationale "Immediate upgrade charges prevent feature access without payment; deferred downgrade credits avoid complex refund calculations and maintain predictable cash flow." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_93c712f0 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When setting up new subscription management workflows or automation" ;
+    oc:directiveContent "Before implementing any subscription lifecycle automation, verify that the billing platform (Stripe, Chargebee, or Paddle) is connected and webhook endpoints are configured for subscription events." ;
+    oc:hasRationale "Lifecycle automation depends on real-time billing events; disconnected platforms or missing webhooks cause silent failures that cascade into incorrect billing states." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ac3ea02b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building or evaluating customer health scoring models" ;
+    oc:directiveContent "Use a composite health score weighted across four dimensions: product usage (40%), engagement (30%), relationship (20%), and financial (10%) to assess customer retention risk." ;
+    oc:hasRationale "Product usage is the strongest predictor of retention, but engagement and relationship signals provide early warning before usage drops, and financial signals catch payment-related churn risk." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df43d4bf a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring automated upgrade triggers and expansion revenue strategies" ;
+    oc:directiveContent "Trigger upgrade prompts when a customer reaches 80% of their plan limit, tries a blocked advanced feature, shows consistent overage for 3+ months, or exhibits power-user behavior (>5h/week usage + >10 team invites)." ;
+    oc:hasRationale "Usage-based and behavior-based triggers catch customers at the moment of need, when the value of upgrading is most apparent, maximizing conversion." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e69cadf5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying discounts or promotional offers in billing operations" ;
+    oc:directiveContent "Discounts above 30% require approval, must always have an expiration date, and should be limited to one per customer unless explicitly approved." ;
+    oc:hasRationale "Uncontrolled discounting erodes pricing integrity and can create precedent expectations that are hard to reverse." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,149 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_stripe_payments a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "stripe-payments" ;
+    skos:broader "Payment automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/stripe-payments" ;
+    oc:contentHash "98d3c725af0e348243c24694445873cf399ffd034cb7b030265379ba492484d0" ;
+    oc:dependsOnSkill oc:skill_invoice_automation,
+        oc:skill_saas_metrics,
+        oc:skill_subscription_management ;
+    oc:differentia "automates Stripe payment processing, subscription lifecycle management, invoicing, dunning, fraud prevention, and revenue analytics" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PaymentFailed,
+        oc:PermissionDenied ;
+    oc:hasAlias "billing",
+        "payments",
+        "stripe",
+        "stripe-automation" ;
+    oc:hasAllowedTool "stripe_charges",
+        "stripe_customers",
+        "stripe_invoices",
+        "stripe_subscriptions" ;
+    oc:hasArgumentHint "payment or subscription operation (e.g., 'create subscription', 'process payment', 'issue refund', 'dunning report')" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Automate Stripe payment processing, subscription management, invoicing, and financial reporting" ;
+    oc:hasName "stripe-payments" ;
+    oc:hasPackageName "stripe-payments" ;
+    oc:hasRequirement oc:req_05aa1f63,
+        oc:req_492aada3,
+        oc:req_6902fa25,
+        oc:req_6cd4f461,
+        oc:req_718094c8,
+        oc:req_ca48cfa1,
+        oc:req_f8363cb8 ;
+    oc:impartsKnowledge oc:kn_0eb96e30,
+        oc:kn_18be836a,
+        oc:kn_a1cc363b,
+        oc:kn_b56e321e,
+        oc:kn_bdc265b2,
+        oc:kn_cc8b4c9f,
+        oc:kn_ed674e9e,
+        oc:kn_fa9bd48f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate invoicing and dunning",
+        "configure customer portal",
+        "handle webhook events",
+        "issue refunds",
+        "manage subscriptions",
+        "prevent fraud with Stripe Radar",
+        "process payments via Stripe",
+        "track revenue analytics and MRR" ;
+    oc:yieldsState oc:InvoiceGenerated,
+        oc:PaymentProcessed,
+        oc:ReportGenerated,
+        oc:SubscriptionCreated .
+
+oc:kn_0eb96e30 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When integrating checkout or payment collection flows" ;
+    oc:directiveContent "Always use Stripe Elements (Payment Element, Card Element) for collecting card details rather than handling raw card data" ;
+    oc:hasRationale "Using Stripe Elements ensures PCI DSS compliance by keeping sensitive card data off your servers" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_18be836a a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When designing webhook event handlers" ;
+    oc:directiveContent "Webhook handlers trigger downstream actions (order fulfillment, CRM updates, email sends, access provisioning) that are not easily reversible" ;
+    oc:hasRationale "Understanding the cascade of side effects from payment events is critical for designing idempotent and resilient handlers" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a1cc363b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When processing any payment or charge" ;
+    oc:directiveContent "Always use idempotency keys when creating charges or payment intents to prevent duplicate transactions" ;
+    oc:hasRationale "Duplicate charges create customer disputes, refund processing overhead, and compliance issues" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b56e321e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building payment confirmation flows" ;
+    oc:directiveContent "Never rely solely on redirect URLs to confirm payment success; always verify via webhook events" ;
+    oc:hasRationale "Redirects can be spoofed or missed; webhooks provide reliable, verifiable payment state changes" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bdc265b2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring failed payment recovery workflows" ;
+    oc:directiveContent "Implement a multi-step dunning sequence (0, 3, 7, 14, 30 days) with escalating communication channels (email → SMS → final notice → cancellation)" ;
+    oc:hasRationale "Progressive dunning recovers a significant portion of failed payments before requiring cancellation, protecting revenue" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cc8b4c9f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any production deployment of payment flows" ;
+    oc:directiveContent "Always validate workflows in Stripe test mode before deploying to production, using test cards and webhook endpoints" ;
+    oc:hasRationale "Payment bugs in production can cause real financial harm; test mode catches integration errors safely" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ed674e9e a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When setting up fraud prevention" ;
+    oc:directiveContent "Configure Stripe Radar rules to block highest-risk transactions, review elevated-risk ones, and flag velocity anomalies like card/IP country mismatches" ;
+    oc:hasRationale "Payment fraud results in chargebacks, dispute fees, and potential account termination by Stripe" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fa9bd48f a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When upgrading or downgrading subscription plans" ;
+    oc:directiveContent "Subscription proration behavior must be explicitly configured (create_prorations vs none) to avoid unexpected mid-cycle charges or credits" ;
+    oc:hasRationale "Default proration behavior may not align with business expectations, leading to billing surprises and customer complaints" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_05aa1f63 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "STRIPE_SECRET_KEY" .
+
+oc:req_492aada3 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "stripe_invoices MCP tool" .
+
+oc:req_6902fa25 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "stripe_charges MCP tool" .
+
+oc:req_6cd4f461 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "stripe_subscriptions MCP tool" .
+
+oc:req_718094c8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "stripe_customers MCP tool" .
+
+oc:req_ca48cfa1 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Stripe API key" .
+
+oc:req_f8363cb8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "payments-mcp server" .
+

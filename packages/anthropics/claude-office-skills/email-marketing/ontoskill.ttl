@@ -1,0 +1,101 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_email_marketing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "email-marketing" ;
+    skos:broader "email marketing automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/email-marketing" ;
+    oc:contentHash "8d4397dd33807184400078287bacc8a3297e59bdc710bdc4b6966802d849684b" ;
+    oc:differentia "provides campaign creation, automated drip sequences, A/B testing, segmentation, deliverability optimization, and analytics with templated email patterns" ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "campaign type or sequence request (e.g., 'welcome sequence for SaaS', 'cart abandonment emails', 'newsletter template')" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Email marketing automation - campaign creation, sequence building, A/B testing, deliverability optimization, and analytics" ;
+    oc:hasName "email-marketing" ;
+    oc:impartsKnowledge oc:kn_20195d08,
+        oc:kn_326a9407,
+        oc:kn_438238e1,
+        oc:kn_44546395,
+        oc:kn_48430bb2,
+        oc:kn_8454aac4,
+        oc:kn_e3dbcdd7,
+        oc:kn_edec6c6b ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build email sequence",
+        "create email campaign",
+        "create newsletter templates",
+        "create re-engagement sequences",
+        "design welcome series",
+        "draft promotional emails",
+        "generate email performance report",
+        "optimize email deliverability",
+        "run A/B tests on emails",
+        "segment email list",
+        "set up cart abandonment emails" ;
+    oc:yieldsState oc:EmailCampaignCreated,
+        oc:EmailSequenceConfigured,
+        oc:SegmentationDefined .
+
+oc:kn_20195d08 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any multi-email drip sequence (welcome, onboarding, nurture)" ;
+    oc:directiveContent "Structure automated sequences with progressive goals: welcome → educate → engage → social proof → convert → urgency, spacing emails 2-4 days apart." ;
+    oc:hasRationale "Progressive sequencing builds trust incrementally and mirrors the buyer's journey, resulting in higher conversion rates than ad-hoc email timing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_326a9407 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before launching campaigns on a new or cold domain" ;
+    oc:directiveContent "Ensure SPF, DKIM, and DMARC authentication are configured before sending campaigns. Warm up new sending domains over 2-4 weeks with gradual volume increases of max 20% per week." ;
+    oc:hasRationale "Skipping authentication or sending high volume from unwarmed domains causes inbox providers to reject or bulk-folder emails, destroying deliverability." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_438238e1 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "When evaluating email campaign performance" ;
+    oc:directiveContent "Healthy email campaign benchmarks: open rate 20-25%, click rate 2-5%, conversion rate 1-3%, unsubscribe rate <0.5%, bounce rate <2%, spam complaints <0.1%." ;
+    oc:hasRationale "These industry benchmarks provide objective thresholds to diagnose whether campaigns are underperforming on delivery, content, or list health." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_44546395 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing email campaign performance" ;
+    oc:directiveContent "A/B test high-impact elements first (subject lines, send time, CTA buttons) with 2-3 variants on 20% of the list before sending to the full audience." ;
+    oc:hasRationale "Subject lines and send time have the highest impact on open and click rates; testing low-impact elements like fonts wastes sample size and time." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_48430bb2 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring any automated email sequence" ;
+    oc:directiveContent "Automated sequences should have clear exit conditions (upgrade, unsubscribe, purchase completion) to prevent sending irrelevant follow-up emails to converted subscribers." ;
+    oc:hasRationale "Without exit conditions, converted subscribers receive inappropriate nurture or promotional emails, causing frustration and increasing unsubscribe rates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8454aac4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining target audiences for campaigns" ;
+    oc:directiveContent "Segment lists by behavioral signals (engagement level, purchase history, product interest) rather than just demographics to improve relevance." ;
+    oc:hasRationale "Behavioral segments (opened 5 of last 5 vs. no opens in 30 days) predict responsiveness far better than demographic data alone, improving click and conversion rates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e3dbcdd7 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before sending any email campaign" ;
+    oc:directiveContent "Verify all emails include a prominent unsubscribe link and physical mailing address (CAN-SPAM requirement) before sending any campaign." ;
+    oc:hasRationale "Missing unsubscribe links or physical addresses violate CAN-SPAM regulations and increase spam complaints, risking legal liability and sender reputation." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_edec6c6b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any email marketing content" ;
+    oc:directiveContent "Avoid spam trigger words (free, act now, limited time, click here) in email copy and maintain a 60:40 text-to-image ratio to stay out of spam folders." ;
+    oc:hasRationale "Spam filters penalize emails with high spam-word density and poor text-to-image balance, directly harming deliverability and open rates." ;
+    oc:severityLevel "HIGH" .
+

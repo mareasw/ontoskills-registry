@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_compress a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-compress" ;
+    skos:broader "PDF optimization skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-compress" ;
+    oc:contentHash "62fbb7558fe51c69359338a156ef69ed01edede034212b2fc10eae1c05112d10" ;
+    oc:differentia "provides structured guidance for reducing PDF file sizes through image optimization, font subsetting, and content cleanup with quality-level presets" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:CompressionFailed,
+        oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "compress_pdf" ;
+    oc:hasArgumentHint "file-path or PDF file to compress, optionally with target size or quality level" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Reduce PDF file size while maintaining acceptable quality" ;
+    oc:hasName "pdf-compress" ;
+    oc:impartsKnowledge oc:kn_13d6c725,
+        oc:kn_b7768ae1,
+        oc:kn_c38756d9,
+        oc:kn_cb0c3f99,
+        oc:kn_ed4d8207 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "balance pdf quality vs file size",
+        "batch compress multiple pdfs",
+        "compress pdf file size",
+        "optimize pdf for web or email",
+        "reduce pdf for specific use case" ;
+    oc:yieldsState oc:FileCompressed .
+
+oc:kn_13d6c725 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any PDF compression task" ;
+    oc:directiveContent "Before compressing, assess the PDF's content composition (text vs images vs vectors), current size, target use case, and whether it has already been compressed. Identify any size constraints (e.g., email attachment limits)." ;
+    oc:hasRationale "Understanding the document's composition and constraints determines which compression techniques will yield meaningful savings and ensures the result meets the actual need." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b7768ae1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — before attempting to use this skill for actual file compression" ;
+    oc:directiveContent "This skill provides guidance and recommendations only — it cannot perform actual compression itself. Scanned documents (image-heavy PDFs) compress well, while vector-graphics-heavy PDFs see minimal reduction." ;
+    oc:hasRationale "The skill is advisory, not a compression engine. Setting correct expectations prevents user frustration when savings are minimal on already-optimized or vector-based PDFs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c38756d9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When compressing PDFs for print or archival purposes, or when source PDFs already contain compressed images" ;
+    oc:directiveContent "Never apply maximum compression to PDFs intended for print production or archival, and avoid re-compressing already compressed JPEGs as cumulative loss compounds artifacts." ;
+    oc:hasRationale "JPEG recompression is lossy and cumulative — each pass degrades quality further. Archival and print require near-original fidelity." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cb0c3f99 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a compression preset for a PDF" ;
+    oc:directiveContent "Match compression level to use case: Minimum/Low for print and archival, Medium for general use and presentations, High for email/web, Maximum for quick previews only." ;
+    oc:hasRationale "Over-compressing print/archival PDFs degrades critical quality, while under-compressing web PDFs wastes bandwidth and user time." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ed4d8207 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning a compression strategy" ;
+    oc:directiveContent "Vector text remains sharp at all compression levels; only embedded images and text-as-images are affected. Prioritize image downsampling (DPI reduction) and JPEG quality adjustment as the primary levers for size reduction." ;
+    oc:hasRationale "Image optimization accounts for the majority of file size savings (typically 70-90% of reduction), while font subsetting and object cleanup contribute smaller but meaningful gains." ;
+    oc:severityLevel "MEDIUM" .
+

@@ -1,0 +1,79 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_pdf_ocr_extraction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-ocr-extraction" ;
+    skos:broader "PDF text extraction" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/pdf-ocr-extraction" ;
+    oc:contentHash "6755eb95147837442cf6953921604d589ba3d3f4f4b7b281c86e1576f7e696cb" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "uses optical character recognition to extract text from scanned documents and image-based PDFs" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:OCRQualityLow ;
+    oc:hasAllowedTool "extract_text_from_pdf" ;
+    oc:hasArgumentHint "file-path or PDF document" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Extract text from scanned PDFs using optical character recognition" ;
+    oc:hasName "pdf-ocr-extraction" ;
+    oc:impartsKnowledge oc:kn_0cc22258,
+        oc:kn_90d5638e,
+        oc:kn_93edf155,
+        oc:kn_bc2e4938,
+        oc:kn_f4868022,
+        oc:kn_f6cb1a74 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "OCR a document image",
+        "batch process scanned documents for text extraction",
+        "digitize paper documents",
+        "extract text from scanned PDF",
+        "make PDF searchable" ;
+    oc:yieldsState oc:TextExtracted .
+
+oc:kn_0cc22258 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting text from handwritten or low-quality scanned documents" ;
+    oc:directiveContent "Do not trust OCR output for handwritten cursive text without manual review; always flag low-confidence extractions (below 80%) for human verification." ;
+    oc:hasRationale "Cursive handwriting OCR accuracy is only 30-60%, making unverified output unreliable for any consequential use." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_90d5638e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When source image quality is suboptimal" ;
+    oc:directiveContent "Apply pre-processing corrections before OCR: auto-deskew for rotated pages, contrast adjustment for poor scans, noise reduction for speckled images, and grayscale conversion for color documents." ;
+    oc:hasRationale "Simple pre-processing steps can significantly improve OCR accuracy without requiring re-scanning." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_93edf155 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running OCR on any scanned document" ;
+    oc:directiveContent "Verify image quality before OCR: minimum 300 DPI resolution, clear contrast (black text on white), proper alignment (no skew), no cut-off edges, and no stains or shadows." ;
+    oc:hasRationale "Pre-processing quality directly determines OCR accuracy; poor source images produce unreliable text extraction." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bc2e4938 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting expectations for OCR results or deciding whether to use OCR" ;
+    oc:directiveContent "OCR accuracy varies dramatically by content type: typed documents yield 95%+, printed books 90%+, forms 85%+, tables 80%+, neat handwriting 60-80%, and cursive handwriting only 30-60%." ;
+    oc:hasRationale "Users need realistic accuracy expectations to determine whether OCR is appropriate and whether manual review is needed." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f4868022 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing documents containing mixed or complex visual content" ;
+    oc:directiveContent "Tables, decorative fonts, text within complex graphics, and background images all reduce OCR quality. Forms with checkboxes may need manual handling for checked/unchecked states." ;
+    oc:hasRationale "Structural and visual complexity interferes with OCR engines' ability to correctly identify and sequence text, leading to misaligned or missing content." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f6cb1a74 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting OCR results to users" ;
+    oc:directiveContent "Always report confidence scores alongside extracted text, and separate uncertain text into a dedicated section with alternatives for ambiguous characters." ;
+    oc:hasRationale "Confidence-aware output lets users focus manual review effort on the least reliable portions rather than proofreading everything." .
+

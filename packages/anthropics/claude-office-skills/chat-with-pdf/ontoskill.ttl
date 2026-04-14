@@ -1,0 +1,72 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_chat_with_pdf a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "chat-with-pdf" ;
+    skos:broader "document interaction skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/chat-with-pdf" ;
+    oc:contentHash "d370efc4bf28e6d9b3e3dc5489d565206a0606d3c4a2c8a6fcd356771d22c788" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "enables conversational Q&A, summarization, and information extraction from PDF documents with source citations" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "pdf file path and question or instruction" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Answer questions about PDF content, summarize, and extract information" ;
+    oc:hasName "chat-with-pdf" ;
+    oc:hasPackageName "chat-with-pdf" ;
+    oc:impartsKnowledge oc:kn_17ffc334,
+        oc:kn_637106d7,
+        oc:kn_851f76a3,
+        oc:kn_86aff2a6,
+        oc:kn_bb8b94c6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "ask questions about PDF content",
+        "compare information across multiple PDFs",
+        "extract specific data from PDFs",
+        "summarize PDF documents" ;
+    oc:yieldsState oc:DocumentAnalyzed,
+        oc:InformationExtracted .
+
+oc:kn_17ffc334 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When querying PDF content for answers" ;
+    oc:directiveContent "Use specific, targeted questions rather than broad ones for better accuracy. Reference specific sections when possible, and ask follow-up questions to build deeper understanding." ;
+    oc:hasRationale "Specific questions yield more precise and useful answers than vague ones, reducing hallucination risk and improving relevance" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_637106d7 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When processing confidential or sensitive PDF documents" ;
+    oc:directiveContent "Document contents are processed according to the AI provider's privacy policy. For sensitive documents, consider redacting sensitive information first, using on-premise solutions, or checking data retention policies." ;
+    oc:hasRationale "PDFs often contain confidential business, legal, or personal information that could be exposed through third-party AI processing" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_851f76a3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any output from PDF analysis" ;
+    oc:directiveContent "Always provide source citations (page number, section) when answering questions. Format outputs according to the request type: Q&A with confidence levels, structured summaries, or tabular extraction with location columns." ;
+    oc:hasRationale "Source citations enable verification and build trust in the extracted information, while structured formats make the output actionable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_86aff2a6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When working with scanned PDFs or long documents" ;
+    oc:directiveContent "Do not rely on 100% accuracy for scanned documents — OCR may introduce recognition errors. For long documents, avoid broad questions; instead ask about specific sections or request page-by-page summaries." ;
+    oc:hasRationale "Scanned PDFs depend on OCR quality which varies, and broad questions on long documents can lead to incomplete or inaccurate answers" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bb8b94c6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when processing PDF documents" ;
+    oc:directiveContent "Password-protected PDFs require the password to be provided. Very large PDFs (500+ pages) may need chunking. Handwritten content recognition is limited. Cannot execute embedded code or numerically analyze charts/images." ;
+    oc:hasRationale "These are hard technical limitations of the underlying PDF processing tools that cannot be worked around" ;
+    oc:severityLevel "HIGH" .
+

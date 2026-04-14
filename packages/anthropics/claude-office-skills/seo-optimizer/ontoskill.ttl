@@ -1,0 +1,92 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_seo_optimizer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "seo-optimizer" ;
+    skos:broader "SEO strategy and optimization framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/seo-optimizer" ;
+    oc:contentHash "35e2d6c9bd010ae189ca7a32f9d305e814bb5e7269f0e649252d8b21c8ead7dd" ;
+    oc:differentia "provides structured keyword research, on-page SEO checklists, technical audit methodology, content optimization templates, and rank tracking reporting for organic search performance" ;
+    oc:extends oc:skill_seo_audit ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "URL or content to optimize, or topic for keyword research" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "SEO strategy and optimization - keyword research, on-page SEO, technical audits, content optimization, and rank tracking" ;
+    oc:hasName "seo-optimizer" ;
+    oc:impartsKnowledge oc:kn_37522f62,
+        oc:kn_449db2f0,
+        oc:kn_4c97a353,
+        oc:kn_b1ef22fc,
+        oc:kn_d0b90240,
+        oc:kn_d40c4ca4,
+        oc:kn_da9f824a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze search intent for keywords",
+        "create content briefs for SEO",
+        "improve on-page SEO elements",
+        "optimize content for search engines",
+        "perform technical SEO audit",
+        "research SEO keywords",
+        "track and report SEO rankings" ;
+    oc:yieldsState oc:KeywordResearchCompleted,
+        oc:SEOOptimized,
+        oc:SEORReportGenerated,
+        oc:TechnicalAuditCompleted .
+
+oc:kn_37522f62 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When planning or auditing content length" ;
+    oc:directiveContent "Target word counts vary by page type: product pages 500-1000 words, blog posts 1500-2500 words, pillar pages 3000+ words. Content should be longer and better than top-ranking competitors." ;
+    oc:hasRationale "Content length correlates with ranking ability, but the benchmark depends on page type and competitor content depth." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_449db2f0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When performing technical SEO audits" ;
+    oc:directiveContent "Core Web Vitals must meet thresholds: LCP < 2.5s, FID < 100ms, CLS < 0.1. Site must use HTTPS with no mixed content, have responsive mobile design, and valid structured data." ;
+    oc:hasRationale "Google uses Core Web Vitals and mobile-friendliness as ranking signals. Failing these thresholds directly impacts search visibility." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4c97a353 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing on-page SEO elements for any page" ;
+    oc:directiveContent "Title tags must be 50-60 characters, meta descriptions 150-160 characters, each page must have exactly one H1 tag, and keyword density should be 1-2%." ;
+    oc:hasRationale "These length constraints ensure snippets display fully in SERPs; violating them leads to truncation and lower click-through rates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b1ef22fc a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When publishing or updating any content for SEO" ;
+    oc:directiveContent "Follow the content optimization lifecycle: before publishing verify all on-page elements (keyword in title, first 100 words, alt text, internal/external links, clean URL); after publishing submit to GSC, share socially, build internal links, monitor rankings, and update based on performance." ;
+    oc:hasRationale "SEO optimization is not a one-time task; the post-publish phase (indexing, link building, monitoring) is equally critical for ranking success." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d0b90240 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring page URLs for SEO" ;
+    oc:directiveContent "Never create URLs with dates, excessive parameters, uppercase letters, or unnecessary nesting. Keep URLs under 75 characters with hyphens between words and include the primary keyword." ;
+    oc:hasRationale "Clean, keyword-rich URLs improve crawlability, click-through rates from SERPs, and content longevity (date-based URLs appear stale over time)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d40c4ca4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting target keywords from a research list" ;
+    oc:directiveContent "Prioritize keywords using the formula: priority_score = (search_volume × business_relevance) / keyword_difficulty. Target high-volume, high-relevance, low-difficulty keywords first." ;
+    oc:hasRationale "This scoring model balances opportunity (volume × relevance) against effort (difficulty), yielding the highest ROI keywords to pursue first." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_da9f824a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing keyword research and mapping" ;
+    oc:directiveContent "Always categorize keywords by search intent (informational, navigational, commercial, transactional) before mapping them to pages, as intent determines content format and optimization strategy." ;
+    oc:hasRationale "Intent mismatch between keyword and page content is one of the top reasons pages fail to rank despite technical optimization." ;
+    oc:severityLevel "HIGH" .
+

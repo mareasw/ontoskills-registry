@@ -1,0 +1,96 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_data_extractor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "data-extractor" ;
+    skos:broader "Document data extraction tool" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/data-extractor" ;
+    oc:contentHash "29de85bc1599930972f530606f5bc952ca37dffc342d70f8035e871dc675d744" ;
+    oc:differentia "Uses the unstructured library to extract structured elements (text, tables, metadata) from any document format (PDF, Word, HTML, email, images) into consistent, typed output with support for auto-detection, format-specific partitioning, chunking for RAG, and batch processing" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:UnsupportedFormat ;
+    oc:hasArgumentHint "file-path or document to process" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "data-extractor" ;
+    oc:hasRequirement oc:req_09a883b9,
+        oc:req_61f22896,
+        oc:req_ca5386f3 ;
+    oc:impartsKnowledge oc:kn_21ed8505,
+        oc:kn_27600ddc,
+        oc:kn_4d87a461,
+        oc:kn_933d0912,
+        oc:kn_986b6f8a,
+        oc:kn_dc3a9d88 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "batch process multiple documents",
+        "build searchable document corpus",
+        "chunk documents for RAG applications",
+        "convert unstructured documents to JSON",
+        "extract data from emails",
+        "extract text and tables from documents",
+        "parse structured data from PDFs and other formats" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:DocumentParsed .
+
+oc:kn_21ed8505 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting partition strategy for any document" ;
+    oc:directiveContent "Choose extraction strategy based on need: use 'fast' for speed on simple documents, 'hi_res' for accuracy on complex layouts with tables, and 'ocr_only' for scanned documents." ;
+    oc:hasRationale "Strategy selection directly impacts extraction quality vs. performance tradeoff; wrong strategy leads to missing data or slow processing." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_27600ddc a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing very large documents or proprietary formats" ;
+    oc:directiveContent "Large files may require chunking before processing. Some proprietary document formats are not supported. API rate limits apply when using cloud-based processing." ;
+    oc:hasRationale "Memory and rate limits constrain batch processing; oversized files can cause OOM errors or timeout failures." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_4d87a461 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing extracted document data for AI/RAG pipelines" ;
+    oc:directiveContent "Use semantic chunking (chunk_by_title) for RAG applications rather than basic character-based chunking to preserve document structure and context boundaries." ;
+    oc:hasRationale "Semantic chunking respects document hierarchy (sections, titles) producing more meaningful retrieval units than arbitrary character splits." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_933d0912 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring partition options for documents with tables or non-English content" ;
+    oc:directiveContent "Always enable infer_table_structure=True when documents contain tables, and specify languages parameter for non-English documents to improve OCR accuracy." ;
+    oc:hasRationale "Table detection must be explicitly enabled to get structured HTML table output; language hints improve OCR token recognition." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_986b6f8a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing scanned PDFs or image-based documents" ;
+    oc:directiveContent "OCR quality depends entirely on source image quality. Complex layouts (multi-column, overlapping elements) may produce incorrect element ordering and require manual review." ;
+    oc:hasRationale "The unstructured library's OCR capabilities are bounded by input fidelity; garbage in, garbage out applies to document extraction." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dc3a9d88 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between auto-detection and format-specific extraction" ;
+    oc:directiveContent "Use partition_auto for unknown document types to get automatic format detection, or use format-specific partition functions (partition_pdf, partition_docx, etc.) when the format is known for more control." ;
+    oc:hasRationale "Auto partition provides convenience at the cost of fine-grained control; format-specific functions allow strategy and language tuning." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_09a883b9 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "unstructured partition functions (partition, partition_pdf, partition_docx, partition_html, partition_email, etc.)" .
+
+oc:req_61f22896 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "unstructured Python library" .
+
+oc:req_ca5386f3 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Python programming for data extraction" .
+

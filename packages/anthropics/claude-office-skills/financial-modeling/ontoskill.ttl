@@ -1,0 +1,89 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_financial_modeling a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "financial-modeling" ;
+    skos:broader "Financial model builder" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/financial-modeling" ;
+    oc:contentHash "f3e56addf71ca189ceddb0b11c87d8e7b980abb2a094c85dbff6592e98c14b99" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "Creates integrated 3-statement projections linking Income Statement, Balance Sheet, and Cash Flow Statement with proper accounting linkages and scenario analysis" ;
+    oc:extends oc:skill_3_statement_model ;
+    oc:handlesFailure oc:BalanceSheetImbalance,
+        oc:InvalidInput,
+        oc:MissingAssumptions ;
+    oc:hasAllowedTool "apply_formula",
+        "create_chart",
+        "create_xlsx",
+        "read_xlsx" ;
+    oc:hasArgumentHint "historical financial data (2-3 years of income statement, balance sheet) and projection assumptions (growth rate, margins, working capital days)" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Build integrated financial models with 3-statement projections. Create income statement, balance sheet, and cash flow models with proper linkages." ;
+    oc:hasName "financial-modeling" ;
+    oc:impartsKnowledge oc:kn_674bddc3,
+        oc:kn_bb79800c,
+        oc:kn_ce77612d,
+        oc:kn_e6ba0d7e,
+        oc:kn_f3bcfd56,
+        oc:kn_fafdc233 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:AssumptionsDefined,
+        oc:HistoricalDataProvided ;
+    oc:resolvesIntent "build debt schedule",
+        "build financial model",
+        "create 3-statement projection",
+        "create scenario analysis",
+        "forecast income statement",
+        "generate cash flow statement",
+        "model working capital requirements",
+        "project balance sheet" ;
+    oc:yieldsState oc:FinancialModelBuilt,
+        oc:ThreeStatementModelCreated .
+
+oc:kn_674bddc3 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating projections" ;
+    oc:directiveContent "Verify that historical data is clean and in a consistent format, industry context is specified for appropriate benchmarks, and growth drivers are disaggregated (volume vs price, organic vs acquisition)." ;
+    oc:hasRationale "Dirty or inconsistent historical data propagates errors through all projection periods. Disaggregated drivers enable more accurate and defensible assumptions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bb79800c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When projecting the Balance Sheet and it does not balance" ;
+    oc:directiveContent "Use Cash as the balancing plug on the Balance Sheet: Cash = Total Liabilities + Equity - Other Assets." ;
+    oc:hasRationale "This is the standard modeling convention that ensures Assets = Liabilities + Equity always holds, with any surplus or deficit reflected in cash." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ce77612d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting any financial model build" ;
+    oc:directiveContent "Requires at minimum 2-3 years of historical income statement and balance sheet data, plus key projection assumptions (revenue growth rate, gross margin, operating expense ratios, capex % of revenue, and working capital days: DSO, DIO, DPO)." ;
+    oc:hasRationale "Insufficient historical data or missing assumptions produce unreliable projections with no anchor to reality." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e6ba0d7e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any multi-statement financial model" ;
+    oc:directiveContent "The three statements must be properly linked: Net Income flows to Retained Earnings on the Balance Sheet, changes in Balance Sheet items drive the Cash Flow Statement, and Ending Cash flows back to the Balance Sheet." ;
+    oc:hasRationale "Without proper linkages, the model is internally inconsistent and cannot be relied upon for valuation or decision-making." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f3bcfd56 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing any financial model" ;
+    oc:directiveContent "After building the model, verify the Balance Sheet balances (Assets = Liabilities + Equity), ending Cash on the Balance Sheet matches the Cash Flow Statement, and key metrics (margins, ROE, D/E, FCF) are reasonable." ;
+    oc:hasRationale "The balance check is the fundamental integrity test of a 3-statement model. Mismatches indicate formula errors or broken linkages." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_fafdc233 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining scope of a financial modeling engagement" ;
+    oc:directiveContent "Do not use this skill for real-time financial data access, guaranteed projection accuracy, professional accounting advice, or complex corporate structures with FX modeling." ;
+    oc:hasRationale "The skill uses simplified tax calculations, assumes constant currency, and cannot automatically account for one-time items. Overreliance produces misleading results." ;
+    oc:severityLevel "MEDIUM" .
+

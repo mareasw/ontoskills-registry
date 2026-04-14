@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_md_slides a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "md-slides" ;
+    skos:broader "presentation generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/md-slides" ;
+    oc:contentHash "e5bc44df1d5a48c70cf7666042f0aa62e65e4d5e4ed550e6a6b029a636efdc9e" ;
+    oc:differentia "that converts Markdown content into professional slides using the Marp framework, supporting PDF, PPTX, and HTML export formats" ;
+    oc:extends oc:skill_html_to_ppt ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "markdown content or file path" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription ">" ;
+    oc:hasName "md-slides" ;
+    oc:impartsKnowledge oc:kn_1a49c6b7,
+        oc:kn_cb4b7e36,
+        oc:kn_daf75116,
+        oc:kn_f1ca22b2,
+        oc:kn_fa28034a ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "build pitch deck using markdown",
+        "convert markdown to slides",
+        "convert notes to presentation",
+        "create presentation from markdown",
+        "generate PDF slides from outline" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1a49c6b7 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When adding images to Marp slides" ;
+    oc:directiveContent "Image syntax supports size control (`![width:500px]`), background images (`![bg]`), and split layouts (`![bg left:40%]`) which can significantly affect slide layout and file size." ;
+    oc:hasRationale "Images embedded in slides increase file size and can break layout if dimensions are not controlled; background images change the entire slide appearance." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_cb4b7e36 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When regenerating presentations from the same source" ;
+    oc:directiveContent "Re-running Marp conversion on the same markdown input produces identical output files; the conversion is deterministic and safe to repeat." ;
+    oc:hasRationale "Deterministic output enables iterative refinement workflows without fear of side effects." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_daf75116 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When authoring any Marp markdown presentation" ;
+    oc:directiveContent "Always include the Marp frontmatter directive `marp: true` in the YAML header to enable slide rendering; slides are separated by `---` horizontal rules." ;
+    oc:hasRationale "Without the marp: true directive, the markdown will render as a regular document rather than slides, breaking the entire presentation output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f1ca22b2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting theme and styling for a Marp presentation" ;
+    oc:directiveContent "Use three built-in themes — default, gaia, or uncover — and leverage the `lead` class for centered title slides. Enable `paginate: true` for page numbers on all content slides." ;
+    oc:hasRationale "The three themes cover the most common presentation aesthetics; lead class ensures title slides are visually distinct from content slides." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fa28034a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing multi-column slide layouts" ;
+    oc:directiveContent "Column layouts require raw HTML `<div class=\"columns\">` blocks since Marp does not support native markdown column syntax; this means columns only render in HTML/PDF output, not in all markdown viewers." ;
+    oc:hasRationale "Using HTML for columns is a Marp-specific pattern that won't render correctly in standard Markdown viewers, limiting preview portability." ;
+    oc:severityLevel "MEDIUM" .
+

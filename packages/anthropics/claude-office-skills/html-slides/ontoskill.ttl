@@ -1,0 +1,69 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_html_slides a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "html-slides" ;
+    skos:broader "Presentation generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/html-slides" ;
+    oc:contentHash "2c276a05a13edbbea91def22a8fd6cf834b7cd6ab01442a7f6c9603cc92d8a79" ;
+    oc:differentia "creates interactive HTML-based slide decks using the reveal.js framework with themes, transitions, code highlighting, and speaker notes" ;
+    oc:extends oc:skill_office_mcp ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "presentation topic or description" ;
+    oc:hasCategory "presentation" ;
+    oc:hasDescription ">" ;
+    oc:hasName "html-slides" ;
+    oc:impartsKnowledge oc:kn_141de258,
+        oc:kn_3761d305,
+        oc:kn_7bbf75b7,
+        oc:kn_7c56b39a,
+        oc:kn_ef3dcb0d ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build interactive slides",
+        "create HTML presentation",
+        "create web-based slideshow with animations",
+        "generate reveal.js presentation" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_141de258 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when generating an HTML slides file" ;
+    oc:directiveContent "All reveal.js assets must be loaded from CDN (cdn.jsdelivr.net/npm/reveal.js@4/) or a local installation. The framework requires both the CSS and JS files plus any plugin scripts." ;
+    oc:hasRationale "reveal.js is a JavaScript library that must be included for the presentation to function. Missing dependencies will render a broken page." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3761d305 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating content-heavy slides where Markdown is more maintainable than raw HTML" ;
+    oc:directiveContent "Use data-markdown attribute with textarea data-template for slides that benefit from Markdown authoring, keeping content clean and readable in source." ;
+    oc:hasRationale "Markdown slides are easier to edit and maintain, especially for text-heavy presentations, while still supporting full reveal.js features." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_7bbf75b7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring a reveal.js presentation with multiple levels of content" ;
+    oc:directiveContent "Use the horizontal/vertical slide nesting pattern: horizontal sections for main topics, vertical nested sections for sub-topics within each main topic." ;
+    oc:hasRationale "This creates a clear visual hierarchy and intuitive navigation for the audience, matching how reveal.js interprets the DOM structure." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7c56b39a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When adding animations or sequential content reveal to slides" ;
+    oc:directiveContent "Use fragment classes (fade-in, fade-up, fade-down, fade-left, fade-right, highlight-red, highlight-blue, highlight-green, strike) to build progressive reveal animations within slides." ;
+    oc:hasRationale "Fragments allow speakers to control information flow, preventing audience overload and building narrative tension." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_ef3dcb0d a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any reveal.js presentation" ;
+    oc:directiveContent "Ensure the Reveal.initialize() configuration includes all required plugins (RevealMarkdown, RevealHighlight, RevealNotes) and that corresponding plugin scripts are loaded before initialization." ;
+    oc:hasRationale "Missing plugin script tags will cause JavaScript errors and break features like code highlighting, speaker notes, or Markdown rendering." ;
+    oc:severityLevel "HIGH" .
+

@@ -1,0 +1,114 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_template_engine a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "template-engine" ;
+    skos:broader "document generation engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/template-engine" ;
+    oc:contentHash "572fb69ddd00e686a78c9c83e3bfa338c8d5110ed6c04ccb29c3a00f9315529c" ;
+    oc:dependsOnSkill oc:skill_office_mcp ;
+    oc:differentia "auto-fills template placeholders with data using Jinja2-based syntax for bulk mail merge and personalized document creation" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "fill_docx_template" ;
+    oc:hasArgumentHint "template-path and data (dict or CSV) for document generation" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Auto-fill document templates with data - mail merge for any format" ;
+    oc:hasName "template-engine" ;
+    oc:hasPackageName "template-engine" ;
+    oc:hasRequirement oc:req_0675bcfd,
+        oc:req_19987d29,
+        oc:req_47a90164,
+        oc:req_6caa6449,
+        oc:req_85275399,
+        oc:req_99341ad8,
+        oc:req_e18dc245,
+        oc:req_fd635a4a ;
+    oc:impartsKnowledge oc:kn_2a056d3a,
+        oc:kn_340ebfed,
+        oc:kn_7fc7c826,
+        oc:kn_a80a4791,
+        oc:kn_c2bcec98 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "auto-fill forms with user data",
+        "create certificates from templates",
+        "generate personalized reports from data",
+        "mail merge for bulk letters and contracts",
+        "populate document templates with variable data" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2a056d3a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When managing templates in production or team environments" ;
+    oc:directiveContent "Keep templates version-controlled alongside their data schemas to maintain compatibility between template structure and data sources." ;
+    oc:hasRationale "Template-data schema mismatches cause silent failures or malformed documents that are difficult to debug without version tracking." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_340ebfed a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When populating templates where some data fields may be empty or unavailable" ;
+    oc:directiveContent "Do not leave missing data unresolved in templates. Always provide fallback values or default content for optional fields." ;
+    oc:hasRationale "Unresolved {{placeholders}} in final documents appear unprofessional and can expose internal variable names to recipients." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7fc7c826 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When running mail merge or batch document generation" ;
+    oc:directiveContent "Template rendering creates new document files on disk. For bulk mail merge operations, this can generate many files rapidly in the output directory." ;
+    oc:hasRationale "Large mail merges can fill disk space or overwhelm file systems if output directories are not managed and cleaned up." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a80a4791 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing or authoring document templates" ;
+    oc:directiveContent "Use clear, descriptive placeholder naming conventions (e.g., {{client_name}}, {{order_id}}) in templates to avoid ambiguity and improve maintainability." ;
+    oc:hasRationale "Clear naming reduces errors during data binding and makes templates self-documenting for collaborators." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c2bcec98 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing template rendering or mail merge" ;
+    oc:directiveContent "Validate all input data against template placeholders before rendering. Ensure every required variable has a corresponding value and types match expected formats." ;
+    oc:hasRationale "Rendering with missing or mismatched data produces broken documents with raw placeholder text visible to end users." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_0675bcfd a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "office-mcp MCP server with fill_docx_template tool" .
+
+oc:req_19987d29 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "docxtpl" .
+
+oc:req_47a90164 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "openpyxl" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python-docx" .
+
+oc:req_85275399 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Jinja2 template syntax for placeholders, loops, conditionals, and filters" .
+
+oc:req_99341ad8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "jinja2" .
+
+oc:req_e18dc245 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python-pptx" .
+
+oc:req_fd635a4a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "reportlab" .
+

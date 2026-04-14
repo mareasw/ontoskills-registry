@@ -1,0 +1,80 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_lead_routing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "lead-routing" ;
+    skos:broader "Sales automation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/lead-routing" ;
+    oc:contentHash "03df0e729aa2b0ff896858ed3efa03fd40d0facf6603a9bd9055d263709eade9" ;
+    oc:dependsOnSkill oc:skill_crm_automation ;
+    oc:differentia "implements intelligent lead scoring, territory-based routing, round-robin distribution, workload balancing, and SLA management for CRM lead assignment" ;
+    oc:handlesFailure oc:CRMUpdateFailed,
+        oc:EnrichmentFailed,
+        oc:NoAvailableRep,
+        oc:SLABreached ;
+    oc:hasAllowedTool "enrichment_api",
+        "hubspot_assign_owner",
+        "salesforce_route" ;
+    oc:hasArgumentHint "lead details (name, company, title, size, location, industry) or routing configuration request" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Intelligent lead assignment and routing - AI-powered scoring, territory mapping, round-robin distribution, and workload balancing" ;
+    oc:hasName "lead-routing" ;
+    oc:impartsKnowledge oc:kn_35ac42ee,
+        oc:kn_3dd0f1f0,
+        oc:kn_7acdda41,
+        oc:kn_8a0ce76c,
+        oc:kn_d247507f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "assign leads by territory or industry",
+        "balance workload across sales team",
+        "configure lead routing rules",
+        "manage SLA for lead response times",
+        "route leads to sales reps",
+        "score and prioritize leads" ;
+    oc:yieldsState oc:LeadRouted,
+        oc:LeadScored,
+        oc:SLATimerStarted .
+
+oc:kn_35ac42ee a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When an SLA timer is started for an assigned lead" ;
+    oc:directiveContent "Configure escalation paths for each SLA tier: reminder at 50% elapsed, manager alert at 80%, and auto-reassignment at 100% to ensure no lead goes unresponded." ;
+    oc:hasRationale "SLA breaches damage prospect relationships and reduce conversion; escalation paths create accountability and safety nets" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3dd0f1f0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When distributing leads via round-robin or workload balancing" ;
+    oc:directiveContent "Enforce per-rep capacity limits (max 50 open leads, 15 new per day, 60 new per week) and trigger workload rebalancing when variance between reps exceeds 20%." ;
+    oc:hasRationale "Overloading individual reps degrades response times and conversion rates; automated rebalancing prevents burnout and maintains SLA compliance" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7acdda41 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scoring and categorizing inbound leads" ;
+    oc:directiveContent "Tier leads into A (80-100), B (60-79), C (40-59), D (0-39) based on composite scoring of demographic, firmographic, behavioral, and fit factors. Each tier drives different SLA response times and follow-up urgency." ;
+    oc:hasRationale "Tiered scoring ensures high-value leads get immediate attention while lower-tier leads enter appropriate nurture sequences, optimizing sales team efficiency" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8a0ce76c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a new lead arrives and triggers the routing workflow" ;
+    oc:directiveContent "Do not skip the lead enrichment step (company_size, industry, revenue, location) before routing. Routing on incomplete data leads to misassignment and rework." ;
+    oc:hasRationale "Raw lead data is often insufficient for accurate routing; enrichment fills gaps that enable proper territory matching and scoring" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d247507f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a lead matches multiple routing criteria" ;
+    oc:directiveContent "Apply routing rules in priority order: named_account_owner first, then industry_specialist, then territory_match, then round_robin_availability. This prevents misrouting leads that already have established relationships." ;
+    oc:hasRationale "Overlapping territories and criteria create ambiguity; priority ordering ensures consistent, predictable routing decisions" ;
+    oc:severityLevel "HIGH" .
+

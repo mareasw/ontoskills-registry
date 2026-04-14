@@ -1,0 +1,78 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_transcription_automation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "transcription-automation" ;
+    skos:broader "automation skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/transcription-automation" ;
+    oc:contentHash "59fb8348f5054458717bb92b5c9107e74bc964b0ed4492c0faa1b38d636115d8" ;
+    oc:differentia "that converts audio and video content into text transcripts, subtitles, and meeting notes using speech-to-text engines with speaker diarization and multi-language support" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidMediaFormat,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "assembly_ai",
+        "deepgram_api",
+        "subtitle_generate",
+        "whisper_transcribe" ;
+    oc:hasArgumentHint "audio/video file path or URL" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Automate audio/video transcription, meeting notes, subtitle generation, and content processing" ;
+    oc:hasName "transcription-automation" ;
+    oc:impartsKnowledge oc:kn_29f6d72b,
+        oc:kn_373fe2dd,
+        oc:kn_b56c7874,
+        oc:kn_dfcda842,
+        oc:kn_f50c73ac ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "automate podcast transcription",
+        "create meeting notes from recordings",
+        "generate subtitles from media",
+        "perform speaker diarization",
+        "transcribe audio or video files",
+        "transcribe in multiple languages" ;
+    oc:yieldsState oc:MeetingNotesGenerated,
+        oc:SubtitlesCreated,
+        oc:TranscriptionGenerated .
+
+oc:kn_29f6d72b a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When processing any media containing speech from real people" ;
+    oc:directiveContent "Audio/video recordings may contain sensitive, proprietary, or personally identifiable information. Handle transcription data with appropriate privacy controls and avoid sending sensitive media to third-party APIs without authorization." ;
+    oc:hasRationale "Recordings may contain confidential business discussions, PII, or regulated content that requires specific handling under privacy laws." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_373fe2dd a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing legal, medical, or business-critical recordings" ;
+    oc:directiveContent "Do not trust automated transcription output as final for critical content without human review. Always flag low-confidence segments for manual verification." ;
+    oc:hasRationale "Even the best models achieve only ~95% accuracy; errors in critical context can have serious consequences." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b56c7874 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a Whisper model size for a transcription task" ;
+    oc:directiveContent "Balance model size selection between speed and accuracy needs: use 'tiny' or 'base' for quick drafts, 'large' for final production-quality transcriptions." ;
+    oc:hasRationale "Larger models provide better accuracy but exponentially increase processing time; matching model to use case avoids wasted compute." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dfcda842 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before running any transcription job" ;
+    oc:directiveContent "Clean audio input directly produces better transcription output. Prioritize audio pre-processing (noise reduction, format conversion, channel normalization) before transcription." ;
+    oc:hasRationale "Audio quality is the single largest determinant of transcription accuracy; garbage in means garbage out." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f50c73ac a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When transcribing meetings, interviews, or panel discussions with multiple participants" ;
+    oc:directiveContent "Use speaker diarization for any multi-speaker recording to produce clearly attributed, readable transcripts. Provide voice samples when available for better speaker identification." ;
+    oc:hasRationale "Undifferentiated speaker text is hard to follow; diarization transforms raw speech into structured, attributable dialogue." ;
+    oc:severityLevel "MEDIUM" .
+

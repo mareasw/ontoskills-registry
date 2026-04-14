@@ -1,0 +1,106 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_anthropics_claude_office_skills_social_publisher a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "social-publisher" ;
+    skos:broader "Multi-platform social media publishing automation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/anthropics/claude-office-skills/social-publisher" ;
+    oc:contentHash "01de87905641934c581557b0d760040922600cd15a42674ab7a210b2794361ed" ;
+    oc:differentia "Coordinates scheduling, platform-specific caption optimization, hashtag strategy, and cross-platform analytics tracking across TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Facebook, Threads, and Pinterest" ;
+    oc:extends oc:skill_tiktok_marketing ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "instagram_publish",
+        "linkedin_post",
+        "tiktok_upload",
+        "twitter_post",
+        "youtube_upload" ;
+    oc:hasArgumentHint "video topic or file description, optionally with target platforms" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Multi-platform social media publishing automation - schedule, post, and track content across TikTok, Instagram, YouTube, LinkedIn, and more" ;
+    oc:hasName "social-publisher" ;
+    oc:hasPackageName "social-publisher" ;
+    oc:hasRequirement oc:req_097cc6f0,
+        oc:req_5bc3935d,
+        oc:req_6550c1d3,
+        oc:req_7f9ba556 ;
+    oc:impartsKnowledge oc:kn_0b8b5696,
+        oc:kn_6b77ebca,
+        oc:kn_7fa2567a,
+        oc:kn_8d114013,
+        oc:kn_91152eed,
+        oc:kn_91475ebb ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "batch publish weekly content to multiple platforms",
+        "generate platform-specific captions and hashtags",
+        "publish content to multiple social media platforms",
+        "schedule social media posts with optimal timing",
+        "track social media analytics across platforms" ;
+    oc:yieldsState oc:ContentPublished .
+
+oc:kn_0b8b5696 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating captions for any platform" ;
+    oc:directiveContent "Each platform requires a distinct caption style: TikTok (casual, trendy, emoji-friendly, 100 chars), Instagram (engaging, story-driven, first-line hook), YouTube (SEO-optimized title, keyword description), LinkedIn (professional, thought leadership, CTA), Twitter/X (concise, punchy)." ;
+    oc:hasRationale "Platform-native content significantly outperforms cross-posted identical content because each platform's algorithm and audience expect different tones and formats." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6b77ebca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding hashtags to any social media post" ;
+    oc:directiveContent "Use 3-5 hashtags on TikTok (trending + niche + branded mix), 5-15 on Instagram (high-volume + medium + niche), 3-5 keyword-focused in YouTube descriptions, 3-5 professional hashtags on LinkedIn, and 1-2 inline or end hashtags on Twitter/X." ;
+    oc:hasRationale "Hashtag counts and styles differ per platform — over-hashtagging on LinkedIn looks unprofessional while under-hashtagging on Instagram reduces discoverability." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7fa2567a a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Before executing any publish action" ;
+    oc:directiveContent "Publishing to social media platforms creates public-facing posts that cannot be easily recalled once distributed. All captions, hashtags, and media become publicly visible across multiple platforms simultaneously." ;
+    oc:hasRationale "Multi-platform publishing amplifies both reach and risk — an error propagates to 5+ platforms instantly, making pre-publication review critical." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8d114013 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running batch publishing workflows" ;
+    oc:directiveContent "Maintain a minimum 4-hour gap between posts when batch publishing across platforms, and queue content for manager review at least 24 hours before the first scheduled post." ;
+    oc:hasRationale "Insufficient gaps between posts can trigger spam filters and audience fatigue; review deadlines prevent publishing errors on live content." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_91152eed a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When scheduling social media posts" ;
+    oc:directiveContent "Follow the optimal posting time windows per platform: TikTok (7am, 12pm, 7pm), Instagram (11am-1pm, 7-9pm), YouTube Shorts (2-4pm Thu-Sat), LinkedIn (8-10am Tue-Thu), Twitter/X (9am, 12pm, 5pm), Facebook (1-4pm), Pinterest (8-11pm Sat)." ;
+    oc:hasRationale "Posting during peak engagement windows maximizes reach and algorithmic amplification on each platform." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_91475ebb a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any multi-platform publish workflow" ;
+    oc:directiveContent "Before publishing, verify that the video file exists in the staging folder, all platform-specific captions have been generated, hashtags are platform-appropriate, and the content calendar has no scheduling conflicts." ;
+    oc:hasRationale "Pre-publish verification prevents wasted platform API calls and ensures content quality across all distribution channels." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_097cc6f0 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "social-media-mcp server with tiktok_upload, instagram_publish, youtube_upload, linkedin_post, twitter_post tools" .
+
+oc:req_5bc3935d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Platform-specific content style norms and hashtag strategies" .
+
+oc:req_6550c1d3 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Optimal posting times per social media platform" .
+
+oc:req_7f9ba556 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "n8n workflow engine (for automated workflows)" .
+
