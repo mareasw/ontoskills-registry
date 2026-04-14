@@ -1,15 +1,100 @@
 {
   "packages": [
     {
-      "package_id": "mareasw/office",
-      "manifest_url": "./packages/mareasw/office/package.json",
+      "package_id": "mareasw/greeting",
       "trust_tier": "verified",
-      "source_kind": "ontology"
+      "source_kind": "ontology",
+      "manifest_path": "packages/mareasw/greeting/package.json"
     },
     {
-      "package_id": "mareasw/greeting",
-      "manifest_url": "./packages/mareasw/greeting/package.json",
-      "trust_tier": "verified"
+      "package_id": "anthropics/financial-services-plugin",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/anthropics/financial-services-plugin/package.json"
+    },
+    {
+      "package_id": "anthropics/knowledge-work-plugins",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/anthropics/knowledge-work-plugins/package.json"
+    },
+    {
+      "package_id": "anthropics/claude-plugin-official",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/anthropics/claude-plugin-official/package.json"
+    },
+    {
+      "package_id": "anthropics/claude-code",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/anthropics/claude-code/package.json"
+    },
+    {
+      "package_id": "coinbase/agentic-wallet-skills",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/coinbase/agentic-wallet-skills/package.json"
+    },
+    {
+      "package_id": "coreyhaines31/marketingskills",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/coreyhaines31/marketingskills/package.json"
+    },
+    {
+      "package_id": "kotlin/kotlin-agent-skills",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/kotlin/kotlin-agent-skills/package.json"
+    },
+    {
+      "package_id": "n8n-io/n8n",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/n8n-io/n8n/package.json"
+    },
+    {
+      "package_id": "nextlevel-builder/ui-ux-pro-max-skill",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/nextlevel-builder/ui-ux-pro-max-skill/package.json"
+    },
+    {
+      "package_id": "obra/superpowers",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/obra/superpowers/package.json"
+    },
+    {
+      "package_id": "remotion-dev/skills",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/remotion-dev/skills/package.json"
+    },
+    {
+      "package_id": "vercel-labs/vercel-react-best-practices",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/vercel-labs/vercel-react-best-practices/package.json"
+    },
+    {
+      "package_id": "vercel-labs/agent-browser",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/vercel-labs/agent-browser/package.json"
+    },
+    {
+      "package_id": "pbakaus/impeccable",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/pbakaus/impeccable/package.json"
+    },
+    {
+      "package_id": "anthropics/claude-office-skills",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/anthropics/claude-office-skills/package.json"
     }
   ]
 }
