@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_assets a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "assets" ;
+    skos:broader "Asset management pattern" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "68b70928aaea682165f33dc8e98278d9dca8512b50e44abc2c884ee5f3ac78de" ;
+    oc:differentia "governs importing and referencing static assets (images, videos, audio, fonts) in Remotion using staticFile() and the public folder" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "asset file path (e.g. logo.png)" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_66a6ce95,
+        oc:kn_b1984127,
+        oc:kn_b9f2bfea,
+        oc:kn_e28a1139,
+        oc:kn_f9133b96 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "import images into remotion",
+        "load fonts in remotion",
+        "reference static files in remotion",
+        "serve assets from public folder",
+        "use videos and audio in remotion" ;
+    oc:yieldsState oc:AssetsLinked,
+        oc:MediaReady .
+
+oc:kn_66a6ce95 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When referencing any static asset (image, video, audio, font) from the public folder" ;
+    oc:directiveContent "You MUST use staticFile() to reference any file from the public/ folder. Never use raw relative paths like '/logo.png' or './public/logo.png'." ;
+    oc:hasRationale "staticFile() generates correctly encoded URLs that work when deploying to subdirectories, preventing broken asset paths in production" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b1984127 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When organizing project files and assets" ;
+    oc:directiveContent "Place all static assets in the public/ folder at the project root — this is the canonical asset directory." ;
+    oc:hasRationale "Remotion's staticFile() function is designed to resolve paths from the public/ folder, making it the required location for bundled assets" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b9f2bfea a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When rendering media in compositions" ;
+    oc:directiveContent "Always use Remotion's built-in components (<Img>, <Video>, <Audio>) instead of native HTML elements for media assets." ;
+    oc:hasRationale "Remotion components ensure assets are fully loaded before rendering begins, preventing blank or missing frames in the output video" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e28a1139 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to use staticFile() vs direct URLs" ;
+    oc:directiveContent "Remote URLs can be used directly as src values without staticFile(), but local files must always go through staticFile()." ;
+    oc:hasRationale "staticFile() is only needed for local assets served from the public folder; remote URLs are already absolute and resolvable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f9133b96 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When naming and referencing asset files with special characters" ;
+    oc:directiveContent "Special characters in filenames (#, ?, &) are automatically encoded by staticFile() — do not manually encode filenames." ;
+    oc:hasRationale "Double-encoding would break the URL resolution, so rely on staticFile()'s built-in encoding" ;
+    oc:severityLevel "LOW" .
+

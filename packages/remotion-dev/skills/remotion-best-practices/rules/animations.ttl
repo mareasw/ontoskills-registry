@@ -1,0 +1,81 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_animations a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "animations" ;
+    skos:broader "Animation technique" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "4fbc3c908fa27725534a8bfeaf26c58a58750790bc0e98dc8745e27734a9abb2" ;
+    oc:differentia "drives all motion declaratively via useCurrentFrame() and interpolate() in React components rather than CSS transitions" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "animation component definition" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_54f67b1d,
+        oc:req_9da7cc17,
+        oc:req_c057870d ;
+    oc:impartsKnowledge oc:kn_281fe727,
+        oc:kn_5a98961b,
+        oc:kn_9b2ddf5b,
+        oc:kn_be52ec92,
+        oc:kn_d69faa69 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "animate elements in Remotion",
+        "control animation timing with fps",
+        "create frame-driven animations",
+        "implement fade transitions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_281fe727 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When calculating frame ranges for any animation interpolation" ;
+    oc:directiveContent "Write animation durations in seconds and multiply by the fps value from useVideoConfig() to convert to frame numbers for interpolate()." ;
+    oc:hasRationale "Abstracting durations in seconds keeps code readable and fps-agnostic, while the multiplication ensures correct frame-count mapping regardless of the video's configured frame rate." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5a98961b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any animation logic in a Remotion project" ;
+    oc:directiveContent "Treat every animation as a pure function of the current frame number: given the same frame, the component must always produce the same visual output." ;
+    oc:hasRationale "This declarative frame-as-input model is what enables Remotion to render any frame independently and in parallel, ensuring deterministic and reproducible video output." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9b2ddf5b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When using interpolate() to map frame numbers to style values" ;
+    oc:directiveContent "Always use extrapolateRight: 'clamp' (or appropriate extrapolation settings) in interpolate() calls to prevent values from exceeding intended bounds after the animation range ends." ;
+    oc:hasRationale "Without clamping, interpolated values continue extrapolating beyond the defined input range, causing visual glitches like negative opacity or values exceeding 1." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_be52ec92 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling elements with Tailwind CSS in any Remotion component" ;
+    oc:directiveContent "Never apply Tailwind animation utility classes (e.g., animate-spin, animate-bounce, animate-pulse) to elements in Remotion compositions." ;
+    oc:hasRationale "Tailwind animation classes use CSS @keyframes under the hood, which suffer the same server-side rendering incompatibility as all CSS animations in Remotion." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d69faa69 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any motion or visual transition in a Remotion composition" ;
+    oc:directiveContent "All animations MUST be driven by the useCurrentFrame() hook — never use CSS transitions, CSS animations, or Tailwind animation class names." ;
+    oc:hasRationale "Remotion renders frames server-side by snapshotting React state at discrete frame numbers; CSS transitions and animations rely on browser timing loops that do not exist during rendering, producing incorrect or missing output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_54f67b1d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Remotion interpolate() function" .
+
+oc:req_9da7cc17 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Remotion useVideoConfig() hook" .
+
+oc:req_c057870d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Remotion useCurrentFrame() hook" .
+

@@ -1,0 +1,104 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_extract_frames a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "extract-frames" ;
+    skos:broader "Video frame extraction utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "771eb211c58130b2e4533dfec87abe584a2070c1d3dd0a0d6f16d2bb85dd237f" ;
+    oc:differentia "Extracts frames from videos at specific timestamps using Mediabunny with support for dynamic timestamp calculation, AbortSignal cancellation, and canvas rendering" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:ExtractionAborted,
+        oc:NetworkTimeout,
+        oc:VideoTrackNotFound ;
+    oc:hasArgumentHint "src: video URL, timestampsInSeconds: number[] or callback function" ;
+    oc:hasCategory "development" ;
+    oc:hasPayload oc:payload_771eb211c58130b2 ;
+    oc:hasRequirement oc:req_09dbcb88,
+        oc:req_887da35a,
+        oc:req_89ba054d,
+        oc:req_a6549e45 ;
+    oc:impartsKnowledge oc:kn_1eb1cf51,
+        oc:kn_5fc68448,
+        oc:kn_89a7eaab,
+        oc:kn_9818ff2b,
+        oc:kn_aed4d933,
+        oc:kn_d3d412d6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:VideoSourceAccessible ;
+    oc:resolvesIntent "capture video frames for processing",
+        "create filmstrip from video",
+        "draw video frames to canvas",
+        "extract frames from video at timestamps",
+        "generate video thumbnails" ;
+    oc:yieldsState oc:VideoFramesExtracted .
+
+oc:kn_1eb1cf51 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When extracting frames from remote URLs or very large video files" ;
+    oc:directiveContent "Use AbortSignal with Promise.race to enforce timeouts on frame extraction, especially for large videos or network-hosted sources." ;
+    oc:hasRationale "Network issues or decoding problems can cause extraction to hang indefinitely; combining AbortSignal with Promise.race provides both cooperative and hard cancellation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5fc68448 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calling extractFrames multiple times on the same source" ;
+    oc:directiveContent "The extractFrames function is not idempotent if onVideoSample has side effects; each call will re-decode the video and re-invoke the callback for every timestamp." ;
+    oc:hasRationale "Re-extracting frames is safe but potentially expensive; side effects in onVideoSample (e.g., writing files) will accumulate on repeated calls." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_89a7eaab a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calling extractFrames on any media file that might be audio-only or corrupt" ;
+    oc:directiveContent "Do not forget to handle the case where videoTrack is null — the function throws an error if no video track is found in the input." ;
+    oc:hasRationale "Silent failures or unhandled promise rejections from missing video tracks can crash the application or leave the user without feedback." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9818ff2b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating filmstrips or when frame count/spacing depends on video properties" ;
+    oc:directiveContent "Use a callback function for timestampsInSeconds when timestamps depend on video metadata (dimensions, duration, container format) that is only available after the video is opened." ;
+    oc:hasRationale "Video metadata like duration and dimensions cannot be known before opening the file, so the callback pattern defers timestamp calculation until metadata is available." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aed4d933 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When integrating extractFrames into a project" ;
+    oc:directiveContent "The extractFrames function uses 'using' (Explicit Resource Management) for the Input object, requiring TypeScript 5.2+ or a modern JavaScript runtime that supports this feature." ;
+    oc:hasRationale "Older TypeScript/JavaScript environments will throw syntax errors on the 'using' keyword, breaking the function entirely." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d3d412d6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When processing many frames in succession, especially in memory-constrained environments" ;
+    oc:directiveContent "Video samples drawn to canvas consume GPU/CPU memory; use 'using' keyword (Explicit Resource Management) to ensure timely cleanup of decoded frames." ;
+    oc:hasRationale "Decoded video frames are large uncompressed pixel buffers. Without explicit disposal via 'using', they may linger in memory and cause performance degradation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_771eb211c58130b2 a oc:ExecutionPayload ;
+    oc:code """import { extractFrames } from './extractFrames';
+// Usage: extractFrames({ src: 'video.mp4', timestampsInSeconds: [0, 1, 2], onVideoSample: (sample) => { /* draw to canvas */ } })""" ;
+    oc:executor "node" .
+
+oc:req_09dbcb88 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "AbortController/AbortSignal for cancellation" .
+
+oc:req_887da35a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "mediabunny" .
+
+oc:req_89ba054d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Canvas API for drawing video frames" .
+
+oc:req_a6549e45 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Explicit Resource Management (using keyword)" .
+

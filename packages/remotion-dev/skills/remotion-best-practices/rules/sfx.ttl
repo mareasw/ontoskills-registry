@@ -1,0 +1,67 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_sfx a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "sfx" ;
+    skos:broader "audio inclusion component" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "96fcc4f0973b5ed5cd9cd0d4d0479c642984cfacd8010fc7d6186c468296626b" ;
+    oc:differentia "uses Remotion Audio tag to embed sound effects in video compositions" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:NetworkTimeout ;
+    oc:hasArgumentHint "sound effect URL or name" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_20ee7aef,
+        oc:req_98b10449 ;
+    oc:impartsKnowledge oc:kn_36b4435b,
+        oc:kn_9db4b05a,
+        oc:kn_a20fdd76,
+        oc:kn_abf793d9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add sound effect to video",
+        "include audio in remotion composition",
+        "play sound effects in video" ;
+    oc:yieldsState oc:AudioConfigured .
+
+oc:kn_36b4435b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a built-in sound effect" ;
+    oc:directiveContent "Only the following built-in sound effect URLs are available: whoosh.wav, whip.wav, page-turn.wav, switch.wav, mouse-click.wav, shutter-modern.wav, shutter-old.wav, ding.wav, bruh.wav, vine-boom.wav, windows-xp-error.wav — all hosted at https://remotion.media/." ;
+    oc:hasRationale "These are the only pre-curated SFX URLs guaranteed to be hosted and available; using other URLs requires external hosting." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9db4b05a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When adding any sound effect to a video composition" ;
+    oc:directiveContent "Use the `<Audio>` tag imported from `@remotion/sfx` to include sound effects in Remotion compositions." ;
+    oc:hasRationale "The Audio component is Remotion's canonical way to declaratively embed audio that syncs with the video timeline." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a20fdd76 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the built-in sound effects don't match the creative need" ;
+    oc:directiveContent "For sound effects beyond the built-in set, search the internet or use https://github.com/kapishdima/soundcn/tree/main/assets as a resource." ;
+    oc:hasRationale "External SFX libraries provide a much wider range of sounds for diverse video production needs." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_abf793d9 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When using any sound effect URL" ;
+    oc:directiveContent "Audio sources are loaded from remote URLs at runtime, meaning network availability affects playback." ;
+    oc:hasRationale "If the audio URL is unreachable during rendering, the composition may fail or produce a video without the intended sound." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_20ee7aef a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@remotion/sfx" .
+
+oc:req_98b10449 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Remotion Audio component API" .
+

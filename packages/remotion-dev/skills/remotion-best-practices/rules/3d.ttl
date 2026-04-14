@@ -1,0 +1,87 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_3d a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "3d" ;
+    skos:broader "Guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "42cef6d68fb4a266ab495d35df0c60e03672b0d85c043f9b567f6aa7ff00dd0d" ;
+    oc:dependsOnSkill oc:skill_remotion_best_practices ;
+    oc:differentia "that governs 3D content integration in Remotion using Three.js and React Three Fiber with deterministic frame-driven animation" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PackageNotInstalled ;
+    oc:hasAlias "3d-remotion",
+        "react-three-fiber",
+        "three",
+        "threejs" ;
+    oc:hasArgumentHint "remotion-project-path" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_06dea826,
+        oc:req_5d410652,
+        oc:req_69fb8c89 ;
+    oc:impartsKnowledge oc:kn_2747abbc,
+        oc:kn_58b6b2e6,
+        oc:kn_904f4b92,
+        oc:kn_ca7a9065,
+        oc:kn_f8d0a4cb ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add 3d content to remotion video",
+        "animate 3d objects frame-by-frame in remotion",
+        "render 3d scenes in remotion",
+        "use three.js with remotion" ;
+    oc:yieldsState oc:Scene3DRendered .
+
+oc:kn_2747abbc a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When rendering any 3D scene in Remotion" ;
+    oc:directiveContent "Always wrap 3D content in <ThreeCanvas> with explicit width and height props from useVideoConfig(), and include proper lighting (ambient + directional)." ;
+    oc:hasRationale "ThreeCanvas bridges Remotion's rendering pipeline with React Three Fiber; without explicit dimensions and lighting, the canvas will not render correctly or will appear unlit." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_58b6b2e6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing animation or per-frame logic in 3D Remotion components" ;
+    oc:directiveContent "Never use useFrame() from @react-three/fiber in a Remotion project." ;
+    oc:hasRationale "useFrame() runs on requestAnimationFrame which is decoupled from Remotion's frame-by-frame rendering model, causing desynchronized animations and flickering." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_904f4b92 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When animating any 3D object, shader, or model in a Remotion project" ;
+    oc:directiveContent "All animations MUST be driven by useCurrentFrame(). Never use useFrame() from @react-three/fiber or self-animating shaders/models." ;
+    oc:hasRationale "Remotion renders frames sequentially and deterministically. Self-animating elements or useFrame() produce non-deterministic timing, causing flickering and frame mismatch during rendering." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ca7a9065 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When nesting Remotion's <Sequence> component within a <ThreeCanvas>" ;
+    oc:directiveContent "When using <Sequence> inside <ThreeCanvas>, the layout prop must be set to 'none'." ;
+    oc:hasRationale "The ThreeCanvas manages its own layout outside of the DOM. Without layout='none', Sequence tries to apply CSS layout rules that conflict with the 3D rendering context." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f8d0a4cb a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any 3D Remotion implementation" ;
+    oc:directiveContent "Verify that @remotion/three is installed before writing 3D code. Install it using the appropriate package manager command (npx/bunx/yarn/pnpm remotion add @remotion/three)." ;
+    oc:hasRationale "The @remotion/three package provides ThreeCanvas and related bindings; without it, 3D imports will fail at compile time." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_06dea826 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "React Three Fiber" .
+
+oc:req_5d410652 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@remotion/three" .
+
+oc:req_69fb8c89 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Three.js" .
+

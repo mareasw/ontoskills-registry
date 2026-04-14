@@ -1,0 +1,102 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_voiceover a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "voiceover" ;
+    skos:broader "Voiceover integration guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "60340034cf422052007183d031171b3c88422dd3fe85f0d915283dd8ec5df3e8" ;
+    oc:differentia "uses TTS services to generate speech audio per scene and dynamically sizes Remotion compositions to match audio duration via calculateMetadata" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "node" ;
+    oc:hasArgumentHint "composition-id, scene-texts, voice-id" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_28addc12,
+        oc:req_49461b85,
+        oc:req_8bc62e6b,
+        oc:req_b0e88c54,
+        oc:req_c4d6e95e,
+        oc:req_f451ae64 ;
+    oc:impartsKnowledge oc:kn_00547985,
+        oc:kn_4c989777,
+        oc:kn_6228ae7a,
+        oc:kn_c5dcf59a,
+        oc:kn_ce5b1ecd ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "add voiceover to remotion video",
+        "dynamically set composition duration based on audio length",
+        "generate AI speech for video scenes",
+        "integrate text-to-speech with remotion" ;
+    oc:yieldsState oc:CompositionDurationCalculated,
+        oc:VoiceoverGenerated .
+
+oc:kn_00547985 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building compositions with voiceover audio" ;
+    oc:directiveContent "Use calculateMetadata to measure audio durations and dynamically set composition durationInFrames based on the sum of all scene audio lengths multiplied by FPS." ;
+    oc:hasRationale "Hardcoding duration risks cutting off audio prematurely or leaving dead air; calculateMetadata ensures the video is exactly as long as the voiceover requires." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4c989777 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before generating voiceover audio" ;
+    oc:directiveContent "Verify ELEVENLABS_API_KEY is set in the environment before running the voiceover generation script; if the user has not specified a TTS provider, recommend ElevenLabs and ask for their API key." ;
+    oc:hasRationale "The TTS API call will fail with an authentication error if the key is missing, wasting time and tokens." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6228ae7a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When rendering the composition component" ;
+    oc:directiveContent "Pass computed sceneDurations into the component via a voiceover prop so each scene knows exactly how many frames it should occupy." ;
+    oc:hasRationale "Each scene must be aware of its own duration to sync visual content with the corresponding audio segment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c5dcf59a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When combining voiceover with scene transitions" ;
+    oc:directiveContent "If using TransitionSeries, subtract the overlap duration from the total composition duration to avoid frames extending beyond the actual content." ;
+    oc:hasRationale "Transitions overlap between scenes; failing to account for overlap causes the composition to have extra frames with no corresponding audio." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ce5b1ecd a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating and storing TTS audio files" ;
+    oc:directiveContent "Write generated MP3 files to the public/ directory so Remotion can reference them via staticFile(), and organize by composition ID and scene ID for clean separation." ;
+    oc:hasRationale "Remotion's staticFile() only serves files from the public/ directory; any other location will result in file-not-found errors at render time." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_28addc12 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "calculateMetadata" .
+
+oc:req_49461b85 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "ELEVENLABS_API_KEY" .
+
+oc:req_8bc62e6b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "getAudioDuration" .
+
+oc:req_b0e88c54 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "ElevenLabs TTS API" .
+
+oc:req_c4d6e95e a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "staticFile" .
+
+oc:req_f451ae64 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Node.js" .
+

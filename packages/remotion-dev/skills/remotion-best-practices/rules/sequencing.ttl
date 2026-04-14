@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_sequencing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "sequencing" ;
+    skos:broader "timing and layout pattern" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "7c18f2ac36974fd7b85c01efa1135ea06a14e8492dd9fe82ced3bec0b4bb605d" ;
+    oc:differentia "uses Remotion's Sequence and Series components to control when elements appear, for how long, and in what order within a video timeline" ;
+    oc:extends oc:skill_remotion_best_practices,
+        oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "component tree with timing requirements" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_81166d75,
+        oc:kn_b6eae859,
+        oc:kn_c891d7e2,
+        oc:kn_df93f69f,
+        oc:kn_eef8622e ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create overlapping video segments",
+        "delay element appearance in video timeline",
+        "nest compositions within each other",
+        "sequence elements one after another",
+        "trim and limit duration of video elements" ;
+    oc:yieldsState oc:SequenceConfigured .
+
+oc:kn_81166d75 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When <Sequence> or <Series.Sequence> introduces unwanted layout shifts due to default absolute-fill wrapping" ;
+    oc:directiveContent "Do not forget the layout prop when Sequence wrapping causes unwanted absolute-fill positioning of child elements." ;
+    oc:hasRationale "The default absolute-fill wrapper can break custom positioning; setting layout='none' preserves the child's original layout behavior." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b6eae859 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading frame data inside a <Sequence> wrapper" ;
+    oc:directiveContent "useCurrentFrame() returns local frames (starting from 0) inside a Sequence, not the absolute composition frame." ;
+    oc:hasRationale "This local frame behavior makes sequences self-contained and reusable at any timeline position, but can cause bugs if developers assume absolute frame values." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c891d7e2 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When using <Sequence> in any Remotion composition" ;
+    oc:directiveContent "Always premount any <Sequence> component by setting premountFor to preload the component before it plays." ;
+    oc:hasRationale "Premounting prevents visual glitches and loading flicker by ensuring the component is fully rendered before it becomes visible on the timeline." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df93f69f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When embedding a Composition component within another composition" ;
+    oc:directiveContent "To nest one composition inside another, use <Sequence> with explicit width and height props to define the inner composition's dimensions." ;
+    oc:hasRationale "Without explicit dimensions, the nested composition has no reference frame for its coordinate system and may not render correctly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_eef8622e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding between Sequence and Series for timeline orchestration" ;
+    oc:directiveContent "Use <Sequence> for delaying or trimming individual elements; use <Series> for playing elements one after another without manual frame calculation." ;
+    oc:hasRationale "Series eliminates the need to manually calculate cumulative start frames, reducing off-by-one errors in sequential playback." ;
+    oc:severityLevel "MEDIUM" .
+

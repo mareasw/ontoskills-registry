@@ -1,0 +1,66 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_subtitles a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "subtitles" ;
+    skos:broader "Caption processing framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "9f18ec4a9c88adf35d51b44aaf344442443fd687a4dc948366ebb683fc3ecd30" ;
+    oc:differentia "enforces JSON-based caption data model using the @remotion/captions Caption type for subtitle generation, display, and import in Remotion video projects" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "video or audio file path for caption generation, or .srt file for import" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_17042014,
+        oc:kn_2036feee,
+        oc:kn_5c21e53e,
+        oc:kn_ab1f2201,
+        oc:kn_f7201fb5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "display captions in a Remotion video",
+        "generate captions from video and audio",
+        "import captions from SRT files",
+        "manage subtitles and captions in Remotion videos" ;
+    oc:yieldsState oc:CaptionsGenerated .
+
+oc:kn_17042014 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when working with any caption/subtitle data in Remotion" ;
+    oc:directiveContent "All captions must be processed in JSON using the Caption type from @remotion/captions, which requires text, startMs, endMs, and optionally timestampMs and confidence fields." ;
+    oc:hasRationale "Ensures type safety and consistency across caption generation, display, and import workflows" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_2036feee a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any caption-related task" ;
+    oc:directiveContent "Verify that @remotion/captions is installed and the Caption type is importable before beginning any caption work." ;
+    oc:hasRationale "The entire caption pipeline depends on this package being available as the canonical type definition" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5c21e53e a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When the user requests caption-related functionality" ;
+    oc:directiveContent "Follow the progressive disclosure pattern: load transcribe-captions.md for generation, display-captions.md for rendering, or import-srt-captions.md for SRT import rather than trying to handle all scenarios at once." ;
+    oc:hasRationale "Each sub-workflow has specialized instructions and dependencies that are best loaded on demand to avoid context bloat" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ab1f2201 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When receiving captions from external sources like SRT files or transcription APIs" ;
+    oc:directiveContent "Do not create custom caption data structures or use raw string-based subtitle formats directly; always normalize to the JSON Caption type." ;
+    oc:hasRationale "Bypassing the Caption type breaks compatibility with Remotion's caption display components and downstream tooling" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f7201fb5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating, parsing, or transforming any caption data structure" ;
+    oc:directiveContent "Caption data must conform to the Caption type schema: text (string), startMs (number), endMs (number), timestampMs (number | null), confidence (number | null)." ;
+    oc:hasRationale "A consistent data model enables seamless interchange between caption generation, display, and import subsystems" ;
+    oc:severityLevel "HIGH" .
+

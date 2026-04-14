@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_parameters a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "parameters" ;
+    skos:broader "Configuration pattern" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "9de38837a07dc406052dfbb759c58ca5298ca331d86d9aa0f4e177b339e288b5" ;
+    oc:differentia "uses Zod schemas to define and validate parametrizable props for Remotion compositions" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:DependencyNotFound,
+        oc:InvalidSchema ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "composition-file-path" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_03938ee0,
+        oc:req_126b1372,
+        oc:req_7e62bdca ;
+    oc:impartsKnowledge oc:kn_21f0cb08,
+        oc:kn_53995ce3,
+        oc:kn_b033fde8,
+        oc:kn_d8913c47,
+        oc:kn_fcc4d46f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add parameters to a video composition",
+        "create color picker parameter for video",
+        "define zod schema for remotion composition",
+        "make video props editable in sidebar" ;
+    oc:yieldsState oc:CompositionParametrized,
+        oc:SchemaDefined .
+
+oc:kn_21f0cb08 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before defining any parametrizable composition" ;
+    oc:directiveContent "Verify that zod is installed in the project before attempting to import and use it in a composition schema." ;
+    oc:hasRationale "Missing the zod dependency will cause build-time errors that block the entire Remotion project." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_53995ce3 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining schema fields that represent colors" ;
+    oc:directiveContent "Use zColor() from @remotion/zod-types instead of z.string() for color props to enable the visual color picker in Remotion's sidebar." ;
+    oc:hasRationale "zColor() provides a dedicated color picker UI in the Remotion Studio sidebar, improving the editing experience over plain string input." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b033fde8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring parametrizable compositions" ;
+    oc:directiveContent "Co-locate the Zod schema definition with its corresponding React component in the same file, then pass the schema to the Composition in the root file." ;
+    oc:hasRationale "Co-location keeps the schema and component in sync, making it easier to maintain type safety with z.infer<typeof Schema>." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_d8913c47 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining any composition schema in Remotion" ;
+    oc:directiveContent "The top-level schema type must be z.object() — the collection of props for a React component is always an object, so z.string(), z.array(), or other non-object types cannot be used as the root schema." ;
+    oc:hasRationale "Remotion's Composition component passes props as a flat object to the React component, so the schema must describe an object shape." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_fcc4d46f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When installing zod or @remotion/zod-types dependencies" ;
+    oc:directiveContent "Detect the project's package manager by searching for lockfiles (package-lock.json → npm, bun.lockb → bun, yarn.lock → yarn, pnpm-lock.yaml → pnpm) before running install commands." ;
+    oc:hasRationale "Using the wrong package manager can create conflicting lockfiles and corrupt the dependency tree." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_03938ee0 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Remotion Composition API" .
+
+oc:req_126b1372 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "@remotion/zod-types" .
+
+oc:req_7e62bdca a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "zod" .
+

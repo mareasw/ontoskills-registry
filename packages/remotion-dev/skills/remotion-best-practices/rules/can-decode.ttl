@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_can_decode a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "can-decode" ;
+    skos:broader "Validation utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "d2323cc4f2a884a09d167f31a4fcb36bd94adf1002de88b99bd9af1a2bc5ed71" ;
+    oc:dependsOnSkill oc:skill_remotion_best_practices ;
+    oc:differentia "Checks browser decode compatibility for video/audio media using Mediabunny before playback is attempted" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:MediaNotDecodable,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "src: string (URL) or Blob" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_12447f65,
+        oc:kn_4b5db199,
+        oc:kn_6801b8e2,
+        oc:kn_984217e7,
+        oc:kn_ce4b5311 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "check if a video can be decoded by the browser",
+        "test audio and video codec support",
+        "validate media compatibility before playback",
+        "verify uploaded file decode support" ;
+    oc:yieldsState oc:MediaDecodeChecked .
+
+oc:kn_12447f65 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When running canDecode() validation on any media file" ;
+    oc:directiveContent "Verify both video and audio tracks independently using getPrimaryVideoTrack() and getPrimaryAudioTrack() — a media file may have a decodable video track but an unsupported audio track (or vice versa)." ;
+    oc:hasRationale "Partial decode support (e.g., video yes, audio no) still results in a broken playback experience. Both tracks must be validated." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4b5db199 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before using canDecode() or any Mediabunny API" ;
+    oc:directiveContent "The correct version of Mediabunny must be installed via `npx remotion add mediabunny` — do not install independently." ;
+    oc:hasRationale "Remotion manages the compatible version of Mediabunny; independent installation may introduce version mismatches." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6801b8e2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the Input object for canDecode()" ;
+    oc:directiveContent "Use UrlSource with getRetryDelay: () => null for decode checks to fail fast without retry delays. Use BlobSource for file upload/drag-and-drop scenarios." ;
+    oc:hasRationale "Disabling retries on URL sources makes the compatibility check responsive. BlobSource is necessary for local file data that has no URL." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_984217e7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before playing or processing any video/audio in a browser context" ;
+    oc:directiveContent "Always check media decode compatibility before attempting playback — use canDecode() to validate both video and audio tracks." ;
+    oc:hasRationale "Prevents runtime errors and degraded user experience from attempting to play unsupported codecs or container formats." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ce4b5311 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always — this function performs only read/probe operations" ;
+    oc:directiveContent "canDecode() is a read-only, side-effect-free function that can be called multiple times safely without modifying any state." ;
+    oc:hasRationale "Safe to use in React effects, render loops, or retry logic without concern for state corruption." .
+

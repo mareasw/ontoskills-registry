@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_get_audio_duration a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "get-audio-duration" ;
+    skos:broader "Audio metadata extraction pattern" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "720a5346ae79555e933498995d5cb04d1bfbeeee7232436d8835c3ec17d46281" ;
+    oc:differentia "Uses Mediabunny library to compute the duration of an audio file in seconds across browser, Node.js, and Bun environments" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout,
+        oc:UnsupportedFormat ;
+    oc:hasArgumentHint "src: string (URL or file path to audio file)" ;
+    oc:hasCategory "development" ;
+    oc:hasPayload oc:payload_720a5346ae79555e ;
+    oc:impartsKnowledge oc:kn_5ec9f84d,
+        oc:kn_92a427cb,
+        oc:kn_ad6f8a73,
+        oc:kn_adcf18c5,
+        oc:kn_c68aef22 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:AudioFileAccessible ;
+    oc:resolvesIntent "extract audio file metadata",
+        "get audio duration",
+        "measure audio length in seconds" ;
+    oc:yieldsState oc:AudioDurationComputed .
+
+oc:kn_5ec9f84d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initializing Mediabunny Input for audio duration extraction" ;
+    oc:directiveContent "Use UrlSource for browser environments and FileSource for Node.js/Bun environments when working with Mediabunny Input." ;
+    oc:hasRationale "The source abstraction must match the runtime environment to correctly resolve audio data" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_92a427cb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When referencing local audio assets in a Remotion project" ;
+    oc:directiveContent "In Remotion projects, always wrap local file paths with staticFile() before passing them to the audio duration function." ;
+    oc:hasRationale "staticFile() resolves the correct public URL for bundled assets in Remotion's rendering pipeline" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ad6f8a73 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing a Mediabunny Input object" ;
+    oc:directiveContent "Always specify formats: ALL_FORMATS when creating an Input instance to ensure maximum audio format compatibility." ;
+    oc:hasRationale "Without ALL_FORMATS, the library may fail to recognize certain audio file types" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_adcf18c5 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When fetching audio from a URL that may be unreliable" ;
+    oc:directiveContent "Use getRetryDelay: () => null in UrlSource options to disable automatic retries on network failure, allowing custom error handling." ;
+    oc:hasRationale "Disabling default retries gives the caller control over retry logic and prevents silent hanging" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c68aef22 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When calling input.computeDuration()" ;
+    oc:directiveContent "computeDuration() is an async operation that may involve network requests for URL sources and decoding for file sources." ;
+    oc:hasRationale "Network latency or large file decoding can introduce delays; callers should handle async timing appropriately" ;
+    oc:severityLevel "LOW" .
+
+oc:payload_720a5346ae79555e a oc:ExecutionPayload ;
+    oc:code """import { Input, ALL_FORMATS, UrlSource, FileSource } from 'mediabunny';
+
+// Browser/URL usage
+const getAudioDuration = async (src) => {
+  const input = new Input({
+    formats: ALL_FORMATS,
+    source: new UrlSource(src, { getRetryDelay: () => null }),
+  });
+  const durationInSeconds = await input.computeDuration();
+  return durationInSeconds;
+};
+
+// Node.js/Bun with FileSource
+const getAudioDurationFromFile = async (file) => {
+  const input = new Input({
+    formats: ALL_FORMATS,
+    source: new FileSource(file),
+  });
+  const durationInSeconds = await input.computeDuration();
+  return durationInSeconds;
+};""" ;
+    oc:executor "node" ;
+    oc:timeout 15000 .
+

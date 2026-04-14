@@ -1,0 +1,62 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_text_animations a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "text-animations" ;
+    skos:broader "Typography animation pattern library" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "40ac6b1bccf1c57d9edd46c74e847ec6e86fe775d3ef4fd14e1338f4a2606171" ;
+    oc:dependsOnSkill oc:skill_remotion_best_practices ;
+    oc:differentia "provides text animation techniques (typewriter, word highlight) for Remotion using useCurrentFrame-based character-by-character rendering" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Read" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_3a704042,
+        oc:kn_58472001,
+        oc:kn_648e56fd,
+        oc:kn_b75576c7,
+        oc:kn_d58a6ae1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "animate word highlighting in Remotion",
+        "create text reveal animations in video",
+        "create typewriter text effect in Remotion" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_3a704042 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing typewriter text animations" ;
+    oc:directiveContent "Never use per-character opacity for typewriter effects. Always use string slicing to progressively reveal text." ;
+    oc:hasRationale "Per-character opacity creates invisible DOM elements for every character, degrading rendering performance and producing visual artifacts. String slicing is cleaner and more efficient." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_58472001 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing word highlight animations" ;
+    oc:directiveContent "Use spring() with high damping for highlight wipe animations, scaling from left center with transformOrigin to create a natural pen-stroke effect." ;
+    oc:hasRationale "Spring physics with high damping (200) produces a smooth, decelerating wipe that mimics a real highlighter pen motion better than linear interpolation." .
+
+oc:kn_648e56fd a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any text animation in Remotion" ;
+    oc:directiveContent "Use useCurrentFrame() to drive text animation progress, computing how many characters or words to display based on the current frame number." ;
+    oc:hasRationale "Remotion is frame-based; animations must be deterministic functions of the current frame to ensure consistent rendering across preview and final output." .
+
+oc:kn_b75576c7 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating advanced typewriter effects with dramatic pauses between sentences" ;
+    oc:directiveContent "Add a pause mid-typing by tracking a pause index in the full text and halting character progression for a calculated number of frames (fps × pause_seconds)." ;
+    oc:hasRationale "Pauses create visual rhythm and give viewers time to absorb information, improving readability and engagement." .
+
+oc:kn_d58a6ae1 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, by design of Remotion's frame-based architecture" ;
+    oc:directiveContent "Text animations are frame-deterministic: given the same frame number, the animation output is always identical. Re-rendering does not change results." ;
+    oc:hasRationale "Frame determinism ensures consistent video output across previews, renders, and re-renders without accumulated state drift." .
+

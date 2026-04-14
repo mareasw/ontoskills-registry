@@ -1,0 +1,99 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_audio a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "audio" ;
+    skos:broader "media handling guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "e931664ac23bc4acfa137d8b415702bb4860b4fbabd6caed0042c0902d3bec90" ;
+    oc:dependsOnSkill oc:skill_remotion_best_practices ;
+    oc:differentia "covers importing, trimming, volume control, speed, looping, and pitch manipulation of audio in Remotion compositions" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PackageNotInstalled ;
+    oc:hasArgumentHint "audio source URL or static file reference" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_8e3216f4,
+        oc:req_a74da80a ;
+    oc:impartsKnowledge oc:kn_1a5ca17b,
+        oc:kn_2ea67f57,
+        oc:kn_3b6ee413,
+        oc:kn_731238ee,
+        oc:kn_acd7982a,
+        oc:kn_d22bb89a,
+        oc:kn_f03c3d55 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:PackageInstalled ;
+    oc:resolvesIntent "add audio to remotion composition",
+        "adjust audio pitch in remotion",
+        "change audio playback speed in remotion",
+        "control audio volume in remotion",
+        "delay audio playback in remotion",
+        "loop audio in remotion",
+        "mute audio in remotion",
+        "trim audio in remotion" ;
+    oc:yieldsState oc:AudioConfigured .
+
+oc:kn_1a5ca17b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting playbackRate on <Audio>" ;
+    oc:directiveContent "Reverse audio playback is not supported by the playbackRate prop — only positive values produce valid output" ;
+    oc:hasRationale "Attempting negative playbackRate values will not produce reversed audio and may cause unexpected behavior" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2ea67f57 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When building compositions with multiple sound sources" ;
+    oc:directiveContent "Multiple <Audio> components can be layered in a single composition to create mixed audio tracks" ;
+    oc:hasRationale "Remotion supports simultaneous audio playback from multiple sources, enabling background music + sound effects layering" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3b6ee413 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before adding any audio to a Remotion composition" ;
+    oc:directiveContent "Ensure @remotion/media package is installed before using <Audio>. Install via: npx remotion add @remotion/media" ;
+    oc:hasRationale "The Audio component is not part of the core remotion package and must be installed separately" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_731238ee a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When using a dynamic volume callback function on <Audio>" ;
+    oc:directiveContent "In the volume callback, the frame parameter (f) starts at 0 relative to when the audio begins playing, not the absolute composition frame number" ;
+    oc:hasRationale "Using the composition frame instead of the audio-relative frame will produce incorrect volume curves, especially for delayed or sequenced audio" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_acd7982a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using the toneFrequency prop for pitch adjustment" ;
+    oc:directiveContent "Pitch shifting via toneFrequency only works during server-side rendering, not in Remotion Studio preview or <Player />" ;
+    oc:hasRationale "Developers may think pitch is broken during preview — it only takes effect in the final render" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d22bb89a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When delaying audio playback relative to the composition timeline" ;
+    oc:directiveContent "Use <Sequence> to delay audio start rather than manipulating trimBefore, since trimBefore selects which portion of the audio file plays, not when it begins in the timeline" ;
+    oc:hasRationale "trimBefore/trimAfter control which segment of the audio file is audible; <Sequence from={}> controls when the audio starts in the composition timeline. These serve different purposes and should not be confused" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f03c3d55 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When looping audio with dynamic volume callbacks" ;
+    oc:directiveContent "Use loopVolumeCurveBehavior='extend' when you want volume curves (like fade-outs) to span across multiple loop iterations" ;
+    oc:hasRationale "The default 'repeat' behavior resets the frame counter each loop, restarting any volume animation — 'extend' allows continuous interpolation across loops" ;
+    oc:severityLevel "LOW" .
+
+oc:req_8e3216f4 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@remotion/media package" .
+
+oc:req_a74da80a a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "React JSX and component composition" .
+

@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_charts a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "charts" ;
+    skos:broader "Data visualization framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "c6863bd1122f53f80c2211fbe19bc5e3db8a38a5d43473748da8067af10fcf29" ;
+    oc:dependsOnSkill oc:skill_remotion_best_practices ;
+    oc:differentia "implements animated charts (bar, pie, line, stock) in Remotion using React, SVG, and frame-driven animation primitives" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PackageNotFound ;
+    oc:hasArgumentHint "chart data (array of values or points) and chart type (bar, pie, line, stock)" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_020a3719,
+        oc:kn_22abc57b,
+        oc:kn_61b2615a,
+        oc:kn_7409653d,
+        oc:kn_a8e48e33,
+        oc:kn_ecef6751,
+        oc:kn_f487dc7c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:PackageInstalled ;
+    oc:resolvesIntent "animate SVG path for stock graphs",
+        "create animated bar chart",
+        "create animated line chart",
+        "create animated pie chart",
+        "create data-driven chart animations",
+        "draw path with animated stroke" ;
+    oc:yieldsState oc:ChartCreated,
+        oc:PathAnimated .
+
+oc:kn_020a3719 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Always, when animating any chart element in Remotion" ;
+    oc:directiveContent "Drive all chart animations exclusively from useCurrentFrame() combined with interpolate() or spring() to ensure deterministic, frame-accurate motion." ;
+    oc:hasRationale "Remotion controls time via virtual frames, not real-time clocks. Using useCurrentFrame() guarantees the animation is identical on every render and across all output formats." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_22abc57b a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When animating line charts, stock graphs, signatures, or any SVG path drawing" ;
+    oc:directiveContent "For line charts and path animations, use @remotion/paths (evolvePath, getPointAtLength, getTangentAtLength) rather than manual SVG animation. Install via 'npx remotion add @remotion/paths'." ;
+    oc:hasRationale "@remotion/paths provides mathematically correct path interpolation with proper easing, and its evolvePath() generates strokeDasharray/strokeDashoffset pairs that create smooth path reveal animations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_61b2615a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When integrating any charting or data visualization library" ;
+    oc:directiveContent "Never use animations from third-party libraries (D3 transitions, CSS animations, etc.) - they cause flickering in Remotion's frame-by-frame rendering model." ;
+    oc:hasRationale "Remotion renders discrete frames on demand; third-party animation systems run on real-time clocks and produce inconsistent frame capture, causing visible flicker." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7409653d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating pie or donut chart segments" ;
+    oc:directiveContent "For pie charts, use stroke-dashoffset on SVG circles starting from 12 o'clock (rotate -90 degrees) to animate segment reveal. Calculate each segment's dasharray as its proportional arc length." ;
+    oc:hasRationale "The stroke-dashoffset technique provides precise, GPU-accelerated control over segment animation without requiring complex arc path calculations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a8e48e33 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating line chart paths from data point arrays" ;
+    oc:directiveContent "At least 2 data points are required to generate a valid SVG line path. A single point or empty array produces no visible path." ;
+    oc:hasRationale "An SVG path requires at minimum a Move (M) command and one Line (L) command to form a visible stroke. Fewer than 2 points cannot produce a line." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ecef6751 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before using any path animation utilities from @remotion/paths" ;
+    oc:directiveContent "Verify @remotion/paths is installed before using evolvePath, getLength, getPointAtLength, or getTangentAtLength. Run 'npx remotion add @remotion/paths' if missing." ;
+    oc:hasRationale "These utilities are an optional package and not included in the core Remotion installation. Missing imports will cause runtime errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f487dc7c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building bar charts with multiple data series" ;
+    oc:directiveContent "Use staggered delays with spring() for bar chart animations to create a cascading reveal effect. A STAGGER_DELAY of 5 frames between bars with damping: 200 produces smooth, professional motion." ;
+    oc:hasRationale "Staggered springs create visual hierarchy and guide the viewer's eye through data sequentially, while high damping prevents oscillation." ;
+    oc:severityLevel "MEDIUM" .
+

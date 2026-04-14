@@ -1,0 +1,82 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_import_srt_captions a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "import-srt-captions" ;
+    skos:broader "Caption import utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "ad89cc1834dcd63ff225593f699611a1a20b57eff4ed8e587f429b36516ec82c" ;
+    oc:differentia "parses .srt subtitle files into Remotion Caption objects using @remotion/captions parseSrt()" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "path or URL to .srt file" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_4f4f8168,
+        oc:req_6726c8e0,
+        oc:req_b710fccc ;
+    oc:impartsKnowledge oc:kn_24b3f177,
+        oc:kn_911831cf,
+        oc:kn_b08c773c,
+        oc:kn_b7a7597a,
+        oc:kn_ba17726b ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "import srt subtitles into remotion",
+        "load external subtitle files for video",
+        "parse srt caption files" ;
+    oc:yieldsState oc:CaptionsParsed .
+
+oc:kn_24b3f177 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Understanding execution model of caption import" ;
+    oc:directiveContent "parseSrt() is a pure synchronous parser — it transforms a text string into Caption objects with no side effects. The fetch operation is the only async boundary." ;
+    oc:hasRationale "Knowing that parsing is synchronous helps architects separate network I/O concerns from data transformation concerns." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_911831cf a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When loading .srt caption files" ;
+    oc:directiveContent "Use staticFile() to reference .srt files placed in the public/ folder, or fetch() for remote URLs. Both approaches are supported." ;
+    oc:hasRationale "staticFile() ensures correct path resolution within Remotion's bundler, while fetch() enables loading from external sources." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b08c773c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before importing any .srt file" ;
+    oc:directiveContent "Ensure @remotion/captions is installed before attempting to parse SRT files. Install via 'npx remotion add @remotion/captions' or the equivalent for your package manager." ;
+    oc:hasRationale "parseSrt() is not available without the @remotion/captions package, and the import will fail at compile time." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b7a7597a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fetching .srt files inside a Remotion component" ;
+    oc:directiveContent "Never render caption-dependent UI before the async fetch and parse completes. Use useDelayRender() to suspend rendering until captions are ready." ;
+    oc:hasRationale "Without delayRender/continueRender, Remotion may render a frame before captions are loaded, producing blank or broken output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ba17726b a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When fetch or parseSrt() fails" ;
+    oc:directiveContent "Wrap the fetch and parse logic in try/catch, calling cancelRender(e) on failure to gracefully halt the render with a meaningful error." ;
+    oc:hasRationale "Silent failures produce empty captions and misleading output. cancelRender ensures the error surfaces immediately." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_4f4f8168 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "remotion staticFile" .
+
+oc:req_6726c8e0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@remotion/captions" .
+
+oc:req_b710fccc a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "SRT file format" .
+

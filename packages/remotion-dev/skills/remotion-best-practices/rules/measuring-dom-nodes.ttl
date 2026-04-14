@@ -1,0 +1,65 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_measuring_dom_nodes a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "measuring-dom-nodes" ;
+    skos:broader "Layout measurement technique" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "4017103b03f14a041ac433be78c521ec2e9961629fae419c8b196d349637585b" ;
+    oc:differentia "Accounts for Remotion's scale transform when reading DOM element dimensions via getBoundingClientRect" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:RefNotAttached ;
+    oc:hasArgumentHint "A React component that needs to measure its own or a child element's dimensions" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_79bb44c1,
+        oc:kn_9a3b4e87,
+        oc:kn_cf63e81a,
+        oc:kn_e3de006c,
+        oc:kn_f21bf2bd ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ComponentMounted ;
+    oc:resolvesIntent "get accurate element width and height despite scale transform",
+        "measure DOM element dimensions in Remotion",
+        "read layout metrics in Remotion components" ;
+    oc:yieldsState oc:ElementDimensionsMeasured .
+
+oc:kn_79bb44c1 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When the Remotion player is resized or the composition dimensions change" ;
+    oc:directiveContent "Re-measure dimensions whenever the scale value changes by including it in the useEffect dependency array." ;
+    oc:hasRationale "The scale factor is reactive and changes with player resize; stale measurements lead to incorrect layout calculations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9a3b4e87 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Whenever layout measurement is needed in a Remotion component" ;
+    oc:directiveContent "Always use useCurrentScale() hook to obtain the current scale factor and divide getBoundingClientRect() width and height by it." ;
+    oc:hasRationale "Dividing by the scale factor normalizes the measurement back to the component's logical coordinate space, yielding accurate dimensions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cf63e81a a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before reading DOM measurements in a useEffect or callback" ;
+    oc:directiveContent "Always guard against null ref.current before calling getBoundingClientRect(), since the ref may not be attached yet on first render." ;
+    oc:hasRationale "React refs are null until the component mounts; accessing getBoundingClientRect on null throws a runtime error." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e3de006c a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When interpreting browser layout APIs within Remotion's scaled container" ;
+    oc:directiveContent "getBoundingClientRect() reflects the rendered (visually transformed) size, not the logical size in the Remotion coordinate system." ;
+    oc:hasRationale "Understanding this distinction prevents subtle layout bugs where elements appear correctly sized visually but report incorrect dimensions programmatically." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f21bf2bd a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When measuring any DOM element dimensions in a Remotion composition" ;
+    oc:directiveContent "Never use raw getBoundingClientRect() values directly in Remotion components without dividing by the current scale factor." ;
+    oc:hasRationale "Remotion applies a scale() transform to the video container, so getBoundingClientRect() returns scaled values that do not match the logical pixel dimensions." ;
+    oc:severityLevel "CRITICAL" .
+

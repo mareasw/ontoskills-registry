@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_display_captions a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "display-captions" ;
+    skos:broader "Video caption rendering guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "20b8898a90536fa427a5a39571fc7deac7bde96c4c7bfdf413eee1ef4ef85530" ;
+    oc:differentia "Displays TikTok-style paginated captions with word-by-word highlighting in Remotion videos using the @remotion/captions package" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAlias "captions",
+        "subtitles",
+        "tiktok-captions",
+        "word-highlight" ;
+    oc:hasArgumentHint "captions JSON file path" ;
+    oc:hasCategory "development" ;
+    oc:hasRequirement oc:req_6726c8e0,
+        oc:req_7eadcc20,
+        oc:req_9683b44d ;
+    oc:impartsKnowledge oc:kn_1c854e40,
+        oc:kn_2170af7b,
+        oc:kn_5b05bae6,
+        oc:kn_e2fee686,
+        oc:kn_ee7b6850 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:CaptionsGenerated,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "create tiktok-style subtitles",
+        "display captions in video",
+        "highlight spoken words in captions",
+        "render timed captions alongside video content" ;
+    oc:yieldsState oc:CaptionsRendered,
+        oc:VideoWithCaptions .
+
+oc:kn_1c854e40 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building caption display features in any Remotion project" ;
+    oc:directiveContent "Extract captioning logic into a separate component in its own file rather than embedding it inline with video content." ;
+    oc:hasRationale "Separation of concerns keeps caption logic reusable, testable, and prevents the main video component from becoming bloated." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2170af7b a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When mapping over TikTok-style caption pages in Sequence components" ;
+    oc:directiveContent "Pages with `durationInFrames <= 0` can occur during page mapping and must be filtered out by returning null for those entries." ;
+    oc:hasRationale "Edge-case timing calculations can produce zero or negative duration pages, which would cause Remotion Sequence rendering errors if not handled." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5b05bae6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring `createTikTokStyleCaptions()` for caption pagination" ;
+    oc:directiveContent "Use `combineTokensWithinMilliseconds` to control caption page density: higher values group more words per page, lower values produce word-by-word display. A value of ~1200ms is a good starting point." ;
+    oc:hasRationale "The timing threshold directly affects readability and visual pacing of captions, matching different content styles from subtitle blocks to karaoke-style word highlighting." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e2fee686 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When rendering any caption text to ensure correct word spacing" ;
+    oc:directiveContent "Always include spaces in the token `text` field before each word and use `whiteSpace: \"pre\"` CSS property to preserve whitespace in caption rendering." ;
+    oc:hasRationale "Captions are whitespace-sensitive; without `whiteSpace: 'pre'`, browsers collapse multiple spaces and caption words will run together incorrectly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ee7b6850 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When loading caption data from a remote or static file before rendering" ;
+    oc:directiveContent "Use `useDelayRender()` to hold the render until captions JSON is fully fetched, and call `cancelRender(e)` on fetch failure." ;
+    oc:hasRationale "Without delay rendering, the component would render before captions are available, producing blank or broken output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_6726c8e0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@remotion/captions" .
+
+oc:req_7eadcc20 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Caption JSON format from @remotion/captions" .
+
+oc:req_9683b44d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "React and Remotion fundamentals" .
+

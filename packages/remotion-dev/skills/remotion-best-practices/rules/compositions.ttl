@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_remotion_dev_skills_remotion_best_practices_compositions a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "compositions" ;
+    skos:broader "Remotion composition definition pattern" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/remotion-dev/skills/remotion-best-practices" ;
+    oc:contentHash "3223ce9326048ef734fe880e5ddbd33e75e12dc4deb7f6043c58d11329d47f31" ;
+    oc:differentia "specifies how to declare renderable video compositions, stills, folders, default props, and dynamic metadata in the Root component" ;
+    oc:extends oc:skill_remotion_dev_skills_remotion_best_practices ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "composition-id, component, props" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_42a55772,
+        oc:kn_814ac23b,
+        oc:kn_9f632909,
+        oc:kn_acd6274d,
+        oc:kn_d65f300a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "calculate dynamic metadata for compositions",
+        "create a still image composition",
+        "define a video composition",
+        "nest compositions within other compositions",
+        "organize compositions with folders",
+        "set default props for compositions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_42a55772 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining component props for compositions" ;
+    oc:directiveContent "Use type declarations for props rather than interface to ensure defaultProps type safety with the satisfies operator." ;
+    oc:hasRationale "Type aliases work correctly with the satisfies operator for inline defaultProps validation, while interfaces may not provide the same level of type inference." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_814ac23b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When composition properties depend on runtime data (e.g., API responses)" ;
+    oc:directiveContent "Use calculateMetadata to make dimensions, duration, or props dynamic based on fetched data. Provide placeholder values for durationInFrames, fps, width, and height as they will be overridden." ;
+    oc:hasRationale "calculateMetadata runs once before rendering, allowing data-driven composition configuration without hardcoding values." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9f632909 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When passing defaultProps to a Composition or Still" ;
+    oc:directiveContent "defaultProps values must be JSON-serializable. Date, Map, Set, and staticFile() are supported exceptions." ;
+    oc:hasRationale "Props are serialized and deserialized during rendering, so non-serializable values would cause runtime errors or data loss." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_acd6274d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When organizing compositions with Folder or creating static image outputs" ;
+    oc:directiveContent "Folder names can only contain letters, numbers, and hyphens. Use Still instead of Composition for single-frame images (no durationInFrames or fps required)." ;
+    oc:hasRationale "Folder naming restrictions prevent sidebar rendering issues. Using Still for images avoids unnecessary frame configuration." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d65f300a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up a Remotion project" ;
+    oc:directiveContent "Compositions should be defined in src/Root.tsx as the central registry of all renderable videos and stills." ;
+    oc:hasRationale "Centralizing composition definitions in Root.tsx provides a single source of truth for all renderable content and is required by the Remotion framework." ;
+    oc:severityLevel "HIGH" .
+
