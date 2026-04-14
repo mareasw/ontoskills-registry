@@ -1,109 +1,90 @@
-# ontoskills-registry Blueprint
+# OntoStore
 
-This directory mirrors the structure of the official `ontoskills-registry` repository.
+Official skill registry for [OntoSkills](https://ontoskills.sh). Contains pre-compiled `.ttl` packages with per-skill embedding files.
 
-Use it as:
-- the source layout to publish in the registry repo
-- the reference for package manifests
-- the canonical example for compiled OntoSkill distribution
+## Structure
 
-The official registry is built into `ontoskill` by default. Users should not have to add it manually.
+```text
+ontostore/
+  index.json                    # Registry index
+  embeddings/
+    tokenizer.json              # HuggingFace tokenizer for embedding model
+  packages/
+    <author>/<package>/
+      package.json              # Package manifest
+      <skill>/
+        ontoskill.ttl           # Compiled skill ontology
+        intents.json            # Pre-computed 384-dim embeddings
+```
 
-`registry add-source` is only for additional registries maintained by third parties.
+Current packages: `anthropics`, `coinbase`, `coreyhaines31`, `kotlin`, `mareasw`, `n8n-io`, `nextlevel-builder`, `obra`, `pbakaus`, `remotion-dev`, `vercel-labs`.
 
 ## User Workflow
 
-For a normal end user, the registry flow is:
-
 ```bash
-npx ontoskill search hello
-npx ontoskill install marea.greeting/hello
-npx ontoskill enable marea.greeting/hello
+# Search for skills
+ontoskills search code review
+
+# Install (3 resolution levels)
+ontoskills install obra                           # All packages from that author
+ontoskills install obra/superpowers               # All skills in that package
+ontoskills install obra/superpowers/test-driven-development  # Single skill
+
+# Enable/disable
+ontoskills enable obra/superpowers/test-driven-development
+ontoskills disable obra/superpowers/systematic-debugging
+
+# Source import (requires ontocore)
+ontoskills import-source https://github.com/user/skill-repo
 ```
 
-For a third-party registry:
+Source imports land in `~/.ontoskills/skills/author/<slug>` and are compiled to `~/.ontoskills/ontologies/author/<slug>`.
 
-```bash
-npx ontoskill registry add-source acme https://example.com/index.json
-npx ontoskill search spreadsheet
-```
-
-For a raw source repository:
-
-```bash
-npx ontoskill import-source https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
-```
-
-That source import flow:
-- clones or copies the repository into `~/.ontoskills/skills/vendor/<slug>`
-- discovers every `SKILL.md`
-- compiles the discovered skills locally
-- writes compiled output into `~/.ontoskills/ontoskills/vendor/<package_id>`
-- leaves imported skills disabled until explicitly enabled
-
-## Registry Repo Layout
-
-```text
-registry/
-  README.md
-  index.json
-  packages/
-    marea.greeting/
-      package.json
-      hello/
-        ontoskill.ttl
-    marea.office/
-      package.json
-      office/
-        ontoskill.ttl
-        public/
-          docx/ontoskill.ttl
-          pdf/ontoskill.ttl
-          pptx/ontoskill.ttl
-          xlsx/ontoskill.ttl
-```
-
-## Package Model
-
-Compiled registry packages contain prebuilt `.ttl` artifacts.
-
-Required manifest fields:
-- `package_id`
-- `version`
-- `trust_tier`
-- `modules`
-- `skills`
-
-Each exported skill should be installable and activatable independently.
-
-## Registry Index
-
-The registry index is a static JSON file listing installable packages.
+## Index Format
 
 ```json
 {
   "packages": [
     {
-      "package_id": "marea.office",
-      "manifest_url": "https://example.invalid/packages/marea.office/package.json",
-      "trust_tier": "verified"
+      "package_id": "mareasw/greeting",
+      "trust_tier": "verified",
+      "source_kind": "ontology",
+      "manifest_path": "packages/mareasw/greeting/package.json"
     }
   ]
 }
 ```
 
-This means the registry can be published as a plain GitHub repository plus raw file URLs. No custom backend is required for v1.
+## Package Manifest
+
+```json
+{
+  "package_id": "obra/superpowers",
+  "version": "1.0.0",
+  "trust_tier": "verified",
+  "skills": [
+    {
+      "id": "test-driven-development",
+      "path": "test-driven-development/ontoskill.ttl",
+      "intents": ["write tests first", "practice TDD"],
+      "aliases": ["tdd"]
+    }
+  ],
+  "embedding_files": [
+    "test-driven-development/intents.json"
+  ]
+}
+```
 
 ## Resolution Rules
 
-- Canonical runtime identity is `package_id/skill_id`
-- Short ids are accepted only as lookup convenience
-- Ambiguous short ids resolve with precedence:
-  - `local > verified > trusted > community`
+- Canonical runtime identity: `author/package/skill`
+- Short IDs accepted as lookup convenience
+- Ambiguous short IDs resolve with precedence: `local > verified > trusted > community`
 
 ## Activation Rules
 
-- install unit: package
-- activation unit: skill
-- enabling a skill auto-enables required `extends` / `dependsOn`
-- imported skills stay disabled until explicitly enabled
+- Install unit: package
+- Activation unit: skill
+- Enabling a skill auto-enables its `dependsOnSkill` dependencies
+- Skills are enabled by default on install
