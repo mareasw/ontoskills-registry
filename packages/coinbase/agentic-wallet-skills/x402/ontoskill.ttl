@@ -1,0 +1,112 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_x402 a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "x402" ;
+    skos:broader "Payment protocol client" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/x402" ;
+    oc:contentHash "2ed89f15c9c8ee44c365743ec21c609593546899b7d1cc466cba2c2a8e609516" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet,
+        oc:skill_fund ;
+    oc:differentia "discovers, inspects, and calls paid API endpoints using the x402 protocol with automatic USDC payment on Base" ;
+    oc:extends oc:skill_pay_for_service,
+        oc:skill_search_for_service ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:PaymentFailed,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "query or URL for the x402 endpoint" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Search for new services and make paid API requests using the x402 payment protocol. Use when you don't have a clear tool to choose, search the bazaar. You can also use this tool if you or the user want to call an x402 endpoint, discover payment requirements, browse the bazaar, or search for paid services." ;
+    oc:hasName "x402" ;
+    oc:hasPayload oc:payload_2ed89f15c9c8ee44 ;
+    oc:hasRequirement oc:req_1e851e63,
+        oc:req_5c886034,
+        oc:req_b85762c8,
+        oc:req_e01528c8 ;
+    oc:impartsKnowledge oc:kn_42a26099,
+        oc:kn_57d3df4d,
+        oc:kn_78914fb8,
+        oc:kn_9314e6a3,
+        oc:kn_d6e08d00,
+        oc:kn_da63a9d3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "browse the x402 bazaar marketplace",
+        "call an x402 endpoint",
+        "discover payment requirements for an API endpoint",
+        "make paid API requests with automatic USDC payment",
+        "search for paid API services" ;
+    oc:yieldsState oc:APIResponseReceived,
+        oc:PaymentCompleted .
+
+oc:kn_42a26099 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When rate-limited by the CDP API during search or list operations" ;
+    oc:directiveContent "Handle 'CDP API returned 429' errors by relying on locally cached bazaar data at ~/.config/awal/bazaar/. Cache auto-refreshes after 12 hours." ;
+    oc:hasRationale "Cached data allows continued operation during rate limiting without requiring immediate API access." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_57d3df4d a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When using any x402 workflow" ;
+    oc:directiveContent "Follow the three-step x402 workflow: (1) search bazaar or list resources to find a service, (2) inspect endpoint details to check price and schema, (3) make the paid request with automatic USDC payment." ;
+    oc:hasRationale "This order prevents premature payment by ensuring the agent understands cost and requirements before committing funds." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_78914fb8 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing 'awal x402 pay' commands" ;
+    oc:directiveContent "Before making paid requests, verify authentication status and sufficient USDC balance. Search and details operations require no auth, but pay requires both login and funds." ;
+    oc:hasRationale "Paid requests will fail without proper authentication and balance, wasting time and potentially causing confusing errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9314e6a3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When considering calling an unknown x402 endpoint" ;
+    oc:directiveContent "Use 'awal x402 details <url>' to discover payment requirements before paying. This command auto-detects the HTTP method and shows price, schemas, and accepted payment schemes without any cost." ;
+    oc:hasRationale "Inspecting first avoids wasted payments on endpoints with incompatible schemas or excessive pricing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d6e08d00 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When making any paid x402 request" ;
+    oc:directiveContent "The 'awal x402 pay' command spends USDC from the wallet. Always use --max-amount to cap spending and avoid unexpected charges." ;
+    oc:hasRationale "Without a spending cap, a single API call could drain significant wallet funds if the endpoint charges more than expected." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_da63a9d3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying --max-amount or interpreting pricing" ;
+    oc:directiveContent "USDC amounts in x402 commands use atomic units with 6 decimals: 1000000 = $1.00, 100000 = $0.10, 10000 = $0.01. Never pass dollar amounts directly." ;
+    oc:hasRationale "Using the wrong unit scale could result in paying 1,000,000x more or less than intended." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:payload_2ed89f15c9c8ee44 a oc:ExecutionPayload ;
+    oc:code """npx awal@2.0.3 x402 bazaar search "{query}"
+npx awal@2.0.3 x402 details "{url}"
+npx awal@2.0.3 x402 pay "{url}" [-X {method}] [-d '{data}'] [--max-amount {amount}] [--json]""" ;
+    oc:executor "shell" ;
+    oc:timeout 30000 .
+
+oc:req_1e851e63 a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "CDP Bazaar API" .
+
+oc:req_5c886034 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "USDC atomic units: 1000000 = $1.00 (6 decimals)" .
+
+oc:req_b85762c8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npx (Node.js)" .
+
+oc:req_e01528c8 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "awal@2.0.3 CLI package" .
+

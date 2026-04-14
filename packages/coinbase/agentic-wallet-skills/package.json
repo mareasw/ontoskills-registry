@@ -1,0 +1,195 @@
+{
+  "package_id": "coinbase/agentic-wallet-skills",
+  "version": "0.11.0",
+  "trust_tier": "verified",
+  "source_kind": "ontology",
+  "modules": [
+    "authenticate-wallet/ontoskill.ttl",
+    "fund/ontoskill.ttl",
+    "monetize-service/ontoskill.ttl",
+    "pay-for-service/ontoskill.ttl",
+    "query-onchain-data/ontoskill.ttl",
+    "search-for-service/ontoskill.ttl",
+    "send-usdc/ontoskill.ttl",
+    "trade/ontoskill.ttl",
+    "x402/ontoskill.ttl"
+  ],
+  "skills": [
+    {
+      "id": "search-for-service",
+      "path": "search-for-service/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Search and browse the x402 bazaar marketplace for paid API services. Use when you or the user want to find available services, see what's available, discover APIs, or need an external service to accomplish a task. Also use as a fallback when no other skill clearly matches \u2014 search the bazaar to see if a paid service exists. Covers \"what can I do?\", \"find me an API for...\", \"what services are available?\", \"search for...\", \"browse the bazaar\".",
+      "category": "automation",
+      "intents": [
+        "browse available services",
+        "check API pricing and payment requirements",
+        "discover paid APIs",
+        "find services by keyword",
+        "search for API services"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "monetize-service",
+      "path": "monetize-service/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Build and deploy a paid API that other agents can pay to use via x402. Use when you or the user want to monetize an API, make money, earn money, offer a service, sell a service to other agents, charge for endpoints, create a paid endpoint, or set up a paid service. Covers \"make money by offering an endpoint\", \"sell a service\", \"monetize your data\", \"create a paid API\".",
+      "category": "development",
+      "intents": [
+        "build a paid API server",
+        "charge for API access",
+        "create a paid endpoint",
+        "earn money by offering an endpoint",
+        "monetize an API",
+        "sell a service to other agents"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet"
+      ]
+    },
+    {
+      "id": "x402",
+      "path": "x402/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Search for new services and make paid API requests using the x402 payment protocol. Use when you don't have a clear tool to choose, search the bazaar. You can also use this tool if you or the user want to call an x402 endpoint, discover payment requirements, browse the bazaar, or search for paid services.",
+      "category": "automation",
+      "intents": [
+        "browse the x402 bazaar marketplace",
+        "call an x402 endpoint",
+        "discover payment requirements for an API endpoint",
+        "make paid API requests with automatic USDC payment",
+        "search for paid API services"
+      ],
+      "depends_on_skills": [
+        "pay-for-service",
+        "search-for-service",
+        "authenticate-wallet",
+        "fund"
+      ]
+    },
+    {
+      "id": "trade",
+      "path": "trade/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Swap or trade tokens on Base network. Use when you or the user want to trade, swap, exchange, buy, sell, or convert between tokens like USDC, ETH, and WETH. Covers phrases like \"buy ETH\", \"sell ETH for USDC\", \"convert USDC to ETH\", \"get some ETH\".",
+      "category": "finance",
+      "intents": [
+        "buy tokens with USDC",
+        "convert between tokens like ETH and USDC",
+        "exchange tokens on Base network",
+        "sell tokens for USDC",
+        "swap tokens on Base",
+        "trade one token for another"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet"
+      ]
+    },
+    {
+      "id": "query-onchain-data",
+      "path": "query-onchain-data/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Query onchain data on Base using the CDP SQL API via x402. Use when you or your user want to view onchain information about decoded blocks, transactions, and event.",
+      "category": "blockchain",
+      "intents": [
+        "analyze onchain transactions and blocks",
+        "get blockchain data using SQL",
+        "query onchain data on Base",
+        "search smart contract event logs",
+        "view decoded blockchain events"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet",
+        "fund"
+      ]
+    },
+    {
+      "id": "authenticate-wallet",
+      "path": "authenticate-wallet/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Sign in to the wallet. Use when you or the user want to log in, sign in, connect, or set up the wallet, or when any wallet operation fails with authentication or \"not signed in\" errors. This skill is a prerequisite before sending, trading, or funding.",
+      "category": "automation",
+      "intents": [
+        "authenticate wallet",
+        "check wallet authentication status",
+        "connect wallet",
+        "set up wallet",
+        "sign in to wallet"
+      ],
+      "depends_on_skills": []
+    },
+    {
+      "id": "send-usdc",
+      "path": "send-usdc/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Send USDC to an Ethereum address or ENS name. Use when you or the user want to send money, pay someone, transfer USDC, tip, donate, or send funds to a wallet address or .eth name. Covers phrases like \"send $5 to\", \"pay 0x...\", or \"transfer to vitalik.eth\".",
+      "category": "finance",
+      "intents": [
+        "pay someone with USDC",
+        "send USDC to an address",
+        "send funds to an ENS name",
+        "tip or donate USDC",
+        "transfer USDC to a wallet"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet"
+      ]
+    },
+    {
+      "id": "fund",
+      "path": "fund/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Add money to the wallet. Use when you or the user want to fund, deposit, top up, load, buy USDC, add funds, onramp, or get USDC. Also use when the wallet has insufficient balance for a send or trade operation, or when someone asks \"how do I get USDC?\"",
+      "category": "finance",
+      "intents": [
+        "add funds to wallet",
+        "buy USDC",
+        "deposit money to wallet",
+        "fund wallet with USDC",
+        "onramp fiat to crypto",
+        "top up wallet balance"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet"
+      ]
+    },
+    {
+      "id": "pay-for-service",
+      "path": "pay-for-service/ontoskill.ttl",
+      "default_enabled": true,
+      "aliases": [],
+      "description": "Make a paid API request to an x402 endpoint with automatic USDC payment. Use when you or the user want to call a paid API, make an x402 request, use a paid service, or pay for an API call. Use after finding a service with search-for-service.",
+      "category": "automation",
+      "intents": [
+        "call a paid API",
+        "make an x402 request",
+        "make paid HTTP request with USDC payment",
+        "pay for API service"
+      ],
+      "depends_on_skills": [
+        "authenticate-wallet",
+        "search-for-service"
+      ]
+    }
+  ],
+  "embedding_files": [
+    "authenticate-wallet/intents.json",
+    "fund/intents.json",
+    "monetize-service/intents.json",
+    "pay-for-service/intents.json",
+    "query-onchain-data/intents.json",
+    "search-for-service/intents.json",
+    "send-usdc/intents.json",
+    "trade/intents.json",
+    "x402/intents.json"
+  ]
+}

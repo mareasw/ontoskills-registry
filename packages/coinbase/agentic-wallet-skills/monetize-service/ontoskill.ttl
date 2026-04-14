@@ -1,0 +1,159 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_monetize_service a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "monetize-service" ;
+    skos:broader "Paid API server" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/monetize-service" ;
+    oc:contentHash "8aaf083c63cc3897e6c6b8666011274c24231999fa63c263be3f586b6642bf2a" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet ;
+    oc:differentia "charges USDC per-request via x402 payment protocol on Base network" ;
+    oc:handlesFailure oc:PaymentVerificationFailed,
+        oc:ServerStartupFailed ;
+    oc:hasAlias "create-paid-api",
+        "paid-endpoint",
+        "sell-api",
+        "x402-server" ;
+    oc:hasAllowedTool "Bash(curl *)",
+        "Bash(mkdir *)",
+        "Bash(node *)",
+        "Bash(npm *)",
+        "Bash(npx awal@2.0.3 address*)",
+        "Bash(npx awal@2.0.3 status*)",
+        "Bash(npx awal@2.0.3 x402 details *)",
+        "Bash(npx awal@2.0.3 x402 pay *)" ;
+    oc:hasArgumentHint "service description, endpoint path, price" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Build and deploy a paid API that other agents can pay to use via x402. Use when you or the user want to monetize an API, make money, earn money, offer a service, sell a service to other agents, charge for endpoints, create a paid endpoint, or set up a paid service. Covers \"make money by offering an endpoint\", \"sell a service\", \"monetize your data\", \"create a paid API\"." ;
+    oc:hasName "monetize-service" ;
+    oc:hasRequirement oc:req_006d053c,
+        oc:req_491abdeb,
+        oc:req_628f5238,
+        oc:req_6b4d17cd,
+        oc:req_9fbf8538,
+        oc:req_a61e7e7b,
+        oc:req_d8ac05cc,
+        oc:req_db4fb765,
+        oc:req_ea0a7a4b,
+        oc:req_f91c1344 ;
+    oc:impartsKnowledge oc:kn_35593b25,
+        oc:kn_39ddf91e,
+        oc:kn_6621531f,
+        oc:kn_7821420c,
+        oc:kn_7d68ae50,
+        oc:kn_92c8ea9e,
+        oc:kn_ac9241a6,
+        oc:kn_f6f46373 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "build a paid API server",
+        "charge for API access",
+        "create a paid endpoint",
+        "earn money by offering an endpoint",
+        "monetize an API",
+        "sell a service to other agents" ;
+    oc:yieldsState oc:EndpointProtected,
+        oc:ServerRunning,
+        oc:ServiceDiscoverable .
+
+oc:kn_35593b25 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When considering server deployment" ;
+    oc:directiveContent "Each HTTP request is independently charged — the x402 protocol is per-request, not subscription-based. Running the server multiple times on different ports creates independent paid endpoints." ;
+    oc:hasRationale "Understanding the per-request payment model helps set appropriate pricing and avoid unexpected costs for clients." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_39ddf91e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up the PAY_TO constant" ;
+    oc:directiveContent "Do not hardcode the payment address. Always retrieve it dynamically via `npx awal@2.0.3 address` and use it as the `payTo` value." ;
+    oc:hasRationale "Hardcoded or stale addresses cause payments to be sent to wrong recipient, resulting in lost revenue that cannot be recovered." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6621531f a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When deploying to production" ;
+    oc:directiveContent "The default facilitator at https://x402.org/facilitator may have rate limits. For production, use the Coinbase CDP facilitator with `@coinbase/x402` and set CDP_API_KEY_ID/CDP_API_KEY_SECRET." ;
+    oc:hasRationale "Production traffic requires an authenticated facilitator to ensure reliable payment verification and settlement." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7821420c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Express route order" ;
+    oc:directiveContent "Register free endpoints (health checks, status) BEFORE the payment middleware, and protected routes AFTER it. Express middleware applies to all routes defined after its registration." ;
+    oc:hasRationale "If payment middleware is registered first, even health/status endpoints will require payment, making the service unmonitorable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7d68ae50 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After server startup" ;
+    oc:directiveContent "After starting the server, test with `curl` (expect HTTP 402 with payment requirements) and then with `npx awal@2.0.3 x402 pay` (expect HTTP 200 with response data)." ;
+    oc:hasRationale "Verifying both the unpaid and paid flows confirms the payment middleware is correctly configured and the facilitator is operational." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_92c8ea9e a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting monetize-service setup" ;
+    oc:directiveContent "Always verify wallet is initialized and authenticated with `npx awal@2.0.3 status` before building the payment server." ;
+    oc:hasRationale "Without an authenticated wallet, the payment address cannot be obtained and payments cannot be received." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ac9241a6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining route configurations" ;
+    oc:directiveContent "Use the x402 Bazaar discovery extension (`declareDiscoveryExtension`) with output examples and JSON schema so other agents can automatically find and understand your endpoint." ;
+    oc:hasRationale "Discovery registration makes the service visible in the x402 Bazaar marketplace, enabling autonomous agent discovery and increasing revenue potential." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f6f46373 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring payment network" ;
+    oc:directiveContent "Use `eip155:8453` (Base mainnet) for production and `eip155:84532` (Base Sepolia testnet) for testing. Always specify the CAIP-2 network identifier in the accepts config." ;
+    oc:hasRationale "Correct network identifiers ensure payments settle on the intended chain. Testnet usage prevents real USDC loss during development." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_006d053c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@x402/express" .
+
+oc:req_491abdeb a oc:RequirementEnvVar ;
+    oc:isOptional true ;
+    oc:requirementValue "CDP_API_KEY_ID" .
+
+oc:req_628f5238 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@x402/evm" .
+
+oc:req_6b4d17cd a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@x402/core" .
+
+oc:req_9fbf8538 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npm" .
+
+oc:req_a61e7e7b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npx awal@2.0.3" .
+
+oc:req_d8ac05cc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "@x402/extensions" .
+
+oc:req_db4fb765 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "node" .
+
+oc:req_ea0a7a4b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "express" .
+
+oc:req_f91c1344 a oc:RequirementEnvVar ;
+    oc:isOptional true ;
+    oc:requirementValue "CDP_API_KEY_SECRET" .
+

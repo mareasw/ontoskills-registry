@@ -1,0 +1,75 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_pay_for_service a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pay-for-service" ;
+    skos:broader "API client" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/pay-for-service" ;
+    oc:contentHash "1d893db92c12469914096f003b1e7be620bbbbe46a944f895e564c89bd982101" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet,
+        oc:skill_search_for_service ;
+    oc:differentia "that automatically pays for x402 endpoint access using USDC on Base" ;
+    oc:handlesFailure oc:InsufficientFunds,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 balance*)",
+        "Bash(npx awal@2.0.3 status*)",
+        "Bash(npx awal@2.0.3 x402 pay *)" ;
+    oc:hasArgumentHint "<url> [-X <method>] [-d <json>] [-q <params>] [-h <json>] [--max-amount <n>]" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Make a paid API request to an x402 endpoint with automatic USDC payment. Use when you or the user want to call a paid API, make an x402 request, use a paid service, or pay for an API call. Use after finding a service with search-for-service." ;
+    oc:hasName "pay-for-service" ;
+    oc:impartsKnowledge oc:kn_2ebb4011,
+        oc:kn_49afda01,
+        oc:kn_7f6b40b2,
+        oc:kn_d8c4a242,
+        oc:kn_e33554e6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "call a paid API",
+        "make an x402 request",
+        "make paid HTTP request with USDC payment",
+        "pay for API service" ;
+    oc:yieldsState oc:APIResponseReceived,
+        oc:PaymentCompleted .
+
+oc:kn_2ebb4011 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When constructing any x402 pay command from user input" ;
+    oc:directiveContent "Validate all user-provided values before constructing the command: URL must start with https:// or http:// with no shell metacharacters; data must be valid JSON wrapped in single quotes; max-amount must be a positive integer." ;
+    oc:hasRationale "Unvalidated input enables shell injection attacks through the bash command layer." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_49afda01 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying or interpreting payment amounts" ;
+    oc:directiveContent "X402 uses USDC atomic units with 6 decimals: 1000000 = $1.00, 100000 = $0.10, 50000 = $0.05, 10000 = $0.01. Always single-quote amounts with $ to prevent bash variable expansion." ;
+    oc:hasRationale "Without the 6-decimal conversion, amounts will be off by orders of magnitude. Without single quotes, bash will interpret $ as variable expansion." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7f6b40b2 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "On payment or authentication failures" ;
+    oc:directiveContent "If 'Insufficient balance' error occurs, direct the user to the fund skill to add USDC to their wallet. If 'Not authenticated', direct to authenticate-wallet skill." ;
+    oc:hasRationale "These are the two most common transient failures; each has a clear remediation path through other skills in the package." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d8c4a242 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before every paid API request" ;
+    oc:directiveContent "Always run `npx awal@2.0.3 status` before making x402 requests to confirm wallet is authenticated and initialized." ;
+    oc:hasRationale "Without authentication the request will fail with 'Not authenticated', wasting the user's time." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e33554e6 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When the server does not return x402 payment headers" ;
+    oc:directiveContent "'No X402 payment requirements found' means the URL is not a valid x402 endpoint. Use search-for-service skill to find valid endpoints." ;
+    oc:hasRationale "Not all URLs support x402; this error indicates a mismatch between the endpoint and the payment protocol." ;
+    oc:severityLevel "MEDIUM" .
+

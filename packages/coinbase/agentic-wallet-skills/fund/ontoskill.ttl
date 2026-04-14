@@ -1,0 +1,77 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_fund a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "fund" ;
+    skos:broader "Wallet funding operation" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/fund" ;
+    oc:contentHash "77d51d70f525f2b680ae11487707e89d4e32b5969e412add85169048726a06e5" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet ;
+    oc:differentia "that deposits USDC via Coinbase Onramp with multiple payment methods (Apple Pay, card, bank, Coinbase account) into an authenticated agent wallet" ;
+    oc:handlesFailure oc:OnrampUnavailable,
+        oc:PaymentFailed,
+        oc:WalletNotAuthenticated ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 address*)",
+        "Bash(npx awal@2.0.3 balance*)",
+        "Bash(npx awal@2.0.3 show*)",
+        "Bash(npx awal@2.0.3 status*)" ;
+    oc:hasArgumentHint "none (interactive flow — user selects amount and payment method in UI)" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Add money to the wallet. Use when you or the user want to fund, deposit, top up, load, buy USDC, add funds, onramp, or get USDC. Also use when the wallet has insufficient balance for a send or trade operation, or when someone asks \"how do I get USDC?\"" ;
+    oc:hasName "fund" ;
+    oc:impartsKnowledge oc:kn_0cc6fd2d,
+        oc:kn_30124557,
+        oc:kn_35e61e63,
+        oc:kn_406aca4e,
+        oc:kn_85e666e5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:SystemAuthenticated ;
+    oc:resolvesIntent "add funds to wallet",
+        "buy USDC",
+        "deposit money to wallet",
+        "fund wallet with USDC",
+        "onramp fiat to crypto",
+        "top up wallet balance" ;
+    oc:yieldsState oc:WalletFunded .
+
+oc:kn_0cc6fd2d a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After funding completes" ;
+    oc:directiveContent "After funding, run `npx awal@2.0.3 balance` to confirm the updated USDC balance reflects the deposit." ;
+    oc:hasRationale "Confirms the deposit was successful and the wallet balance is accurate before proceeding with subsequent operations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_30124557 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user attempts to fund and onramp is unavailable in their region" ;
+    oc:directiveContent "Coinbase Onramp is only available in supported regions (e.g., US). Users outside supported regions must use the alternative method of receiving USDC directly on Base." ;
+    oc:hasRationale "Regulatory restrictions limit Coinbase Onramp availability geographically." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_35e61e63 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "After user completes payment through Coinbase Pay" ;
+    oc:directiveContent "Funding deposits USDC on the Base network. Processing time varies: instant for card/Apple Pay, 1-3 business days for bank transfers." ;
+    oc:hasRationale "Users need to know expected wait times to avoid confusion about when funds will be available." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_406aca4e a oc:FallbackStrategy,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When onramp funding fails or is unavailable in the user's region" ;
+    oc:directiveContent "If Coinbase Onramp is unavailable or fails, provide the wallet address via `npx awal@2.0.3 address` so the user can receive USDC on Base from another source." ;
+    oc:hasRationale "Direct transfer is a reliable alternative that bypasses onramp limitations entirely." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_85e666e5 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before initiating any funding operation" ;
+    oc:directiveContent "Always verify wallet authentication by running `npx awal@2.0.3 status` before attempting to open the funding interface." ;
+    oc:hasRationale "Funding requires an authenticated wallet; without it, the onramp UI will not function correctly." ;
+    oc:severityLevel "CRITICAL" .
+

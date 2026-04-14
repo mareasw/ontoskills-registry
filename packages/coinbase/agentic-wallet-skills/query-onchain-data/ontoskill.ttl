@@ -1,0 +1,109 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_query_onchain_data a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "query-onchain-data" ;
+    skos:broader "data querying interface" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/query-onchain-data" ;
+    oc:contentHash "e3fe55e1956e510a6174d1578bf57dad55491bdbfd118d6d50cfcaca3899cc8b" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet,
+        oc:skill_fund ;
+    oc:differentia "queries onchain data on Base network using CDP SQL API via x402 paid requests" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 balance*)",
+        "Bash(npx awal@2.0.3 status*)",
+        "Bash(npx awal@2.0.3 x402 pay *)" ;
+    oc:hasArgumentHint "SQL query in CoinbaseQL dialect against base.events, base.transactions, or base.blocks" ;
+    oc:hasCategory "blockchain" ;
+    oc:hasDescription "Query onchain data on Base using the CDP SQL API via x402. Use when you or your user want to view onchain information about decoded blocks, transactions, and event." ;
+    oc:hasName "query-onchain-data" ;
+    oc:hasPayload oc:payload_e3fe55e1956e510a ;
+    oc:hasRequirement oc:req_546e93cd,
+        oc:req_6d8d44cc,
+        oc:req_a61e7e7b,
+        oc:req_c908d040 ;
+    oc:impartsKnowledge oc:kn_049f16bd,
+        oc:kn_711f8c63,
+        oc:kn_79196323,
+        oc:kn_a5b08d4b,
+        oc:kn_a84dad99,
+        oc:kn_ea20db24 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "analyze onchain transactions and blocks",
+        "get blockchain data using SQL",
+        "query onchain data on Base",
+        "search smart contract event logs",
+        "view decoded blockchain events" ;
+    oc:yieldsState oc:DataRetrieved .
+
+oc:kn_049f16bd a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When constructing the x402 pay command with user-provided query parameters" ;
+    oc:directiveContent "Always single-quote the -d JSON string to prevent bash variable expansion. Validate SQL inputs to prevent shell injection — addresses must match ^0x[0-9a-fA-F]{40}$ and reject any value containing shell metacharacters." ;
+    oc:hasRationale "Double quotes enable shell expansion of $ and backticks within the query, allowing injection attacks" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_711f8c63 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a query execution fails with an error" ;
+    oc:directiveContent "On 'Not authenticated' error, run authenticate-wallet skill. On 'Insufficient balance' error, run fund skill. On query timeout, ensure indexed field filters and LIMIT are present." ;
+    oc:hasRationale "These are the most common failure modes and each has a clear remediation path" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_79196323 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Before executing any paid query" ;
+    oc:directiveContent "Each query costs $0.10 (100000 USDC atomic units). Ensure wallet has sufficient USDC balance before executing queries. Use time-bounded queries with block_timestamp to narrow scan range and reduce cost." ;
+    oc:hasRationale "Queries are charged per execution; unbounded queries waste funds and are more likely to timeout" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a5b08d4b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing any SQL query against base.events table" ;
+    oc:directiveContent "Queries against base.events MUST filter on at least one indexed field (event_signature, address, or block_timestamp) to avoid full table scans." ;
+    oc:hasRationale "Without indexed field filters, queries will perform full table scans causing timeouts and excessive charges" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a84dad99 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any CoinbaseQL query" ;
+    oc:directiveContent "Never use SELECT * — always specify only the columns you need. Always include a LIMIT clause to bound result size." ;
+    oc:hasRationale "SELECT * wastes bandwidth and query time; missing LIMIT can return unbounded results causing timeouts and higher costs" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ea20db24 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filtering events by type or contract address" ;
+    oc:directiveContent "Use event_signature instead of event_name for filtering — event_signature is indexed and much faster. Use lower() to wrap address values since the database stores lowercase but users may provide checksummed addresses." ;
+    oc:hasRationale "event_signature is an indexed field while event_name is not; address case mismatch causes zero-result queries" ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_e3fe55e1956e510a a oc:ExecutionPayload ;
+    oc:code "npx awal@2.0.3 x402 pay https://x402.cdp.coinbase.com/platform/v2/data/query/run -X POST -d '{\"sql\": \"<YOUR_QUERY>\"}' --json" ;
+    oc:executor "shell" ;
+    oc:timeout 30000 .
+
+oc:req_546e93cd a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "CDP SQL API via x402 (https://x402.cdp.coinbase.com/platform/v2/data/query/run)" .
+
+oc:req_6d8d44cc a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "CoinbaseQL SQL dialect (based on ClickHouse)" .
+
+oc:req_a61e7e7b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npx awal@2.0.3" .
+
+oc:req_c908d040 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Base network table schemas (base.events, base.transactions, base.blocks)" .
+

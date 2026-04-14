@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_authenticate_wallet a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "authenticate-wallet" ;
+    skos:broader "Authentication skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/authenticate-wallet" ;
+    oc:contentHash "24d4cd9ca545d8f4828f277af0a5f14ccebab38a776c3df3bc29e083744a7f0d" ;
+    oc:differentia "that signs in to a crypto wallet using email OTP verification via the awal CLI" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 address*)",
+        "Bash(npx awal@2.0.3 auth *)",
+        "Bash(npx awal@2.0.3 balance*)",
+        "Bash(npx awal@2.0.3 show*)",
+        "Bash(npx awal@2.0.3 status*)" ;
+    oc:hasArgumentHint "email address for OTP login" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Sign in to the wallet. Use when you or the user want to log in, sign in, connect, or set up the wallet, or when any wallet operation fails with authentication or \"not signed in\" errors. This skill is a prerequisite before sending, trading, or funding." ;
+    oc:hasName "authenticate-wallet" ;
+    oc:hasPayload oc:payload_24d4cd9ca545d8f4 ;
+    oc:impartsKnowledge oc:kn_5dfe0c11,
+        oc:kn_6be29df7,
+        oc:kn_a0ea96a6,
+        oc:kn_a6ef4443,
+        oc:kn_ac190c57,
+        oc:kn_b96ac2a1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "authenticate wallet",
+        "check wallet authentication status",
+        "connect wallet",
+        "set up wallet",
+        "sign in to wallet" ;
+    oc:yieldsState oc:SystemAuthenticated .
+
+oc:kn_5dfe0c11 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any authentication flow" ;
+    oc:directiveContent "Always run `npx awal@2.0.3 status` first to check whether the wallet is already authenticated before initiating login." ;
+    oc:hasRationale "Avoids unnecessary re-authentication and confirms wallet server health." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6be29df7 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating inputs for auth login and auth verify commands" ;
+    oc:directiveContent "The OTP must be exactly 6 digits (matching ^\\d{6}$). The flowId must be alphanumeric (^[a-zA-Z0-9_-]+$). The email must match standard format without shell metacharacters." ;
+    oc:hasRationale "Input validation ensures only properly formatted values reach the CLI, preventing both errors and injection." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a0ea96a6 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When constructing any awal CLI command with user input" ;
+    oc:directiveContent "Validate all user-provided values (email, flowId, otp) against strict regex patterns before constructing shell commands. Never pass unvalidated input." ;
+    oc:hasRationale "Prevents shell injection attacks through maliciously crafted email addresses, flowIds, or OTP codes." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a6ef4443 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When retrying or re-checking authentication state" ;
+    oc:directiveContent "Running `npx awal@2.0.3 status` is safe to repeat. Running `auth login` again re-sends a new OTP and invalidates the previous flowId." ;
+    oc:hasRationale "Each login attempt generates a new flowId, so partial attempts should be completed or abandoned before starting fresh." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ac190c57 a oc:KnowledgeNode,
+        oc:RequiresHumanClarification ;
+    oc:appliesToContext "When the agent does not have email access and needs to complete OTP verification" ;
+    oc:directiveContent "If the agent cannot access the user's email, it must ask the human to provide both the email address and the OTP code they receive." ;
+    oc:hasRationale "The OTP code is sent to the user's email; without access, the agent cannot complete authentication autonomously." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b96ac2a1 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When any downstream wallet operation returns an authentication or 'not signed in' error" ;
+    oc:directiveContent "Authentication is a prerequisite before any wallet operation (sending, trading, funding). If a wallet operation fails with an auth error, switch to this skill first." ;
+    oc:hasRationale "All wallet-dependent skills (send-usdc, trade, fund) require an authenticated wallet state to function." ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_24d4cd9ca545d8f4 a oc:ExecutionPayload ;
+    oc:code "npx awal@2.0.3 auth login <email> && npx awal@2.0.3 auth verify <flowId> <otp>" ;
+    oc:executor "shell" ;
+    oc:timeout 30 .
+

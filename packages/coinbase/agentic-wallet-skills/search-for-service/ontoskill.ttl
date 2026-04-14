@@ -1,0 +1,80 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_search_for_service a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "search-for-service" ;
+    skos:broader "Marketplace discovery tool" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/search-for-service" ;
+    oc:contentHash "63e97e8b28dc1d86d30fe0dabe32b2b77756f0f6abdf26495373e6afb7eac32a" ;
+    oc:differentia "Searches and browses the x402 bazaar marketplace for paid API services using BM25 relevance search, listing, and endpoint inspection without requiring authentication" ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:RateLimited ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 x402 bazaar *)",
+        "Bash(npx awal@2.0.3 x402 details *)" ;
+    oc:hasArgumentHint "query (keyword search term) or url (for endpoint details)" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Search and browse the x402 bazaar marketplace for paid API services. Use when you or the user want to find available services, see what's available, discover APIs, or need an external service to accomplish a task. Also use as a fallback when no other skill clearly matches — search the bazaar to see if a paid service exists. Covers \"what can I do?\", \"find me an API for...\", \"what services are available?\", \"search for...\", \"browse the bazaar\"." ;
+    oc:hasName "search-for-service" ;
+    oc:hasPayload oc:payload_63e97e8b28dc1d86 ;
+    oc:impartsKnowledge oc:kn_3b01717c,
+        oc:kn_749ec697,
+        oc:kn_ad05a664,
+        oc:kn_dee39d68,
+        oc:kn_f668a84a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "browse available services",
+        "check API pricing and payment requirements",
+        "discover paid APIs",
+        "find services by keyword",
+        "search for API services" ;
+    oc:yieldsState oc:ServicePricingRetrieved,
+        oc:ServicesDiscovered .
+
+oc:kn_3b01717c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Always, when executing any bazaar discovery command" ;
+    oc:directiveContent "No authentication or wallet balance is required for search, list, or details commands — these are free read-only operations." ;
+    oc:hasRationale "Allows unrestricted service discovery before committing to payment, lowering the barrier to exploration." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_749ec697 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When search results may be stale or when precise up-to-date service availability is critical" ;
+    oc:directiveContent "Search results are cached locally at ~/.config/awal/bazaar/ and auto-refresh after 12 hours. Use --force-refresh to bypass cache when fresh data is needed." ;
+    oc:hasRationale "Cached results improve performance but may miss newly added services; understanding cache behavior prevents serving outdated information." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ad05a664 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the user's request doesn't match any known skill and an external API might solve the problem" ;
+    oc:directiveContent "Use this skill as a fallback when no other skill clearly matches the user's intent — search the bazaar to see if a paid service exists that could help." ;
+    oc:hasRationale "The x402 bazaar is a growing marketplace; falling back to search maximizes the agent's capability surface without hardcoding every possible service." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_dee39d68 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "After finding a relevant service in the bazaar" ;
+    oc:directiveContent "After discovering a desired service, use the pay-for-service skill to make a paid request. First search/browse, then inspect details for pricing, then pay." ;
+    oc:hasRationale "The search-discover-pay workflow ensures the user understands pricing and requirements before spending USDC." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f668a84a a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "On API rate limiting errors during search or list operations" ;
+    oc:directiveContent "CDP API may return 429 (rate limited). When this occurs, cached data will be used if available. If no cache exists, retry later." ;
+    oc:hasRationale "Rate limiting is expected under heavy usage; knowing the fallback behavior prevents unnecessary error escalation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_63e97e8b28dc1d86 a oc:ExecutionPayload ;
+    oc:code """npx awal@2.0.3 x402 bazaar search "<query>" [-k <n>] [--force-refresh] [--json]
+npx awal@2.0.3 x402 bazaar list [--network <network>] [--full] [--json]
+npx awal@2.0.3 x402 details <url> [--json]""" ;
+    oc:executor "shell" ;
+    oc:timeout 30000 .
+

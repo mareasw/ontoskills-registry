@@ -1,0 +1,84 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_coinbase_agentic_wallet_skills_send_usdc a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "send-usdc" ;
+    skos:broader "Payment skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/coinbase/agentic-wallet-skills/send-usdc" ;
+    oc:contentHash "52208215b2ba2d0031fbf6b13c2cd5fe42378f3cb3d19dcad5a9bbe52e554386" ;
+    oc:dependsOnSkill oc:skill_authenticate_wallet ;
+    oc:differentia "that transfers USDC from an authenticated wallet to any Ethereum address or ENS name on Base network via the awal CLI" ;
+    oc:handlesFailure oc:InsufficientBalance,
+        oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash(npx awal@2.0.3 balance*)",
+        "Bash(npx awal@2.0.3 send *)",
+        "Bash(npx awal@2.0.3 status*)" ;
+    oc:hasArgumentHint "amount recipient [--chain <chain>] [--json]" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Send USDC to an Ethereum address or ENS name. Use when you or the user want to send money, pay someone, transfer USDC, tip, donate, or send funds to a wallet address or .eth name. Covers phrases like \"send $5 to\", \"pay 0x...\", or \"transfer to vitalik.eth\"." ;
+    oc:hasName "send-usdc" ;
+    oc:hasRequirement oc:req_2597edc0,
+        oc:req_a61e7e7b ;
+    oc:impartsKnowledge oc:kn_1a39c42d,
+        oc:kn_1a54aa5e,
+        oc:kn_230e7a06,
+        oc:kn_80c677b3,
+        oc:kn_b1a2fb8c ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "pay someone with USDC",
+        "send USDC to an address",
+        "send funds to an ENS name",
+        "tip or donate USDC",
+        "transfer USDC to a wallet" ;
+    oc:yieldsState oc:TransactionSent .
+
+oc:kn_1a39c42d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the amount argument" ;
+    oc:directiveContent "Single-quote amounts that use the $ prefix (e.g., '$5.00') to prevent bash variable expansion. If the number has no decimal point and is greater than 100, treat it as atomic units (1000000 = $1 USDC)." ;
+    oc:hasRationale "Bash interprets unquoted $ as variable expansion, corrupting the amount. Atomic unit interpretation prevents accidental large transfers." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1a54aa5e a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Always on successful execution" ;
+    oc:directiveContent "This skill transfers real USDC tokens from the wallet to an on-chain recipient. The transaction is irreversible once confirmed on Base." ;
+    oc:hasRationale "Blockchain transactions cannot be undone; incorrect amounts or recipients result in permanent loss of funds." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_230e7a06 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, before constructing the send command" ;
+    oc:directiveContent "Validate amount against ^\\$?[\\d.]+$ and recipient against ^0x[0-9a-fA-F]{40}$ or ^[a-zA-Z0-9.-]+\\.eth$ before constructing the command. Reject any value containing spaces, semicolons, pipes, backticks, or other shell metacharacters." ;
+    oc:hasRationale "Unvalidated user input passed to a shell command enables injection attacks and can cause unintended execution or data loss." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_80c677b3 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before every send operation" ;
+    oc:directiveContent "Run 'npx awal@2.0.3 status' to confirm the wallet is authenticated before attempting a send. If not authenticated, invoke the authenticate-wallet skill first." ;
+    oc:hasRationale "Sending USDC requires an authenticated wallet; attempting to send without auth will fail and waste a round-trip." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b1a2fb8c a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When the send command returns an error" ;
+    oc:directiveContent "On 'Not authenticated', invoke authenticate-wallet. On 'Insufficient balance', check with 'awal balance' and inform user. On 'Could not resolve ENS name', ask user to verify the ENS name. On 'Invalid recipient', re-validate the address format." ;
+    oc:hasRationale "Structured error recovery prevents retry loops and gives the user actionable next steps." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_2597edc0 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Ethereum address or ENS name format" .
+
+oc:req_a61e7e7b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npx awal@2.0.3" .
+
