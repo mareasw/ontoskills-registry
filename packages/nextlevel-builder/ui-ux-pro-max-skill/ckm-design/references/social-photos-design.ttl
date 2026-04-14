@@ -1,0 +1,153 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_social_photos_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "social-photos-design" ;
+    skos:broader "Design workflow orchestrator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "2544c143ff3a4471a775e2271797a3871480f94de91b267178da92e8952192a0" ;
+    oc:dependsOnSkill oc:skill_ckm_brand,
+        oc:skill_ckm_design_system ;
+    oc:differentia "generates platform-specific social media images via HTML/CSS rendering and screenshot export with multi-skill coordination" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "AskUserQuestion",
+        "Bash",
+        "Edit",
+        "Glob",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "subject or topic for social media image, with optional platform, style, and quantity parameters" ;
+    oc:hasCategory "design" ;
+    oc:hasRequirement oc:req_0b7f39f6,
+        oc:req_2f4bd60b,
+        oc:req_3705a16b,
+        oc:req_45d6e0ed,
+        oc:req_6d0499d0,
+        oc:req_b3d7b09c,
+        oc:req_d03d7b54 ;
+    oc:impartsKnowledge oc:kn_06cf7897,
+        oc:kn_265202d3,
+        oc:kn_3ff453b0,
+        oc:kn_434a03cc,
+        oc:kn_48de8d2a,
+        oc:kn_49b6fdc8,
+        oc:kn_b094182b,
+        oc:kn_b4ebec3e,
+        oc:kn_d84efb0e,
+        oc:kn_e99125aa ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "create social media images",
+        "create social media visual content with brand consistency",
+        "design Instagram posts and stories",
+        "export social media graphics as PNG",
+        "generate platform-specific social photos" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_06cf7897 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When users request capabilities outside static social media image design" ;
+    oc:directiveContent "This skill does NOT handle video content, animation/motion graphics, print production (CMYK/bleed), direct social media posting/scheduling, or AI image generation." ;
+    oc:hasRationale "Scope boundaries prevent skill misuse and guide users to appropriate specialized skills (e.g., ai-artist for AI-generated imagery)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_265202d3 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-executing the skill for the same project" ;
+    oc:directiveContent "Re-running the HTML design and export pipeline overwrites previous output files at the same paths. Use unique idea prefixes to preserve variants across runs." ;
+    oc:hasRationale "Output files use deterministic naming (idea-N-platform-size.html); re-runs will overwrite unless the user has renamed or moved prior outputs." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3ff453b0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When designing any HTML file for social media image export" ;
+    oc:directiveContent "Set HTML viewport to exact pixel dimensions matching the target platform size (e.g., 1080x1080 for Instagram Post). Never rely on responsive layouts for social photo output." ;
+    oc:hasRationale "Social platforms expect specific pixel dimensions. Incorrect sizing leads to cropping, compression artifacts, or rejected uploads." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_434a03cc a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When setting typography and color contrast in social media HTML designs" ;
+    oc:directiveContent "Maintain minimum typography sizes of 48px headlines, 24px body text at 1080px width, and ensure WCAG AA 4.5:1 contrast ratio for all text elements." ;
+    oc:hasRationale "Social images are frequently viewed as small thumbnails in feeds; text below these thresholds becomes illegible and fails accessibility standards." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_48de8d2a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing layouts for any social media platform" ;
+    oc:directiveContent "Keep critical content within the central 80% safe zone of the canvas to avoid edge clipping by platform UI overlays and profile badges." ;
+    oc:hasRationale "Platforms overlay UI elements (profile badges, timestamps, like buttons) that can obscure content placed near edges, reducing readability and impact." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_49b6fdc8 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before any screenshot capture via Chrome headless, chrome-devtools, Playwright, or Puppeteer" ;
+    oc:directiveContent "Always add a 3-5 second delay after page load before capturing screenshots to ensure Google Fonts CDN and embedded images are fully rendered." ;
+    oc:hasRationale "Without the delay, fonts may not load and images may be incomplete, producing broken or inconsistent exports that fail visual QA." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b094182b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a layout/visual design skill during Step 4 of the workflow" ;
+    oc:directiveContent "Randomly invoke either ui-ux-pro-max or frontend-design skill for each run to introduce design variety across multiple iterations." ;
+    oc:hasRationale "Consistently using the same design skill produces homogeneous output. Random selection ensures diverse visual approaches across design sessions." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_b4ebec3e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building HTML files for screenshot export" ;
+    oc:directiveContent "Never allow scrolling in the HTML design. All content must fit within a single viewport at the exact target dimensions with overflow:hidden." ;
+    oc:hasRationale "Social photos are single-frame images; scrollable content will be cut off during screenshot capture and the intended message will be lost." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d84efb0e a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After screenshot export completes for each file" ;
+    oc:directiveContent "After export, visually inspect each PNG for: correct font rendering, brand color accuracy, text readability at 50% size, no overflow/clipping, safe zone compliance, and clear visual hierarchy." ;
+    oc:hasRationale "Automated export can produce subtle rendering failures (font fallback, incomplete gradients) that only visual QA catches before delivery." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e99125aa a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When multiple platform sizes or design variants are required" ;
+    oc:directiveContent "Spawn parallel subagents for independent HTML design tasks (different sizes/variants) and parallel screenshot exports to reduce total turnaround time." ;
+    oc:hasRationale "HTML generation and screenshot capture are embarrassingly parallel tasks; sequential processing wastes time when multiple outputs are needed." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_0b7f39f6 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "HTML/CSS rendering capability" .
+
+oc:req_2f4bd60b a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "project-management skill for task orchestration" .
+
+oc:req_3705a16b a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "brand skill for brand identity extraction" .
+
+oc:req_45d6e0ed a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "ui-ux-pro-max skill for layout and visual balance" .
+
+oc:req_6d0499d0 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "assets-organizing skill for output organization" .
+
+oc:req_b3d7b09c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Chrome headless browser or chrome-devtools skill" .
+
+oc:req_d03d7b54 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "design-system skill for design tokens" .
+

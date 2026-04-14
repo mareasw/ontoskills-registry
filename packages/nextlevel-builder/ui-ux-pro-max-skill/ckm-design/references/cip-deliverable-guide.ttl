@@ -1,0 +1,63 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_cip_deliverable_guide a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "cip-deliverable-guide" ;
+    skos:broader "Brand deliverable specification guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "1424e120b967288e2334f24fcfa5cdc7f238420326a7444f4c5597efecfabc41" ;
+    oc:differentia "that catalogs and defines the standard creative assets a corporate identity program must produce across print, environmental, apparel, vehicle, digital, and promotional channels" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "brand-context or deliverable-category" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_52aa7101,
+        oc:kn_6b7286a5,
+        oc:kn_a3edddb6,
+        oc:kn_cb6463d0,
+        oc:kn_ee4a6cfc ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandIdentityEstablished ;
+    oc:resolvesIntent "create brand collateral checklist",
+        "guide identity program production",
+        "plan brand deliverables",
+        "specify corporate identity assets" ;
+    oc:yieldsState oc:DeliverableSpecGenerated .
+
+oc:kn_52aa7101 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing stationery set items" ;
+    oc:directiveContent "Business cards must conform to standard dimensions (3.5×2 in / 85×55mm) on premium stock (300-400gsm); letterheads must target A4 or Letter size; envelopes must use DL, C4, or C5 sizes." ;
+    oc:hasRationale "Non-standard dimensions increase printing costs and may be incompatible with standard office equipment and mailing systems." .
+
+oc:kn_6b7286a5 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When designing office environment brand elements" ;
+    oc:directiveContent "Wayfinding and environmental signage must include ADA-compliant icon systems with clear hierarchy, and reception signage should offer 3D, backlit LED, or quality material (acrylic, metal, wood) options." ;
+    oc:hasRationale "ADA compliance is a legal requirement; material quality in physical spaces directly impacts brand perception." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a3edddb6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning events, promotional, or vehicle branding deliverables" ;
+    oc:directiveContent "Prioritize quality over quantity for promotional items, select useful items that prominently feature brand colors, and ensure vehicle branding maintains consistent design across the entire fleet with highly visible contact details." ;
+    oc:hasRationale "Low-quality promotional items damage brand perception; fleet inconsistency undermines professional credibility at scale." .
+
+oc:kn_cb6463d0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating digital brand assets" ;
+    oc:directiveContent "Digital assets must respect platform-specific constraints: email signatures capped at 600px width, social media covers sized per-platform, and all digital outputs must include the icon/symbol-only logo variant." ;
+    oc:hasRationale "Platform-specific sizing prevents distortion and ensures professional appearance across all digital channels." .
+
+oc:kn_ee4a6cfc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When producing any brand collateral item" ;
+    oc:directiveContent "Every CIP deliverable must maintain strict consistency with the primary logo system, using only approved variations (horizontal, vertical, stacked, icon-only, monochrome) and respecting clear space rules." ;
+    oc:hasRationale "Brand recognition degrades when logo usage rules are not enforced uniformly across all touchpoints." ;
+    oc:severityLevel "CRITICAL" .
+

@@ -1,0 +1,84 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system_states_and_variants a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "states-and-variants" ;
+    skos:broader "Design specification" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "8dacb95d57d4bb37d8a99cc55515ff26da272056f837d29abc74aedcaa3ba104" ;
+    oc:differentia "defines interactive component states (hover, focus, active, disabled, loading, error) with priority ordering, CSS transition specs, and variant patterns (color, size) for accessible UI component systems" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system ;
+    oc:handlesFailure oc:AccessibilityViolation,
+        oc:InvalidStateDefinition ;
+    oc:hasArgumentHint "component-name" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_0779d3ac,
+        oc:kn_80084c22,
+        oc:kn_95257dbf,
+        oc:kn_a6e2f6ec,
+        oc:kn_b698e825,
+        oc:kn_d2960296,
+        oc:kn_e9cfcdce ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DesignTokensReady ;
+    oc:resolvesIntent "apply state priority and transition specs",
+        "create color and size variant patterns",
+        "define component interactive states",
+        "ensure accessible state indicators for UI components",
+        "implement accessible focus and disabled states" ;
+    oc:yieldsState oc:StateDefinitionsComplete,
+        oc:VariantPatternsComplete .
+
+oc:kn_0779d3ac a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting colors for any state or variant" ;
+    oc:directiveContent "Maintain minimum color contrast ratios: 4.5:1 for normal text, 3:1 for large text (18px+) and UI components, 3:1 for focus indicators." ;
+    oc:hasRationale "Insufficient contrast makes interfaces unusable for low-vision users and fails WCAG AA compliance" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_80084c22 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before building component state definitions" ;
+    oc:directiveContent "Verify that design tokens for state colors (--color-error, --color-ring, --opacity-disabled) are defined in the token layer before referencing them in state styles." ;
+    oc:hasRationale "Missing token references cause silent failures in CSS that are difficult to debug and result in broken visual states" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_95257dbf a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When implementing accessible state communication for screen readers" ;
+    oc:directiveContent "Use aria-disabled='true' for semantic disabled state, disabled attribute for form elements, aria-busy='true' for loading, and aria-invalid='true' with role='alert' for error states." ;
+    oc:hasRationale "Proper ARIA attributes ensure assistive technologies correctly announce component states to users who cannot perceive visual changes" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6e2f6ec a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining CSS transitions for state changes" ;
+    oc:directiveContent "Do not use transition-duration values exceeding 200ms for interactive state transitions, as this creates perceived lag between user action and visual response." ;
+    oc:hasRationale "Animations beyond 200ms make interfaces feel sluggish and reduce perceived responsiveness, degrading user experience" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b698e825 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating color or size variant patterns for components" ;
+    oc:directiveContent "Use CSS custom properties (--component-bg, --component-fg, --component-height) to define variant tokens, then override them in variant classes rather than rewriting entire rulesets." ;
+    oc:hasRationale "Token-based variant overrides produce smaller CSS bundles, easier maintenance, and consistent pattern across all components in the system" .
+
+oc:kn_d2960296 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining or rendering interactive component states" ;
+    oc:directiveContent "When multiple interactive states apply simultaneously, follow strict priority ordering: disabled > loading > active > focus > hover > default." ;
+    oc:hasRationale "Prevents conflicting visual treatments and ensures the most semantically important state always takes precedence for user comprehension" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e9cfcdce a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any component state indicator" ;
+    oc:directiveContent "Never rely on color alone to communicate state changes. Always supplement with icons, text labels, patterns, or ARIA attributes." ;
+    oc:hasRationale "Color-only state indicators fail accessibility requirements for users with color vision deficiencies, violating WCAG 2.1 guidelines" ;
+    oc:severityLevel "CRITICAL" .
+

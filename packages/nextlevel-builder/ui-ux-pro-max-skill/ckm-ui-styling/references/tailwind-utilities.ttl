@@ -1,0 +1,61 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_tailwind_utilities a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "tailwind-utilities" ;
+    skos:broader "CSS utility reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "aba1c40ef84f43beea142ae310371e332541f39d973df90a71f1854823effda1" ;
+    oc:differentia "catalogs core Tailwind CSS utility classes for layout, spacing, typography, colors, borders, shadows, dimensions, and arbitrary values with code examples" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_3a06aae5,
+        oc:kn_6b9d1785,
+        oc:kn_76ea043b,
+        oc:kn_8ce81814,
+        oc:kn_a3094b32 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "apply tailwind color and border utilities",
+        "apply tailwind css utility classes for layout",
+        "reference tailwind utility class syntax and values",
+        "use tailwind sizing and positioning utilities",
+        "use tailwind spacing and typography utilities" .
+
+oc:kn_3a06aae5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying colors to text, backgrounds, or borders" ;
+    oc:directiveContent "Use opacity modifiers (e.g., bg-black/75, text-blue-500/30) instead of creating custom color variants. Use the color scale (50-950) to choose the right shade rather than fixed hex values." ;
+    oc:hasRationale "Opacity modifiers compose with the existing palette and keep the color system manageable without proliferating custom values." .
+
+oc:kn_6b9d1785 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When applying padding, margin, gap, or any spacing utility" ;
+    oc:directiveContent "Use the Tailwind spacing scale (0, px, 0.5, 1, 2, 3, 4, 6, 8, 12, 16, 24) instead of arbitrary pixel values for consistent design rhythm." ;
+    oc:hasRationale "The spacing scale ensures visual consistency across the interface and maintains the design system's rhythm." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_76ea043b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling any HTML element with Tailwind" ;
+    oc:directiveContent "Avoid inline styles or custom CSS when a Tailwind utility class already exists. Use arbitrary value syntax (square brackets) only when no built-in utility covers the need." ;
+    oc:hasRationale "Tailwind's utility-first approach ensures consistency and purgeability; arbitrary values bypass the design system and increase bundle size." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8ce81814 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting colors from the Tailwind palette" ;
+    oc:directiveContent "Tailwind's color scale has 11 shades (50, 100-900, 950). Use 50 for lightest backgrounds, 500 for base colors, and 600+ for text on light backgrounds to meet contrast requirements." ;
+    oc:hasRationale "Proper shade selection ensures accessible contrast ratios and visual hierarchy without manual WCAG calculation." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a3094b32 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring component layout with flex or grid" ;
+    oc:directiveContent "Prefer flexbox for one-dimensional layouts and grid for two-dimensional layouts. Use justify-* for main axis alignment and items-* for cross axis alignment." ;
+    oc:hasRationale "Choosing the correct layout model prevents unnecessary complexity and makes responsive behavior more predictable." .
+

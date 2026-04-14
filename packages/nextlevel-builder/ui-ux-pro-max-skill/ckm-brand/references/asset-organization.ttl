@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_asset_organization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "asset-organization" ;
+    skos:broader "Asset management framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "de98123417e9c5a1cc71a78131bba979c4c8ed2e5289e6c7a7f166576e488101" ;
+    oc:differentia "establishes directory structure, naming conventions, metadata schemas, and tagging systems for organizing marketing assets in a searchable, version-controlled hierarchy" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "project-root path or asset type to organize" ;
+    oc:hasCategory "marketing" ;
+    oc:impartsKnowledge oc:kn_26760acf,
+        oc:kn_32486335,
+        oc:kn_4e0979de,
+        oc:kn_b3d3f47d,
+        oc:kn_c9051dd5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "name asset files consistently",
+        "organize marketing assets",
+        "search and retrieve assets by type, campaign, or status",
+        "structure asset directories",
+        "tag and categorize assets",
+        "track asset versions and metadata" ;
+    oc:yieldsState oc:AssetsOrganized,
+        oc:ManifestUpdated .
+
+oc:kn_26760acf a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up or reorganizing any marketing asset project" ;
+    oc:directiveContent "Follow the structured directory hierarchy: .assets/ for git-tracked metadata, assets/ for raw files, with type-specific subdirectories (designs/, banners/, logos/, videos/, infographics/, generated/)." ;
+    oc:hasRationale "Consistent directory structure enables predictable file discovery, automated tooling integration, and team-wide navigability." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_32486335 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When saving or renaming any asset file" ;
+    oc:directiveContent "Use the naming format: {type}_{campaign}_{description}_{timestamp}_{variant}.{ext} with all components lowercase or kebab-case. Use 'evergreen' for non-campaign assets." ;
+    oc:hasRationale "Structured naming ensures files are self-describing, sortable by date, and filterable by campaign without opening metadata." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e0979de a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "After creating or importing new assets" ;
+    oc:directiveContent "Follow the cleanup workflow: extract colors → validate against brand guidelines → update manifest.json → tag appropriately → remove duplicates/outdated versions. Archive outdated assets rather than deleting them." ;
+    oc:hasRationale "This sequence ensures brand consistency, metadata completeness, and prevents accumulation of stale or duplicate assets while preserving history." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b3d3f47d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or exporting design variants" ;
+    oc:directiveContent "Never combine multiple variants (e.g., dark/light mode) in a single file. Keep one variant per file and use the variant naming component to distinguish them." ;
+    oc:hasRationale "Combined variants prevent automated selection, complicate versioning, and make it impossible to reference a specific variant by filename." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c9051dd5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding new assets to the system" ;
+    oc:directiveContent "Each asset must be registered in manifest.json with at minimum: status + platform + content-type tags. Large files over 100MB must use cloud storage links rather than local storage." ;
+    oc:hasRationale "Metadata registration is required for search and retrieval. Large files in local storage bloat repositories and degrade performance." ;
+    oc:severityLevel "HIGH" .
+

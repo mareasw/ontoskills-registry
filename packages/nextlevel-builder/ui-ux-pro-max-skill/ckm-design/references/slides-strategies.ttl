@@ -1,0 +1,75 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_slides_strategies a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slides-strategies" ;
+    skos:broader "Slide strategy catalog" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "27ee3e53ffa0ea679ec83ebeacb0bcfbce498df57277e99f574b9c139dc44286" ;
+    oc:differentia "provides 15 proven deck structures with emotion arcs for different audience types and goals" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "presentation goal or context (e.g., \"investor pitch\", \"sales demo\", \"conference talk\")" ;
+    oc:hasCategory "document" ;
+    oc:hasRequirement oc:req_7e9ca2f5 ;
+    oc:impartsKnowledge oc:kn_38c78e2f,
+        oc:kn_6f76b15b,
+        oc:kn_8faad6d8,
+        oc:kn_b0a8751a,
+        oc:kn_d56358ae ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:PresentationGoalDefined ;
+    oc:resolvesIntent "choose deck structure by audience and goal",
+        "create sales presentation structure",
+        "design investor pitch flow",
+        "plan emotion arc for slides",
+        "select slide strategy for presentation",
+        "structure a pitch deck" ;
+    oc:yieldsState oc:EmotionArcDefined,
+        oc:SlideStrategySelected .
+
+oc:kn_38c78e2f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a slide strategy for a new presentation" ;
+    oc:directiveContent "Match strategy to context: investor pitch → YC Seed/Series A/Guy Kawasaki; selling → Sales Pitch/Product Demo; internal → QBR/All-Hands/Board; public speaking → Conference/Workshop; proving value → Case Study/Competitive Analysis; leads → Webinar." ;
+    oc:hasRationale "Each strategy is optimized for a specific audience psychology and decision-making context. Using the wrong structure undermines persuasion." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6f76b15b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the presentation goal is to transform the audience's perspective or worldview" ;
+    oc:directiveContent "Use the Duarte Sparkline pattern (alternating 'What Is' pain with 'What Could Be' hope) for transformative presentations, with pattern breaks at 1/3 and 2/3 positions to create engagement peaks." ;
+    oc:hasRationale "The contrast between current pain and future possibility creates tension-and-release cycles that maintain audience attention and build persuasive momentum." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8faad6d8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring any presentation with 5+ slides" ;
+    oc:directiveContent "Every effective deck follows an emotion arc that guides the audience from their current emotional state to a target state (e.g., curiosity→frustration→hope→confidence→urgency)." ;
+    oc:hasRationale "Emotion arcs create psychological momentum that drives the audience toward the desired action, whether that's investing, buying, or learning." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b0a8751a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When ordering slides within any strategy" ;
+    oc:directiveContent "Never jump straight into solution slides without first establishing the problem and its emotional cost (frustration, fear, or pain)." ;
+    oc:hasRationale "All proven strategies share a common pattern: problem before solution. Skipping the problem setup removes the psychological motivation for the audience to care about the solution." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d56358ae a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building the slide deck from a selected strategy" ;
+    oc:directiveContent "Each strategy has a recommended slide count range (e.g., YC Seed: 10 slides, Sales Pitch: 7-10, Workshop: 20-40). Do not significantly exceed these ranges without strong justification." ;
+    oc:hasRationale "These counts are field-tested for maintaining audience engagement within the expected presentation time. Too many slides loses attention; too few undersells the message." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_7e9ca2f5 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python" .
+

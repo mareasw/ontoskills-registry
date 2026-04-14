@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides_layout_patterns a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "layout-patterns" ;
+    skos:broader "Layout catalog" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-slides" ;
+    oc:contentHash "0a967ca3bd829d3234e6f1802bade6c76447fabbaddbc8117c41adbae7dfb6df" ;
+    oc:differentia "provides 25 slide layout patterns with CSS structures, responsive grid systems, component variants, and animation classes for strategic HTML presentations" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "slide-content-type or use-case (e.g., \"metrics dashboard\", \"feature grid\", \"title slide\")" ;
+    oc:hasCategory "document" ;
+    oc:hasPayload oc:payload_0a967ca3bd829d32 ;
+    oc:impartsKnowledge oc:kn_2d8137a0,
+        oc:kn_574cb495,
+        oc:kn_78722a16,
+        oc:kn_a94d0e84,
+        oc:kn_eefd1556 ;
+    oc:isUserInvocable false ;
+    oc:nature "Reference" ;
+    oc:requiresState oc:PresentationInitialized ;
+    oc:resolvesIntent "apply CSS grid structures for responsive slide layouts",
+        "choose animation classes for slide transitions",
+        "find card and metric component styles for slides",
+        "select slide layout for presentation content" ;
+    oc:yieldsState oc:LayoutSelected,
+        oc:SlideStructureReady .
+
+oc:kn_2d8137a0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing CSS grid structures for slide layouts" ;
+    oc:directiveContent "Apply responsive breakpoints at 768px and 480px, collapsing multi-column grids (3→2→1 or 4→2→1) to maintain readability on all devices." ;
+    oc:hasRationale "Presentations may be viewed on tablets, phones, or embedded iframes; responsive breakpoints prevent content overflow and maintain visual hierarchy." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_574cb495 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building data-heavy or comparison slides" ;
+    oc:directiveContent "Never use a single-column layout for metrics dashboards or feature grids when more than 2 items need to be displayed together." ;
+    oc:hasRationale "Single-column layouts for multi-item data waste vertical space and fail to leverage the visual scanning pattern audiences use for comparisons." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_78722a16 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a layout for any slide" ;
+    oc:directiveContent "Match layout to slide goal: use grid layouts for comparison/data, centered flexbox for title/CTA, and stagger animations for sequential content reveal." ;
+    oc:hasRationale "Layout-purpose alignment ensures content communicates its message with maximum clarity and emotional impact." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a94d0e84 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning a full presentation deck" ;
+    oc:directiveContent "Follow the layout decision flow: determine slide goal → select emotion → match content type → check position for pattern-breaking full-bleed." ;
+    oc:hasRationale "Systematic layout selection ensures narrative coherence while strategic pattern breaks at 1/3 and 2/3 positions maintain audience engagement." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_eefd1556 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any slide layout with animations" ;
+    oc:directiveContent "Verify the animation class exists in the supported set (animate-fade-up, animate-stagger, animate-scale, animate-stagger-scale, animate-count, animate-pulse) before applying it to a layout." ;
+    oc:hasRationale "Undefined animation classes silently fail or cause CSS errors, breaking the presentation's visual flow." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_0a967ca3bd829d32 a oc:ExecutionPayload ;
+    oc:code "python .claude/skills/design-system/scripts/search-slides.py \"{query}\" -d layout" ;
+    oc:executor "python" ;
+    oc:timeout 10000 .
+

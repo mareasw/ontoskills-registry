@@ -1,0 +1,160 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-ui-styling" ;
+    skos:broader "UI development framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "6407be6c171aaa21751e7f1558131a8b9c445fcd3d220f4929fe8a99b6dedde0" ;
+    oc:differentia "combines shadcn/ui accessible components (Radix UI + Tailwind), utility-first Tailwind CSS styling, and canvas-based visual design into a unified interface creation system" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "[component or layout]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications." ;
+    oc:hasName "ckm-ui-styling" ;
+    oc:hasPackageName "ckm-ui-styling" ;
+    oc:hasPayload oc:payload_6407be6c171aaa21 ;
+    oc:hasRequirement oc:req_0077b97d,
+        oc:req_011c1bda,
+        oc:req_085b8a05,
+        oc:req_1cce9dfa,
+        oc:req_4cdfe9d2,
+        oc:req_843f7dab,
+        oc:req_887dcae8 ;
+    oc:impartsKnowledge oc:kn_0097dd91,
+        oc:kn_0f920d59,
+        oc:kn_33959584,
+        oc:kn_413db61a,
+        oc:kn_60444a66,
+        oc:kn_84fc144d,
+        oc:kn_88efb4de,
+        oc:kn_8cd58241,
+        oc:kn_b73bfae9,
+        oc:kn_da1d10b4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "add dark mode and theme customization",
+        "build design systems with consistent tokens",
+        "create accessible user interfaces with shadcn/ui components",
+        "create canvas-based visual designs and posters",
+        "customize component variants and themes",
+        "generate Tailwind configuration files",
+        "implement accessible forms, dialogs, and navigation",
+        "implement responsive mobile-first layouts",
+        "install and manage shadcn/ui components",
+        "style applications with Tailwind CSS utility-first approach" ;
+    oc:yieldsState oc:ComponentCreated,
+        oc:StylesConfigured,
+        oc:ThemeImplemented,
+        oc:UILayoutBuilt .
+
+oc:kn_0097dd91 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When implementing themes and color systems" ;
+    oc:directiveContent "Always maintain WCAG AA color contrast ratios (4.5:1 for normal text, 3:1 for large text) and use semantic color names (destructive, muted, foreground) rather than literal colors." ;
+    oc:hasRationale "Semantic naming decouples visual design from intent, making theme changes consistent and ensuring accessibility compliance across light and dark modes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_0f920d59 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any UI with shadcn/ui components" ;
+    oc:directiveContent "Always build complex UIs from simple, composable primitives using shadcn/ui's copy-paste component model, composing Card, Button, Dialog etc. rather than creating monolithic custom components." ;
+    oc:hasRationale "Composable primitives ensure accessibility (Radix UI primitives), maintainability, and consistent behavior across the application." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_33959584 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating responsive layouts" ;
+    oc:directiveContent "Start with mobile styles as the base, then layer responsive variants using Tailwind's breakpoint prefixes (sm:, md:, lg:, xl:) — never design desktop-first and scale down." ;
+    oc:hasRationale "Mobile-first approach ensures progressive enhancement, smaller base CSS, and forces prioritization of essential content for smaller viewports." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_413db61a a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running automation scripts" ;
+    oc:directiveContent "The shadcn_add.py script checks for already-installed components and refuses to overwrite by default — use --overwrite flag for force reinstallation. Tailwind config generation is fully idempotent." ;
+    oc:hasRationale "Preventing accidental overwrites protects custom component customizations while ensuring config generation is safe to re-run." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_60444a66 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When setting up shadcn/ui in CI/CD or automated environments" ;
+    oc:directiveContent "The shadcn/ui CLI requires an interactive terminal for init; when automating, pre-create components.json or use the Python wrapper script which handles non-interactive installation." ;
+    oc:hasRationale "The init command prompts for framework, TypeScript, paths, and theme preferences which blocks automated pipelines." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_84fc144d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating canvas-based visual designs and posters" ;
+    oc:directiveContent "In canvas-based visual designs, aim for 90% visual / 10% text maximum — text should be rare, powerful gestures integrated into visual architecture, not paragraphs." ;
+    oc:hasRationale "Museum-quality visual communication relies on spatial relationships, color fields, and geometric precision rather than textual explanation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_88efb4de a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When customizing shadcn/ui theme colors" ;
+    oc:directiveContent "All themed colors must be defined as HSL CSS variables (without hsl() wrapper) in both :root and .dark selectors to support runtime theme switching and dark mode." ;
+    oc:hasRationale "HSL variables enable opacity control via hsl(var(--primary) / 0.5) and ensure consistent dark mode implementation across all components." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8cd58241 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before installing shadcn/ui components" ;
+    oc:directiveContent "Verify components.json exists and Node.js/npm is available before attempting to add shadcn/ui components via the CLI or automation scripts." ;
+    oc:hasRationale "shadcn requires initialization (npx shadcn@latest init) to set up paths, aliases, and theme configuration before components can be added." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b73bfae9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling components with Tailwind CSS" ;
+    oc:directiveContent "Never use dynamic Tailwind class names constructed at runtime (e.g., template literals with variable class names) — use complete class names or the class-variance-authority (cva) pattern instead." ;
+    oc:hasRationale "Tailwind's build-time CSS purging cannot detect dynamically constructed class names, causing them to be removed from the production stylesheet." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_da1d10b4 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When shadcn add commands fail" ;
+    oc:directiveContent "If a component installation fails, check if components.json exists, verify Node.js is installed (npx available), and use --overwrite flag to reinstall corrupted components." ;
+    oc:hasRationale "Most component installation failures stem from missing initialization, Node.js unavailability, or conflicting existing component files." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_6407be6c171aaa21 a oc:ExecutionPayload ;
+    oc:code "npx shadcn@latest add {component} || python scripts/shadcn_add.py {component}" ;
+    oc:executor "shell" ;
+    oc:timeout 120 .
+
+oc:req_0077b97d a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "npm/npx" .
+
+oc:req_011c1bda a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "React/TypeScript" .
+
+oc:req_085b8a05 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "WAI-ARIA accessibility patterns" .
+
+oc:req_1cce9dfa a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Python 3.10+" .
+
+oc:req_4cdfe9d2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Node.js 18+" .
+
+oc:req_843f7dab a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "CSS fundamentals" .
+
+oc:req_887dcae8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Tailwind CSS" .
+

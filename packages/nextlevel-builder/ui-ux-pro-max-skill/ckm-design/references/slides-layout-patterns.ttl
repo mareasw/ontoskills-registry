@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_slides_layout_patterns a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "slides-layout-patterns" ;
+    skos:broader "Layout pattern catalog" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "0a967ca3bd829d3234e6f1802bade6c76447fabbaddbc8117c41adbae7dfb6df" ;
+    oc:differentia "Provides 25 slide layout CSS structures with responsive breakpoints, animation classes, component variants, and visual treatments for HTML presentation generation" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "slide-use-case (e.g., 'metrics dashboard', 'traction slide', 'comparison table')" ;
+    oc:hasCategory "document" ;
+    oc:hasPayload oc:payload_0a967ca3bd829d32 ;
+    oc:impartsKnowledge oc:kn_3d784415,
+        oc:kn_4fe0b329,
+        oc:kn_5053fa3e,
+        oc:kn_574ee331,
+        oc:kn_a6b87cb9 ;
+    oc:isUserInvocable false ;
+    oc:nature "Reference" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "apply responsive CSS grid structures to presentation slides",
+        "choose animation classes for slide transitions",
+        "design responsive HTML slides with appropriate breakpoints",
+        "select slide layout for presentation use case",
+        "style presentation cards, metrics, and visual elements" ;
+    oc:yieldsState oc:LayoutSelected,
+        oc:ResponsiveCSSGenerated .
+
+oc:kn_3d784415 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When sequencing layouts across a presentation deck" ;
+    oc:directiveContent "Do not use the same layout for more than 2-3 consecutive slides; vary layouts to maintain visual engagement and avoid monotony." ;
+    oc:hasRationale "Repetitive layouts cause audience disengagement and undermine the narrative arc of the presentation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4fe0b329 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing CSS for any grid-based slide layout (split, features, metrics)" ;
+    oc:directiveContent "All grid-based layouts must include responsive breakpoints at 768px (tablet) and 480px (mobile) that collapse multi-column grids to fewer or single columns." ;
+    oc:hasRationale "Without responsive breakpoints, slide content overflows or becomes unreadable on smaller screens and embedded contexts" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_5053fa3e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a layout for any presentation slide" ;
+    oc:directiveContent "Match layout to slide purpose: use slide-title for openings, slide-split for comparisons, slide-features for capability grids, slide-metrics for KPIs, and animate-pulse for CTAs." ;
+    oc:hasRationale "Purpose-aligned layouts create visual narrative flow and guide audience attention to the slide's core message" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_574ee331 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When styling card components and visual treatments within slides" ;
+    oc:directiveContent "Use the provided CSS classes (card-icon-left, card-accent-bar, card-metric, card-avatar, card-pricing) and visual treatments (gradient-glow, subtle-border, screenshot-shadow, popular-highlight) rather than creating ad-hoc styles." ;
+    oc:hasRationale "Consistent use of predefined component classes ensures design system coherence and avoids visual inconsistency across slides" .
+
+oc:kn_a6b87cb9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning a multi-slide presentation structure" ;
+    oc:directiveContent "Use the layout decision flow: identify slide goal → map emotion via color-logic → determine content type via typography → check position for pattern-breaking full-bleed at 1/3 or 2/3 of deck." ;
+    oc:hasRationale "Systematic decision flow prevents inconsistent layouts and ensures each slide serves its narrative role within the deck" .
+
+oc:payload_0a967ca3bd829d32 a oc:ExecutionPayload ;
+    oc:code "python .claude/skills/design-system/scripts/search-slides.py \"{query}\" -d layout" ;
+    oc:executor "python" ;
+    oc:timeout 10000 .
+

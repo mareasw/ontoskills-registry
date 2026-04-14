@@ -1,0 +1,69 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_banner_sizes_and_styles a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "banner-sizes-and-styles" ;
+    skos:broader "Reference specification" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "c8906fb1073a576ee8c680d9bc8586249cbc4ed36690da960d65a1c9c37143b7" ;
+    oc:differentia "catalogs banner dimensions across platforms and art direction styles with production-ready design constraints" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:hasArgumentHint "platform or banner type (e.g., 'facebook cover', 'google display ad', 'roll-up print')" ;
+    oc:hasCategory "design" ;
+    oc:hasRequirement oc:req_ecd4e5ae ;
+    oc:impartsKnowledge oc:kn_2c54ca5e,
+        oc:kn_7eba4e5f,
+        oc:kn_9255214b,
+        oc:kn_a9fedb3e,
+        oc:kn_bd7df5a4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "apply banner design principles (safe zones, typography, CTA)",
+        "choose art direction style for a banner",
+        "look up banner sizes for a platform",
+        "prepare print banner specifications",
+        "research banner design references" .
+
+oc:kn_2c54ca5e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any digital banner" ;
+    oc:directiveContent "Critical content must stay within the central 70-80% of the canvas; avoid placing text or CTA within 50-100px of edges." ;
+    oc:hasRationale "Platform UI chrome, browser chrome, and cropping across devices will obscure edge content." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7eba4e5f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding calls-to-action to banners" ;
+    oc:directiveContent "Never place more than one CTA on a single banner; CTA must have high contrast against the background and minimum 44px height for mobile." ;
+    oc:hasRationale "Multiple CTAs cause decision paralysis; low-contrast or small CTAs fail accessibility and mobile tap-target guidelines." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9255214b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing ad banners for Meta platforms or display networks" ;
+    oc:directiveContent "Meta/Instagram ads must keep text under 20% of the image area to avoid delivery penalties. Max 2 typefaces per banner, max 7 words per line, max 3 lines for ads." ;
+    oc:hasRationale "Meta's algorithm deprioritizes text-heavy ads; typographic clutter reduces readability and click-through rates." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a9fedb3e a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When preparing print banner artwork (roll-ups, step-and-repeat, vinyl, trade show)" ;
+    oc:directiveContent "Print banners require 300 DPI minimum (150 DPI for large format), 3-5mm bleed on all sides, CMYK color mode, and headline sizing at 1pt per foot of viewing distance." ;
+    oc:hasRationale "Insufficient resolution causes visible pixelation in print; missing bleed causes white edges after trimming; RGB colors shift unpredictably in CMYK conversion." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bd7df5a4 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When composing any banner layout" ;
+    oc:directiveContent "Apply the 3-Zone Rule: top = logo/main value prop, middle = supporting message + visuals, bottom = CTA." ;
+    oc:hasRationale "Consistent visual hierarchy guides the viewer's eye through the message in a natural scanning pattern (Z-pattern or F-pattern)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_ecd4e5ae a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "banner dimensions and aspect ratios for social media, web, display ads, and print" .
+

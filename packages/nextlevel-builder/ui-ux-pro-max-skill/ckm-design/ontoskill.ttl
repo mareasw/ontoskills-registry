@@ -1,0 +1,120 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-design" ;
+    skos:broader "Unified design orchestration skill" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "a015c22575bbdc69ee7d058d9edab7f5004a678a01b53f196523919bbcc90d46" ;
+    oc:differentia "Routes to 9 sub-skills (logo, CIP, slides, banners, icons, social photos, brand, design system, UI styling) with built-in AI generation via Gemini models, search engines, and HTML rendering scripts" ;
+    oc:extends oc:skill_ckm_banner_design,
+        oc:skill_ckm_brand,
+        oc:skill_ckm_design_system,
+        oc:skill_ckm_slides,
+        oc:skill_ckm_ui_styling ;
+    oc:handlesFailure oc:APIKeyMissing,
+        oc:GenerationTimeout,
+        oc:ScriptExecutionError ;
+    oc:hasArgumentHint "\"[design-type] [context] — design types: logo, cip, slides, banner, icon, social-photos, brand, design-system, ui-styling\"" ;
+    oc:hasCategory "design" ;
+    oc:hasDescription "Comprehensive design skill: brand identity, design tokens, UI styling, logo generation (55 styles, Gemini AI), corporate identity program (50 deliverables, CIP mockups), HTML presentations (Chart.js), banner design (22 styles, social/ads/web/print), icon design (15 styles, SVG, Gemini 3.1 Pro), social photos (HTML→screenshot, multi-platform). Actions: design logo, create CIP, generate mockups, build slides, design banner, generate icon, create social photos, social media images, brand identity, design system. Platforms: Facebook, Twitter, LinkedIn, YouTube, Instagram, Pinterest, TikTok, Threads, Google Ads." ;
+    oc:hasName "ckm-design" ;
+    oc:hasPackageName "ckm-design" ;
+    oc:hasRequirement oc:req_39b25607,
+        oc:req_3fcf652e,
+        oc:req_8b5bdb56,
+        oc:req_a32ab635,
+        oc:req_af77a1c7 ;
+    oc:impartsKnowledge oc:kn_41acd0e7,
+        oc:kn_55c03564,
+        oc:kn_ca740715,
+        oc:kn_e5d11eca,
+        oc:kn_e7e23979,
+        oc:kn_fca135cb ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:GeminiAPIKeySet,
+        oc:PythonAvailable ;
+    oc:resolvesIntent "build brand identity",
+        "create corporate identity program",
+        "create design system tokens",
+        "create presentations and pitch decks",
+        "create social media images",
+        "design banners for social media and ads",
+        "design logo",
+        "generate CIP mockups",
+        "generate SVG icons",
+        "route design tasks to appropriate sub-skill" ;
+    oc:yieldsState oc:BannerDesigned,
+        oc:CIPMockupsCreated,
+        oc:IconsGenerated,
+        oc:LogoGenerated,
+        oc:PresentationCreated,
+        oc:SocialPhotosExported .
+
+oc:kn_41acd0e7 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing any Python generation script or after logo creation completes" ;
+    oc:directiveContent "When scripts fail, attempt to fix them directly before retrying. After logo generation, always ask the user about HTML preview via AskUserQuestion before proceeding." ;
+    oc:hasRationale "Script errors are often environmental and fixable inline; the HTML preview step gives users visual validation before further work." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_55c03564 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any generate.py or search.py script" ;
+    oc:directiveContent "Verify GEMINI_API_KEY is set and google-genai package is installed before running any AI generation script. For CIP mockups, check if a logo already exists and use --logo flag if so." ;
+    oc:hasRationale "Missing API key or dependencies cause immediate failure; providing logo to CIP generation produces significantly better results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ca740715 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing ad banners for Facebook, Instagram, or Google Ads" ;
+    oc:directiveContent "Never exceed 20% text coverage on ad banners — Meta penalizes high-text ads. Use max 2 fonts per design and ensure minimum 4.5:1 contrast ratio." ;
+    oc:hasRationale "Platform algorithms actively suppress ad delivery for excessive text, and poor contrast violates accessibility standards." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e5d11eca a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When orchestrating multi-step design workflows" ;
+    oc:directiveContent "For a complete brand package, execute in sequence: Logo → CIP mockups → Presentation. For design systems: Brand → Tokens → Implementation. Use parallel subagents for independent social photo tasks." ;
+    oc:hasRationale "Sequencing ensures dependencies are met (CIP needs logo, tokens need brand); parallelization speeds up independent design tasks." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e7e23979 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating logos, banners, or social media images" ;
+    oc:directiveContent "Always generate logo images with white backgrounds and keep critical content within the central 70-80% safe zone of any banner or social photo canvas." ;
+    oc:hasRationale "White backgrounds ensure logos work across all contexts; safe zones prevent content clipping by platform UI chrome." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fca135cb a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When choosing AI model or exporting HTML to PNG screenshots" ;
+    oc:directiveContent "Use Gemini Flash model (default) for speed and cost-efficiency; switch to Pro model only when 4K text rendering quality is needed. Add 3-5 second delay after page load for font/image rendering before screenshot capture." ;
+    oc:hasRationale "Flash is 10x faster and cheaper for most tasks; Pro excels at fine text detail. Rendering delay prevents missing fonts/images in exports." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_39b25607 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "GEMINI_API_KEY" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_8b5bdb56 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "google-genai Python package" .
+
+oc:req_a32ab635 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Chrome/Playwright for screenshot export" .
+
+oc:req_af77a1c7 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "pillow Python package" .
+

@@ -1,0 +1,67 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_typography_specifications a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "typography-specifications" ;
+    skos:broader "Typography specification system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "921c3d9e6ddfde2677b9a3e32eee94c7922f54f22c1f380c5ed2eb25a7d5bfa9" ;
+    oc:differentia "Defines font stacks, type scales, weight pairings, spacing rules, responsive breakpoints, and CSS/Tailwind implementations for brand-consistent typographic design" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "font-pairing or design-context (e.g., 'clean-modern', 'professional', 'startup-tech', 'editorial')" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_04882bb6,
+        oc:kn_16030d5c,
+        oc:kn_1a84675a,
+        oc:kn_6ddc00e8,
+        oc:kn_a1691f1f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandIdentityDefined ;
+    oc:resolvesIntent "configure font stacks and type scales",
+        "define brand typography system",
+        "ensure accessible font sizes and contrast",
+        "implement responsive typography in CSS or Tailwind",
+        "select font pairings for brand identity" ;
+    oc:yieldsState oc:TypographySystemConfigured .
+
+oc:kn_04882bb6 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When configuring font weight and line-height across the design system" ;
+    oc:directiveContent "Pair heading weights at 600-700 with body weight 400, link weight 500, and button weight 600. Use line heights of 1.1-1.3 for headings, 1.5-1.6 for body, and 1.6-1.75 for long-form." ;
+    oc:hasRationale "Consistent weight and leading pairings establish clear visual hierarchy and optimal readability without arbitrary decisions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_16030d5c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining any brand type scale" ;
+    oc:directiveContent "Use a Major Third (1.25) scale ratio with a 16px base for a harmonious, predictable type scale from Display through Caption." ;
+    oc:hasRationale "A consistent mathematical ratio creates visual harmony and eliminates arbitrary size choices across the design system." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1a84675a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling body text, paragraphs, and long-form content" ;
+    oc:directiveContent "Never use font weights below 400 at small sizes, avoid justified text alignment for body content, and do not use all-caps for long text passages." ;
+    oc:hasRationale "Thin weights at small sizes fail contrast requirements; justified text creates uneven rivers of whitespace; all-caps reduces reading speed and accessibility." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6ddc00e8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing responsive typography layouts" ;
+    oc:directiveContent "Limit line length to 65-75 characters for body text using max-width: 65ch, and scale heading sizes down on mobile breakpoints (<768px)." ;
+    oc:hasRationale "Optimal line length and responsive sizing are critical for readability across devices; exceeding 75 characters degrades reading comprehension." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a1691f1f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting any typographic size or color" ;
+    oc:directiveContent "Body text must be minimum 16px, small text minimum 14px (not for long content), and caption minimum 12px (use sparingly). Text-background contrast must meet WCAG AA (4.5:1 for normal text, 3:1 for large text 18px+)." ;
+    oc:hasRationale "Failing minimum size and contrast thresholds creates accessibility violations and excludes users with visual impairments." ;
+    oc:severityLevel "CRITICAL" .
+

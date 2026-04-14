@@ -1,0 +1,65 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system_component_tokens a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "component-tokens" ;
+    skos:broader "Design token specification" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "e27f8f5999badee425c98235eabbd2cb3ebe2a1a364766d5c7a6b3134ceaaec8" ;
+    oc:differentia "Defines component-level CSS custom properties for UI primitives (buttons, inputs, cards, badges, alerts, dialogs, tables) that resolve against the semantic token layer" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system ;
+    oc:handlesFailure oc:TokenResolutionFailed ;
+    oc:hasArgumentHint "component-name (e.g., button, input, card, badge, alert, dialog, table)" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_0f331fd4,
+        oc:kn_3ae8f367,
+        oc:kn_3e2be555,
+        oc:kn_95705797,
+        oc:kn_d6413c1e ;
+    oc:isUserInvocable false ;
+    oc:nature "Reference" ;
+    oc:requiresState oc:SemanticTokensReady ;
+    oc:resolvesIntent "apply component design tokens to UI elements",
+        "build themeable UI components using CSS custom properties",
+        "style buttons, inputs, cards, badges, alerts, dialogs, and tables with token-based theming" ;
+    oc:yieldsState oc:ComponentTokensReady .
+
+oc:kn_0f331fd4 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating new component token definitions" ;
+    oc:directiveContent "Use the naming convention --{component}-{property} for default tokens and --{component}-{variant}-{property} for variants, where property is one of: bg, fg, border, hover-bg, active-bg, padding-x, padding-y, radius, shadow." ;
+    oc:hasRationale "Consistent naming ensures predictability and allows tooling to auto-discover and validate tokens." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3ae8f367 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining component variants like button or badge styles" ;
+    oc:directiveContent "Each component variant (primary, secondary, outline, ghost, destructive) must define a complete set of background, foreground, hover, and active tokens." ;
+    oc:hasRationale "Incomplete variant token sets cause visual regressions or unstyled states in interactive elements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3e2be555 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining or overriding any component token" ;
+    oc:directiveContent "All component tokens must reference semantic-level tokens (var(--color-*), var(--space-*), var(--radius-*), var(--shadow-*), var(--font-*)), never primitive values directly." ;
+    oc:hasRationale "Maintains the three-layer token cascade (primitive→semantic→component) so theme changes propagate correctly without touching component code." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_95705797 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing token specifications for new UI components" ;
+    oc:directiveContent "When creating a new component token set, include tokens for: default state, hover/focus feedback, disabled state, error/destructive state (if applicable), and sizing variants (sm, default, lg)." ;
+    oc:hasRationale "Covering interactive and accessibility states upfront prevents gaps that emerge when components are used in real interfaces." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d6413c1e a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tokens are loaded or reloaded in a CSS cascade" ;
+    oc:directiveContent "Component token definitions are idempotent — redeclaring the same :root custom properties produces identical output. Order matters only when multiple declarations target the same property name." ;
+    oc:hasRationale "Ensures safe hot-reloading and token layer merging without unintended side effects." ;
+    oc:severityLevel "LOW" .
+

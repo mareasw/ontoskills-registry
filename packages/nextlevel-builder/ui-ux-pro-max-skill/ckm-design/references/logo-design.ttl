@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_logo_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "logo-design" ;
+    skos:broader "Logo design engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "2e845fe165c845fd9582c1d74204fa31de607380982a6ea0b5f8db4e293afa3a" ;
+    oc:dependsOnSkill oc:skill_ui_ux_pro_max ;
+    oc:differentia "uses Gemini Nano Banana AI to generate brand logos across 55+ styles with color psychology and industry-specific guidelines" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "--brand \"BrandName\" --style <style> --industry <industry> or --prompt <description>" ;
+    oc:hasCategory "design" ;
+    oc:hasRequirement oc:req_39b25607,
+        oc:req_3fcf652e,
+        oc:req_74751f9a,
+        oc:req_b6956f54 ;
+    oc:impartsKnowledge oc:kn_1ffdb60e,
+        oc:kn_28965a14,
+        oc:kn_a25974b1,
+        oc:kn_b8faf19d,
+        oc:kn_f1adc663 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "create logo variations",
+        "design logo",
+        "generate brand logo",
+        "get design brief for logo",
+        "search logo styles" ;
+    oc:yieldsState oc:DesignBriefCreated,
+        oc:LogoGenerated .
+
+oc:kn_1ffdb60e a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "At the beginning of every logo design engagement" ;
+    oc:directiveContent "Start with a design brief using search.py --design-brief before generating any logo. This grounds the generation in user context and industry norms." ;
+    oc:hasRationale "A structured brief ensures the AI generation is aligned with brand identity, industry expectations, and user preferences before committing to generation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_28965a14 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "After logo generation step completes successfully" ;
+    oc:directiveContent "After generating logo variations, offer the user an HTML preview gallery by invoking the ui-ux-pro-max skill for presentation." ;
+    oc:hasRationale "Visual comparison in a gallery format helps users evaluate multiple logo options side-by-side, leading to better design decisions." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a25974b1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating logos for a specific industry" ;
+    oc:directiveContent "Match logo style and color palette to the target industry using the built-in industry defaults (e.g., tech→minimalist/abstract with blues; food→vintage badge with warm reds)." ;
+    oc:hasRationale "Industry conventions communicate credibility and audience expectations; violating them can undermine brand trust." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b8faf19d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Whenever generating a logo via scripts/logo/generate.py" ;
+    oc:directiveContent "ALWAYS use white background for output logos to ensure versatility and clean presentation across media." ;
+    oc:hasRationale "White backgrounds ensure the logo renders cleanly on any surface and is production-ready for both digital and print use." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f1adc663 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any scripts/logo/ commands" ;
+    oc:directiveContent "Verify GEMINI_API_KEY is set and google-genai package is installed before running any logo generation or search commands." ;
+    oc:hasRationale "The entire logo pipeline depends on the Gemini Nano Banana API; missing credentials will cause silent failures or cryptic errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_39b25607 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "GEMINI_API_KEY" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_74751f9a a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Color psychology and industry branding conventions" .
+
+oc:req_b6956f54 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "google-genai" .
+

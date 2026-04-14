@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_color_palette_management a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "color-palette-management" ;
+    skos:broader "Brand color governance framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "c429298ffe3955edb8b22c9f51426fef75e83d02848cd4300e89c0d3fc34b44a" ;
+    oc:differentia "Defines hierarchical color systems, enforces WCAG accessibility compliance, and validates brand palette consistency across design artifacts" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:ColorExtractionFailed,
+        oc:InsufficientContrast,
+        oc:OffBrandColorsDetected ;
+    oc:hasArgumentHint "brand-guidelines-or-image-path" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_92309f9e,
+        oc:kn_9355bcb1,
+        oc:kn_9d0bdbaf,
+        oc:kn_b2f6eded,
+        oc:kn_fef16462 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandGuidelinesAvailable ;
+    oc:resolvesIntent "check color accessibility contrast ratios",
+        "define brand color palette",
+        "extract colors from images or guidelines",
+        "generate CSS variables and Tailwind color config",
+        "validate brand color compliance" ;
+    oc:yieldsState oc:AccessibilityComplianceVerified,
+        oc:BrandComplianceValidated,
+        oc:ColorPaletteDefined .
+
+oc:kn_92309f9e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining or documenting any brand color system" ;
+    oc:directiveContent "Structure brand colors as a four-tier hierarchy: Primary (1-2 colors for CTAs/headers), Secondary (2-3 for accents/interactivity), Neutral (3-5 for backgrounds/text/borders), and Semantic (4 fixed: success/warning/error/info)." ;
+    oc:hasRationale "A well-structured hierarchy ensures every color has a clear purpose, prevents arbitrary color choices, and scales across design systems" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9355bcb1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating any design artifact against brand guidelines" ;
+    oc:directiveContent "Primary colors must comprise 60-70% of design, secondary 20-30%, and accent 5-10%. Off-brand tolerance must not exceed 20% non-palette colors." ;
+    oc:hasRationale "Color ratio violations dilute brand recognition and create visual inconsistency across touchpoints" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9d0bdbaf a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining status indicators, alerts, or validation feedback colors" ;
+    oc:directiveContent "Use semantic defaults for functional colors: success=#22C55E (green), warning=#F59E0B (amber), error=#EF4444 (red), info=#3B82F6 (blue)." ;
+    oc:hasRationale "Consistent semantic colors create immediate user recognition of system states without learning curve" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b2f6eded a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing UI components or selecting color combinations" ;
+    oc:directiveContent "Never use more than 2-3 colors in a single component, mix warm and cool tones without intent, use pure black (#000) for text, or rely solely on color to convey meaning." ;
+    oc:hasRationale "Overloading components with colors creates visual noise; pure black causes excessive contrast fatigue; color-only meaning excludes colorblind users" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fef16462 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting or validating any foreground/background color pair" ;
+    oc:directiveContent "All text-to-background color combinations must meet WCAG 2.1 AA minimum contrast ratios: 4.5:1 for normal text, 3:1 for large text and UI components." ;
+    oc:hasRationale "Insufficient contrast makes content unreadable for users with visual impairments and fails accessibility legal requirements" ;
+    oc:severityLevel "CRITICAL" .
+

@@ -1,0 +1,88 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_banner_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-banner-design" ;
+    skos:broader "Creative design system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-banner-design" ;
+    oc:contentHash "96db568bc7821291f100dcc51e191ab67c0d86235c522e8da27719567181da84" ;
+    oc:differentia "Generates multi-format banners across social media, ads, web, and print using AI-generated visuals and HTML/CSS composition with multiple art direction options" ;
+    oc:extends oc:skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "[platform] [style] [dimensions]" ;
+    oc:hasCategory "design" ;
+    oc:hasDescription "Design banners for social media, ads, website heroes, creative assets, and print. Multiple art direction options with AI-generated visuals. Actions: design, create, generate banner. Platforms: Facebook, Twitter/X, LinkedIn, YouTube, Instagram, Google Display, website hero, print. Styles: minimalist, gradient, bold typography, photo-based, illustrated, geometric, retro, glassmorphism, 3D, neon, duotone, editorial, collage. Uses ui-ux-pro-max, frontend-design, ai-artist, ai-multimodal skills." ;
+    oc:hasName "ckm-banner-design" ;
+    oc:impartsKnowledge oc:kn_01ae55e3,
+        oc:kn_0855c934,
+        oc:kn_1fc72a54,
+        oc:kn_2ba42b72,
+        oc:kn_2db1609d,
+        oc:kn_426d5816,
+        oc:kn_4687a162 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "create banner for social media",
+        "create multi-platform banner variants",
+        "create website hero section visual",
+        "design ad banner or display ad",
+        "export banner to PNG image",
+        "generate banner with specific art direction style" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_01ae55e3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting AI image generation model quality tier" ;
+    oc:directiveContent "Use Standard/Flash model (2K) for backgrounds, gradients, and quick A/B iterations. Use Pro model (4K) for hero illustrations, product shots, and photorealistic scenes." ;
+    oc:hasRationale "Matching model capability to visual complexity optimizes both generation speed and output quality—using Pro for simple backgrounds wastes time; using Flash for complex hero art yields insufficient quality." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_0855c934 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting banner design or AI image generation" ;
+    oc:directiveContent "Verify exact platform dimensions from the reference table and match aspect ratio to the target platform before generating any visuals." ;
+    oc:hasRationale "Incorrect dimensions or mismatched aspect ratios result in distortion or cropping when uploaded to the target platform." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1fc72a54 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing banner typography and CTA elements" ;
+    oc:directiveContent "Use max 2 typefaces per banner, one CTA placed bottom-right at minimum 44px height, and maintain 4.5:1 contrast ratio." ;
+    oc:hasRationale "Typography restraint maintains visual clarity; bottom-right CTA placement follows natural eye-tracking terminal zones; 44px minimum ensures mobile tap target compliance." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2ba42b72 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When prompting AI image generation models for banner visuals" ;
+    oc:directiveContent "Never generate text within AI-generated images. Use AI for visuals only and overlay all text via HTML/CSS." ;
+    oc:hasRationale "AI-generated text is typically garbled and unprofessional. HTML/CSS text overlay ensures crisp, editable, brand-consistent typography." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2db1609d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating ad banners for Facebook, Instagram, or Google Display Network" ;
+    oc:directiveContent "Ad banners must keep text under 20% of the image area to avoid Meta ad delivery penalties." ;
+    oc:hasRationale "Meta's algorithm deprioritizes ads with more than 20% text coverage, significantly reducing reach and engagement." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_426d5816 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When starting any banner design project" ;
+    oc:directiveContent "Always generate multiple art direction options (default 3) using Pinterest research for reference inspiration before designing." ;
+    oc:hasRationale "Multiple options prevent single-point-of-failure in creative direction and allow the user to compare and converge on the strongest concept." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4687a162 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any banner format" ;
+    oc:directiveContent "Critical content must remain within the central 70-80% of the banner canvas (safe zone). Avoid placing text or CTAs within 50-100px of edges." ;
+    oc:hasRationale "Platforms crop edges differently across devices; safe zones ensure key content survives all crops including mobile Facebook, YouTube safe area, and Instagram UI chrome." ;
+    oc:severityLevel "CRITICAL" .
+

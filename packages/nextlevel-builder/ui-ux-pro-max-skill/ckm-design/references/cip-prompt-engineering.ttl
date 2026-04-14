@@ -1,0 +1,62 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_cip_prompt_engineering a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "cip-prompt-engineering" ;
+    skos:broader "prompt engineering framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "4bf3a0c858f38c230e43e872857b72d9eb692e066e8de5920da75aac733e753c" ;
+    oc:differentia "generates photorealistic corporate identity mockup prompts using structured modifiers for deliverables, styles, lighting, context, and quality" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:hasArgumentHint "deliverable type (e.g., business card, letterhead, signage) and brand parameters" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_73b48d8c,
+        oc:kn_77cc5209,
+        oc:kn_82761d1d,
+        oc:kn_8ebfef6d,
+        oc:kn_b2e7eb31 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "create photorealistic product photography prompts",
+        "customize brand mockup prompts by deliverable type and style",
+        "generate mockup prompts for corporate identity deliverables" .
+
+oc:kn_73b48d8c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any corporate identity mockup prompt" ;
+    oc:directiveContent "Always structure mockup prompts using the base template: deliverable → brand → style → colors → typography → logo placement → materials → finishes → context → mood → quality modifiers, in that order." ;
+    oc:hasRationale "Consistent prompt structure ensures predictable, high-quality image generation results across all deliverable types" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_77cc5209 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before submitting any generated prompt to an image generation model" ;
+    oc:directiveContent "The base prompt template has mandatory placeholders: [DELIVERABLE], [BRAND_NAME], [STYLE], [COLORS], [TYPOGRAPHY], [PLACEMENT], [MATERIALS], [FINISHES], [CONTEXT], [MOOD] — all must be populated before prompt submission." ;
+    oc:hasRationale "Incomplete prompts with unfilled placeholders produce unpredictable or nonsensical results, especially for branded corporate materials where accuracy matters" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_82761d1d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting modifiers for a specific deliverable type" ;
+    oc:directiveContent "Match deliverable-specific modifiers precisely: business cards use marble surface + 45° angle; letterheads use flat lay with envelope and pen; signage uses backlit LED + architectural photography; vehicles use 3/4 front angle; apparel uses folded + embroidered details." ;
+    oc:hasRationale "Each deliverable type has canonical photography conventions that produce the most realistic and professional mockup results" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8ebfef6d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating mockup prompts" ;
+    oc:directiveContent "Never omit the negative prompt block — without it, generated images frequently contain distorted text, cartoon-like rendering, watermarks, or amateur-quality artifacts that undermine brand credibility." ;
+    oc:hasRationale "AI image generators default to artistic/illustrative styles and often mangle text; negative prompts are essential guardrails for corporate identity work" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b2e7eb31 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Every mockup prompt without exception" ;
+    oc:directiveContent "Always append quality modifiers: photorealistic, professional photography, high quality, 8k resolution, detailed, sharp focus — and always include negative prompts to exclude blurry, low quality, distorted text, amateur, clipart, cartoon, and watermark artifacts." ;
+    oc:hasRationale "Quality modifiers anchor the AI model's output toward professional-grade results and negative prompts suppress common image generation artifacts" ;
+    oc:severityLevel "CRITICAL" .
+

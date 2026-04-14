@@ -1,0 +1,111 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_shadcn_accessibility a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "shadcn-accessibility" ;
+    skos:broader "Accessibility reference guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "a22cd4ccf82b635b2b2c4f12416a0c4f7edcd825d219d6089450fa797a0d9511" ;
+    oc:differentia "that codifies WAI-ARIA patterns, keyboard navigation, screen reader support, and accessible component usage for shadcn/ui built on Radix UI primitives" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:handlesFailure oc:KeyboardNavigationBroken,
+        oc:WCAGViolation ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "component-name or accessibility-pattern (e.g., 'dialog', 'form', 'keyboard-nav', 'screen-reader')" ;
+    oc:hasCategory "development" ;
+    oc:hasPayload oc:payload_a22cd4ccf82b635b ;
+    oc:hasRequirement oc:req_07c70210,
+        oc:req_75bc9ea1,
+        oc:req_ce9ace8c,
+        oc:req_f16aa33a,
+        oc:req_f49c59d5 ;
+    oc:impartsKnowledge oc:kn_76f4cf25,
+        oc:kn_77665f92,
+        oc:kn_79b76146,
+        oc:kn_8b378d12,
+        oc:kn_9085fd37,
+        oc:kn_cda8b9a6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "add ARIA labels and screen reader support",
+        "ensure keyboard navigation in UI components",
+        "implement accessible shadcn/ui components",
+        "meet WCAG color contrast requirements",
+        "test accessibility of shadcn/ui interfaces" ;
+    oc:yieldsState oc:AccessibleUI .
+
+oc:kn_76f4cf25 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When adding transitions, animations, or motion to any component" ;
+    oc:directiveContent "Respect the 'prefers-reduced-motion' media query by using Tailwind's 'motion-reduce:' variant or CSS media queries to disable animations and transitions." ;
+    oc:hasRationale "Users with vestibular disorders or motion sensitivity can be harmed by animations; WCAG 2.3 requires respecting motion preferences." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_77665f92 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any shadcn/ui component layout" ;
+    oc:directiveContent "Always use semantic HTML elements (button, nav, fieldset, legend) instead of div-based constructs to ensure assistive technologies can interpret the UI correctly." ;
+    oc:hasRationale "Semantic HTML provides built-in accessibility semantics that div elements lack, reducing the need for manual ARIA annotations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_79b76146 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before marking any shadcn/ui interface as complete" ;
+    oc:directiveContent "Before shipping any UI, verify: all interactive elements are keyboard accessible, focus indicators are visible, form errors are announced, ARIA labels exist for icon-only buttons, and live regions announce dynamic updates." ;
+    oc:hasRationale "Systematic accessibility testing prevents regression and ensures compliance with WCAG 2.1 Level AA standards." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8b378d12 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When styling interactive elements like buttons, links, and inputs" ;
+    oc:directiveContent "Never remove focus styles with 'focus:outline-none' alone. Always use 'focus-visible:ring-2' or equivalent to preserve keyboard focus indicators." ;
+    oc:hasRationale "Removing focus indicators makes keyboard navigation invisible, violating WCAG 2.4.7 Focus Visible criterion." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9085fd37 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing text and background colors for any UI element" ;
+    oc:directiveContent "Text and background color combinations must meet WCAG AA contrast ratios: 4.5:1 for normal text, 3:1 for large text. Use semantic 'text-muted-foreground' for secondary text." ;
+    oc:hasRationale "Insufficient color contrast makes content unreadable for users with low vision or color blindness." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cda8b9a6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using shadcn/ui Dialog, DropdownMenu, Tabs, Accordion, Select, and Command components" ;
+    oc:directiveContent "Leverage Radix UI primitives' built-in accessibility (focus trapping, ARIA attributes, keyboard navigation) rather than reimplementing these patterns manually." ;
+    oc:hasRationale "Radix UI primitives implement WAI-ARIA patterns that are well-tested; manual reimplementation introduces bugs and compliance gaps." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_a22cd4ccf82b635b a oc:ExecutionPayload ;
+    oc:code "npm install -D @axe-core/react" ;
+    oc:executor "node" ;
+    oc:timeout 60000 .
+
+oc:req_07c70210 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "@axe-core/react" .
+
+oc:req_75bc9ea1 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shadcn/ui component library" .
+
+oc:req_ce9ace8c a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "WCAG 2.1 AA/AAA contrast ratios" .
+
+oc:req_f16aa33a a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Radix UI primitives" .
+
+oc:req_f49c59d5 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "WAI-ARIA design patterns" .
+

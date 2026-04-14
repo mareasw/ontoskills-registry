@@ -1,0 +1,63 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_logo_style_guide a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "logo-style-guide" ;
+    skos:broader "Design reference guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "611baa841eedab101f45c113c6bfbd4d7e16e859c9d6ebd2cf941827a6e8dd15" ;
+    oc:differentia "that classifies logo types, aesthetic styles, and provides selection criteria for logo design decisions" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:hasArgumentHint "brand-type or industry sector" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_0d81ed61,
+        oc:kn_634a2d3c,
+        oc:kn_945fe7e9,
+        oc:kn_b64573dd,
+        oc:kn_eb3060bf ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "choose logo aesthetic style based on brand identity",
+        "evaluate logo scalability and versatility",
+        "guide logo design decisions with style recommendations",
+        "select appropriate logo type for a brand" .
+
+oc:kn_0d81ed61 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing logos for new or emerging brands" ;
+    oc:directiveContent "Use Combination Marks for new brands — they offer the most versatility and allow separating icon from text as brand equity grows." ;
+    oc:hasRationale "New brands lack the recognition needed for standalone pictorial marks or wordmarks; combination marks provide flexibility across use cases." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_634a2d3c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing emblem or badge-style logos" ;
+    oc:directiveContent "Emblem-style logos may face scalability challenges due to enclosed text and detail density — always test at small sizes before committing." ;
+    oc:hasRationale "The enclosing shape and internal text compete for space, causing legibility issues at small scales." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_945fe7e9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing for unrecognized or newly launched brands" ;
+    oc:directiveContent "Do not use Pictorial Marks or Abstract Marks as standalone logos for new brands that lack established brand equity." ;
+    oc:hasRationale "Standalone symbols require existing audience recognition to be meaningful; without equity they communicate nothing." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b64573dd a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a logo type for a specific industry or brand category" ;
+    oc:directiveContent "Match logo type to brand context using the style selection matrix — Tech startups favor Minimalist/Abstract, Law firms favor Wordmark/Emblem, Fashion favors Wordmark/Luxury, etc." ;
+    oc:hasRationale "Industry conventions shape audience expectations; aligning logo type with brand sector accelerates recognition and trust." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_eb3060bf a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating or finalizing any logo design" ;
+    oc:directiveContent "Every logo must pass the scalability checklist: recognizable at 16x16px, clear at business card size, works in single color, maintains clarity in black/white, and has no tiny details lost when scaled down." ;
+    oc:hasRationale "Logos are used across vastly different sizes and contexts (favicon to billboard); failure at small scale destroys brand utility." ;
+    oc:severityLevel "CRITICAL" .
+

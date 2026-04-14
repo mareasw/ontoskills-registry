@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_visual_identity a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "visual-identity" ;
+    skos:broader "Brand identity framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "63f0cfc5d95403d8e12aca4d839cc28471515574d9a431334bfbb96c15407c31" ;
+    oc:differentia "Defines core visual elements (logo, color palette, typography) and usage guidelines to ensure consistent brand representation across all materials" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:AccessibilityViolation,
+        oc:InconsistentBrandApplication ;
+    oc:hasArgumentHint "brand-context or existing-brand-assets" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_2864b212,
+        oc:kn_6bd17d9d,
+        oc:kn_9c1ce693,
+        oc:kn_af4b2122,
+        oc:kn_be28ace9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandStrategyDefined ;
+    oc:resolvesIntent "audit visual consistency across materials",
+        "create visual brand guidelines",
+        "define brand visual identity",
+        "establish logo usage rules",
+        "specify brand color palette and typography" ;
+    oc:yieldsState oc:VisualIdentityDefined .
+
+oc:kn_2864b212 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining or applying any brand color palette, especially text-on-background combinations" ;
+    oc:directiveContent "Text contrast ratio must meet 4.5:1 minimum (WCAG AA); button and interactive elements must also be WCAG AA compliant." ;
+    oc:hasRationale "Failing accessibility standards excludes users with visual impairments and creates legal/compliance risk" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6bd17d9d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or auditing any brand visual identity" ;
+    oc:directiveContent "A complete visual identity system must define three core elements: logo (with primary, secondary, icon variants plus clear space and minimum size), a structured color palette (primary 1-2, secondary 2-3, neutrals 3-4), and typography hierarchy (H1 through caption with font, weight, and size specs)." ;
+    oc:hasRationale "These three pillars form the minimum viable visual identity — omitting any creates inconsistency that compounds as the brand scales" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9c1ce693 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When placing or rendering the brand logo in any medium" ;
+    oc:directiveContent "Never stretch, distort, recolor (unless approved), add effects to, or place the logo on busy backgrounds." ;
+    oc:hasRationale "Logo misuse degrades brand recognition and undermines the entire visual identity system" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_af4b2122 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before delivering or publishing any branded asset" ;
+    oc:directiveContent "Before finalizing any branded material, verify: correct logo version for context, sufficient clear space, legibility at used size, correct color for background; colors from approved palette with accessible contrast; correct fonts with appropriate hierarchy and readable sizes." ;
+    oc:hasRationale "A quick visual checklist catches the most common brand inconsistencies before they reach production" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_be28ace9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining a new visual identity or restructuring an existing one" ;
+    oc:directiveContent "Limit primary colors to 1-2, secondary to 2-3, and neutrals to 3-4. Typography hierarchy should have no more than 4 levels (H1, H2, Body, Caption)." ;
+    oc:hasRationale "Constraining palette and type scale prevents visual chaos while providing enough variety for expressive, flexible design" ;
+    oc:severityLevel "MEDIUM" .
+

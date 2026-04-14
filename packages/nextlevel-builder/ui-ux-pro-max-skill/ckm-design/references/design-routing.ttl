@@ -1,0 +1,67 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_design_routing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "design-routing" ;
+    skos:broader "routing guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "32914a913f4f20d4cb1e497e5a87cfc04b71af4e6d75db72ecf50e4f060201c8" ;
+    oc:differentia "maps design tasks to the correct sub-skill within the CKM design ecosystem based on task type, question patterns, and multi-skill workflow orchestration" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:AmbiguousRequest,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "design task description or question" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_0d9f3696,
+        oc:kn_977f1d7e,
+        oc:kn_990c0c9a,
+        oc:kn_dd346674,
+        oc:kn_e748c0e1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "determine which design skill to use for a given task",
+        "orchestrate multi-skill design workflows",
+        "resolve design question to appropriate skill",
+        "route design task to correct sub-skill" ;
+    oc:yieldsState oc:SkillRouteResolved .
+
+oc:kn_0d9f3696 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up new projects or migrating design systems" ;
+    oc:directiveContent "Design skills follow a strict dependency chain: brand → design-system → ui-styling → Application Code. Brand defines identity (colors, typography, voice), design-system formalizes tokens from brand decisions, and ui-styling implements tokens as components." ;
+    oc:hasRationale "Violating this order (e.g., implementing components before tokens exist, or creating tokens before brand colors are defined) leads to inconsistency and rework." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_977f1d7e a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "This routing skill is a pure decision/guide layer with no side effects. It does not execute scripts, modify files, or generate artifacts — it only directs the agent to activate the correct sub-skill." ;
+    oc:hasRationale "Understanding that this skill is stateless and non-destructive means it can be safely invoked at any point without risk of unintended changes." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_990c0c9a a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When receiving any design-related request" ;
+    oc:directiveContent "Route tasks by matching user intent to the appropriate skill: brand for identity/voice/assets, design-system for token architecture/specs, ui-styling for component implementation, logo-design for AI logo generation, cip-design for corporate identity deliverables, slides for presentations, banner-design for ad/social/web banners, icon-design for SVG icon generation." ;
+    oc:hasRationale "Correct routing ensures the agent activates the right skill with its full reference library, scripts, and epistemic rules rather than attempting the task with insufficient context." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dd346674 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "When initiating any multi-skill workflow" ;
+    oc:directiveContent "Before activating a sub-skill, verify that its prerequisites are met: brand must be defined before design-system work; design-system tokens must exist before ui-styling implementation; logo must exist before cip-design mockup generation." ;
+    oc:hasRationale "Skipping prerequisite skills produces incomplete or incoherent results because downstream skills depend on upstream decisions and outputs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e748c0e1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the user's request spans multiple design concerns" ;
+    oc:directiveContent "Multi-skill workflows are common: use brand+design-system+ui-styling for full design system setup; logo-design+cip-design for brand identity packages; logo-design+cip-design+slides for brand pitches; banner-design+brand for social media presence; icon-design+design-system for custom icon sets." ;
+    oc:hasRationale "Many real-world design tasks require coordination across skills; recognizing these patterns avoids fragmented or incomplete outputs." ;
+    oc:severityLevel "MEDIUM" .
+

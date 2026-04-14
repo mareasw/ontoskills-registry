@@ -1,0 +1,73 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_slides a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slides" ;
+    skos:broader "HTML presentation generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "5630d5daec947ff58ab1ac97c7a1ee77a21cf6f5dce5155535b65d291691979f" ;
+    oc:dependsOnSkill oc:skill_ckm_design ;
+    oc:differentia "produces strategic slide decks with Chart.js data visualization, design tokens, responsive layouts, and copywriting formula integration" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:ChartRenderError,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "presentation type and topic (e.g. \"pitch deck for SaaS startup\", \"sales presentation for enterprise software\")" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_927d7cda,
+        oc:kn_9aa0df23,
+        oc:kn_9e5c6f6e,
+        oc:kn_d1bf2379,
+        oc:kn_dcdb0c10 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DesignTokensLoaded ;
+    oc:resolvesIntent "build investor deck",
+        "create HTML presentation",
+        "create pitch deck",
+        "create sales presentation",
+        "create strategic slide deck",
+        "design data-driven slides" ;
+    oc:yieldsState oc:PresentationCreated .
+
+oc:kn_927d7cda a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding data visualizations to slides" ;
+    oc:directiveContent "Use Chart.js with responsive sizing (width: min(80%, 600px); height: clamp(200px, 40vh, 350px)) and disable aspect ratio maintenance for embedded charts." ;
+    oc:hasRationale "Fixed-size charts overflow on mobile and distort on different viewport ratios; responsive constraints ensure charts fit within slide bounds" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9aa0df23 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a presentation strategy before building slides" ;
+    oc:directiveContent "Match slide strategy to audience and context: use YC Seed/Series A for investors, Sales Pitch for prospects, QBR/All-Hands for internal updates, Conference Talk for public speaking." ;
+    oc:hasRationale "Strategy misalignment leads to wrong emotion arc, ineffective messaging, and lost audience engagement" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9e5c6f6e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building HTML slide markup using the template" ;
+    oc:directiveContent "Always wrap slide content in .slide-content div and use the 16:9 aspect ratio container. Never place content directly inside .slide without the inner wrapper." ;
+    oc:hasRationale "The .slide-content wrapper provides safe area constraints that prevent content overflow and maintain consistent padding across responsive breakpoints" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d1bf2379 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing copy for individual slides within a deck" ;
+    oc:directiveContent "Map copywriting formulas to slide intent: PAS for problem slides, FAB for feature slides, AIDA for CTAs, Cost of Inaction for urgency, Before-After-Bridge for transformation." ;
+    oc:hasRationale "Formula-driven copy increases persuasion and matches the emotional arc of the presentation strategy" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dcdb0c10 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "Always, when creating any presentation" ;
+    oc:directiveContent "Follow the 6-step workflow: parse presentation type → load creation guide → select layout patterns → apply copywriting formulas → use HTML template → apply strategy. Each step depends on the previous." ;
+    oc:hasRationale "Skipping steps produces incoherent decks that lack strategic narrative flow" ;
+    oc:severityLevel "MEDIUM" .
+

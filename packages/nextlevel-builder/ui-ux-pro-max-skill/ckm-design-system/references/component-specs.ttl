@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system_component_specs a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "component-specs" ;
+    skos:broader "Component specification reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "b265d979a741dd748d4e595e6898ae430faeef4f6d13d7a634fa6241b91d2da4" ;
+    oc:differentia "defines states, variants, sizes, anatomy, and spacing for core UI components (Button, Input, Card, Badge, Alert, Dialog, Table) within a design system" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system ;
+    oc:handlesFailure oc:InvalidTokenReference ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_33cf27f4,
+        oc:kn_399a7615,
+        oc:kn_647b62f4,
+        oc:kn_93c3f2d9,
+        oc:kn_dd811020,
+        oc:kn_f7a2b5f4 ;
+    oc:isUserInvocable false ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DesignTokensReady ;
+    oc:resolvesIntent "define button sizes variants and states for design system",
+        "define card badge alert dialog and table specifications",
+        "define input field variants and states for design system",
+        "look up component anatomy and spacing values",
+        "specify UI component variants and states" ;
+    oc:yieldsState oc:ComponentSpecsReady .
+
+oc:kn_33cf27f4 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining component variants for buttons, badges, inputs, or alerts" ;
+    oc:directiveContent "Component variants should be differentiated by semantic use case (primary, secondary, destructive, ghost) rather than purely visual properties, mapping each variant to a clear user action category." ;
+    oc:hasRationale "Semantic variant naming creates a shared language between design and development teams and ensures consistent application across the product" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_399a7615 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining sizes for buttons, inputs, or any form controls" ;
+    oc:directiveContent "Use the three-tier size system (sm/default/lg) with heights of 32px/40px/48px consistently across all interactive components to maintain vertical rhythm." ;
+    oc:hasRationale "Consistent sizing across component types ensures alignment in forms, toolbars, and mixed-component layouts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_647b62f4 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building UI with design system components" ;
+    oc:directiveContent "Do not create custom component variants outside the defined specification (e.g., a 'warning' button or an 'elevated' badge). Use the closest matching defined variant instead." ;
+    oc:hasRationale "Variant proliferation breaks design consistency and increases maintenance burden; extend the system deliberately rather than ad-hoc" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_93c3f2d9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing composite components like cards and dialogs" ;
+    oc:directiveContent "Define component anatomy with clearly delineated zones (header, content, footer) and consistent internal spacing, using the specified padding values for each zone." ;
+    oc:hasRationale "Structured anatomy ensures composable, predictable layouts and prevents spacing inconsistencies in nested component hierarchies" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dd811020 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying any interactive UI component" ;
+    oc:directiveContent "Every interactive component must define all six states: default, hover, active, focus, disabled, and loading where applicable. Missing states create inconsistent user experiences." ;
+    oc:hasRationale "Complete state coverage ensures predictable behavior across all user interaction patterns and accessibility requirements" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f7a2b5f4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building data tables with mixed content types" ;
+    oc:directiveContent "Table cell alignment should follow content-type conventions: text left-aligned, numbers right-aligned, status badges centered, actions right-aligned." ;
+    oc:hasRationale "Content-type-based alignment improves scanability and follows established data display conventions that users intuitively understand" ;
+    oc:severityLevel "LOW" .
+

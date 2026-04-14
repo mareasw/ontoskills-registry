@@ -1,0 +1,46 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_slides_create a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slides-create" ;
+    skos:broader "Skill orchestrator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "792d647a5d4f87d765cf417f7ac54dd0b2fc4d229cc23ea9df56282d4c1ee086" ;
+    oc:dependsOnSkill oc:skill_ckm_slides ;
+    oc:differentia "Delegates to the ckm-slides skill to generate persuasive HTML slide presentations using design tokens, Chart.js, and a slide knowledge base" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:hasArgumentHint "slide topic, content, or presentation description" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_3b795def,
+        oc:kn_d65189b8,
+        oc:kn_f6161926 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:resolvesIntent "create HTML slides",
+        "create persuasive slide decks",
+        "generate presentations" .
+
+oc:kn_3b795def a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "Whenever a presentation or slide deck is requested" ;
+    oc:directiveContent "Delegate all slide creation tasks to the ckm-slides skill rather than attempting to construct slides directly." ;
+    oc:hasRationale "The ckm-slides skill contains specialized knowledge about Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual styling that this sub-skill does not possess." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d65189b8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing slide content before delegation" ;
+    oc:directiveContent "Slides should leverage design tokens for visual consistency and Chart.js for data-driven charts when applicable." ;
+    oc:hasRationale "Design tokens ensure brand and visual consistency; Chart.js enables rich, interactive data visualizations within HTML slides." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f6161926 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executed successfully" ;
+    oc:directiveContent "This skill produces HTML slide files with embedded Chart.js visualizations and design-token-driven styling." ;
+    oc:hasRationale "Understanding the output artifact type helps downstream skills and agents consume or post-process the result correctly." .
+

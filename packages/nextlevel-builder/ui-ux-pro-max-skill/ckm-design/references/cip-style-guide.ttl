@@ -1,0 +1,65 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_cip_style_guide a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "cip-style-guide" ;
+    skos:broader "Design reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "f3e15408cd981e93804440c1159c12e02d001bc37a3945f455b3fc13729ed4e1" ;
+    oc:differentia "that defines 8 corporate identity print styles with color palettes, typography, materials, and finishes for brand-consistent design" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:hasArgumentHint "industry or style name (e.g., 'finance', 'luxury', 'tech')" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_20533599,
+        oc:kn_4df56f88,
+        oc:kn_543017c7,
+        oc:kn_9b63f55b,
+        oc:kn_e1400750 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DesignContextEstablished ;
+    oc:resolvesIntent "apply corporate style guide to design",
+        "choose color palette by industry",
+        "match brand identity to appropriate design style",
+        "select typography and finishes for print design" ;
+    oc:yieldsState oc:StyleGuideApplied .
+
+oc:kn_20533599 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When specifying print production finishes" ;
+    oc:directiveContent "Pair finishes with the style's material recommendations — matte for Corporate Minimal/Fresh Modern, gloss for Modern Tech/Bold Dynamic, foil/emboss for Luxury Premium/Soft Elegant, and uncoated/natural for Warm Organic." ;
+    oc:hasRationale "Finish selection completes the tactile brand experience and reinforces the visual direction established by color and typography." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_4df56f88 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning any corporate identity print design task" ;
+    oc:directiveContent "Match the design style to the target industry first — each of the 8 predefined styles (Corporate Minimal, Modern Tech, Luxury Premium, Classic Traditional, Warm Organic, Bold Dynamic, Fresh Modern, Soft Elegant) has canonical color palettes, typography, materials, and finishes." ;
+    oc:hasRationale "Industry-aligned style selection ensures brand credibility and audience resonance, preventing mismatched visual language." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_543017c7 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing typefaces for any corporate identity design" ;
+    oc:directiveContent "Typography must match the style's character: sans-serif for modern/minimal styles (Inter, Outfit), serif for traditional/luxury (Playfair, Garamond), and script only where explicitly specified (Soft Elegant, Warm Organic)." ;
+    oc:hasRationale "Typography is a primary carrier of brand personality; mismatched fonts undermine the intended style direction." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9b63f55b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting or justifying color choices beyond the canonical palettes" ;
+    oc:directiveContent "Leverage color psychology to reinforce messaging: Blue for trust/stability, Green for growth/nature, Gold for luxury/prestige, Red for energy/passion, Black for sophistication, White for clean/minimal." ;
+    oc:hasRationale "Color psychology provides evidence-based guidance for aligning visual tone with brand communication goals." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e1400750 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When applying color palettes from any of the 8 styles" ;
+    oc:directiveContent "Use the specified hex colors exactly as defined per style (e.g., Navy #0F172A for Corporate Minimal, Purple #6366F1 for Modern Tech) rather than approximations." ;
+    oc:hasRationale "Precise color values maintain brand consistency and reproducibility across print and digital media." ;
+    oc:severityLevel "MEDIUM" .
+

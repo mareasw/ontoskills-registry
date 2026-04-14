@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides_copywriting_formulas a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "copywriting-formulas" ;
+    skos:broader "Copywriting framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-slides" ;
+    oc:contentHash "03733d5916ab771834745550045b736deeb94a08226f2b200f7953009c35b219" ;
+    oc:differentia "provides 25 persuasive writing formulas mapped to slide types for strategic presentation copy" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides ;
+    oc:handlesFailure oc:EmotionConflict,
+        oc:FormulaMismatch ;
+    oc:hasArgumentHint "slide-type or emotional-goal (e.g., \"problem\", \"urgency\", \"cta\")" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_4fcf8f37,
+        oc:kn_76de78c6,
+        oc:kn_7b0dbd85,
+        oc:kn_8cf1ce2a,
+        oc:kn_f18965f2 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SlideTypeIdentified ;
+    oc:resolvesIntent "create compelling headlines",
+        "generate CTA and urgency copy",
+        "map emotions to slide copy patterns",
+        "select copywriting formula for slide type",
+        "write persuasive slide copy" ;
+    oc:yieldsState oc:PersuasiveCopyGenerated .
+
+oc:kn_4fcf8f37 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When planning copy for a full presentation deck" ;
+    oc:directiveContent "Sequence formulas across the deck following the emotion arc: curiosity (title) → frustration (problem) → fear (cost) → hope (solution) → confidence (features/traction) → trust (proof) → urgency (CTA)." ;
+    oc:hasRationale "Persuasive presentations follow an emotional journey; each slide's formula should escalate or transition the audience's emotional state toward the desired action." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_76de78c6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing copy for any slide in a presentation" ;
+    oc:directiveContent "Match copywriting formula to slide type and target emotion — use PAS for problem slides, FAB for features, AIDA for CTAs, Cost of Inaction for urgency." ;
+    oc:hasRationale "Each formula's rhetorical structure aligns with a specific persuasive intent; mismatching formula to slide type creates tonal dissonance and reduces conversion." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7b0dbd85 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing copy for individual slides" ;
+    oc:directiveContent "Never use more than one primary formula per slide — a single slide should have a single rhetorical purpose and emotional target." ;
+    oc:hasRationale "Mixing formulas on a single slide dilutes the persuasive signal and overwhelms the audience with competing rhetorical structures." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8cf1ce2a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When crafting headlines for title, hook, or section-divider slides" ;
+    oc:directiveContent "Use contrast patterns ('Old way is dead. Meet new way.') and power word formulas ('Stop [bad thing]', 'Get [result] in [timeframe]') for headline-level copy on title and hook slides." ;
+    oc:hasRationale "Contrast and power word patterns exploit cognitive bias toward novelty and loss aversion, increasing audience attention and recall." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f18965f2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating feature or product showcase slides" ;
+    oc:directiveContent "Avoid presenting features without mapping them to audience benefits via the FAB formula (Feature → Advantage → Benefit). Raw feature lists fail to persuade." ;
+    oc:hasRationale "Audiences buy benefits, not features; the FAB bridge converts technical capability into perceived personal value." ;
+    oc:severityLevel "HIGH" .
+

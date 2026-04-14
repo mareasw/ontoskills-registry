@@ -1,0 +1,67 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_brand_guideline_template a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "brand-guideline-template" ;
+    skos:broader "Brand documentation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "392db8cf10fef492221c15a86e68590074bf5716de1f2982f41c01fbe30567cc" ;
+    oc:differentia "provides a structured markdown template covering color palette, typography, logo usage, voice & tone, and imagery guidelines for comprehensive brand guideline creation" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:IncompleteBrandData,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "brand name or project" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_38770449,
+        oc:kn_3c39c07e,
+        oc:kn_590cffe5,
+        oc:kn_757e301c,
+        oc:kn_d629b686 ;
+    oc:isUserInvocable true ;
+    oc:nature "Template" ;
+    oc:requiresState oc:BrandIdentityDefined ;
+    oc:resolvesIntent "create brand guidelines",
+        "document brand identity standards",
+        "establish brand consistency rules",
+        "generate brand style guide" ;
+    oc:yieldsState oc:BrandGuidelinesCreated .
+
+oc:kn_38770449 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any brand guidelines document" ;
+    oc:directiveContent "Structure brand guidelines with a Quick Reference summary at the top so stakeholders can extract primary color, secondary color, primary font, and voice traits without reading the full document." ;
+    oc:hasRationale "Most consumers of brand guidelines need fast answers to common questions; a quick-reference header reduces friction and increases guideline adoption." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3c39c07e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When authoring the voice and tone section" ;
+    oc:directiveContent "Never omit the 'Voice Chart' (We Are / We Are Not) table and 'Prohibited Terms' list — these prevent ambiguous brand voice interpretation across teams." ;
+    oc:hasRationale "Without explicit boundaries on what the brand voice is NOT, content creators will drift toward inconsistent tone, especially in edge cases like error messages and support." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_590cffe5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining typography rules in the brand guidelines" ;
+    oc:directiveContent "The type scale must specify desktop AND mobile sizes separately, with line-height values for each element, not just a single responsive size." ;
+    oc:hasRationale "Single-size specs lead to poor mobile readability; explicit line-heights ensure consistent vertical rhythm across viewports." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_757e301c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When specifying logo usage rules in brand guidelines" ;
+    oc:directiveContent "Include minimum logo size constraints for both digital (80px) and print (25mm) contexts, plus clear space rules based on logo mark height." ;
+    oc:hasRationale "Undersized or poorly spaced logos lose legibility and diminish brand recognition across media." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d629b686 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining the color palette section of brand guidelines" ;
+    oc:directiveContent "Brand guidelines must include accessibility compliance data — text/background contrast ratios and WCAG level — for every color pairing in the palette." ;
+    oc:hasRationale "Without accessibility data, teams may inadvertently create non-compliant designs that exclude users with visual impairments and expose the organization to legal risk." ;
+    oc:severityLevel "HIGH" .
+

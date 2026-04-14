@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides_slide_strategies a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slide-strategies" ;
+    skos:broader "Presentation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-slides" ;
+    oc:contentHash "27ee3e53ffa0ea679ec83ebeacb0bcfbce498df57277e99f574b9c139dc44286" ;
+    oc:differentia "provides 15 proven deck structures with emotion arcs for strategic slide selection based on audience and goal" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "presentation goal or context (e.g., \"investor pitch\", \"sales demo\", \"board meeting\")" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_16b68c63,
+        oc:kn_547e2b5b,
+        oc:kn_7986e3ce,
+        oc:kn_9927c8e3,
+        oc:kn_f17b37a2 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "choose presentation format by audience",
+        "create investor pitch deck",
+        "create sales pitch structure",
+        "design emotion arcs for slides",
+        "select slide strategy for presentation",
+        "structure a pitch deck" ;
+    oc:yieldsState oc:PresentationStructured,
+        oc:SlideStrategySelected .
+
+oc:kn_16b68c63 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When assembling slide content" ;
+    oc:directiveContent "Never create a flat, unstructured deck without a defined strategy. Avoid mixing structures from different strategies in a single deck." ;
+    oc:hasRationale "A deck without a coherent strategy and emotion arc becomes a disjointed collection of slides that fails to persuade or engage." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_547e2b5b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring slide content and sequencing" ;
+    oc:directiveContent "Design slides with intentional emotion arcs rather than flat information delivery. Each strategy has a prescribed emotional journey (e.g., curiosity→frustration→hope→confidence→urgency)." ;
+    oc:hasRationale "Emotion arcs create psychological momentum that drives the audience toward the desired action, transforming information into persuasion." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7986e3ce a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When the goal is to shift audience perspective or drive change" ;
+    oc:directiveContent "Use the Duarte Sparkline pattern (alternating What Is / What Could Be) for transformation-focused presentations. Place pattern breaks at 1/3 and 2/3 positions to create engagement peaks." ;
+    oc:hasRationale "The alternating pain/hope cadence prevents audience fatigue and builds progressive tension toward a compelling resolution." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9927c8e3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning any presentation design" ;
+    oc:directiveContent "Match your slide strategy to your goal and audience before choosing a structure. Use the strategy selection matrix to find the right fit based on slide count, goal, and audience type." ;
+    oc:hasRationale "Choosing the wrong structure for the audience (e.g., a 40-slide workshop format for a time-pressed investor) guarantees poor reception regardless of content quality." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f17b37a2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating fundraising or sales presentations" ;
+    oc:directiveContent "Keep investor pitch decks to 10-12 slides (YC) or exactly 10 slides (Kawasaki). Sales pitches should be 7-10 slides, product demos 5-8." ;
+    oc:hasRationale "Investors and buyers have limited attention; concise decks force clarity of thought and respect the audience's time." ;
+    oc:severityLevel "MEDIUM" .
+

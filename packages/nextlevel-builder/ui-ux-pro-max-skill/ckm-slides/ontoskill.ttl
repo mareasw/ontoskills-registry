@@ -1,0 +1,96 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_slides a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-slides" ;
+    skos:broader "HTML presentation generator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-slides" ;
+    oc:contentHash "6eabc2fdadd1e78b1420927d8d90e3351ed967f00d4518c20c25020e2a7764e0" ;
+    oc:dependsOnSkill oc:skill_ckm_design_system ;
+    oc:differentia "produces strategic slide decks with Chart.js data visualization, design tokens, copywriting formulas, and context-specific layout strategies" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "[topic] [slide-count]" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Create strategic HTML presentations with Chart.js, design tokens, responsive layouts, copywriting formulas, and contextual slide strategies." ;
+    oc:hasName "ckm-slides" ;
+    oc:hasPackageName "ckm-slides" ;
+    oc:hasRequirement oc:req_113dfdd7,
+        oc:req_3c2997c6,
+        oc:req_443c3fe9,
+        oc:req_ff15e56f ;
+    oc:impartsKnowledge oc:kn_235ccb47,
+        oc:kn_2ae64b57,
+        oc:kn_2bd2414c,
+        oc:kn_471665f1,
+        oc:kn_923086c6,
+        oc:kn_ad6414cb ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build data-driven presentations",
+        "create marketing slides with copywriting",
+        "create pitch deck",
+        "create presentation slides",
+        "design HTML slides with charts" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_235ccb47 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When creating persuasive or keynote-style presentations" ;
+    oc:directiveContent "Use the Duarte Sparkline pattern for transformation narratives: alternate between 'What Is' (current pain) and 'What Could Be' (better future), with pattern breaks at 1/3 and 2/3 positions for engagement peaks." ;
+    oc:hasRationale "The alternating tension-release pattern sustains audience engagement throughout longer presentations, proven by Nancy Duarte's research on effective presentations." .
+
+oc:kn_2ae64b57 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing slide copy and headlines" ;
+    oc:directiveContent "Map copywriting formulas to slide types: PAS for problem slides, AIDA for CTAs, FAB for features, Cost of Inaction for urgency, BAB for transformations." ;
+    oc:hasRationale "Formula-driven copy produces more persuasive, structured content that matches the emotional goal of each slide position in the deck arc." .
+
+oc:kn_2bd2414c a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When regenerating or iterating on presentations" ;
+    oc:directiveContent "Re-running slide creation on the same topic will produce a different HTML file each time unless the same strategy, layout assignments, and copy formulas are explicitly specified." ;
+    oc:hasRationale "Slide generation involves creative choices at multiple decision points (layout, formula, color, copy). Explicit parameterization is needed for reproducibility." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_471665f1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When starting any new presentation creation" ;
+    oc:directiveContent "Select deck strategy (YC Seed, Sales Pitch, Product Demo, etc.) before creating individual slides, as the strategy dictates the emotion arc, slide count, and narrative structure." ;
+    oc:hasRationale "Strategy-first design ensures the deck follows a proven narrative arc (e.g., curiosity→frustration→hope→confidence→trust→urgency) rather than assembling disconnected slides." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_923086c6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing individual slide layouts" ;
+    oc:directiveContent "Do not create slides with more than 6 bullet points, wall-of-text paragraphs, or unlabeled charts. Use feature grids (3-col), metric dashboards (4-col max), or big-number heroes instead." ;
+    oc:hasRationale "Dense content slides overwhelm audiences. The layout-patterns reference provides 25 purpose-built layouts optimized for specific content types with appropriate animation classes." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ad6414cb a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any slide HTML structure" ;
+    oc:directiveContent "Always wrap slide content in .slide-content divs and use the 16:9 aspect ratio container with letterboxing for desktop viewports." ;
+    oc:hasRationale "The .slide-content wrapper constrains content within the safe area and enables proper flex centering. The 16:9 locked container ensures consistent presentation proportions across display devices." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_113dfdd7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Chart.js data visualization library" .
+
+oc:req_3c2997c6 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "HTML/CSS responsive design" .
+
+oc:req_443c3fe9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Web browser for preview" .
+
+oc:req_ff15e56f a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "CSS custom properties / design tokens" .
+

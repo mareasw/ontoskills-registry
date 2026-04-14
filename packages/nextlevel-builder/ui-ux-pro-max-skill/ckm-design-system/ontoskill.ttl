@@ -1,0 +1,143 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-design-system" ;
+    skos:broader "Design system architecture" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "b17ef19c5a3c53e55ec7a95fcd48db06227e704a23b21f8af2b18be8824ead7b" ;
+    oc:differentia "Implements a three-layer token hierarchy (primitive→semantic→component) with component specifications, Tailwind integration, and a strategic HTML slide generation system using BM25 search, contextual decision CSVs, and Duarte Sparkline emotion arcs for brand-compliant presentations" ;
+    oc:extends oc:skill_ckm_brand,
+        oc:skill_ckm_ui_styling ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:TokenValidationError ;
+    oc:hasAlias "design-system",
+        "design-tokens",
+        "slides",
+        "tokens" ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "[component or token]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations." ;
+    oc:hasName "ckm-design-system" ;
+    oc:hasPackageName "ckm-design-system" ;
+    oc:hasPayload oc:payload_b17ef19c5a3c53e5 ;
+    oc:hasRequirement oc:req_0132890e,
+        oc:req_101af50d,
+        oc:req_28db17f9,
+        oc:req_634c848f,
+        oc:req_a34d77ef,
+        oc:req_f451ae64 ;
+    oc:impartsKnowledge oc:kn_16f8195a,
+        oc:kn_2b66da04,
+        oc:kn_414ae45c,
+        oc:kn_56e6e753,
+        oc:kn_84bd848b,
+        oc:kn_891999d9,
+        oc:kn_91ae10b0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NodeInstalled,
+        oc:PythonInstalled ;
+    oc:resolvesIntent "build systematic design-to-code handoff",
+        "configure Tailwind theme from design tokens",
+        "create brand-compliant slide presentations",
+        "create design tokens",
+        "define component specifications with states and variants",
+        "generate CSS variable systems",
+        "search slide strategies and layouts",
+        "validate token compliance in code and slides" ;
+    oc:yieldsState oc:ComponentSpecsDefined,
+        oc:DesignTokensCreated,
+        oc:SlideDeckGenerated,
+        oc:TokenComplianceValidated .
+
+oc:kn_16f8195a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating or editing HTML slide presentations" ;
+    oc:directiveContent "All slides must import design-tokens.css as the single source of truth and use var() exclusively for colors, fonts, spacing, and all visual properties." ;
+    oc:hasRationale "Single source of truth ensures brand consistency across all slides and enables global style changes by updating the token file." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_2b66da04 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding charts or data visualizations to slide presentations" ;
+    oc:directiveContent "Use Chart.js for data visualizations in slides, not CSS-only bar charts. Include the Chart.js CDN script and configure via the slide-charts.csv reference." ;
+    oc:hasRationale "Chart.js provides interactive, responsive, and accessible charts that integrate with the design token system and support animation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_414ae45c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or modifying design tokens" ;
+    oc:directiveContent "Follow the three-layer token hierarchy: Primitive (raw values) → Semantic (purpose aliases) → Component (component-specific). Each layer references the layer above it, never skips layers." ;
+    oc:hasRationale "Layer separation enables theme switching at the semantic layer and per-component customization at the component layer without touching foundational values." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_56e6e753 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any CSS, HTML, or component code that uses the design system" ;
+    oc:directiveContent "Never use hardcoded hex values, font names, or spacing values in components or slides. Always reference design tokens via CSS variables (var(--token-name))." ;
+    oc:hasRationale "Hardcoded values bypass the three-layer token architecture, breaking theme switching, brand consistency, and making systematic updates impossible across the codebase." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_84bd848b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining color tokens for Tailwind integration" ;
+    oc:directiveContent "Use HSL format (space-separated values) for color tokens to enable Tailwind opacity modifiers like bg-primary/50." ;
+    oc:hasRationale "HSL format without the function wrapper allows CSS to append opacity values, enabling utility classes like bg-primary/50 that output hsl(217 91% 60% / 0.5)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_891999d9 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When creating strategic presentations or pitch decks" ;
+    oc:directiveContent "Use the contextual decision flow for slide creation: parse goal → query slide-strategies.csv for strategy + emotion arcs → query layout-logic/typography/color-logic/backgrounds CSVs per slide → generate HTML with tokens → validate with slide-token-validator.py." ;
+    oc:hasRationale "The CSV-driven decision system ensures each slide follows proven frameworks (YC, Kawasaki, Duarte), matches emotion arcs, and maintains visual variety through pattern breaking at 1/3 and 2/3 positions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_91ae10b0 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "After generating tokens or slides, or when auditing existing code for design system compliance" ;
+    oc:directiveContent "Run validate-tokens.cjs against source directories to detect hardcoded values in code, and slide-token-validator.py for HTML slides to ensure token compliance." ;
+    oc:hasRationale "Automated validation catches token bypass early before it propagates across components or slides, maintaining system integrity." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_b17ef19c5a3c53e5 a oc:ExecutionPayload ;
+    oc:code "node scripts/generate-tokens.cjs --config tokens.json -o tokens.css" ;
+    oc:executor "node" ;
+    oc:timeout 30000 .
+
+oc:req_0132890e a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Tailwind CSS configuration" .
+
+oc:req_101af50d a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "Pexels/Unsplash API (for backgrounds)" .
+
+oc:req_28db17f9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Chart.js CDN" .
+
+oc:req_634c848f a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "CSS Custom Properties" .
+
+oc:req_a34d77ef a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3" .
+
+oc:req_f451ae64 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Node.js" .
+

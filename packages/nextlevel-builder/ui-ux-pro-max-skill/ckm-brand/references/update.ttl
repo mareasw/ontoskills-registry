@@ -1,0 +1,83 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_update a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "update" ;
+    skos:broader "Brand style synchronization command" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "537cb55ebe260e1de127bd6288b19d8d7b15b6c893545442a58b739cbd342b37" ;
+    oc:differentia "that updates brand colors, typography, and mood across guidelines, design tokens, and CSS variables in a single coordinated workflow" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:FileWriteError,
+        oc:InvalidColorInput,
+        oc:SyncScriptFailed ;
+    oc:hasAllowedTool "AskUserQuestion",
+        "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "theme name or preset (e.g., \"Ocean Professional\", \"midnight purple\") or leave empty for interactive mode" ;
+    oc:hasCategory "document" ;
+    oc:hasPayload oc:payload_537cb55ebe260e1d ;
+    oc:impartsKnowledge oc:kn_3c148fe9,
+        oc:kn_4d507981,
+        oc:kn_cce9ada4,
+        oc:kn_e485bdfa,
+        oc:kn_f7bdec20 ;
+    oc:isUserInvocable true ;
+    oc:nature "Command" ;
+    oc:requiresState oc:BrandGuidelinesExist,
+        oc:DesignTokensConfigured ;
+    oc:resolvesIntent "apply brand color preset",
+        "change brand theme",
+        "sync brand style to design system",
+        "update brand colors",
+        "update brand typography and mood" ;
+    oc:yieldsState oc:BrandColorsUpdated,
+        oc:CSSVariablesRegenerated,
+        oc:DesignTokensSynced .
+
+oc:kn_3c148fe9 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the command is invoked repeatedly with the same arguments" ;
+    oc:directiveContent "This command is idempotent — running it multiple times with the same theme produces identical output files." ;
+    oc:hasRationale "The sync script regenerates tokens and CSS from scratch each time, ensuring deterministic output regardless of prior state." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4d507981 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user argument matches a known color preset" ;
+    oc:directiveContent "If the user provides a preset name (e.g., 'midnight purple', 'ocean professional'), skip interactive collection and apply the preset's predefined color values directly." ;
+    oc:hasRationale "Presets reduce friction for common brand directions and ensure well-balanced color harmonies without trial-and-error." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cce9ada4 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing the brand update and sync" ;
+    oc:directiveContent "Run inject-brand-context.cjs --json and grep CSS variables to confirm all three output files reflect the new brand values." ;
+    oc:hasRationale "Verification catches sync script failures and ensures the design system actually consumed the new values." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e485bdfa a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing the brand update command" ;
+    oc:directiveContent "Verify that docs/brand-guidelines.md, assets/design-tokens.json, and assets/design-tokens.css all exist before starting the update workflow." ;
+    oc:hasRationale "The sync script depends on these files being present; missing files will cause silent failures or incomplete sync." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f7bdec20 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When updating any brand style property" ;
+    oc:directiveContent "Always sync all three files (brand-guidelines.md, design-tokens.json, design-tokens.css) together — never update just one file alone." ;
+    oc:hasRationale "Partial updates cause inconsistency between human-readable docs, token source of truth, and CSS variables, leading to visual drift across the design system." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:payload_537cb55ebe260e1d a oc:ExecutionPayload ;
+    oc:code "node .claude/skills/brand/scripts/sync-brand-to-tokens.cjs" ;
+    oc:executor "node" ;
+    oc:timeout 30000 .
+

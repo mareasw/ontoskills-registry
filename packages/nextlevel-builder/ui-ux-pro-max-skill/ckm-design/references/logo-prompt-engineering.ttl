@@ -1,0 +1,82 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_logo_prompt_engineering a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "logo-prompt-engineering" ;
+    skos:broader "Prompt engineering methodology" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "e50f55bf323263eb27b4cd4c5172383a787fb894581d5d2befb3f6e0180b253e" ;
+    oc:differentia "specialized for generating professional logo designs via AI image generators, providing style-specific keyword vocabularies, industry templates, negative prompts, and technical requirement patterns" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "brand/industry name, desired style, color palette" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_2aa8e13b,
+        oc:kn_509dd549,
+        oc:kn_8099d9e2,
+        oc:kn_b415ae9b,
+        oc:kn_c5eb4e98,
+        oc:kn_ce1cbc37,
+        oc:kn_ea59c3b6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandContextAvailable ;
+    oc:resolvesIntent "build logo design briefs for AI",
+        "create AI logo designs",
+        "engineer prompts for logo generation",
+        "generate logo prompts" ;
+    oc:yieldsState oc:LogoPromptGenerated .
+
+oc:kn_2aa8e13b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a logo includes both symbol and text elements" ;
+    oc:directiveContent "Generate the brand mark (icon/symbol) separately from text/wordmark, as AI image generators struggle with accurate text rendering in logos." ;
+    oc:hasRationale "AI generators produce garbled or inconsistent text, so separating mark from wordmark yields better results that can be composed later." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_509dd549 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before every AI logo generation request" ;
+    oc:directiveContent "Before submitting a logo prompt, verify: background is specified as 'plain white', aspect ratio is stated, 'vector-style illustration' is included, and negative prompts are appended." ;
+    oc:hasRationale "These four elements are the most commonly omitted yet most impactful for producing usable logo outputs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8099d9e2 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When building any logo generation prompt from scratch" ;
+    oc:directiveContent "Use the structured prompt template: [Visual description] → [Style keywords] → [Color palette] → [Technical specs], adapting the 6 style vocabularies (Minimalist, Vintage, Luxury, Modern/Tech, Playful, Organic) and 5 industry templates (Tech, Healthcare, Restaurant, Fashion, Eco) as starting points." ;
+    oc:hasRationale "A structured approach ensures all critical dimensions (visual, stylistic, chromatic, technical) are covered and produces more consistent, professional results." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b415ae9b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Every logo prompt submission" ;
+    oc:directiveContent "Always include negative prompts to exclude photorealistic output, stock image aesthetics, busy backgrounds, watermarks, and blurry/distorted results." ;
+    oc:hasRationale "Negative prompts prevent common AI artifacts that make generated logos unusable for professional branding." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c5eb4e98 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating any AI logo prompt" ;
+    oc:directiveContent "Never request photorealistic or 3D rendered logos from AI generators; always specify 'vector-style illustration' to ensure clean, scalable results." ;
+    oc:hasRationale "AI image generators default toward photorealism which produces logos that cannot be scaled or used as actual brand marks." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ce1cbc37 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When crafting logo generation prompts" ;
+    oc:directiveContent "Avoid overly detailed prompts for logos; request simplicity explicitly with keywords like 'simple', 'minimal', 'clean lines' to counteract AI's tendency toward complexity." ;
+    oc:hasRationale "AI generators tend to add complexity when given detailed descriptions, producing cluttered results unsuitable for logo use." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ea59c3b6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing any logo brief or prompt" ;
+    oc:directiveContent "Always include technical requirements in the prompt: vector-style, scalable, works in single color, clear silhouette, works on light and dark backgrounds, specify aspect ratio (1:1 or horizontal)." ;
+    oc:hasRationale "Professional logos must be versatile across sizes, backgrounds, and color constraints; embedding these in the prompt guides the AI toward production-ready output." ;
+    oc:severityLevel "MEDIUM" .
+

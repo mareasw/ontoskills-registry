@@ -1,0 +1,71 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_logo_usage_rules a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "logo-usage-rules" ;
+    skos:broader "Brand guideline reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "044c5ddf30cfe0eea047451cfce6ea654939198ffdd8968a19161c97066a5a26" ;
+    oc:differentia "Codifies logo variants, minimum sizes, clear space, color rules, and co-branding rules for consistent logo implementation across all media" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:hasArgumentHint "context or medium (e.g., 'website header', 'print letterhead', 'social media')" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_c18e77bd,
+        oc:kn_cf471cfd,
+        oc:kn_dfae6fc0,
+        oc:kn_e357881f,
+        oc:kn_e6836419,
+        oc:kn_fd67ac89 ;
+    oc:isUserInvocable false ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "apply logo correctly",
+        "choose logo variant for context",
+        "co-brand with partner logos",
+        "validate logo placement" .
+
+oc:kn_c18e77bd a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When sizing the logo for digital or print placement" ;
+    oc:directiveContent "Digital full logo minimum width is 120px; icon-only minimum is 24px (favicon) or 32px (UI). Print full logo minimum is 35mm; icon-only minimum is 10mm." ;
+    oc:hasRationale "Sizes below these thresholds cause illegibility and degrade brand perception." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cf471cfd a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When placing partner logos alongside the brand logo" ;
+    oc:directiveContent "For co-branding, give both logos equal visual weight (same height), use adequate separation or a divider, and keep each in its approved colors." ;
+    oc:hasRationale "Equal treatment of both logos preserves brand equity and signals professional partnership." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dfae6fc0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When positioning the logo in any layout" ;
+    oc:directiveContent "Maintain clear space around the logo equal to the height of the logo mark (icon portion) on all four sides." ;
+    oc:hasRationale "Adequate clear space preserves legibility and visual prominence." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e357881f a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any logo placement in production" ;
+    oc:directiveContent "Before using the logo, verify correct version, check background compatibility, ensure minimum size, confirm clear space, and review against these guidelines." ;
+    oc:hasRationale "Systematic pre-flight verification prevents brand guideline violations from reaching publication." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e6836419 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing which color variant of the logo to use" ;
+    oc:directiveContent "Select the appropriate color variant based on background: full-color on light backgrounds, reversed (white) on dark backgrounds, monochrome when color is not possible." ;
+    oc:hasRationale "Correct variant selection ensures sufficient contrast and maintains brand consistency across diverse placements." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fd67ac89 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When placing any logo variant in any medium" ;
+    oc:directiveContent "Never stretch, compress, rotate, recolor, apply gradients/transparency/shadows to, crop, or add strokes/outlines to the logo." ;
+    oc:hasRationale "These distortions degrade brand integrity and violate the visual identity system." ;
+    oc:severityLevel "CRITICAL" .
+

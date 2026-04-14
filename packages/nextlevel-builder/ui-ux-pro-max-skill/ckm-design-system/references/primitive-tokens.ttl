@@ -1,0 +1,64 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system_primitive_tokens a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "primitive-tokens" ;
+    skos:broader "Design token reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "91e6caa12646c08c8aadf8e09399aed65760a25c8d80595936d81a9131118fc3" ;
+    oc:differentia "defines raw primitive values (colors, spacing, typography, radius, shadows, motion, z-index) as CSS custom properties forming the foundational layer of a design system" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_0b543e38,
+        oc:kn_69ec0f01,
+        oc:kn_75a6c745,
+        oc:kn_84c26b80,
+        oc:kn_9e1fbaf4 ;
+    oc:isUserInvocable false ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "define primitive design tokens",
+        "establish color scales for a design system",
+        "reference raw design values for UI components",
+        "set spacing and typography scales" ;
+    oc:yieldsState oc:PrimitiveTokensAvailable .
+
+oc:kn_0b543e38 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When positioning overlay elements, modals, dropdowns, or tooltips" ;
+    oc:directiveContent "Use semantic z-index tokens (dropdown: 1000, sticky: 1100, modal: 1200, popover: 1300, tooltip: 1400) rather than arbitrary z-index values to prevent stacking context conflicts." ;
+    oc:hasRationale "Arbitrary z-index values lead to z-index wars where elements unpredictably overlap; the semantic scale guarantees correct visual stacking order." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_69ec0f01 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building UI components that reference design values" ;
+    oc:directiveContent "Primitive tokens must never be used directly in component styles; they should always be consumed through semantic tokens to maintain abstraction layers." ;
+    oc:hasRationale "Direct primitive usage breaks the three-layer token architecture (primitive→semantic→component), making theme changes and maintenance extremely costly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_75a6c745 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining CSS transitions or animation timings" ;
+    oc:directiveContent "Animation durations should use the defined scale (75ms–1000ms). Use duration-fast (150ms) for micro-interactions, duration-normal (200ms) for standard transitions, and duration-slow (300ms) for emphasis." ;
+    oc:hasRationale "Consistent motion timing creates a cohesive feel; too-fast animations feel jarring, too-slow ones feel sluggish." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_84c26b80 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When assigning colors to alerts, badges, form validation states, or notifications" ;
+    oc:directiveContent "Use status colors (green/yellow/red/blue) consistently for semantic meaning: green for success, yellow for warning, red for error, blue for informational." ;
+    oc:hasRationale "Consistent status-color mapping ensures accessibility and meets user expectations for semantic color meaning across the interface." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9e1fbaf4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining layout spacing, padding, margins, or gaps" ;
+    oc:directiveContent "The spacing scale is built on a 4px base unit system. All spacing values must align to this grid (or 2px half-steps) to maintain visual rhythm." ;
+    oc:hasRationale "Consistent spacing rhythm creates visual harmony and prevents the 'slightly off' feeling from arbitrary pixel values." ;
+    oc:severityLevel "MEDIUM" .
+

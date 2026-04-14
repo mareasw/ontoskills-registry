@@ -1,0 +1,93 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_shadcn_theming a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "shadcn-theming" ;
+    skos:broader "UI theming configuration guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "d17d641474221123ff0e0288043ca2f2dab3ac96908a19eed28d82f9e58865ed" ;
+    oc:differentia "configures CSS variable-based dark mode, color customization, and component variant overrides for shadcn/ui components" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "theme configuration target (e.g., 'dark-mode', 'colors', 'variants', 'radius')" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_3bb959c2,
+        oc:kn_3e1fab9c,
+        oc:kn_676bab57,
+        oc:kn_68d96f2a,
+        oc:kn_924f0fbe,
+        oc:kn_9f94db5a,
+        oc:kn_c57c6535,
+        oc:kn_ed8bfe7f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "add multiple theme variants to shadcn/ui",
+        "configure dark mode for shadcn/ui",
+        "customize component variants in shadcn/ui",
+        "customize shadcn/ui theme colors",
+        "set up CSS variable theming system for Tailwind and shadcn" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_3bb959c2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When customizing shadcn/ui component appearance" ;
+    oc:directiveContent "Use className prop overrides for one-off styling and create custom cva variants for repeated patterns across multiple components." ;
+    oc:hasRationale "Inline className overrides scatter styling logic; extracting into named variants centralizes design decisions and ensures consistency." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3e1fab9c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When adding new theme colors or customizing existing ones" ;
+    oc:directiveContent "Pair every background color variable with a corresponding foreground variable (e.g., --primary + --primary-foreground) to ensure text readability." ;
+    oc:hasRationale "Unpaired foreground colors lead to inaccessible contrast ratios, especially when switching between light and dark modes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_676bab57 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before deploying any theme modification" ;
+    oc:directiveContent "Verify both light and dark mode rendering after any CSS variable change, checking WCAG AA contrast compliance." ;
+    oc:hasRationale "Color changes that look fine in one mode may fail contrast requirements in the other, creating accessibility violations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_68d96f2a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When naming or customizing CSS variable tokens" ;
+    oc:directiveContent "Never use color names like 'red' or 'gray' in semantic tokens; use purpose-based names like 'destructive' and 'muted' instead." ;
+    oc:hasRationale "Semantic naming decouples color from purpose, making theme swaps and multi-theme support coherent and maintainable." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_924f0fbe a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing globals.css theme variables" ;
+    oc:directiveContent "CSS variable color values must use raw HSL format (e.g., '222.2 47.4% 11.2%') without the hsl() wrapper function." ;
+    oc:hasRationale "The hsl() wrapper is applied in Tailwind config via hsl(var(--primary)), so raw HSL values enable opacity modifiers like hsl(var(--primary) / 0.5)." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9f94db5a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining any color in a shadcn/ui project" ;
+    oc:directiveContent "Always use CSS variables for colors rather than hardcoded values, enabling runtime theme switching without rebuilds." ;
+    oc:hasRationale "CSS variables allow dynamic theme changes (light/dark/custom) at runtime without modifying source code or rebuilding." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c57c6535 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When adjusting border radius customization" ;
+    oc:directiveContent "Changing --radius variable globally affects all components that use rounded-lg, rounded-md, or rounded-sm utilities." ;
+    oc:hasRationale "The radius variable cascades to all component border-radius calculations, so a single change has project-wide visual impact." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_ed8bfe7f a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When implementing multiple theme variants beyond light/dark" ;
+    oc:directiveContent "For multi-theme support, use data-theme attributes on container elements with scoped CSS variable overrides rather than global variable swapping." ;
+    oc:hasRationale "Data-attribute scoping enables simultaneous coexistence of different themes on the same page (e.g., sidebar vs main content)." ;
+    oc:severityLevel "MEDIUM" .
+

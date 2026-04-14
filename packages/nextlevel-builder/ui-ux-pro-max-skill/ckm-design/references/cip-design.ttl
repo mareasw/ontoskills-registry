@@ -1,0 +1,123 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_cip_design a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "cip-design" ;
+    skos:broader "Corporate Identity Program design system" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "47a3b2e445bc07185edd0cd24ba8a417229baf86717dcdff7c4e403adbceb3f1" ;
+    oc:differentia "generates branded mockups across 50+ deliverables with 20 design styles using Gemini AI image generation and renders HTML presentations" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:APIKeySet,
+        oc:FileNotFound ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "brand name, industry, logo file path, deliverable type(s), design style" ;
+    oc:hasCategory "design" ;
+    oc:hasPayload oc:payload_47a3b2e445bc0718 ;
+    oc:hasRequirement oc:req_04343e80,
+        oc:req_20b17ee8,
+        oc:req_36dd0bd4,
+        oc:req_3fcf652e,
+        oc:req_4c027ec8 ;
+    oc:impartsKnowledge oc:kn_101d9474,
+        oc:kn_216d984e,
+        oc:kn_6f92abd3,
+        oc:kn_974a01ba,
+        oc:kn_a92805ca,
+        oc:kn_cb2f04d3,
+        oc:kn_f5f35e57 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:APIKeySet,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "create brand collateral set",
+        "create corporate identity program",
+        "design business cards and stationery",
+        "generate branded mockups",
+        "render CIP presentation",
+        "search design styles and deliverables" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_101d9474 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When creating any corporate identity program" ;
+    oc:directiveContent "Always follow the 3-step workflow: (1) generate CIP brief with search.py, (2) generate mockups with generate.py using --logo, (3) render HTML presentation with render-html.py." ;
+    oc:hasRationale "Following the prescribed workflow ensures a coherent CIP from brief through mockups to presentation, avoiding missing deliverables or inconsistent branding." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_216d984e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating CIP mockups with generate.py" ;
+    oc:directiveContent "Use the --logo flag with a real logo file for mockup generation whenever possible. Only fall back to --no-logo-prompt when no logo exists. If no logo exists, generate one first using Logo Design." ;
+    oc:hasRationale "Logo-based generation uses image editing and produces more accurate branded results. AI-generated logo interpretations (--no-logo-prompt) are less faithful to the actual brand identity." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6f92abd3 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When rendering HTML presentations" ;
+    oc:directiveContent "The render-html.py script embeds all mockup images as base64 into a single HTML file, producing a portable but potentially large output file." ;
+    oc:hasRationale "Base64 embedding makes the presentation self-contained and shareable but can result in very large file sizes (10-100MB+) for full CIP sets with many deliverables." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_974a01ba a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When choosing the generation model via --model flag" ;
+    oc:directiveContent "Use the 'flash' model (gemini-2.5-flash-image) as default for speed and cost. Use 'pro' model (gemini-3-pro-image-preview) only when 4K text rendering quality is critical." ;
+    oc:hasRationale "Flash is fast and cost-effective for most deliverables. Pro is significantly slower and more expensive but provides superior text rendering at 4K resolution, which matters for stationery and small-format items." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a92805ca a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running any generate.py or search.py commands" ;
+    oc:directiveContent "Verify GEMINI_API_KEY is set and google-genai + pillow packages are installed before attempting mockup generation." ;
+    oc:hasRationale "Missing API key or dependencies cause immediate failures with unclear error messages, wasting time and tokens." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cb2f04d3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a design style for a CIP project" ;
+    oc:directiveContent "Match design style to industry context: Corporate Minimal for Finance/Legal/Consulting, Modern Tech for Startups/SaaS, Luxury Premium for Fashion/Jewelry/Hotels, Warm Organic for Food/Artisan, Bold Dynamic for Sports/Entertainment." ;
+    oc:hasRationale "Style-industry alignment ensures the brand identity resonates with the target audience and follows established visual conventions of the sector." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f5f35e57 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When planning a CIP project or selecting deliverables" ;
+    oc:directiveContent "The CIP system covers 50+ deliverable types across 10 categories; use search.py with --domain deliverable to discover exact available options before specifying --deliverable or --deliverables." ;
+    oc:hasRationale "Specifying an unrecognized deliverable name will cause generation failures. Searching first ensures correct names are used." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_47a3b2e445bc0718 a oc:ExecutionPayload ;
+    oc:code """python3 ~/.claude/skills/design/scripts/cip/search.py "{query}" --cip-brief -b "{brand_name}"
+python3 ~/.claude/skills/design/scripts/cip/generate.py --brand "{brand}" --logo {logo_path} --industry "{industry}" --set
+python3 ~/.claude/skills/design/scripts/cip/render-html.py --brand "{brand}" --industry "{industry}" --images {output_path}""" ;
+    oc:executor "python" ;
+    oc:timeout 300 .
+
+oc:req_04343e80 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "GEMINI_API_KEY" .
+
+oc:req_20b17ee8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pillow" .
+
+oc:req_36dd0bd4 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "CIP deliverable categories and specifications" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_4c027ec8 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "google-genai" .
+

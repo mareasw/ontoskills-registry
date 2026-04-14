@@ -1,0 +1,74 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_voice_framework a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "voice-framework" ;
+    skos:broader "Framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "08c15ac79f81cd964c5efbe593131b61a093c7e1b060d5dd28b17f3cc5b331fb" ;
+    oc:differentia "Defines brand personality dimensions and voice/tone calibration methodology for consistent brand communication" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:InsufficientBrandInfo,
+        oc:VoiceInconsistency ;
+    oc:hasArgumentHint "brand name or brand description" ;
+    oc:hasCategory "marketing" ;
+    oc:hasRequirement oc:req_f33329df ;
+    oc:impartsKnowledge oc:kn_8a65d50b,
+        oc:kn_91477156,
+        oc:kn_bcad623e,
+        oc:kn_c10627f9,
+        oc:kn_f14608b3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandIdentityDefined ;
+    oc:resolvesIntent "adapt tone across contexts",
+        "create voice chart",
+        "define brand voice",
+        "develop tone guidelines",
+        "test brand voice consistency" ;
+    oc:yieldsState oc:BrandVoiceDocumented,
+        oc:VoiceGuideCreated .
+
+oc:kn_8a65d50b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting personality traits in Step 1 of the voice development process" ;
+    oc:directiveContent "Never define brand voice with vague or unbounded traits (e.g., just 'friendly' without 'not unprofessional'). Unbounded traits allow inconsistent interpretations across content creators." ;
+    oc:hasRationale "Unbounded positive traits degrade into generic brand voice because each creator interprets them differently; guardrails create shared understanding." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_91477156 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When developing a new brand voice or refining an existing one" ;
+    oc:directiveContent "Select 3-5 personality traits for the brand, framed positively with guardrails (e.g., 'Confident, not arrogant'). Create a Voice Chart mapping each trait to descriptions, dos, and don'ts." ;
+    oc:hasRationale "A bounded set of traits with explicit guardrails prevents voice drift and gives content creators clear, actionable guidance." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bcad623e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or reviewing any branded content" ;
+    oc:directiveContent "Voice is constant (personality) while tone is variable (contextual adaptation). Always maintain the same voice but shift tone based on the communication context." ;
+    oc:hasRationale "Confusing voice with tone leads to inconsistent brand perception—voice provides identity stability while tone provides contextual appropriateness." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c10627f9 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When adapting content for different channels or audience contexts" ;
+    oc:directiveContent "Calibrate tone across four spectrums—Formal↔Casual, Simple↔Complex, Serious↔Playful, Reserved↔Expressive—based on the communication context (social media, support, legal, sales)." ;
+    oc:hasRationale "A single flat voice fails across diverse touchpoints; spectrum-based calibration ensures the brand feels appropriate in every context while staying recognizable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f14608b3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing or approving any branded content" ;
+    oc:directiveContent "Test all branded copy against four questions: Does this sound like our brand? Would a competitor say this? Does it resonate with our audience? Is it consistent with our values?" ;
+    oc:hasRationale "These four questions form a lightweight but comprehensive quality gate that catches voice drift, generic copy, audience mismatch, and value misalignment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_f33329df a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Understanding of brand identity and positioning concepts" .
+

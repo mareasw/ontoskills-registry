@@ -1,0 +1,78 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_banner_design_banner_sizes_and_styles a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "banner-sizes-and-styles" ;
+    skos:broader "Design reference specification" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-banner-design" ;
+    oc:contentHash "c8906fb1073a576ee8c680d9bc8586249cbc4ed36690da960d65a1c9c37143b7" ;
+    oc:differentia "catalogs banner dimensions across platforms, 22 art direction styles, and layout principles for digital, print, and ad formats" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_banner_design ;
+    oc:handlesFailure oc:InvalidPlatformSpecified,
+        oc:UnsupportedBannerType ;
+    oc:hasArgumentHint "platform or banner type (e.g., \"facebook cover\", \"web hero\", \"google display\", or \"print roll-up\")" ;
+    oc:hasCategory "design" ;
+    oc:impartsKnowledge oc:kn_2d41d1ae,
+        oc:kn_4e29e2d4,
+        oc:kn_935025aa,
+        oc:kn_b9c2b354,
+        oc:kn_ca7d5573,
+        oc:kn_fa844e66 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DesignBriefDefined ;
+    oc:resolvesIntent "apply layout principles to banner design",
+        "choose art direction style for a banner",
+        "lookup banner dimensions for a platform",
+        "reference safe zones and typography rules for banners",
+        "research banner design inspiration queries" ;
+    oc:yieldsState oc:ArtDirectionChosen,
+        oc:BannerDimensionsSelected,
+        oc:LayoutPrinciplesApplied .
+
+oc:kn_2d41d1ae a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing social media or ad banners" ;
+    oc:directiveContent "Meta/Facebook ads must keep text under 20% of image area. Use max 2 typefaces, minimum 16px body and ≥32px headline for digital. Maintain 4.5:1 contrast ratio." ;
+    oc:hasRationale "Meta's algorithm penalizes high-text-ratio ads with reduced delivery. Typography limits ensure readability and brand consistency." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4e29e2d4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a visual direction for a banner project" ;
+    oc:directiveContent "Select art direction style based on brand personality and context: Minimalist/Flat for SaaS, Photo-Based for lifestyle, Neon/Cyberpunk for gaming, Nature/Organic for sustainability. Use Pinterest research queries like '[purpose] banner design [style]' for visual references." ;
+    oc:hasRationale "Aligning style with brand archetypes ensures visual coherence and audience resonance. Pinterest queries provide real-world reference material to calibrate expectations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_935025aa a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring banner content layout" ;
+    oc:directiveContent "Apply the 3-Zone Rule: top = logo/main value prop, middle = supporting message + visuals, bottom = CTA. This mirrors natural reading flow and attention patterns." ;
+    oc:hasRationale "The 3-Zone Rule aligns with F-pattern and Z-pattern eye-tracking studies, ensuring the viewer encounters brand identity, message, and action in sequence." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b9c2b354 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any banner with a call-to-action" ;
+    oc:directiveContent "Never place more than one CTA on a single banner. Use high-contrast bottom-right placement with a minimum 44px height for mobile tap targets." ;
+    oc:hasRationale "Multiple CTAs create decision paralysis and dilute conversion. Bottom-right is the terminal reading area in Western layouts. Sub-44px targets fail mobile accessibility." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ca7d5573 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing print banners (roll-ups, trade show, outdoor vinyl)" ;
+    oc:directiveContent "For print banners, use 300 DPI minimum (150 DPI for large format), 3-5mm bleed, CMYK color mode, and size headlines at 1pt per foot of viewing distance." ;
+    oc:hasRationale "Print has fundamentally different resolution and color requirements than digital. Insufficient DPI causes visible pixelation; missing bleed causes white edges after trimming." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fa844e66 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when composing any banner layout" ;
+    oc:directiveContent "Critical content must remain within the central 70-80% of the canvas; avoid text or CTAs within 50-100px of edges. YouTube has a specific safe area of 1546×423px inside its 2560×1440 canvas." ;
+    oc:hasRationale "Edge areas get clipped by platform UI chrome, device variations, or print bleed — content outside safe zones is effectively invisible." ;
+    oc:severityLevel "CRITICAL" .
+

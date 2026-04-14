@@ -1,0 +1,113 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "ckm-brand" ;
+    skos:broader "Brand identity management framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "3ae8c3e0c1d1019a40f99644396b6633e3d81f4df8aebf9c36e6593b4a9c9870" ;
+    oc:differentia "provides voice, visual identity, messaging, asset management, and consistency enforcement through scripted workflows that sync brand guidelines to design tokens" ;
+    oc:extends oc:skill_ckm_design_system ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "\"[update|review|create] [args]\"" ;
+    oc:hasCategory "marketing" ;
+    oc:hasDescription "Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Activate for branded content, tone of voice, marketing assets, brand compliance, style guides." ;
+    oc:hasName "ckm-brand" ;
+    oc:hasPackageName "claudekit" ;
+    oc:hasPayload oc:payload_3ae8c3e0c1d1019a ;
+    oc:impartsKnowledge oc:kn_1619f3f9,
+        oc:kn_39d63c27,
+        oc:kn_550ea089,
+        oc:kn_84f8c07b,
+        oc:kn_8ffbe34c,
+        oc:kn_a4c82bf1,
+        oc:kn_c234d525,
+        oc:kn_e84f5cba ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "audit brand consistency across channels",
+        "build messaging frameworks with positioning statements",
+        "create visual identity standards and style guides",
+        "define brand voice and tone guidelines",
+        "extract brand context for prompt injection",
+        "organize and manage brand assets with naming conventions",
+        "update brand identity and sync to design tokens",
+        "validate assets against brand compliance rules" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:TokensSynced .
+
+oc:kn_1619f3f9 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When performing brand updates via the 'update' subcommand" ;
+    oc:directiveContent "The brand sync workflow is: (1) edit docs/brand-guidelines.md as source of truth, (2) run sync-brand-to-tokens.cjs, (3) verify with inject-brand-context.cjs --json. Use the 5 color presets for rapid theming." ;
+    oc:hasRationale "This three-step workflow ensures the single source of truth (brand-guidelines.md) propagates correctly to all downstream consumers without manual duplication" .
+
+oc:kn_39d63c27 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating asset color compliance or creating new brand materials" ;
+    oc:directiveContent "Use the 60/30/10 color ratio rule: primary color 60-70%, secondary 20-30%, accent 5-10%. Off-brand color tolerance maximum is 20%." ;
+    oc:hasRationale "This ratio ensures visual hierarchy and brand recognition while allowing enough accent variety for engaging design" .
+
+oc:kn_550ea089 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating or applying brand voice frameworks" ;
+    oc:directiveContent "Brand voice is constant personality; tone is the context-dependent expression of that voice. Define 3-5 personality traits with do/don't guidance and adapt tone per channel." ;
+    oc:hasRationale "Separating voice (stable identity) from tone (contextual adaptation) enables consistent yet contextually appropriate brand communication across all touchpoints" .
+
+oc:kn_84f8c07b a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing the 'update' subcommand" ;
+    oc:directiveContent "Before updating brand identity, verify docs/brand-guidelines.md exists, assets/ directory is writable, and collect theme name, primary/secondary/accent hex colors, and mood keywords from the user." ;
+    oc:hasRationale "Missing prerequisites cause silent failures or partial syncs that corrupt the design token chain" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8ffbe34c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When placing logos in any asset or design" ;
+    oc:directiveContent "Logo usage has hard rules: maintain clear space equal to logo mark height, respect minimum digital sizes (120px full / 24px icon), never rotate/stretch/recolor outside approved palette, and never add effects." ;
+    oc:hasRationale "Logo misuse is the most visible and damaging form of brand inconsistency; these rules are non-negotiable for brand integrity" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a4c82bf1 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing any brand script" ;
+    oc:directiveContent "Running sync-brand-to-tokens.cjs modifies assets/design-tokens.json and assets/design-tokens.css. Running inject-brand-context.cjs is read-only. Running extract-colors.cjs may generate compliance reports." ;
+    oc:hasRationale "Understanding which scripts modify files vs. read-only is essential for safe execution and avoiding unintended overwrites" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c234d525 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When updating any brand colors, typography, or visual identity" ;
+    oc:directiveContent "Never update brand-guidelines.md without also syncing to design-tokens.json and design-tokens.css. All three files must stay in lockstep." ;
+    oc:hasRationale "Drift between the human-readable guidelines and machine-readable tokens causes inconsistent brand application across UI components and generated content" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e84f5cba a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining or validating color palettes and visual assets" ;
+    oc:directiveContent "Colors must meet WCAG 2.1 AA contrast ratios: 4.5:1 for normal text, 3:1 for large text and UI components. Semantic colors (success/warning/error/info) must be distinguishable beyond color alone." ;
+    oc:hasRationale "Accessibility compliance is both a legal requirement and a brand quality standard that ensures the brand is perceivable by all users" ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_3ae8c3e0c1d1019a a oc:ExecutionPayload ;
+    oc:code """// Scripts available:
+// node scripts/inject-brand-context.cjs [--json] [path-to-guidelines]
+// node scripts/validate-asset.cjs <asset-path>
+// node scripts/extract-colors.cjs --palette | <image-path>
+// node scripts/sync-brand-to-tokens.cjs [--dry-run]""" ;
+    oc:executor "node" ;
+    oc:timeout 30000 .
+

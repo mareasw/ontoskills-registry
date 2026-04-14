@@ -1,0 +1,109 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_canvas_design_system a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "canvas-design-system" ;
+    skos:broader "Visual design philosophy framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "f5de85ff39d9f3a8275c4164b921ba72d5e1d34b8d7a9243d9ee34b3870a4f5f" ;
+    oc:differentia "Guides systematic creation of museum-quality canvas artifacts through a two-phase process of philosophy creation and visual expression, emphasizing 90% visual / 10% text composition with master-level craftsmanship" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Glob",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "design brief or visual concept description" ;
+    oc:hasCategory "design" ;
+    oc:hasRequirement oc:req_0a5f1b70,
+        oc:req_16a6dd50,
+        oc:req_754e79d7,
+        oc:req_7e3ac39b ;
+    oc:impartsKnowledge oc:kn_6c6ff890,
+        oc:kn_8b162b9d,
+        oc:kn_a081a84e,
+        oc:kn_aaf3f2a1,
+        oc:kn_b1ad5776,
+        oc:kn_c1968049,
+        oc:kn_f89be52d ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "create brand identity visuals",
+        "create design system documentation",
+        "create multi-page visual compositions",
+        "create poster designs",
+        "create visual design philosophy",
+        "design canvas artifacts",
+        "design editorial visuals",
+        "generate visual manifestos" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_6c6ff890 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When incorporating art historical or design movement references" ;
+    oc:directiveContent "Subtle design references must be woven invisibly — those who know should feel it intuitively, others experience masterful abstract composition. Never make references literal or obvious." ;
+    oc:hasRationale "Sophisticated reference integration signals expertise; literal references appear derivative and break the abstract compositional integrity." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8b162b9d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining color palettes for any canvas design" ;
+    oc:directiveContent "Use limited color palettes (2-5 colors) with oklch color space for precision. Each shade must carry intentional meaning and form a cohesive system with purposeful relationships." ;
+    oc:hasRationale "Intentional, constrained palettes create visual coherence and chromatic meaning; indiscriminate color use destroys systematic composition." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a081a84e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During the second refinement pass before final delivery" ;
+    oc:directiveContent "On the refinement pass, do not add more graphics. Instead, refine existing elements to be extremely crisp, increase cohesion, make existing elements more artistic, and polish rather than expand." ;
+    oc:hasRationale "Addition during refinement violates the minimalism philosophy; mastery is demonstrated by perfecting what exists, not accumulating more elements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aaf3f2a1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, for every canvas artifact produced" ;
+    oc:directiveContent "Composition must be 90% visual design and maximum 10% essential text. Text is a rare, powerful gesture — never paragraphs, only essential words integrated into the visual architecture." ;
+    oc:hasRationale "Visual communication is the primary information channel; text-heavy compositions undermine the design philosophy and produce amateur results." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b1ad5776 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "As the final step before delivering any canvas artifact" ;
+    oc:directiveContent "Before delivery, verify against the full execution checklist: philosophy guides decisions, 90/10 visual-text ratio, no overlaps, pristine margins, cohesive composition, museum-quality appearance, flawless formatting, and every detail perfect." ;
+    oc:hasRationale "The museum-quality standard is non-negotiable; any defect in spacing, alignment, or composition undermines the core value proposition of expert craftsmanship." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c1968049 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During composition layout and before final delivery" ;
+    oc:directiveContent "Never allow elements to overlap, fall off the page, or violate canvas boundaries. Margins are non-negotiable and spacing discipline must be pristine throughout." ;
+    oc:hasRationale "Overlapping elements and broken boundaries signal amateur execution and destroy the meticulous craftsmanship standard required for museum-quality output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f89be52d a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "At the start of every canvas design engagement" ;
+    oc:directiveContent "Follow the two-phase process: (1) Create a written design philosophy manifesto with 4-6 paragraphs covering space/form, color/material, scale/rhythm, composition/balance, and visual hierarchy; (2) Express that philosophy through canvas artifacts. Never skip Phase 1." ;
+    oc:hasRationale "The philosophy document serves as the compositional DNA for all visual decisions; skipping it produces arbitrary, incoherent designs without philosophical coherence." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_0a5f1b70 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "PDF or PNG rendering capability" .
+
+oc:req_16a6dd50 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Typography system with thin/light font weights" .
+
+oc:req_754e79d7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Design movements: Concrete Poetry, Chromatic Language, Analog Meditation, Organic Systems, Geometric Silence" .
+
+oc:req_7e3ac39b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "oklch color space for precise palette definition" .
+

@@ -1,0 +1,68 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system_semantic_tokens a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "semantic-tokens" ;
+    skos:broader "Design token layer" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design-system" ;
+    oc:contentHash "97e16d8061bbc22e82b51966a7015e3fc990932902e4647843506669a1cdebcc" ;
+    oc:differentia "maps purpose-based semantic aliases to primitive tokens for colors, spacing, typography, and interactive states with built-in dark mode support" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_system ;
+    oc:handlesFailure oc:InvalidTokenName,
+        oc:MissingPrimitiveReference ;
+    oc:hasArgumentHint "token-category (color|spacing|typography|interactive|dark-mode)" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_2af34d92,
+        oc:kn_b42163b2,
+        oc:kn_c87041f1,
+        oc:kn_d621038b,
+        oc:kn_f6f75d53 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:PrimitiveTokensDefined ;
+    oc:resolvesIntent "apply purpose-based color tokens",
+        "configure dark mode theme overrides",
+        "define semantic design tokens",
+        "ensure theme-aware UI styling",
+        "use semantic spacing and typography tokens" ;
+    oc:yieldsState oc:SemanticTokensReady .
+
+oc:kn_2af34d92 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building buttons, inputs, or any focusable/disabled UI elements" ;
+    oc:directiveContent "Use the interactive state tokens (--ring-width, --ring-offset, --opacity-disabled, transition tokens) consistently across all interactive components to maintain perceptual uniformity." ;
+    oc:hasRationale "Consistent interactive state tokens create a unified experience for focus indicators, disabled states, and transitions across the entire design system." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b42163b2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating new semantic color tokens" ;
+    oc:directiveContent "Provide foreground companion tokens for every background color token (e.g., --color-primary + --color-primary-foreground) to guarantee readable contrast." ;
+    oc:hasRationale "Paired foreground/background tokens ensure text remains legible against any background, including in dark mode overrides." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c87041f1 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When implementing dark mode or alternate themes" ;
+    oc:directiveContent "Dark mode overrides should only redefine existing semantic tokens in the .dark selector — never introduce new token names or change the semantic structure." ;
+    oc:hasRationale "Structural parity between light and dark themes prevents missing-token bugs and keeps theme switching a simple class toggle operation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d621038b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining or modifying semantic token declarations in :root" ;
+    oc:directiveContent "Every semantic token must reference a primitive token variable, never a hardcoded color or spacing value." ;
+    oc:hasRationale "Indirection through primitives ensures a single source of truth — changing a primitive cascades to all semantics that reference it." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f6f75d53 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing CSS for any component or UI element" ;
+    oc:directiveContent "Always use semantic tokens (e.g., --color-card, --color-primary) instead of primitive tokens (e.g., --color-gray-50, --color-blue-600) in component CSS." ;
+    oc:hasRationale "Semantic tokens decouple component code from specific color values, enabling theme switching and brand changes without modifying every component." ;
+    oc:severityLevel "CRITICAL" .
+

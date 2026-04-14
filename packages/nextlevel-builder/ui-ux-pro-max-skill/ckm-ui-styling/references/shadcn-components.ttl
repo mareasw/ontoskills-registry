@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_shadcn_components a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "shadcn-components" ;
+    skos:broader "Component catalog" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "79c4f91cbf68993a43fa3a95889c35db73de45bdd3dfd83a6830863c01aa598a" ;
+    oc:dependsOnSkill oc:skill_ckm_ui_styling ;
+    oc:differentia "documents shadcn/ui component installation, imports, variants, and composition patterns for React/Tailwind projects" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:handlesFailure oc:DependencyNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "component-name (e.g. button, dialog, card) or category (form, layout, overlay, feedback, display)" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_32c0d302,
+        oc:kn_52e8ea06,
+        oc:kn_7f7118c2,
+        oc:kn_b4a3b08a,
+        oc:kn_d4f2407d ;
+    oc:isUserInvocable false ;
+    oc:nature "Reference" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "build forms with shadcn/ui inputs and validation",
+        "create layouts with shadcn/ui cards tabs and navigation",
+        "display data with tables badges avatars and progress indicators",
+        "implement dialogs drawers and overlay components",
+        "install and configure shadcn/ui components",
+        "use shadcn/ui components in React applications" ;
+    oc:yieldsState oc:ComponentsAvailable .
+
+oc:kn_32c0d302 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building any form that requires user input validation" ;
+    oc:directiveContent "For form validation, always combine shadcn/ui Form components with React Hook Form and Zod schema validation. Use `zodResolver` to bridge the two libraries." ;
+    oc:hasRationale "This trio provides type-safe validation, declarative error handling, and seamless integration with shadcn's FormField/FormMessage pattern for inline error display." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_52e8ea06 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any overlay or dialog component" ;
+    oc:directiveContent "Overlay components (Dialog, Drawer, Popover, AlertDialog) require trigger elements and must use `asChild` prop when wrapping custom trigger components to avoid nested button elements." ;
+    oc:hasRationale "Without `asChild`, Radix renders an extra <button> wrapper, breaking layout and creating duplicate interactive elements that confuse screen readers." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7f7118c2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding new UI components to a project" ;
+    oc:directiveContent "Use `npx shadcn@latest add <component>` to install only the components you need. Components install to `components/ui/` with automatic dependency resolution." ;
+    oc:hasRationale "Tree-shaking by selective installation reduces bundle size and avoids polluting the codebase with unused component code." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b4a3b08a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any React UI with shadcn/ui installed" ;
+    oc:directiveContent "Always use shadcn/ui components instead of building custom UI primitives — they provide built-in accessibility (Radix UI), consistent styling (Tailwind), and automatic dependency management." ;
+    oc:hasRationale "shadcn/ui components wrap Radix UI primitives ensuring WAI-ARIA compliance and keyboard navigation out of the box, eliminating common accessibility defects." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d4f2407d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When customizing shadcn/ui component appearance" ;
+    oc:directiveContent "Never hardcode inline styles or override shadcn/ui component internals with arbitrary Tailwind classes that break the design token system." ;
+    oc:hasRationale "shadcn/ui uses CSS variables for theming; bypassing the token system creates visual inconsistency and makes theme switching impossible." ;
+    oc:severityLevel "MEDIUM" .
+

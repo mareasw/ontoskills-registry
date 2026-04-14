@@ -1,0 +1,65 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design_slides_copywriting_formulas a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "slides-copywriting-formulas" ;
+    skos:broader "Copywriting formula reference" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-design" ;
+    oc:contentHash "03733d5916ab771834745550045b736deeb94a08226f2b200f7953009c35b219" ;
+    oc:differentia "that maps 25 persuasive writing formulas to specific slide types, emotions, and headline patterns for presentation content" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_design ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "slide-type or emotion (e.g., \"problem agitation\", \"urgency cta\")" ;
+    oc:hasCategory "document" ;
+    oc:impartsKnowledge oc:kn_6f3180f5,
+        oc:kn_7835d1da,
+        oc:kn_7e619047,
+        oc:kn_a6358027,
+        oc:kn_e9fdc232 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DocumentCreated ;
+    oc:resolvesIntent "choose copywriting formula for slide type",
+        "create compelling headlines for presentations",
+        "generate urgency and trust in slide content",
+        "map emotions to slide messaging",
+        "write persuasive slide copy" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_6f3180f5 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When drafting slide copy after selecting the appropriate formula" ;
+    oc:directiveContent "Structure each slide's copy using the formula's component sequence (e.g., Problem→Agitate→Solution for PAS) and fill in the provided template with specific content." ;
+    oc:hasRationale "Templates provide proven rhetorical scaffolding that ensures completeness of the persuasive argument on each slide." .
+
+oc:kn_7835d1da a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing copy for any slide in a presentation" ;
+    oc:directiveContent "Match copywriting formula to slide type and target emotion: use PAS/Agitate for problem slides (frustration), AIDA for CTAs (urgency), FAB for feature slides (confidence), Cost of Inaction for risk slides (fear), and BAB for transformation slides (hope)." ;
+    oc:hasRationale "Each formula is optimized to evoke a specific emotional response that aligns with the slide's strategic purpose in the narrative arc." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7e619047 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When needing to look up a formula by slide type or emotional target during slide creation" ;
+    oc:directiveContent "Use the search script to quickly find the right formula: `python .claude/skills/design-system/scripts/search-slides.py \"<keywords>\" -d copy` returns emotion-appropriate formulas." ;
+    oc:hasRationale "The search command provides faster, context-aware formula retrieval than scanning the full reference manually." .
+
+oc:kn_a6358027 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a formula based on the communicative goal of a slide" ;
+    oc:directiveContent "Use the Quick Reference table to select formulas by intent: Cost of Inaction/Scarcity for urgency, Social Proof/Testimonial for trust, FAB/Value Stack for value demonstration, AIDA/CTA for driving action." ;
+    oc:hasRationale "Intent-based formula selection ensures the rhetorical structure directly supports the slide's persuasive objective." .
+
+oc:kn_e9fdc232 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When drafting slide copy for multi-slide presentations" ;
+    oc:directiveContent "Never use a single copywriting formula across all slides; vary formulas to match each slide's position in the persuasion arc and its emotional target." ;
+    oc:hasRationale "Formula monotony desensitizes the audience and breaks the emotional progression needed for persuasion." ;
+    oc:severityLevel "MEDIUM" .
+

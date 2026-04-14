@@ -1,0 +1,142 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ui_ux_pro_max a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "ui-ux-pro-max" ;
+    skos:broader "Design intelligence engine" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ui-ux-pro-max" ;
+    oc:contentHash "deba894197c95a18433203c6632b743688b476fb0ca20fcbc7c6a97f212064d1" ;
+    oc:differentia "aggregates searchable databases of UI styles, color palettes, typography pairings, UX guidelines, chart types, and stack-specific best practices with BM25 ranking and reasoning-driven design system generation for web and mobile" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "\"<product_type> <industry> <style_keywords>\" or --domain <domain> \"<query>\" or --stack <stack> \"<query>\"" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, and mobile app. Elements: button, modal, navbar, sidebar, card, table, form, and chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, and flat design. Topics: color systems, accessibility, animation, layout, typography, font pairing, spacing, interaction states, shadow, and gradient. Integrations: shadcn/ui MCP for component search and examples." ;
+    oc:hasName "ui-ux-pro-max" ;
+    oc:hasPayload oc:payload_deba894197c95a18 ;
+    oc:hasRequirement oc:req_3fcf652e,
+        oc:req_550f6742,
+        oc:req_f5a9d539 ;
+    oc:impartsKnowledge oc:kn_01fdafc2,
+        oc:kn_3266dd46,
+        oc:kn_4d636002,
+        oc:kn_60a42cf2,
+        oc:kn_62b93f9f,
+        oc:kn_87c3f05c,
+        oc:kn_af051159,
+        oc:kn_ef527098,
+        oc:kn_fab573f6,
+        oc:kn_fb7d815b ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build accessible interfaces meeting WCAG standards",
+        "create landing pages dashboards and app interfaces",
+        "design UI for web or mobile applications",
+        "fix UI bugs and improve visual quality",
+        "generate design systems with colors typography and styles",
+        "implement responsive layouts and animations",
+        "optimize UI performance across frameworks",
+        "review UI code for accessibility and usability",
+        "search UI/UX guidelines and best practices",
+        "select appropriate visual styles color palettes and font pairings" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_01fdafc2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting any foreground/background color pairing including text, icons, error states, and data visualizations" ;
+    oc:directiveContent "Maintain minimum 4.5:1 contrast ratio for normal text and 3:1 for large text against backgrounds. Test both light and dark modes independently — never assume one mode's values work for the other." ;
+    oc:hasRationale "WCAG AA compliance is a legal requirement in many jurisdictions and essential for users with visual impairments. Dark mode requires separate contrast validation because inverted colors often fail." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_3266dd46 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When executing any UI/UX design task from new project creation to component refinement" ;
+    oc:directiveContent "Follow the 4-step workflow: (1) Analyze user requirements for product type/audience/style/stack, (2) Generate design system with --design-system, (3) Supplement with targeted --domain searches as needed, (4) Apply stack-specific --stack guidelines. Always use --persist to save the design system for hierarchical retrieval across sessions." ;
+    oc:hasRationale "This sequence ensures reasoning-driven holistic design before detailed implementation. Persistence via Master + Overrides pattern maintains consistency across pages and sessions while allowing page-specific deviations." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4d636002 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing navigation, settings, or any system control icons" ;
+    oc:directiveContent "Never use emojis as structural icons; always use vector-based SVG icons (Lucide, Heroicons, platform-native). Emojis are font-dependent, inconsistent across platforms, and cannot be controlled via design tokens." ;
+    oc:hasRationale "Emoji icons break visual consistency, cannot be themed for dark/light mode, and fail accessibility requirements across platforms" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_60a42cf2 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When executing any search or design system generation command" ;
+    oc:directiveContent "The search engine uses BM25 ranking over CSV databases loaded into memory. Queries across 12 domains and 16 stacks complete in milliseconds. The design system generator performs parallel multi-domain searches (product, style, color, landing, typography) and applies reasoning rules, typically completing in under 1 second." ;
+    oc:hasRationale "BM25 is an in-memory algorithm with O(n) index building and O(n) scoring per query. The CSV datasets total ~1.5MB. No external API calls are made, ensuring deterministic latency." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_62b93f9f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning any new UI project, page, or significant component design" ;
+    oc:directiveContent "Always start with --design-system to generate a comprehensive recommendation before diving into domain-specific searches. The design system applies reasoning rules from ui-reasoning.csv to select matched patterns, styles, colors, and typography as a coherent whole." ;
+    oc:hasRationale "Ad-hoc per-domain searches without reasoning lead to inconsistent design decisions. The design system generator ensures all dimensions (pattern, style, color, typography, effects) are coordinated through product-type reasoning rules." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_87c3f05c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before final code delivery for any UI component, page, or application" ;
+    oc:directiveContent "Before delivering any UI code, verify: (1) No emojis as icons, (2) Touch targets ≥44×44pt iOS / ≥48×48dp Android, (3) Animation durations 150-300ms with reduced-motion support, (4) Text contrast ≥4.5:1 in both themes, (5) Responsive at 375px/768px/1024px/1440px, (6) Safe areas respected, (7) No horizontal scroll on mobile." ;
+    oc:hasRationale "These checks catch the most frequently overlooked issues that make UI look unprofessional or fail accessibility standards. Running through Quick Reference §1-§3 (CRITICAL + HIGH priority) as final review prevents common regressions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_af051159 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to re-run design system generation vs. targeted searches" ;
+    oc:directiveContent "Design system generation with --persist is NOT idempotent — it overwrites MASTER.md and page override files each time. Domain and stack searches are read-only and fully idempotent." ;
+    oc:hasRationale "Persistence creates/overwrites files on disk. If a design system was previously customized manually, re-running --persist will replace it. Use --domain searches for read-only exploration." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ef527098 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing search queries for any domain or design system generation" ;
+    oc:directiveContent "Use multi-dimensional keywords combining product type + industry + tone + density (e.g., 'entertainment social vibrant content-dense') rather than single-word queries. Try different keyword combinations for the same design need to explore the full recommendation space." ;
+    oc:hasRationale "BM25 ranking rewards multi-term matches across searchable columns. Single-word queries produce generic results; multi-dimensional queries activate the most specific and relevant entries in each CSV database." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fab573f6 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When executing any script from this skill" ;
+    oc:directiveContent "All search and design system generation runs locally with no network calls or API keys required. The skill only reads from its bundled CSV data files and writes to the local design-system/ directory when --persist is used." ;
+    oc:hasRationale "No data leaves the local machine. No authentication tokens or API keys are needed. The only side effect is file creation in the design-system/ directory when persistence is enabled." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_fb7d815b a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After running --design-system command" ;
+    oc:directiveContent "Successful design system generation returns a structured recommendation containing: pattern (name, sections, CTA placement), style (name, effects, mode support), colors (10-role palette with CSS variables), typography (heading/body fonts with Google Fonts URL), key effects, and anti-patterns to avoid." ;
+    oc:hasRationale "A complete design system output confirms all 5 domain searches succeeded and reasoning rules were applied. Missing sections indicate a domain search returned no results, which may require adjusting query keywords." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:payload_deba894197c95a18 a oc:ExecutionPayload ;
+    oc:code "python3 skills/ui-ux-pro-max/scripts/search.py \"<query>\" --design-system [-p \"Project Name\"]" ;
+    oc:executor "python" ;
+    oc:timeout 30000 .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_550f6742 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Framework-specific patterns (React, Vue, Svelte, SwiftUI, Flutter, etc.)" .
+
+oc:req_f5a9d539 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "UI/UX design principles (accessibility, typography, color theory, layout)" .
+

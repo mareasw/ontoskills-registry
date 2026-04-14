@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand_consistency_checklist a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "consistency-checklist" ;
+    skos:broader "Quality assurance framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-brand" ;
+    oc:contentHash "56d8b2d4852cda11e600adec4b9dd68fc89a1b8265382359953bec5c5e5e2c36" ;
+    oc:differentia "provides a structured checklist for auditing brand consistency across visual identity, voice, and channels" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_brand ;
+    oc:handlesFailure oc:AssetUnavailable,
+        oc:BrandGuideNotFound ;
+    oc:hasArgumentHint "brand asset type or channel to audit (e.g., 'website', 'social media', 'email', 'full audit')" ;
+    oc:hasCategory "marketing" ;
+    oc:impartsKnowledge oc:kn_0b0d4010,
+        oc:kn_119faab8,
+        oc:kn_4b3131d5,
+        oc:kn_4eed82d3,
+        oc:kn_6db588c6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:BrandGuideEstablished,
+        oc:DocumentCreated ;
+    oc:resolvesIntent "audit brand consistency",
+        "check visual brand compliance",
+        "identify brand guideline violations",
+        "perform channel-level brand audit",
+        "verify brand voice consistency" ;
+    oc:yieldsState oc:BrandConsistencyVerified,
+        oc:BrandViolationsIdentified .
+
+oc:kn_0b0d4010 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any brand-facing deliverable" ;
+    oc:directiveContent "Before approving any brand asset, verify: correct logo version, brand palette colors only, approved fonts with proper hierarchy, imagery matching brand style, tone aligned to brand personality, and messaging consistent with key value propositions." ;
+    oc:hasRationale "A pre-flight check prevents brand-inconsistent assets from reaching public channels, reducing costly rework." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_119faab8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When auditing or reviewing any brand visual asset" ;
+    oc:directiveContent "Brand consistency must be verified across four visual dimensions: logo usage, color palette, typography, and imagery — all must align to approved brand standards before publication." ;
+    oc:hasRationale "Visual inconsistencies erode brand recognition and dilute the brand's perceived professionalism." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4b3131d5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning brand maintenance and review cycles" ;
+    oc:directiveContent "Audit frequency must follow the prescribed schedule: website monthly, social profiles and email templates quarterly, sales materials quarterly, and a full brand audit annually." ;
+    oc:hasRationale "Regular audits catch brand drift before it compounds; different asset types degrade at different rates depending on update frequency." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4eed82d3 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing deliverables or diagnosing brand inconsistency reports" ;
+    oc:directiveContent "Avoid the five common brand violations: outdated logos, off-brand colors, wrong fonts, inconsistent voice, and mixed messaging — each has a direct remediation mapped in the checklist." ;
+    oc:hasRationale "These are the most frequent brand compliance failures; recognizing them by pattern enables faster correction." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6db588c6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When performing a comprehensive brand audit" ;
+    oc:directiveContent "Structure brand audits in three layers: first visual consistency (logo, colors, typography, imagery), then voice consistency (tone, language, messaging), then channel-specific compliance (website, social, email, collateral)." ;
+    oc:hasRationale "Layered auditing ensures no dimension is missed and provides a logical progression from foundational visual elements to channel-specific application." ;
+    oc:severityLevel "MEDIUM" .
+

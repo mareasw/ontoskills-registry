@@ -1,0 +1,70 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling_tailwind_responsive a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "tailwind-responsive" ;
+    skos:broader "Responsive design guide" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/.agents/skills/nextlevel-builder/ui-ux-pro-max-skill/ckm-ui-styling" ;
+    oc:contentHash "8d00ae620df26daea4623c7bf996d6e612e09d359305fcfa2b40cab757ed840c" ;
+    oc:differentia "Provides Tailwind CSS mobile-first breakpoint strategies, responsive utility patterns, and adaptive layout recipes for building screen-size-aware UIs" ;
+    oc:extends oc:skill_nextlevel_builder_ui_ux_pro_max_skill_ckm_ui_styling ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "screen-width or layout-type (e.g., \"sidebar\", \"card-grid\", \"hero\", \"navigation\")" ;
+    oc:hasCategory "development" ;
+    oc:impartsKnowledge oc:kn_21fbbb79,
+        oc:kn_3c079f52,
+        oc:kn_44b675a5,
+        oc:kn_7e359e46,
+        oc:kn_9a5cca4b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "apply mobile-first breakpoints",
+        "build responsive navigation and hero sections",
+        "create responsive layouts",
+        "design adaptive grids and visibility patterns",
+        "test responsive designs across breakpoints" ;
+    oc:yieldsState oc:ResponsiveLayoutGenerated .
+
+oc:kn_21fbbb79 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing mobile breakpoints and interactive elements" ;
+    oc:directiveContent "Ensure touch targets are at least 44x44px on mobile viewports. Verify navigation remains functional and text stays readable at all sizes." ;
+    oc:hasRationale "Small touch targets cause usability failures on mobile devices; accessibility standards mandate minimum 44px hit areas." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3c079f52 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing the order of base styles vs breakpoint overrides" ;
+    oc:directiveContent "Never write desktop-first styles that override downward (e.g., text-xl lg:text-base). Always start small and scale up (e.g., text-base lg:text-xl)." ;
+    oc:hasRationale "Desktop-first overrides fight Tailwind's min-width cascade, producing unpredictable results and redundant classes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_44b675a5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any Tailwind CSS responsive classes" ;
+    oc:directiveContent "Always use mobile-first responsive design: write base styles for the smallest screen, then layer breakpoint prefixes (sm:, md:, lg:, xl:, 2xl:) to override at larger sizes." ;
+    oc:hasRationale "Mobile-first is Tailwind's default cascade model; desktop-first approaches produce inverted specificity and harder-to-maintain code." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7e359e46 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any responsive page or component" ;
+    oc:directiveContent "Test at exact breakpoint boundary widths (320px, 640px, 768px, 1024px, 1280px, 1536px) and in landscape orientation before considering a responsive layout complete." ;
+    oc:hasRationale "Layout breaks most often occur at breakpoint boundaries where media queries activate or deactivate." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9a5cca4b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing responsive grids and layouts" ;
+    oc:directiveContent "Limit each element to 2-3 breakpoints for maintainability. Avoid using all five breakpoints (sm through 2xl) on a single element." ;
+    oc:hasRationale "Excessive breakpoint usage creates fragile layouts that are hard to debug and test across all viewport widths." ;
+    oc:severityLevel "MEDIUM" .
+
