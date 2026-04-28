@@ -52,7 +52,7 @@
   "skills": [
     {
       "id": "kotlin-backend-jpa-entity-mapping",
-      "path": "kotlin-agent-skills/kotlin-backend-jpa-entity-mapping/ontoskill.ttl",
+      "path": "kotlin-backend-jpa-entity-mapping/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Model Kotlin persistence code correctly for Spring Data JPA and Hibernate. Covers entity design, identity and equality, uniqueness constraints, relationships, fetch plans, and common ORM (Object-Relational Mapping) traps  specific to Kotlin. Use when creating or reviewing JPA (Java Persistence API)  entities, diagnosing N+1 or LazyInitializationException, placing indexes and  uniqueness rules, or preventing Kotlin-specific bugs such as data class  entities and broken equals/hashCode.",
@@ -69,7 +69,7 @@
     },
     {
       "id": "kotlin-tooling-java-to-kotlin",
-      "path": "kotlin-agent-skills/kotlin-tooling-java-to-kotlin/ontoskill.ttl",
+      "path": "kotlin-tooling-java-to-kotlin/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when converting Java source files to idiomatic Kotlin, when user mentions \"java to kotlin\", \"j2k\", \"convert java\", \"migrate java to kotlin\", or when working with .java files that need to become .kt files. Handles framework-aware conversion for Spring, Lombok, Hibernate, Jackson, Micronaut, Quarkus, Dagger/Hilt, RxJava, JUnit, Guice, Retrofit, and Mockito.",
@@ -84,7 +84,7 @@
     },
     {
       "id": "kotlin-tooling-cocoapods-spm-migration",
-      "path": "kotlin-agent-skills/kotlin-tooling-cocoapods-spm-migration/ontoskill.ttl",
+      "path": "kotlin-tooling-cocoapods-spm-migration/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Migrate KMP projects from CocoaPods (kotlin(\"native.cocoapods\")) to Swift Package Manager (swiftPMDependencies DSL) — replaces pod() with swiftPackage(), transforms cocoapods.* imports to swiftPMImport.*, and reconfigures the Xcode project.",
@@ -100,7 +100,7 @@
     },
     {
       "id": "kotlin-tooling-agp9-migration",
-      "path": "kotlin-agent-skills/kotlin-tooling-agp9-migration/ontoskill.ttl",
+      "path": "kotlin-tooling-agp9-migration/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Migrates Kotlin Multiplatform (KMP) projects to Android Gradle Plugin 9.0+. Handles plugin replacement (com.android.kotlin.multiplatform.library), module splitting, DSL migration, and the new default project structure. Use when upgrading AGP, when build fails due to KMP+AGP incompatibility, or when the user mentions AGP 9.0, android multiplatform plugin, KMP migration, or com.android.kotlin.multiplatform.library.",

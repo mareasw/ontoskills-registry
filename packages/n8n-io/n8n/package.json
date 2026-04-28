@@ -30,7 +30,7 @@
   "skills": [
     {
       "id": "create-issue",
-      "path": "n8n/create-issue/ontoskill.ttl",
+      "path": "create-issue/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Create Linear tickets or GitHub issues following n8n conventions. Use when the user asks to create a ticket, file a bug, open an issue, or says /create-issue.",
@@ -49,7 +49,7 @@
     },
     {
       "id": "n8n-conventions",
-      "path": "n8n/n8n-conventions/ontoskill.ttl",
+      "path": "n8n-conventions/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Quick reference for n8n patterns. Full docs /AGENTS.md",
@@ -64,7 +64,7 @@
     },
     {
       "id": "create-skill",
-      "path": "n8n/create-skill/ontoskill.ttl",
+      "path": "create-skill/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Guides users through creating effective Agent Skills. Use when you want to create, write, or author a new skill, or asks about skill structure, best practices, or SKILL.md format.",
@@ -80,7 +80,7 @@
     },
     {
       "id": "linear-issue",
-      "path": "n8n/linear-issue/ontoskill.ttl",
+      "path": "linear-issue/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Fetch and analyze Linear issue with all related context. Use when starting work on a Linear ticket, analyzing issues, or gathering context about a Linear issue.",
@@ -98,7 +98,7 @@
     },
     {
       "id": "reproduce-bug",
-      "path": "n8n/reproduce-bug/ontoskill.ttl",
+      "path": "reproduce-bug/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Reproduce a bug from a Linear ticket with a failing test. Expects the full ticket context (title, description, comments) to be provided as input.",
@@ -116,7 +116,7 @@
     },
     {
       "id": "create-pr",
-      "path": "n8n/create-pr/ontoskill.ttl",
+      "path": "create-pr/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Creates GitHub pull requests with properly formatted titles that pass the check-pr-title CI validation. Use when creating PRs, submitting changes for review, or when the user says /pr or asks to create a pull request.",
@@ -133,7 +133,7 @@
     },
     {
       "id": "loom-transcript",
-      "path": "n8n/loom-transcript/ontoskill.ttl",
+      "path": "loom-transcript/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Fetch and display the full transcript from a Loom video URL. Use when the user wants to get or read a Loom transcript.",
@@ -147,7 +147,7 @@
     },
     {
       "id": "content-design",
-      "path": "n8n/content-design/ontoskill.ttl",
+      "path": "content-design/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Product content designer for UI copy. Use when writing, reviewing, or auditing user-facing text: button labels, error messages, tooltips, empty states, modal copy, placeholder text, confirmation dialogs, onboarding flows, or i18n strings. Also use when the user says /copy, /content, or /ux-copy.",
@@ -164,7 +164,7 @@
     },
     {
       "id": "node-add-oauth",
-      "path": "n8n/node-add-oauth/ontoskill.ttl",
+      "path": "node-add-oauth/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Add OAuth2 credential support to an existing n8n node — creates the credential file, updates the node, adds tests, and keeps the CLI constant in sync. Use when the user says /node-add-oauth.",
@@ -181,7 +181,7 @@
     },
     {
       "id": "spec-driven-development",
-      "path": "n8n/spec-driven-development/ontoskill.ttl",
+      "path": "spec-driven-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Keeps implementation and specs in sync. Use when working on a feature that has a spec in .claude/specs/, when the user says /spec, or when starting implementation of a documented feature. Also use when the user asks to verify implementation against a spec or update a spec after changes.",

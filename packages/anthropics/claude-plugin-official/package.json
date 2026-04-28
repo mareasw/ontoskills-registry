@@ -140,7 +140,7 @@
   "skills": [
     {
       "id": "plugin-settings",
-      "path": "claude-plugin-official/plugin-settings/ontoskill.ttl",
+      "path": "plugin-settings/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks about \"plugin settings\", \"store plugin configuration\", \"user-configurable plugin\", \".local.md files\", \"plugin state files\", \"read YAML frontmatter\", \"per-project plugin settings\", or wants to make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific configuration with YAML frontmatter and markdown content.",
@@ -156,7 +156,7 @@
     },
     {
       "id": "build-mcp-app",
-      "path": "claude-plugin-official/build-mcp-app/ontoskill.ttl",
+      "path": "build-mcp-app/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user wants to build an \"MCP app\", add \"interactive UI\" or \"widgets\" to an MCP server, \"render components in chat\", build \"MCP UI resources\", make a tool that shows a \"form\", \"picker\", \"dashboard\" or \"confirmation dialog\" inline in the conversation, or mentions \"apps SDK\" in the context of MCP. Use AFTER the build-mcp-server skill has settled the deployment model, or when the user already knows they want UI widgets.",
@@ -172,7 +172,7 @@
     },
     {
       "id": "claude-md-improver",
-      "path": "claude-plugin-official/claude-md-improver/ontoskill.ttl",
+      "path": "claude-md-improver/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Audit and improve CLAUDE.md files in repositories. Use when user asks to check, audit, update, improve, or fix CLAUDE.md files. Scans for all CLAUDE.md files, evaluates quality against templates, outputs quality report, then makes targeted updates. Also use when the user mentions \"CLAUDE.md maintenance\" or \"project memory optimization\".",
@@ -188,7 +188,7 @@
     },
     {
       "id": "configure",
-      "path": "claude-plugin-official/configure/ontoskill.ttl",
+      "path": "configure/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Set up the Discord channel — save the bot token and review access policy. Use when the user pastes a Discord bot token, asks to configure Discord, asks \"how do I set this up\" or \"who can reach me,\" or wants to check channel status.",
@@ -205,7 +205,7 @@
     },
     {
       "id": "math-olympiad",
-      "path": "claude-plugin-official/math-olympiad/ontoskill.ttl",
+      "path": "math-olympiad/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Solve competition math problems (IMO, Putnam, USAMO, AIME) with adversarial verification that catches the errors self-verification misses. Activates when asked to 'solve this IMO problem', 'prove this olympiad inequality', 'verify this competition proof', 'find a counterexample', 'is this proof correct', or for any problem with 'IMO', 'Putnam', 'USAMO', 'olympiad', or 'competition math' in it. Uses pure reasoning (no tools) — then a fresh-context adversarial verifier attacks the proof using spec",
@@ -223,7 +223,7 @@
     },
     {
       "id": "command-development",
-      "path": "claude-plugin-official/command-development/ontoskill.ttl",
+      "path": "command-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"create a slash command\", \"add a command\", \"write a custom command\", \"define command arguments\", \"use command frontmatter\", \"organize commands\", \"create command with file references\", \"interactive command\", \"use AskUserQuestion in command\", or needs guidance on slash command structure, YAML frontmatter fields, dynamic arguments, bash execution in commands, user interaction patterns, or command development best practices for Claude Code.",
@@ -245,7 +245,7 @@
     },
     {
       "id": "claude-automation-recommender",
-      "path": "claude-plugin-official/claude-automation-recommender/ontoskill.ttl",
+      "path": "claude-automation-recommender/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Analyze a codebase and recommend Claude Code automations (hooks, subagents, skills, plugins, MCP servers). Use when user asks for automation recommendations, wants to optimize their Claude Code setup, mentions improving Claude Code workflows, asks how to first set up Claude Code for a project, or wants to know what Claude Code features they should use.",
@@ -261,7 +261,7 @@
     },
     {
       "id": "skill-creator",
-      "path": "claude-plugin-official/skill-creator/ontoskill.ttl",
+      "path": "skill-creator/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
@@ -278,7 +278,7 @@
     },
     {
       "id": "playground",
-      "path": "claude-plugin-official/playground/ontoskill.ttl",
+      "path": "playground/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Creates interactive HTML playgrounds — self-contained single-file explorers that let users configure something visually through controls, see a live preview, and copy out a prompt. Use when the user asks to make a playground, explorer, or interactive tool for a topic.",
@@ -296,7 +296,7 @@
     },
     {
       "id": "skill-development",
-      "path": "claude-plugin-official/skill-development/ontoskill.ttl",
+      "path": "skill-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user wants to \"create a skill\", \"add a skill to plugin\", \"write a new skill\", \"improve skill description\", \"organize skill content\", or needs guidance on skill structure, progressive disclosure, or skill development best practices for Claude Code plugins.",
@@ -317,7 +317,7 @@
     },
     {
       "id": "build-mcpb",
-      "path": "claude-plugin-official/build-mcpb/ontoskill.ttl",
+      "path": "build-mcpb/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user wants to \"package an MCP server\", \"bundle an MCP\", \"make an MCPB\", \"ship a local MCP server\", \"distribute a local MCP\", discusses \".mcpb files\", mentions bundling a Node or Python runtime with their MCP server, or needs an MCP server that interacts with the local filesystem, desktop apps, or OS and must be installable without the user having Node/Python set up.",
@@ -332,7 +332,7 @@
     },
     {
       "id": "frontend-design",
-      "path": "claude-plugin-official/frontend-design/ontoskill.ttl",
+      "path": "frontend-design/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.",
@@ -348,7 +348,7 @@
     },
     {
       "id": "writing-hookify-rules",
-      "path": "claude-plugin-official/writing-hookify-rules/ontoskill.ttl",
+      "path": "writing-hookify-rules/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"create a hookify rule\", \"write a hook rule\", \"configure hookify\", \"add a hookify rule\", or needs guidance on hookify rule syntax and patterns.",
@@ -364,7 +364,7 @@
     },
     {
       "id": "plugin-structure",
-      "path": "claude-plugin-official/plugin-structure/ontoskill.ttl",
+      "path": "plugin-structure/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"create a plugin\", \"scaffold a plugin\", \"understand plugin structure\", \"organize plugin components\", \"set up plugin.json\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"add commands/agents/skills/hooks\", \"configure auto-discovery\", or needs guidance on plugin directory layout, manifest configuration, component organization, file naming conventions, or Claude Code plugin architecture best practices.",
@@ -383,7 +383,7 @@
     },
     {
       "id": "build-mcp-server",
-      "path": "claude-plugin-official/build-mcp-server/ontoskill.ttl",
+      "path": "build-mcp-server/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"build an MCP server\", \"create an MCP\", \"make an MCP integration\", \"wrap an API for Claude\", \"expose tools to Claude\", \"make an MCP app\", or discusses building something with the Model Context Protocol. It is the entry point for MCP server development — it interrogates the user about their use case, determines the right deployment model (remote HTTP, MCPB, local stdio), picks a tool-design pattern, and hands off to specialized skills.",
@@ -404,7 +404,7 @@
     },
     {
       "id": "agent-development",
-      "path": "claude-plugin-official/agent-development/ontoskill.ttl",
+      "path": "agent-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"create an agent\", \"add an agent\", \"write a subagent\", \"agent frontmatter\", \"when to use description\", \"agent examples\", \"agent tools\", \"agent colors\", \"autonomous agent\", or needs guidance on agent structure, system prompts, triggering conditions, or agent development best practices for Claude Code plugins.",
@@ -425,7 +425,7 @@
     },
     {
       "id": "access",
-      "path": "claude-plugin-official/access/ontoskill.ttl",
+      "path": "access/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Manage Discord channel access — approve pairings, edit allowlists, set DM/group policy. Use when the user asks to pair, approve someone, check who's allowed, or change policy for the Discord channel.",
@@ -444,7 +444,7 @@
     },
     {
       "id": "hook-development",
-      "path": "claude-plugin-official/hook-development/ontoskill.ttl",
+      "path": "hook-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"create a hook\", \"add a PreToolUse/PostToolUse/Stop hook\", \"validate tool use\", \"implement prompt-based hooks\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"set up event-driven automation\", \"block dangerous commands\", or mentions hook events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, PreCompact, Notification). Provides comprehensive guidance for creating and implementing Claude Code plugin hooks with focus on advance",
@@ -463,7 +463,7 @@
     },
     {
       "id": "mcp-integration",
-      "path": "claude-plugin-official/mcp-integration/ontoskill.ttl",
+      "path": "mcp-integration/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "This skill should be used when the user asks to \"add MCP server\", \"integrate MCP\", \"configure MCP in plugin\", \"use .mcp.json\", \"set up Model Context Protocol\", \"connect external service\", mentions \"${CLAUDE_PLUGIN_ROOT} with MCP\", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.",

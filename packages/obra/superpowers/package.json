@@ -63,7 +63,7 @@
   "skills": [
     {
       "id": "requesting-code-review",
-      "path": "superpowers/requesting-code-review/ontoskill.ttl",
+      "path": "requesting-code-review/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when completing tasks, implementing major features, or before merging to verify work meets requirements",
@@ -82,7 +82,7 @@
     },
     {
       "id": "receiving-code-review",
-      "path": "superpowers/receiving-code-review/ontoskill.ttl",
+      "path": "receiving-code-review/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation",
@@ -98,7 +98,7 @@
     },
     {
       "id": "test-driven-development",
-      "path": "superpowers/test-driven-development/ontoskill.ttl",
+      "path": "test-driven-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when implementing any feature or bugfix, before writing implementation code",
@@ -113,7 +113,7 @@
     },
     {
       "id": "systematic-debugging",
-      "path": "superpowers/systematic-debugging/ontoskill.ttl",
+      "path": "systematic-debugging/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes",
@@ -128,7 +128,7 @@
     },
     {
       "id": "subagent-driven-development",
-      "path": "superpowers/subagent-driven-development/ontoskill.ttl",
+      "path": "subagent-driven-development/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when executing implementation plans with independent tasks in the current session",
@@ -147,7 +147,7 @@
     },
     {
       "id": "dispatching-parallel-agents",
-      "path": "superpowers/dispatching-parallel-agents/ontoskill.ttl",
+      "path": "dispatching-parallel-agents/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies",
@@ -162,7 +162,7 @@
     },
     {
       "id": "writing-plans",
-      "path": "superpowers/writing-plans/ontoskill.ttl",
+      "path": "writing-plans/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
@@ -179,7 +179,7 @@
     },
     {
       "id": "writing-skills",
-      "path": "superpowers/writing-skills/ontoskill.ttl",
+      "path": "writing-skills/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when creating new skills, editing existing skills, or verifying skills work before deployment",
@@ -197,7 +197,7 @@
     },
     {
       "id": "using-superpowers",
-      "path": "superpowers/using-superpowers/ontoskill.ttl",
+      "path": "using-superpowers/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions",
@@ -214,7 +214,7 @@
     },
     {
       "id": "finishing-a-development-branch",
-      "path": "superpowers/finishing-a-development-branch/ontoskill.ttl",
+      "path": "finishing-a-development-branch/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup",
@@ -232,7 +232,7 @@
     },
     {
       "id": "brainstorming",
-      "path": "superpowers/brainstorming/ontoskill.ttl",
+      "path": "brainstorming/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
@@ -251,7 +251,7 @@
     },
     {
       "id": "executing-plans",
-      "path": "superpowers/executing-plans/ontoskill.ttl",
+      "path": "executing-plans/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when you have a written implementation plan to execute in a separate session with review checkpoints",
@@ -269,7 +269,7 @@
     },
     {
       "id": "using-git-worktrees",
-      "path": "superpowers/using-git-worktrees/ontoskill.ttl",
+      "path": "using-git-worktrees/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification",
@@ -284,7 +284,7 @@
     },
     {
       "id": "verification-before-completion",
-      "path": "superpowers/verification-before-completion/ontoskill.ttl",
+      "path": "verification-before-completion/ontoskill.ttl",
       "default_enabled": true,
       "aliases": [],
       "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always",
