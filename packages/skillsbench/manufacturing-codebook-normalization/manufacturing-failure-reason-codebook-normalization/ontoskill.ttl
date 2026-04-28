@@ -1,0 +1,204 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_manufacturing_codebook_normalization_manufacturing_failure_reason_codebook_normalization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "manufacturing-failure-reason-codebook-normalization" ;
+    skos:broader "Text normalization and classification pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/manufacturing-codebook-normalization/manufacturing-failure-reason-codebook-normalization" ;
+    oc:contentHash "6ead17b3c3ed896edce0e0a05098b8003fd260b217f25629df75d7872725858e" ;
+    oc:differentia "that maps manufacturing defect reason text to standardized codebook entries using segmentation, semantic matching, station-scoped validation, and confidence calibration" ;
+    oc:hasArgumentHint "test_center_logs.csv and product codebook" ;
+    oc:hasCategory "manufacturing" ;
+    oc:hasDescription "This skill should be considered when you need to normalize testing engineers' written defect reasons following the provided product codebooks. This skill will correct the typos, misused abbreviations, ambiguous descriptions, mixed Chinese-English text or misleading text and provide explanations. This skill will do segmentation, semantic matching, confidence calibration and station validation." ;
+    oc:hasName "manufacturing-failure-reason-codebook-normalization" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: manufacturing-failure-reason-codebook-normalization
+description: This skill should be considered when you need to normalize testing engineers' written defect reasons following the provided product codebooks. This skill will correct the typos, misused abbreviations, ambiguous descriptions, mixed Chinese-English text or misleading text and provide explanations. This skill will do segmentation, semantic matching, confidence calibration and station validation.
+""" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 4 ;
+                    oc:textContent "UNKNOWN handling: UNKNOWN should be decided based on the best match only (i.e., after ranking), not by marking multiple candidates. If the best-match score is low (weak evidence), output pred_code=\"UNKNOWN\" and pred_label=\"\" to give engineering an alert. When strong positive cues exist (e.g., clear component references), UNKNOWN should be less frequent than in generic or noisy segments." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "This skill should be considered when you need to normalize, standardize, or correct testing engineers' written failure reasons to match the requirements provided in the product codebooks. Common errors in engineer-written reasons include ambiguous descriptions, missing important words, improper personal writing habits, using wrong abbreviations, improper combining multiple reasons into one sentence without clear spacing or in wrong order, writing wrong station names or model, writing typos, improper combining Chinese and English characters, cross-project differences, and taking wrong products' codebook." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 5 ;
+                    oc:textContent "Confidence calibration: confidence ranges from 0.0 to 1.0 and reflects an engineering confidence level (not a probability). Calibrate confidence from match quality so that UNKNOWN predictions are generally less confident than non-UNKNOWN predictions, and confidence values are not nearly constant. Confidence should show distribution-level separation between UNKNOWN and non-UNKNOWN predictions (e.g., means, quantiles, and diversity), and should be weakly aligned with evidence strength; round confidence to 4 decimals." ],
+                _:ref_9d2be4e7ccc40b54,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 6 ;
+                    oc:textContent "Here is a pipeline reference" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 3 ;
+                    oc:textContent "Some codes are defined for specific stations and cannot be used by other stations. If entry.stations is not None, the predicted code should only be considered valid when the record station matches one of the stations listed in entry.stations. Otherwise, the code should be rejected. For each record segment, the system evaluates candidate codes defined in the corresponding product codebook and computes an internal matching score for each candidate. You should consider multiple evidence sources to calculate the score to measure how well a candidate code explains the segment, and normalize the score to a stable range [0.0, 1.0]. Evidence can include text evidence from raw_reason_text (e.g., overlap or fuzzy similarity between span_text and codebook text such as standard_label, keywords_examples, or categories), station compatibility, fail_code alignment, test_item alignment, and conflict cues such as mutually exclusive or contradictory signals. After all candidate codes are scored, sort them in descending order. Let c1 be the top candidate with score s1 and c2 be the second candidate with score s2. When multiple candidates fall within a small margin of the best score, the system applies a deterministic tie-break based on record context (e.g., record_id, segment index, station, fail_code, test_item) to avoid always choosing the same code in near-tie cases while keeping outputs reproducible. To provide convincing answers, add station, fail_code, test_item, a short token overlap cue, or a component reference to the rationale." ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_9d2be4e7ccc40b54,
+        [ a oc:Workflow ;
+            dcterms:description "Full pipeline for normalizing manufacturing defect reason text against product codebooks" ;
+            oc:hasStep _:ref_58cc77df2c894690,
+                _:ref_8126239eb3038a0a,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Output pred_code/pred_label per segment (or UNKNOWN when weak evidence) with confidence rounded to 4 decimals and rationale" ;
+                    oc:expectedOutcome "Complete normalized classification output with calibrated confidence" ;
+                    oc:stepDependsOn _:ref_fa4581322a0a65a6 ;
+                    oc:stepId "output-predictions" ],
+                _:ref_f8a067b29f0639be,
+                _:ref_fa4581322a0a65a6 ;
+            oc:workflowId "codebook-normalization-pipeline" ;
+            oc:workflowName "Codebook Normalization Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_1d88b8f2,
+        oc:kn_33deda4f,
+        oc:kn_388038d0,
+        oc:kn_6b385aa1,
+        oc:kn_80c6fbc5,
+        oc:kn_89ae8ab3,
+        oc:kn_93d1c357,
+        oc:kn_a58294ee,
+        oc:kn_c81be181 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "calibrate confidence for defect classification",
+        "classify defect reasons to codebook codes",
+        "correct typos and abbreviations in defect reports",
+        "normalize defect reason text",
+        "standardize failure reason descriptions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1d88b8f2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining final prediction per segment" ;
+    oc:directiveContent "UNKNOWN must be decided based on the best match only (after ranking), not by marking multiple candidates. If best-match score is low, output pred_code='UNKNOWN' and pred_label=''. When strong positive cues exist (e.g., clear component references), UNKNOWN should be less frequent." ;
+    oc:hasRationale "Prevents overuse of UNKNOWN on segments with clear evidence, while alerting engineering when evidence is genuinely weak." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_33deda4f a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When computing confidence for any prediction" ;
+    oc:directiveContent "Confidence ranges from 0.0 to 1.0 reflecting engineering confidence level (not probability). UNKNOWN predictions must generally be less confident than non-UNKNOWN predictions. Confidence must show distribution-level separation and be weakly aligned with evidence strength; round to 4 decimals." ;
+    oc:hasRationale "Ensures confidence values are meaningful for engineering review rather than being nearly constant across all predictions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_388038d0 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Requires test_center_logs.csv file containing raw_reason_text, station, fail_code, test_item columns and product-specific codebook files with standard_label, keywords_examples, categories, and stations fields." .
+
+oc:kn_6b385aa1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When near-tie scores are detected among candidate codes" ;
+    oc:directiveContent "When multiple candidates fall within a small margin of the best score, apply a deterministic tie-break based on record context (record_id, segment index, station, fail_code, test_item) to ensure reproducible outputs." ;
+    oc:hasRationale "Prevents arbitrary selection in near-tie scenarios while keeping outputs reproducible across runs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_80c6fbc5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing match scores for candidate codes" ;
+    oc:directiveContent "Score each candidate code using multiple evidence sources: text evidence (overlap/fuzzy similarity with standard_label, keywords_examples, categories), station compatibility, fail_code alignment, test_item alignment, and conflict cues (mutually exclusive or contradictory signals). Normalize scores to [0.0, 1.0]." ;
+    oc:hasRationale "Multi-evidence scoring produces more robust classification than single-signal matching, especially for noisy or ambiguous defect text." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_89ae8ab3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filtering candidate codes for any segment" ;
+    oc:directiveContent "Some codes are defined for specific stations and cannot be used by other stations. If entry.stations is not None, the predicted code should only be considered valid when the record station matches one of the listed stations; otherwise reject the code." ;
+    oc:hasRationale "Station-scoped codes prevent misclassification where a defect code valid for one testing station is incorrectly applied to another." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_93d1c357 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Full pipeline execution" ;
+    oc:directiveContent "1. Load test_center_logs.csv and product codebooks; build valid_code_set, station_scope_map, CodebookEntry objects. 2. Split each raw_reason_text into 1-N segments with segment_id=<record_id>-S<i> and exact span_text. 3. Filter candidates by station scope, compute match score from combined evidence. 4. Rank candidates by score; apply deterministic tie-break for near-ties. 5. Output exactly one pred_code/pred_label per segment (or UNKNOWN/'' when weak evidence); compute and round confidence to 4 decimals." ;
+    oc:hasRationale "Defines the complete end-to-end processing pipeline for defect reason normalization." ;
+    oc:stepOrder 1 .
+
+oc:kn_a58294ee a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When loading codebook and processing raw reason text" ;
+    oc:directiveContent "Do not use a product's codebook for a different product. Common errors include: ambiguous descriptions, missing words, wrong abbreviations, combining multiple reasons without clear spacing or wrong order, wrong station names or model, typos, improper Chinese-English mixing." ;
+    oc:hasRationale "Cross-project codebook misuse and personal writing habits are the primary sources of classification error in manufacturing defect reports." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c81be181 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When producing final output for each segment" ;
+    oc:directiveContent "Per segment: segment_id, span_text, pred_code, pred_label, confidence (0.0-1.0, 4 decimals), rationale (including station, fail_code, test_item, token overlap cue, or component reference)" ;
+    oc:hasRationale "Structured output enables downstream engineering review and audit trail." .
+
+_:ref_0a5f119543bc2002 a oc:WorkflowStep ;
+    dcterms:description "For each segment, filter candidates by station scope, then compute match score from combined evidence (text evidence, station compatibility, context alignment, and conflict cues)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3e9bb55bea75f07b a oc:WorkflowStep ;
+    dcterms:description "For each record, split raw_reason_text into 1–N segments; each segment uses segment_id=<record_id>-S<i> and keeps an exact substring as span_text." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_5b847da73bb3b9ac a oc:WorkflowStep ;
+    dcterms:description "Output exactly one pred_code/pred_label per segment from the product codebook (or UNKNOWN/\"\" when best evidence is weak) and compute confidence by calibrating match quality with sufficient diversity; round to 4 decimals." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_a24be6d1fd1d9372 a oc:WorkflowStep ;
+    dcterms:description "Rank candidates by score; if multiple are within a small margin of the best, choose deterministically using a context-dependent tie-break among near-best station-compatible candidates." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_c43746ba158299c3 a oc:WorkflowStep ;
+    dcterms:description "Load test_center_logs.csv into logs_rows and load each product codebook; build valid_code_set, station_scope_map, and CodebookEntry objects." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_58cc77df2c894690 a oc:WorkflowStep ;
+    dcterms:description "Load test_center_logs.csv and product codebooks; build valid_code_set, station_scope_map, and CodebookEntry objects" ;
+    oc:expectedOutcome "All raw logs and codebook structures loaded into memory" ;
+    oc:stepId "load-data" .
+
+_:ref_8126239eb3038a0a a oc:WorkflowStep ;
+    dcterms:description "For each segment, filter candidates by station scope and compute match score from combined evidence sources" ;
+    oc:expectedOutcome "Scored and ranked candidate list per segment" ;
+    oc:stepDependsOn _:ref_f8a067b29f0639be ;
+    oc:stepId "score-candidates" .
+
+_:ref_9d2be4e7ccc40b54 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 7 ;
+    oc:hasStep _:ref_0a5f119543bc2002,
+        _:ref_3e9bb55bea75f07b,
+        _:ref_5b847da73bb3b9ac,
+        _:ref_a24be6d1fd1d9372,
+        _:ref_c43746ba158299c3 ;
+    oc:workflowId "procedure_7" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f8a067b29f0639be a oc:WorkflowStep ;
+    dcterms:description "Split each record's raw_reason_text into 1-N segments with segment_id=<record_id>-S<i> and exact span_text substrings" ;
+    oc:expectedOutcome "Each record decomposed into addressable segments" ;
+    oc:stepDependsOn _:ref_58cc77df2c894690 ;
+    oc:stepId "segment-records" .
+
+_:ref_fa4581322a0a65a6 a oc:WorkflowStep ;
+    dcterms:description "Rank candidates by score descending; apply deterministic context-based tie-break for near-ties" ;
+    oc:expectedOutcome "Single best candidate selected per segment" ;
+    oc:stepDependsOn _:ref_8126239eb3038a0a ;
+    oc:stepId "rank-and-break-ties" .
+

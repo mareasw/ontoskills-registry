@@ -1,0 +1,580 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_parallel_tfidf_search_workload_balancing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "workload-balancing" ;
+    skos:broader "Parallel execution optimization strategy" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/parallel-tfidf-search/workload-balancing" ;
+    oc:contentHash "e814ec3d6459243a89d07aebe4be1d39699eb0b2d7e37b71058019da31fba4de" ;
+    oc:differentia "distributes work across workers using static/dynamic partitioning, work stealing, and adaptive load balancing to maximize throughput and minimize stragglers" ;
+    oc:extends oc:skill_ontoskills_python_parallelization ;
+    oc:handlesFailure oc:LoadImbalanceDetected,
+        oc:TimeoutExceeded ;
+    oc:hasArgumentHint "items or tasks to balance across workers" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Optimize workload distribution across workers, processes, or nodes for efficient parallel execution. Use when asked to balance work distribution, improve parallel efficiency, reduce stragglers, implement load balancing, or optimize task scheduling. Covers static/dynamic partitioning, work stealing, and adaptive load balancing strategies." ;
+    oc:hasName "workload-balancing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: workload-balancing
+description: Optimize workload distribution across workers, processes, or nodes for efficient parallel execution. Use when asked to balance work distribution, improve parallel efficiency, reduce stragglers, implement load balancing, or optimize task scheduling. Covers static/dynamic partitioning, work stealing, and adaptive load balancing strategies.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Distribute work efficiently across parallel workers to maximize throughput and minimize completion time." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """What's the workload characteristic?
+
+Uniform task times:
+├── Known count → Static partitioning (equal chunks)
+├── Streaming input → Round-robin distribution
+└── Large items → Size-aware partitioning
+
+Variable task times:
+├── Predictable variance → Weighted distribution
+├── Unpredictable → Dynamic scheduling / work stealing
+└── Long-tail distribution → Work stealing + time limits
+
+Resource constraints:
+├── Memory-bound workers → Memory-aware assignment
+├── Heterogeneous workers → Capability-based routing
+└── Network costs → Locality-aware placement
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-37" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Load Balancing Decision Tree" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import asyncio
+
+async def semaphore_balanced_fetch(urls, max_concurrent=10):
+    \"\"\"Limit concurrent operations while processing queue.\"\"\"
+    semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def bounded_fetch(url):
+        async with semaphore:
+            return await fetch(url)
+
+    return await asyncio.gather(*[bounded_fetch(url) for url in urls])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 159-171" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Best for: limiting concurrent I/O operations" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Strategy 5: Async Semaphore Balancing (I/O Workloads)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Best for: predictable, similar-sized tasks" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from concurrent.futures import ProcessPoolExecutor
+import numpy as np
+
+def static_balanced_process(items, num_workers=4):
+    \"\"\"Divide work into equal chunks upfront.\"\"\"
+    chunks = np.array_split(items, num_workers)
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        results = list(executor.map(process_chunk, chunks))
+
+    return [item for chunk_result in results for item in chunk_result]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 45-57" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Strategy 1: Static Chunking (Uniform Workloads)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Best for: when some tasks take much longer than others" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import asyncio
+from collections import deque
+
+class WorkStealingPool:
+    def __init__(self, num_workers):
+        self.queues = [deque() for _ in range(num_workers)]
+        self.num_workers = num_workers
+
+    def distribute(self, items):
+        \"\"\"Initial round-robin distribution.\"\"\"
+        for i, item in enumerate(items):
+            self.queues[i % self.num_workers].append(item)
+
+    async def worker(self, worker_id, process_fn):
+        \"\"\"Process own queue, steal from others when empty.\"\"\"
+        while True:
+            # Try own queue first
+            if self.queues[worker_id]:
+                item = self.queues[worker_id].popleft()
+            else:
+                # Steal from busiest queue
+                item = self._steal_work(worker_id)
+                if item is None:
+                    break
+
+            await process_fn(item)
+
+    def _steal_work(self, worker_id):
+        \"\"\"Steal from the queue with most items.\"\"\"
+        busiest = max(range(self.num_workers),
+                      key=lambda i: len(self.queues[i]) if i != worker_id else 0)
+        if self.queues[busiest]:
+            return self.queues[busiest].pop()  # Steal from end
+        return None
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 96-131" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Strategy 3: Work Stealing (Long-Tail Tasks)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Best for: unpredictable task durations" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from concurrent.futures import ProcessPoolExecutor, as_completed
+from queue import Queue
+
+def dynamic_balanced_process(items, num_workers=4):
+    \"\"\"Workers pull tasks dynamically as they complete.\"\"\"
+    results = []
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # Submit one task per worker initially
+        futures = {executor.submit(process_item, item): item
+                   for item in items[:num_workers]}
+        pending = list(items[num_workers:])
+
+        while futures:
+            done, _ = wait(futures, return_when=FIRST_COMPLETED)
+
+            for future in done:
+                results.append(future.result())
+                del futures[future]
+
+                # Submit next task if available
+                if pending:
+                    next_item = pending.pop(0)
+                    futures[executor.submit(process_item, next_item)] = next_item
+
+    return results
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 63-90" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Strategy 2: Dynamic Task Queue (Variable Workloads)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Best for: when task costs are known or estimable" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def weighted_partition(items, weights, num_workers):
+    \"\"\"Partition items to balance total weight per worker.\"\"\"
+    # Sort by weight descending (largest first fit)
+    sorted_items = sorted(zip(items, weights), key=lambda x: -x[1])
+
+    worker_loads = [0] * num_workers
+    worker_items = [[] for _ in range(num_workers)]
+
+    for item, weight in sorted_items:
+        # Assign to least loaded worker
+        min_worker = min(range(num_workers), key=lambda i: worker_loads[i])
+        worker_items[min_worker].append(item)
+        worker_loads[min_worker] += weight
+
+    return worker_items
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 137-153" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Strategy 4: Weighted Distribution" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Balancing Strategies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Anti-Patterns" ;
+                            oc:tableMarkdown """| Problem | Cause | Fix |
+|---------|-------|-----|
+| Starvation | Large tasks block queue | Break into subtasks |
+| Thundering herd | All workers wake at once | Jittered scheduling |
+| Hot spots | Uneven key distribution | Better hash function |
+| Convoy effect | Workers wait on same resource | Fine-grained locking |
+| Over-partitioning | Too many small tasks | Batch small items |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Anti-Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Track these for balanced execution:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "Track these for balanced execution" ;
+                            oc:tableMarkdown """| Metric | Calculation | Target |
+|--------|-------------|--------|
+| Load imbalance | `max(load) / avg(load)` | < 1.2 |
+| Straggler ratio | `max(time) / median(time)` | < 2.0 |
+| Worker utilization | `busy_time / total_time` | > 90% |
+| Queue depth variance | `std(queue_lengths)` | Low |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Monitoring Metrics" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Work distribution is roughly even (measure completion times)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] Resource utilization is high across workers" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Results are complete and correct" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] Stragglers are handled (timeout/retry logic)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Overhead is acceptable (partitioning cost vs. task cost)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] No starvation (all workers stay busy)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before finalizing balanced code:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Verification Checklist" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Techniques to mitigate slow workers:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# 1. Timeout with fallback
+from concurrent.futures import TimeoutError
+
+try:
+    result = future.result(timeout=30)
+except TimeoutError:
+    result = fallback_value
+
+# 2. Speculative execution (backup tasks)
+async def speculative_execute(task, timeout=10):
+    primary = asyncio.create_task(execute(task))
+    try:
+        return await asyncio.wait_for(primary, timeout)
+    except asyncio.TimeoutError:
+        backup = asyncio.create_task(execute(task))  # Retry
+        done, pending = await asyncio.wait(
+            [primary, backup], return_when=asyncio.FIRST_COMPLETED
+        )
+        for p in pending:
+            p.cancel()
+        return done.pop().result()
+
+# 3. Dynamic rebalancing
+def rebalance_on_straggler(futures, threshold_ratio=2.0):
+    \"\"\"Redistribute work if one worker falls behind.\"\"\"
+    avg_completion = statistics.mean(completion_times)
+    for future, worker_id in futures.items():
+        if future.running() and elapsed(future) > threshold_ratio * avg_completion:
+            # Cancel and redistribute
+            remaining_work = cancel_and_get_remaining(future)
+            redistribute(remaining_work, fast_workers)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 187-219" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Handling Stragglers" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_6a6d437d5a44eda0 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Partitioning Strategies" ;
+                            oc:tableMarkdown """| Strategy | Best For | Implementation |
+|----------|----------|----------------|
+| Equal chunks | Uniform tasks | `np.array_split(items, n)` |
+| Round-robin | Streaming | `items[i::n_workers]` |
+| Size-weighted | Known sizes | Bin packing algorithm |
+| Hash-based | Consistent routing | `hash(key) % n_workers` |
+| Range-based | Sorted/ordered data | Contiguous ranges |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Partitioning Strategies" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Workload Balancing Skill" ] ;
+    oc:hasWorkflow _:ref_6a6d437d5a44eda0,
+        [ a oc:Workflow ;
+            dcterms:description "Systematic workflow for characterizing, selecting, implementing, and validating a workload balancing strategy." ;
+            oc:hasStep _:ref_07a5f8ad61836e46,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Monitor metrics (load imbalance <1.2, straggler ratio <2.0, utilization >90%) and adapt" ;
+                    oc:expectedOutcome "Validated balanced execution meeting target thresholds" ;
+                    oc:stepDependsOn _:ref_c380a3943c094d4a ;
+                    oc:stepId "monitor-validate" ],
+                _:ref_958fcd1845a5e249,
+                _:ref_974a6c9d0f3915b7,
+                _:ref_c380a3943c094d4a ;
+            oc:workflowId "workload-balancing-main" ;
+            oc:workflowName "Workload Balancing Optimization" ] ;
+    oc:impartsKnowledge oc:kn_19d6b865,
+        oc:kn_4a7a7d99,
+        oc:kn_7f00f051,
+        oc:kn_8940e09b,
+        oc:kn_91aec83a,
+        oc:kn_ad982646,
+        oc:kn_b2f02dab,
+        oc:kn_ca7d6e68,
+        oc:kn_cd476b8c,
+        oc:kn_e09b1c13,
+        oc:kn_f1d83f3f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "balance work distribution across parallel workers",
+        "implement load balancing strategies",
+        "improve parallel execution efficiency",
+        "optimize task scheduling and partitioning",
+        "reduce stragglers in distributed tasks" ;
+    oc:yieldsState oc:WorkloadBalanced .
+
+oc:kn_19d6b865 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When workers are taking disproportionately long to complete" ;
+    oc:directiveContent "Handle stragglers using timeouts with fallback values, speculative execution (launching backup tasks), and dynamic rebalancing by canceling slow workers and redistributing remaining work to faster ones." ;
+    oc:hasRationale "Straggler mitigation prevents long-tail latency from dominating overall completion time." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4a7a7d99 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "Always, when approaching any workload balancing problem" ;
+    oc:directiveContent "Characterize workload first (uniform vs. variable), then identify bottlenecks, select strategy, implement partitioning, and monitor runtime metrics to adapt." ;
+    oc:hasRationale "Systematic characterization prevents applying the wrong strategy and ensures measurable improvement." .
+
+oc:kn_7f00f051 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When optimizing workload distribution" ;
+    oc:directiveContent "1. Characterize workload (uniform vs variable task times) 2. Identify bottlenecks (stragglers, uneven distribution) 3. Select balancing strategy based on decision tree 4. Implement partitioning and scheduling logic 5. Monitor metrics and adapt to runtime conditions" ;
+    oc:stepOrder 1 .
+
+oc:kn_8940e09b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When measuring and validating balanced execution" ;
+    oc:directiveContent "Load imbalance ratio (max load / avg load) should stay below 1.2, straggler ratio (max time / median time) below 2.0, and worker utilization above 90%." ;
+    oc:hasRationale "These thresholds indicate healthy parallel distribution; exceeding them signals significant inefficiency." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_91aec83a a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Before finalizing balanced parallel code" ;
+    oc:directiveContent """Verification Checklist:
+- Work distribution roughly even (measure completion times)
+- No starvation (all workers stay busy)
+- Stragglers handled (timeout/retry logic)
+- Overhead acceptable (partitioning cost vs task cost)
+- Results complete and correct
+- Resource utilization high across workers""" .
+
+oc:kn_ad982646 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing partition granularity" ;
+    oc:directiveContent "Partitioning overhead must be significantly less than individual task cost. If partitioning cost approaches task cost, reduce partition count or batch small items together." ;
+    oc:hasRationale "Over-partitioning creates more overhead than the parallelism benefit provides." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b2f02dab a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a load balancing approach" ;
+    oc:directiveContent "Match balancing strategy to workload characteristics: static chunking for uniform tasks, dynamic scheduling for variable tasks, work stealing for long-tail distributions, weighted partitioning for known costs, semaphore limiting for I/O-bound work." ;
+    oc:hasRationale "Using the wrong strategy for workload characteristics leads to load imbalance, wasted resources, or excessive overhead." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ca7d6e68 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any parallel workload distribution" ;
+    oc:directiveContent "Avoid over-partitioning (too many small tasks), starvation (large tasks blocking queues), thundering herd (all workers wake simultaneously), hot spots (uneven key distribution), and convoy effects (workers waiting on shared resources)." ;
+    oc:hasRationale "These anti-patterns degrade throughput and negate the benefits of parallelization." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cd476b8c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When limiting concurrent I/O operations" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """async def semaphore_balanced_fetch(urls, max_concurrent=10):
+    semaphore = asyncio.Semaphore(max_concurrent)
+    async def bounded_fetch(url):
+        async with semaphore:
+            return await fetch(url)
+    return await asyncio.gather(*[bounded_fetch(url) for url in urls])""" .
+
+oc:kn_e09b1c13 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tasks have uniform, predictable durations" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from concurrent.futures import ProcessPoolExecutor
+import numpy as np
+
+def static_balanced_process(items, num_workers=4):
+    chunks = np.array_split(items, num_workers)
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        results = list(executor.map(process_chunk, chunks))
+    return [item for chunk_result in results for item in chunk_result]""" .
+
+oc:kn_f1d83f3f a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When some tasks take much longer than others (long-tail distribution)" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """class WorkStealingPool:
+    def __init__(self, num_workers):
+        self.queues = [deque() for _ in range(num_workers)]
+        self.num_workers = num_workers
+
+    async def worker(self, worker_id, process_fn):
+        while True:
+            if self.queues[worker_id]:
+                item = self.queues[worker_id].popleft()
+            else:
+                item = self._steal_work(worker_id)
+                if item is None: break
+            await process_fn(item)
+
+    def _steal_work(self, worker_id):
+        busiest = max(range(self.num_workers),
+                      key=lambda i: len(self.queues[i]) if i != worker_id else 0)
+        if self.queues[busiest]:
+            return self.queues[busiest].pop()
+        return None""" .
+
+_:ref_2bab4e7e56057250 a oc:WorkflowStep ;
+    dcterms:description "**Identify** bottlenecks (stragglers, uneven distribution)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_536abcef27468985 a oc:WorkflowStep ;
+    dcterms:description "**Select** balancing strategy based on workload characteristics" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_6074d062688df816 a oc:WorkflowStep ;
+    dcterms:description "**Monitor** and adapt to runtime conditions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_64348a1e7db928a3 a oc:WorkflowStep ;
+    dcterms:description "**Implement** partitioning and scheduling logic" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f883210e6d2c7e7d a oc:WorkflowStep ;
+    dcterms:description "**Characterize** the workload (uniform vs. variable task times)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_07a5f8ad61836e46 a oc:WorkflowStep ;
+    dcterms:description "Identify bottlenecks: stragglers, uneven distribution, resource constraints" ;
+    oc:expectedOutcome "List of bottlenecks and imbalance sources" ;
+    oc:stepDependsOn _:ref_958fcd1845a5e249 ;
+    oc:stepId "identify-bottlenecks" .
+
+_:ref_6a6d437d5a44eda0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_2bab4e7e56057250,
+        _:ref_536abcef27468985,
+        _:ref_6074d062688df816,
+        _:ref_64348a1e7db928a3,
+        _:ref_f883210e6d2c7e7d ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_958fcd1845a5e249 a oc:WorkflowStep ;
+    dcterms:description "Characterize the workload as uniform vs variable task times" ;
+    oc:expectedOutcome "Workload profile identified (uniform/variable/constrained)" ;
+    oc:stepId "characterize" .
+
+_:ref_974a6c9d0f3915b7 a oc:WorkflowStep ;
+    dcterms:description "Select balancing strategy using the decision tree based on workload characteristics" ;
+    oc:expectedOutcome "Chosen strategy (static/dynamic/work-stealing/weighted/semaphore)" ;
+    oc:stepDependsOn _:ref_07a5f8ad61836e46 ;
+    oc:stepId "select-strategy" .
+
+_:ref_c380a3943c094d4a a oc:WorkflowStep ;
+    dcterms:description "Implement partitioning and scheduling logic with chosen strategy" ;
+    oc:expectedOutcome "Working parallel code with balanced distribution" ;
+    oc:stepDependsOn _:ref_974a6c9d0f3915b7 ;
+    oc:stepId "implement" .
+

@@ -1,0 +1,366 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_filler_word_remover_ffmpeg_video_editing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-video-editing" ;
+    skos:broader "Video editing utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-filler-word-remover/ffmpeg-video-editing" ;
+    oc:contentHash "cbdc3cec2b7447553a324b14c6bfaa8c66a00fc231c951fec189c26eb0241414" ;
+    oc:differentia "uses ffmpeg to cut, trim, concatenate, and re-encode video segments with support for batch removal of multiple segments" ;
+    oc:handlesFailure oc:CommandFailed,
+        oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "input-file, segments-to-cut, output-file" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Video editing with ffmpeg including cutting, trimming, concatenating segments, and re-encoding. Use when working with video files (.mp4, .mkv, .avi) for: removing segments, joining clips, extracting portions, or any video manipulation task." ;
+    oc:hasName "ffmpeg-video-editing" ;
+    oc:hasRequirement oc:req_3fcf652e,
+        oc:req_5f465d74,
+        oc:req_8f2ef958 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: ffmpeg-video-editing
+description: "Video editing with ffmpeg including cutting, trimming, concatenating segments, and re-encoding. Use when working with video files (.mp4, .mkv, .avi) for: removing segments, joining clips, extracting portions, or any video manipulation task."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Create a file list (`segments.txt`):" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Then concatenate:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """file 'segment1.mp4'
+file 'segment2.mp4'
+file 'segment3.mp4'
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 40-44" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ffmpeg -f concat -safe 0 -i segments.txt -c copy output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 47-49" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Using concat demuxer (recommended for same-codec files)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ffmpeg -i seg1.mp4 -i seg2.mp4 -i seg3.mp4 \\
+  -filter_complex "[0:v][0:a][1:v][1:a][2:v][2:a]concat=n=3:v=1:a=1[v][a]" \\
+  -map "[v]" -map "[a]" output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 53-57" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Using filter_complex (for re-encoding)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Concatenating Multiple Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_045d10751667249b,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For removing many short segments (like filler words), the efficient approach:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import subprocess
+import os
+
+def remove_segments(input_file, segments_to_remove, output_file):
+    \"\"\"
+    segments_to_remove: list of (start, end) tuples in seconds
+    \"\"\"
+    # Get video duration
+    result = subprocess.run([
+        'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+        '-of', 'default=noprint_wrappers=1:nokey=1', input_file
+    ], capture_output=True, text=True)
+    duration = float(result.stdout.strip())
+
+    # Sort segments and merge overlapping
+    segments = sorted(segments_to_remove)
+
+    # Calculate keep segments (gaps between remove segments)
+    keep_segments = []
+    current_pos = 0.0
+
+    for start, end in segments:
+        if start > current_pos:
+            keep_segments.append((current_pos, start))
+        current_pos = max(current_pos, end)
+
+    if current_pos < duration:
+        keep_segments.append((current_pos, duration))
+
+    # Extract each keep segment
+    temp_files = []
+    for i, (start, end) in enumerate(keep_segments):
+        temp_file = f'/tmp/seg_{i:04d}.mp4'
+        subprocess.run([
+            'ffmpeg', '-y', '-i', input_file,
+            '-ss', str(start), '-to', str(end),
+            '-c', 'copy', temp_file
+        ], check=True)
+        temp_files.append(temp_file)
+
+    # Create concat list
+    list_file = '/tmp/concat_list.txt'
+    with open(list_file, 'w') as f:
+        for temp_file in temp_files:
+            f.write(f"file '{temp_file}'\\n")
+
+    # Concatenate
+    subprocess.run([
+        'ffmpeg', '-y', '-f', 'concat', '-safe', '0',
+        '-i', list_file, '-c', 'copy', output_file
+    ], check=True)
+
+    # Cleanup
+    for f in temp_files:
+        os.remove(f)
+    os.remove(list_file)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 67-124" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Removing Multiple Segments (Batch)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Extract from start_time to end_time
+ffmpeg -i input.mp4 -ss START -to END -c copy output.mp4
+
+# With re-encoding for frame-accurate cuts
+ffmpeg -i input.mp4 -ss START -to END -c:v libx264 -c:a aac output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 12-18" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Extract a portion (keep segment)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "To remove a segment, split into parts and concatenate:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# 1. Extract before the cut
+ffmpeg -i input.mp4 -to CUT_START -c copy part1.mp4
+
+# 2. Extract after the cut  
+ffmpeg -i input.mp4 -ss CUT_END -c copy part2.mp4
+
+# 3. Concatenate
+ffmpeg -f concat -safe 0 -i filelist.txt -c copy output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 24-33" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Remove a segment (cut out middle)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Cutting Video Segments" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 input.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 138-140" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Getting video duration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "For precise cuts, re-encode: `-c:v libx264 -c:a aac`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Use `-c copy` only when cutting at keyframes" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Audio/Video sync problems" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Small buffer (0.01s) between segments can help" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Ensure segments don't overlap" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Gaps or glitches at cut points" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Common Issues" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Video Editing" ] ;
+    oc:hasWorkflow _:ref_045d10751667249b,
+        [ a oc:Workflow ;
+            dcterms:description "Remove multiple segments from a video by computing keep segments, extracting them, and concatenating." ;
+            oc:hasStep _:ref_73ac20439a7e32b0,
+                _:ref_9577578ef7d4b7d9,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Remove temp segment files and concat list" ;
+                    oc:expectedOutcome "No temp files remaining" ;
+                    oc:stepDependsOn _:ref_df4bb76d3405c968 ;
+                    oc:stepId "cleanup" ],
+                _:ref_df4bb76d3405c968,
+                _:ref_fea0dd752a6df9b1 ;
+            oc:workflowId "batch-remove-segments" ;
+            oc:workflowName "Batch Remove Video Segments" ] ;
+    oc:impartsKnowledge oc:kn_18c44dde,
+        oc:kn_2d19f787,
+        oc:kn_4095b7db,
+        oc:kn_8968788b,
+        oc:kn_917de5e1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "batch remove multiple segments from video",
+        "concatenate video clips",
+        "cut video segments",
+        "extract portion of video",
+        "remove segments from video" ;
+    oc:yieldsState oc:FileCreated .
+
+oc:kn_18c44dde a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When removing many short segments like filler words" ;
+    oc:directiveContent "For batch segment removal, calculate keep segments (inverse of remove segments), extract each keep segment, then concatenate rather than removing one segment at a time." ;
+    oc:hasRationale "Removing segments sequentially requires N full re-encodes; the inverse-keep approach requires only one extraction pass and one concatenation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2d19f787 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running any ffmpeg command" ;
+    oc:directiveContent "FFmpeg operations are not idempotent if output files already exist; always use `-y` flag to overwrite or ensure unique output names." ;
+    oc:hasRationale "Without `-y`, ffmpeg prompts for overwrite confirmation, which hangs in non-interactive subprocess execution." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4095b7db a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing concatenation method" ;
+    oc:directiveContent "Use the concat demuxer (`-f concat`) with `-c copy` for same-codec files; use filter_complex only when re-encoding is necessary." ;
+    oc:hasRationale "The concat demuxer with stream copy is dramatically faster and lossless compared to filter_complex re-encoding." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8968788b a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When concatenating multiple extracted segments" ;
+    oc:directiveContent "Gaps or glitches at cut points can occur if segments overlap. Add a small buffer (0.01s) between adjacent segments to avoid overlap artifacts." ;
+    oc:hasRationale "Floating-point timestamp precision can cause micro-overlaps that produce glitches at splice points." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_917de5e1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When cutting video at arbitrary timestamps" ;
+    oc:directiveContent "Never use `-c copy` when cutting at non-keyframe positions; always re-encode with `-c:v libx264 -c:a aac` for frame-accurate cuts." ;
+    oc:hasRationale "Stream copy mode can only cut at keyframes, causing audio/video sync drift and incorrect segment boundaries." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "python3" .
+
+oc:req_5f465d74 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffprobe" .
+
+oc:req_8f2ef958 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffmpeg" .
+
+_:ref_23aa526b20bc4b38 a oc:WorkflowStep ;
+    dcterms:description "Concatenate all keep segments" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3967397d621ba6b9 a oc:WorkflowStep ;
+    dcterms:description "Calculate the \"keep\" segments (inverse of remove segments)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_7aaf5b11a5a06f10 a oc:WorkflowStep ;
+    dcterms:description "Extract each keep segment" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_045d10751667249b a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_23aa526b20bc4b38,
+        _:ref_3967397d621ba6b9,
+        _:ref_7aaf5b11a5a06f10 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_73ac20439a7e32b0 a oc:WorkflowStep ;
+    dcterms:description "Sort removal segments and calculate inverse keep segments (gaps between remove segments)" ;
+    oc:expectedOutcome "List of (start, end) keep segments computed" ;
+    oc:stepDependsOn _:ref_9577578ef7d4b7d9 ;
+    oc:stepId "compute-keep-segments" .
+
+_:ref_9577578ef7d4b7d9 a oc:WorkflowStep ;
+    dcterms:description "Get video duration using ffprobe" ;
+    oc:expectedOutcome "Duration in seconds obtained" ;
+    oc:stepId "get-duration" .
+
+_:ref_df4bb76d3405c968 a oc:WorkflowStep ;
+    dcterms:description "Create concat list file and concatenate all temp segments into final output" ;
+    oc:expectedOutcome "Final output video with segments removed" ;
+    oc:stepDependsOn _:ref_fea0dd752a6df9b1 ;
+    oc:stepId "concatenate" .
+
+_:ref_fea0dd752a6df9b1 a oc:WorkflowStep ;
+    dcterms:description "Extract each keep segment to a temp file using ffmpeg -c copy" ;
+    oc:expectedOutcome "All keep segments saved as individual temp files" ;
+    oc:stepDependsOn _:ref_73ac20439a7e32b0 ;
+    oc:stepId "extract-segments" .
+

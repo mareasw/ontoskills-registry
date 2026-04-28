@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/exceltable-in-ppt",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "pptx/ontoskill.ttl",
+    "xlsx/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "pptx/intents.json",
+    "xlsx/intents.json"
+  ],
+  "skills": []
+}

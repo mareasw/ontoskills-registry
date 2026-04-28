@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/powerlifting-coef-calc",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "powerlifting/ontoskill.ttl",
+    "xlsx/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "powerlifting/intents.json",
+    "xlsx/intents.json"
+  ],
+  "skills": []
+}

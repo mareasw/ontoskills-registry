@@ -1,0 +1,300 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_grid_dispatch_operator_dc_power_flow a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "dc-power-flow" ;
+    skos:broader "Power flow analysis method" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/grid-dispatch-operator/dc-power-flow" ;
+    oc:contentHash "d15c23d315648fc3b50cabbc7eae70a6106a08ad4c0cd1e5e6af75cd319387dd" ;
+    oc:dependsOnSkill oc:skill_ontoskills_power_flow_data ;
+    oc:differentia "linearizes AC power flow using DC approximations (lossless lines, flat voltage, small angles) to compute bus angles and line flows via susceptance matrix" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:SingularMatrix ;
+    oc:hasCategory "engineering" ;
+    oc:hasDescription "DC power flow analysis for power systems. Use when computing power flows using DC approximation, building susceptance matrices, calculating line flows and loading percentages, or performing sensitivity analysis on transmission networks." ;
+    oc:hasName "dc-power-flow" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: dc-power-flow
+description: "DC power flow analysis for power systems. Use when computing power flows using DC approximation, building susceptance matrices, calculating line flows and loading percentages, or performing sensitivity analysis on transmission networks."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "DC power flow is a linearized approximation of AC power flow, suitable for economic dispatch and contingency analysis." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """branch_susceptances = []
+for br in branches:
+    x = br[3]
+    b = 1.0 / x if x != 0 else 0
+    branch_susceptances.append(b)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 99-105" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Store susceptances when building constraints:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Branch Susceptances for Constraints" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Create mapping: bus_number -> 0-indexed position
+bus_num_to_idx = {int(buses[i, 0]): i for i in range(n_bus)}
+
+# Use mapping for branch endpoints
+f = bus_num_to_idx[int(br[0])]  # NOT br[0] - 1
+t = bus_num_to_idx[int(br[1])]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 22-29" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Power system bus numbers may not be contiguous (e.g., case300 has non-sequential bus IDs). Always create a mapping from bus numbers to 0-indexed array positions:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Bus Number Mapping" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Build from branch reactances using bus number mapping:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Run: scripts/build_b_matrix.py
+# Or inline:
+bus_num_to_idx = {int(buses[i, 0]): i for i in range(n_bus)}
+B = np.zeros((n_bus, n_bus))
+
+for br in branches:
+    f = bus_num_to_idx[int(br[0])]  # Map bus number to index
+    t = bus_num_to_idx[int(br[1])]
+    x = br[3]  # Reactance
+    if x != 0:
+        b = 1.0 / x
+        B[f, f] += b
+        B[t, t] += b
+        B[f, t] -= b
+        B[t, f] -= b
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 35-51" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Susceptance Matrix (B)" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_44556c3a2c33aa89,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Result: Power flow depends only on bus angles (θ) and line reactances (X)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "DC Approximations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """loading_pct = abs(flow_MW) / rating_MW * 100
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 89-91" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Where `rating_MW = branch[5]` (RATE_A column)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Line Loading Percentage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Flow on branch from bus f to bus t (use bus number mapping):" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """f = bus_num_to_idx[int(br[0])]
+t = bus_num_to_idx[int(br[1])]
+b = 1.0 / br[3]  # Susceptance = 1/X
+flow_pu = b * (theta[f] - theta[t])
+flow_MW = flow_pu * baseMVA
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 79-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Line Flow Calculation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "At each bus: `Pg - Pd = B[i, :] @ θ`" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Where:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Pg = generation at bus (pu)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "θ = vector of bus angles (radians)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Pd = load at bus (pu)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Power Balance Equation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "One bus must have θ = 0 as reference. Find slack bus (type=3):" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """slack_idx = None
+for i in range(n_bus):
+    if buses[i, 1] == 3:
+        slack_idx = i
+        break
+constraints.append(theta[slack_idx] == 0)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 66-73" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Slack Bus" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Enforce thermal limits as linear constraints:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# |flow| <= rating  →  -rating <= flow <= rating
+flow = b * (theta[f] - theta[t]) * baseMVA
+constraints.append(flow <= rate)
+constraints.append(flow >= -rate)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 111-116" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Line Flow Limits (for OPF)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "DC Power Flow" ] ;
+    oc:hasWorkflow _:ref_44556c3a2c33aa89 ;
+    oc:impartsKnowledge oc:kn_1706f2ae,
+        oc:kn_7ed4ff29,
+        oc:kn_a5a0c6a0,
+        oc:kn_b2dd4997,
+        oc:kn_b6e8e401,
+        oc:kn_cddef4ef ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkDataLoaded ;
+    oc:resolvesIntent "build susceptance matrix",
+        "calculate line flows and loading percentages",
+        "compute DC power flow",
+        "perform sensitivity analysis on transmission networks",
+        "solve for bus angles in power systems" ;
+    oc:yieldsState oc:LineFlowsComputed,
+        oc:PowerFlowSolved .
+
+oc:kn_1706f2ae a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before building B matrix or solving power flow" ;
+    oc:directiveContent "Verify branch data has at least 6 columns (from_bus, to_bus, ..., reactance at col 3, ..., rating at col 5) and buses have type column at index 1." ;
+    oc:hasRationale "Incorrect column indexing is the most common data error in power flow computations" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7ed4ff29 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building susceptance matrix or computing line flows" ;
+    oc:directiveContent "Guard against zero reactance (x=0) when computing susceptance b=1/x. Use: b = 1.0/x if x != 0 else 0" ;
+    oc:hasRationale "Zero reactance causes division-by-zero errors and indicates a zero-impedance branch that needs special handling" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a5a0c6a0 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether DC power flow is appropriate for analysis" ;
+    oc:directiveContent "DC power flow rests on three approximations: (1) lossless lines R≈0, (2) flat voltage all buses =1.0 pu, (3) small angle approximation sin(θ)≈θ. Verify these hold for the system under study." ;
+    oc:hasRationale "These approximations make power flow linear but break down for highly loaded systems, networks with high R/X ratios, or systems with large angle separations" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b2dd4997 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When solving for bus angles" ;
+    oc:directiveContent "One slack bus (type=3) must always have θ=0 as the angular reference. Without this constraint, the system is underdetermined." ;
+    oc:hasRationale "The DC power flow equations have a singular B matrix without removing the slack bus row/column or fixing its angle to zero" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b6e8e401 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Building the susceptance matrix and solving DC power flow is deterministic given the same input data. Re-running produces identical results." ;
+    oc:hasRationale "The B matrix construction and linear solve are purely algebraic with no random components" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_cddef4ef a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When indexing any array using bus data" ;
+    oc:directiveContent "Never use bus number directly as array index (e.g., br[0] - 1). Power system bus numbers may not be contiguous. Always map bus numbers to 0-indexed positions via a dictionary." ;
+    oc:hasRationale "Non-contiguous bus IDs (e.g., case300 has non-sequential bus IDs) will produce wrong indices and corrupt the susceptance matrix" ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_261a187aa9162d75 a oc:WorkflowStep ;
+    dcterms:description "**Small angles** - sin(θ) ≈ θ, cos(θ) ≈ 1" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_a00a8289cba07a79 a oc:WorkflowStep ;
+    dcterms:description "**Flat voltage** - All bus voltages = 1.0 pu" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a0b67a576543e46c a oc:WorkflowStep ;
+    dcterms:description "**Lossless lines** - Ignore resistance (R ≈ 0)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_44556c3a2c33aa89 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_261a187aa9162d75,
+        _:ref_a00a8289cba07a79,
+        _:ref_a0b67a576543e46c ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

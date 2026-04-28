@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/fix-erlang-ssh-cve",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "erlang-concurrency/ontoskill.ttl",
+    "erlang-distribution/ontoskill.ttl",
+    "erlang-otp-behaviors/ontoskill.ttl",
+    "find-bugs/ontoskill.ttl",
+    "senior-security/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "erlang-concurrency/intents.json",
+    "erlang-distribution/intents.json",
+    "erlang-otp-behaviors/intents.json",
+    "find-bugs/intents.json",
+    "senior-security/intents.json"
+  ],
+  "skills": []
+}

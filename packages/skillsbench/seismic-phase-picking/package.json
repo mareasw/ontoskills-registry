@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/seismic-phase-picking",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "obspy-data-api/ontoskill.ttl",
+    "obspy-datacenter-client/ontoskill.ttl",
+    "seisbench-model-api/ontoskill.ttl",
+    "seismic-picker-selection/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "obspy-data-api/intents.json",
+    "obspy-datacenter-client/intents.json",
+    "seisbench-model-api/intents.json",
+    "seismic-picker-selection/intents.json"
+  ],
+  "skills": []
+}

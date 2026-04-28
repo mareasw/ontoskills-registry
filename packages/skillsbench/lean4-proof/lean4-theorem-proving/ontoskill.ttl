@@ -1,0 +1,543 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_lean4_proof_lean4_theorem_proving a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "lean4-theorem-proving" ;
+    skos:broader "Methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/lean4-proof/lean4-theorem-proving" ;
+    oc:contentHash "a6575db48fa6f075bf44c5005a71abd40c3f71d807818f48b904cd07be77dcfd" ;
+    oc:differentia "provides a build-first, compiler-guided workflow for writing, debugging, and completing Lean 4 formal proofs with incremental sorry/axiom elimination and mathlib integration" ;
+    oc:extends oc:skill_ontoskills_lean4_memories ;
+    oc:handlesFailure oc:CompilationError,
+        oc:InstanceSynthesisFailure,
+        oc:TypeMismatch ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "FILE.lean or proof goal description" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when working with Lean 4 (.lean files), writing mathematical proofs, seeing \"failed to synthesize instance\" errors, managing sorry/axiom elimination, or searching mathlib for lemmas - provides build-first workflow, haveI/letI patterns, compiler-guided repair, and LSP integration" ;
+    oc:hasName "lean4-theorem-proving" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: lean4-theorem-proving
+description: Use when working with Lean 4 (.lean files), writing mathematical proofs, seeing "failed to synthesize instance" errors, managing sorry/axiom elimination, or searching mathlib for lemmas - provides build-first workflow, haveI/letI patterns, compiler-guided repair, and LSP integration
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Analysis & Topology:** Integrability, continuity, compactness patterns. Tactics: `continuity`, `fun_prop`." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Algebra:** Instance building, quotient constructions. Tactics: `ring`, `field_simp`, `group`." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Measure Theory & Probability** (emphasis in this skill): Conditional expectation, sub-σ-algebras, a.e. properties. Tactics: `measurability`, `positivity`. See [measure-theory.md](references/measure-theory.md) for detailed patterns." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Complete domain guide:** [domain-patterns.md](references/domain-patterns.md)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Domain-Specific Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Success = `lake build` passes + zero sorries + zero custom axioms.** Theorems with sorries/axioms are scaffolding, not results." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Build incrementally, structure before solving, trust the type checker.** Lean's type checker is your test suite." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Core Principle" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Common Compilation Errors" ;
+                            oc:tableMarkdown """| Error | Fix |
+|-------|-----|
+| "failed to synthesize instance" | Add `haveI : Instance := ...` |
+| "maximum recursion depth" | Provide manually: `letI := ...` |
+| "type mismatch" | Use coercion: `(x : ℝ)` or `↑x` |
+| "unknown identifier" | Add import |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "See [compilation-errors.md](references/compilation-errors.md) for detailed debugging workflows." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Common Compilation Errors" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_ff7221e5c16ba65b ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "The 4-Phase Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**How it works:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "**Expected outcomes:** Success improves over time as structured logging enables learning from attempts. Cost optimized through solver cascade (free) and multi-stage escalation." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 11 ;
+                            oc:textContent "**Inspired by:** APOLLO (https://arxiv.org/abs/2505.05758) - compiler-guided repair with multi-stage models and low sampling budgets." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 8 ;
+                            oc:textContent "**Commands:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Quick repair:** `/lean4-theorem-proving:repair-file FILE.lean`" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**When proofs fail to compile,** use iterative compiler-guided repair instead of blind resampling." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Key benefits:**" ],
+                        _:ref_978ecf0db29d8285,
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 9 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`/repair-file FILE.lean` - Full file repair" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`/repair-goal FILE.lean LINE` - Specific goal repair" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`/repair-interactive FILE.lean` - Interactive with confirmations" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Fast model first** (Haiku), escalate only when needed (Sonnet)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Low sampling budget** (K=1 per attempt, not K=100)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Solver cascade** handles simple cases mechanically (zero LLM cost)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Error-driven action selection** (specific fix per error type, not random guessing)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Early stopping** prevents runaway costs (bail after 3 identical errors)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 10 ;
+                            oc:textContent "**Detailed guide:** [compiler-guided-repair.md](references/compiler-guided-repair.md)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Compiler-Guided Proof Repair" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use `/search-mathlib` slash command, LSP server search tools, or automation scripts. See [mathlib-guide.md](references/mathlib-guide.md) for detailed search techniques, naming conventions, and import organization." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Philosophy:** Search before prove. Mathlib has 100,000+ theorems." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Finding and Using Mathlib Lemmas" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Incomplete proofs:** [sorry-filling.md](references/sorry-filling.md), [axiom-elimination.md](references/axiom-elimination.md)" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Optimization & refactoring:** [performance-optimization.md](references/performance-optimization.md), [proof-golfing.md](references/proof-golfing.md), [proof-refactoring.md](references/proof-refactoring.md), [mathlib-style.md](references/mathlib-style.md)" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Domain-specific:** [domain-patterns.md](references/domain-patterns.md), [measure-theory.md](references/measure-theory.md), [instance-pollution.md](references/instance-pollution.md), [calc-patterns.md](references/calc-patterns.md)" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Automation:** [compiler-guided-repair.md](references/compiler-guided-repair.md), [lean-lsp-server.md](references/lean-lsp-server.md), [lean-lsp-tools-api.md](references/lean-lsp-tools-api.md), [subagent-workflows.md](references/subagent-workflows.md)" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Core references:** [lean-phrasebook.md](references/lean-phrasebook.md), [mathlib-guide.md](references/mathlib-guide.md), [tactics-reference.md](references/tactics-reference.md), [compilation-errors.md](references/compilation-errors.md)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "Reference Files" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**16 automation scripts** for search, verification, and refactoring. See [scripts/README.md](../../scripts/README.md) for complete documentation." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Lean LSP Server** (optional) provides 30x faster feedback with instant proof state and parallel tactic testing. See [lean-lsp-server.md](references/lean-lsp-server.md) for setup and workflows." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**7 slash commands** for search, analysis, and optimization - type `/lean` in Claude Code. See [COMMANDS.md](../../COMMANDS.md) for full guide with examples and workflows." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Subagent delegation** (optional, Claude Code users) enables batch automation. See [subagent-workflows.md](references/subagent-workflows.md) for patterns." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Tools & Workflows" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use for ANY Lean 4 development: pure/applied math, program verification, mathlib contributions." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Critical for:** Type class synthesis errors, sorry/axiom management, mathlib search, measure theory/probability work." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Write **timeless** documentation (describe what code is, not development history)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Don't highlight \"axiom-free\" status after proofs are complete" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Use `example` for educational code, not `lemma`/`theorem`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Mark internal helpers as `private` or in dedicated sections" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Documentation Conventions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Key tactics:** `simp only`, `rw`, `apply`, `exact`, `refine`, `by_cases`, `rcases`, `ext`/`funext`. See [tactics-reference.md](references/tactics-reference.md) for comprehensive guide with examples and decision trees." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Essential Tactics" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] No new axioms without elimination plan" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] All sorries documented with concrete strategy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Imports minimal" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] `lake build` succeeds on full project" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Red flags:** Sorries multiply, claiming \"complete\" with sorries/axioms, fighting type checker for hours, monolithic proofs (>100 lines), long `have` blocks (>30 lines should be extracted as lemmas - see [proof-refactoring.md](references/proof-refactoring.md))." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Doing it right:** Sorries/axioms decrease over time, each commit completes one lemma, proofs build on mathlib." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Before commit:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Quality Checklist" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**ALWAYS compile before committing.** Run `lake build` to verify. \"Compiles\" ≠ \"Complete\" - files can compile with sorries/axioms but aren't done until those are eliminated." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Build-First Principle" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| **Resource** | **What You Get** | **Where to Find** |
+|--------------|------------------|-------------------|
+| **Interactive Commands** | 10 slash commands for search, analysis, optimization, repair | Type `/lean` in Claude Code ([full guide](../../COMMANDS.md)) |
+| **Automation Scripts** | 19 tools for search, verification, refactoring, repair | Plugin `scripts/` directory ([scripts/README.md](../../scripts/README.md)) |
+| **Subagents** | 4 specialized agents for batch tasks (optional) | [subagent-workflows.md](references/subagent-workflows.md) |
+| **LSP Server** | 30x faster feedback with instant proof state (optional) | [lean-lsp-server.md](references/lean-lsp-server.md) |
+| **Reference Files** | 18 detailed guides (phrasebook, tactics, patterns, errors, repair, performance) | [List below](#reference-files) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Quick Reference" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**When sorries are acceptable:** (1) Active work in progress with documented plan, (2) User explicitly approves temporary axioms with elimination strategy." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Standard mathlib axioms (acceptable):** `Classical.choice`, `propext`, `quot.sound`. Check with `#print axioms theorem_name` or `/check-axioms`." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**CRITICAL: Sorries/axioms are NOT complete work.** A theorem that compiles with sorries is scaffolding, not a result. Document every sorry with concrete strategy and dependencies. Search mathlib exhaustively before adding custom axioms." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Not acceptable:** \"Should be in mathlib\", \"infrastructure lemma\", \"will prove later\" without concrete plan." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Managing Incomplete Proofs" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Lean 4 Theorem Proving" ] ;
+    oc:hasWorkflow _:ref_978ecf0db29d8285,
+        _:ref_ff7221e5c16ba65b ;
+    oc:impartsKnowledge oc:kn_0b8fada9,
+        oc:kn_19af6792,
+        oc:kn_3d0a450a,
+        oc:kn_4696a571,
+        oc:kn_56432473,
+        oc:kn_6f0d081d,
+        oc:kn_7d46c520,
+        oc:kn_92a23a35,
+        oc:kn_9a6183ff,
+        oc:kn_ca9416ec,
+        oc:kn_cd164afb ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "debug lean 4 compilation errors",
+        "eliminate sorries and axioms",
+        "manage type class instance synthesis",
+        "optimize lean 4 proof performance",
+        "refactor lean 4 proofs",
+        "repair failing lean 4 proofs",
+        "search mathlib for lemmas",
+        "write lean 4 proofs" ;
+    oc:yieldsState oc:BuildSucceeds,
+        oc:ProofCompleted .
+
+oc:kn_0b8fada9 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent """Quality checklist before commit:
+- [ ] `lake build` succeeds on full project
+- [ ] All sorries documented with concrete strategy
+- [ ] No new axioms without elimination plan
+- [ ] Imports minimal""" ;
+    oc:templateVariables "checklist items" .
+
+oc:kn_19af6792 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Check which axioms a theorem depends on" ;
+    oc:codeLanguage "lean" ;
+    oc:directiveContent "#print axioms theorem_name" .
+
+oc:kn_3d0a450a a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When developing any Lean 4 proof" ;
+    oc:directiveContent "1. Structure Before Solving — outline proof strategy with `have` statements and documented sorries. 2. Helper Lemmas First — build infrastructure bottom-up. 3. Incremental Filling — fill ONE sorry at a time, compile after each. 4. Type Class Management — add explicit `haveI`/`letI` instances when synthesis fails." ;
+    oc:stepOrder 1 .
+
+oc:kn_4696a571 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When proofs fail to compile" ;
+    oc:directiveContent "Use compiler-guided repair for failing proofs: compile → extract structured error → try solver cascade (rfl → simp → ring → linarith → nlinarith → omega → exact? → apply? → aesop) → escalate to LLM if needed → apply minimal patch → recompile → repeat." ;
+    oc:hasRationale "Error-driven action selection with a free solver cascade and model escalation is far more efficient than random resampling." .
+
+oc:kn_56432473 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When evaluating proof completeness" ;
+    oc:directiveContent "Success = `lake build` passes + zero sorries + zero custom axioms. Standard mathlib axioms (Classical.choice, propext, quot.sound) are acceptable." ;
+    oc:hasRationale "Only axioms from the standard set are safe; custom axioms can introduce inconsistency and must have elimination plans." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6f0d081d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before every commit in a Lean 4 project" ;
+    oc:directiveContent "ALWAYS compile before committing. Run `lake build` to verify. 'Compiles' ≠ 'Complete' — files can compile with sorries/axioms but aren't done until those are eliminated." ;
+    oc:hasRationale "The Lean type checker is your test suite; successful compilation catches most errors early but does not guarantee proof completeness." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7d46c520 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When encountering 'failed to synthesize instance' or 'maximum recursion depth' errors" ;
+    oc:codeLanguage "lean" ;
+    oc:directiveContent "When type class synthesis fails, add explicit instances: `haveI : Instance := ...` for have-level instances or `letI := ...` to break recursion depth issues." ;
+    oc:hasRationale "Lean's type class resolution can fail in complex instance chains; explicit provision bypasses synthesis and avoids infinite loops." .
+
+oc:kn_92a23a35 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing or committing proofs" ;
+    oc:directiveContent "Do NOT accept sorries or axioms as complete work. 'Should be in mathlib', 'infrastructure lemma', or 'will prove later' without a concrete plan are not acceptable justifications." ;
+    oc:hasRationale "Sorries and axioms are scaffolding, not results. Undocumented sorries accumulate technical debt." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9a6183ff a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When proof size exceeds thresholds" ;
+    oc:directiveContent "Monolithic proofs >100 lines and `have` blocks >30 lines should be refactored into separate lemmas." ;
+    oc:hasRationale "Large proofs are hard to maintain, debug, and compose. Extracted lemmas are reusable and independently verifiable." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ca9416ec a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Verify Lean 4 project compiles successfully" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "lake build" .
+
+oc:kn_cd164afb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting any new proof" ;
+    oc:directiveContent "Search before prove. Mathlib has 100,000+ theorems. Use `/search-mathlib`, LSP server search tools, or automation scripts to find existing lemmas before attempting to prove something from scratch." ;
+    oc:hasRationale "Duplicating existing mathlib results wastes effort and may be less general than what already exists." .
+
+_:ref_10b5974c7cbf1520 a oc:WorkflowStep ;
+    dcterms:description "**Structure Before Solving** - Outline proof strategy with `have` statements and documented sorries before writing tactics" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_1ecf55697cd0aefb a oc:WorkflowStep ;
+    dcterms:description "Apply minimal patch (1-5 lines), recompile, repeat (max 24 attempts)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_4805b60d0f8ec640 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Order: `rfl → simp → ring → linarith → nlinarith → omega → exact? → apply? → aesop`" ] .
+
+_:ref_7399e8394ffd63b6 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "**Stage 1:** Haiku (fast, most common cases) - 6 attempts" .
+
+_:ref_7c2078c8c17715ac a oc:WorkflowStep ;
+    dcterms:description "**Incremental Filling** - Fill ONE sorry at a time, compile after each, commit working code" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_b5cf7f92da8ad85e a oc:WorkflowStep ;
+    dcterms:description "If solvers fail → call `lean4-proof-repair` agent:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_7399e8394ffd63b6,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "**Stage 2:** Sonnet (precise, complex cases) - 18 attempts" ] ] ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_b826139b82ccdf31 a oc:WorkflowStep ;
+    dcterms:description "**Helper Lemmas First** - Build infrastructure bottom-up, extract reusable components as separate lemmas" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ed8effbc5a98d86f a oc:WorkflowStep ;
+    dcterms:description "**Type Class Management** - Add explicit instances with `haveI`/`letI` when synthesis fails, respect binder order for sub-structures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f5f5de1ac5e773a5 a oc:WorkflowStep ;
+    dcterms:description "Compile → extract structured error (type, location, goal, context)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_fa464911e22c9ca7 a oc:WorkflowStep ;
+    dcterms:description "Try automated solver cascade first (many simple cases handled mechanically, zero LLM cost)" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_4805b60d0f8ec640 ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_978ecf0db29d8285 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_1ecf55697cd0aefb,
+        _:ref_b5cf7f92da8ad85e,
+        _:ref_f5f5de1ac5e773a5,
+        _:ref_fa464911e22c9ca7 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ff7221e5c16ba65b a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_10b5974c7cbf1520,
+        _:ref_7c2078c8c17715ac,
+        _:ref_b826139b82ccdf31,
+        _:ref_ed8effbc5a98d86f ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

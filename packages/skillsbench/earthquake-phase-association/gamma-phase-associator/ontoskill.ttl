@@ -1,0 +1,742 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_earthquake_phase_association_gamma_phase_associator a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "gamma-phase-associator" ;
+    skos:broader "API reference" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/earthquake-phase-association/gamma-phase-associator" ;
+    oc:contentHash "e24de7f555428b8f48ca353dc1e3053e350862cde48013f2866001ff04965b09" ;
+    oc:dependsOnSkill oc:skill_ontoskills_seismic_picker_selection ;
+    oc:differentia "documents the GaMMA Python library for earthquake phase association via Bayesian Gaussian Mixture Models" ;
+    oc:handlesFailure oc:ClusteringFailed,
+        oc:InsufficientPicks,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "picks DataFrame, stations DataFrame, config dict" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "An overview of the python package for running the GaMMA earthquake phase association algorithm. The algorithm expects phase picks data and station data as input and produces (through unsupervised clustering) earthquake events with source information like earthquake location, origin time and magnitude. The skill explains commonly used functions and the expected input/output format." ;
+    oc:hasName "gamma-phase-associator" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_4d64f8b0,
+        oc:req_746aacc9,
+        oc:req_c1ea9da0,
+        oc:req_daebd8f7,
+        oc:req_e0952fcd,
+        oc:req_e6370e7a ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: gamma-phase-associator
+description: An overview of the python package for running the GaMMA earthquake phase association algorithm. The algorithm expects phase picks data and station data as input and produces (through unsupervised clustering) earthquake events with source information like earthquake location, origin time and magnitude. The skill explains commonly used functions and the expected input/output format.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:Table ;
+                                            oc:blockType "table" ;
+                                            oc:contentOrder 1 ;
+                                            oc:rowCount 5 ;
+                                            oc:tableCaption "#### 1. Input Parameters" ;
+                                            oc:tableMarkdown """| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `picks` | DataFrame | required | Seismic phase pick data |
+| `stations` | DataFrame | required | Station metadata with locations |
+| `config` | dict | required | Configuration parameters |
+| `event_idx0` | int | `0` | Starting event index for numbering |
+| `method` | str | `"BGMM"` | `"BGMM"` (Bayesian) or `"GMM"` (standard) |
+""" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "1. Input Parameters" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "Returns a tuple `(events, assignments)`:" ] ;
+                                    oc:hasSubsection [ a oc:Section ;
+                                            oc:hasContent [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:textContent "List of dictionaries, each representing an associated earthquake:" ],
+                                                [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:rowCount 13 ;
+                                                    oc:tableCaption "List of dictionaries, each representing an associated earthquake" ;
+                                                    oc:tableMarkdown """| Key | Type | Description |
+|-----|------|-------------|
+| `time` | str | Origin time (ISO 8601 with milliseconds) |
+| `magnitude` | float | Estimated magnitude (999 if `use_amplitude=False`) |
+| `sigma_time` | float | Time uncertainty (seconds) |
+| `sigma_amp` | float | Amplitude uncertainty (log10 scale) |
+| `cov_time_amp` | float | Time-amplitude covariance |
+| `gamma_score` | float | Association quality score |
+| `num_picks` | int | Total picks assigned |
+| `num_p_picks` | int | P-phase picks assigned |
+| `num_s_picks` | int | S-phase picks assigned |
+| `event_index` | int | Unique event index |
+| `x(km)` | float | X coordinate of hypocenter |
+| `y(km)` | float | Y coordinate of hypocenter |
+| `z(km)` | float | Z coordinate (depth) |
+""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 1 ;
+                                            oc:sectionTitle "`events` (list[dict])" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "`event_index`: Associated event index" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "`gamma_score`: Probability/confidence of assignment" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`pick_index`: Index in the original `picks` DataFrame" ] ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:textContent "List of tuples `(pick_index, event_index, gamma_score)`:" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 2 ;
+                                            oc:sectionTitle "`assignments` (list[tuple])" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 6 ;
+                                    oc:sectionTitle "4. Return Values" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """def association(picks, stations, config, event_idx0=0, method="BGMM", **kwargs)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 27-29" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Function Signature" ],
+                                [ a oc:Section ;
+                                    oc:hasSubsection [ a oc:Section ;
+                                            oc:hasContent [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent "**Notes:**" ],
+                                                [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 3 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 4 ;
+                                                            oc:itemText "The DataFrame index is used to track pick identities in the output" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "Phase types are forced to lowercase internally" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "Picks with `amp == 0` or `amp == -1` are filtered when `use_amplitude=True`" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Timestamps must be in UTC or converted to UTC" ] ],
+                                                [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 5 ;
+                                                    oc:tableCaption "##### `picks` DataFrame" ;
+                                                    oc:tableMarkdown """| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| `id` | str | Station identifier (must match `stations`) | `network.station.` or `network.station.location.channel` |
+| `timestamp` | datetime/str | Pick arrival time (ISO format or datetime) | `"2019-07-04T22:00:06.084"` |
+| `type` | str | Phase type: `"p"` or `"s"` (lowercase) | `"p"` |
+| `prob` | float | Pick probability/weight (0-1) | `0.94` |
+| `amp` | float | Amplitude in m/s (required if `use_amplitude=True`) | `0.000017` |
+""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 1 ;
+                                            oc:sectionTitle "`picks` DataFrame" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent "**Notes:**" ],
+                                                [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 4 ;
+                                                    oc:tableCaption "##### `stations` DataFrame" ;
+                                                    oc:tableMarkdown """| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| `id` | str | Station identifier | `"CI.CCC..BH"`|
+| `x(km)` | float | X coordinate in km (projected) | `-35.6` |
+| `y(km)` | float | Y coordinate in km (projected) | `45.2` |
+| `z(km)` | float | Z coordinate (elevation, typically negative) | `-0.67` |
+""" ],
+                                                [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 3 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "Group stations by unique `id`, identical attribute are collapsed to a single value and conflicting metadata are preseved as a sorted list." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Coordinates should be in a projected local coordinate system (e.g., you can use the `pyproj` package)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "The `id` column must match the `id` values in the picks DataFrame (e.g., `network.station.` or `network.station.location.channel`)" ] ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 2 ;
+                                            oc:sectionTitle "`stations` DataFrame" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 4 ;
+                                    oc:sectionTitle "2. Required DataFrame Columns" ],
+                                [ a oc:Section ;
+                                    oc:hasSubsection [ a oc:Section ;
+                                            oc:hasContent [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 3 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Options: `[\"x(km)\", \"y(km)\", \"z(km)\"]`, `[\"x(km)\", \"y(km)\"]`, or `[\"x(km)\"]`" ] ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 4 ;
+                                                    oc:textContent "**Notes on `bfgs_bounds`:**" ],
+                                                [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 6 ;
+                                                    oc:tableCaption "##### Required Keys" ;
+                                                    oc:tableMarkdown """| Key | Type | Description | Example |
+|-----|------|-------------|---------|
+| `dims` | list[str] | Location dimensions to solve for | `["x(km)", "y(km)", "z(km)"]` |
+| `min_picks_per_eq` | int | Minimum picks required per earthquake | `5` |
+| `max_sigma11` | float | Maximum allowed time residual in seconds | `2.0` |
+| `use_amplitude` | bool | Whether to use amplitude in clustering | `True` |
+| `bfgs_bounds` | tuple | Bounds for BFGS optimization | `((-35, 92), (-128, 78), (0, 21), (None, None))` |
+| `oversample_factor` | float | Factor for oversampling initial GMM components | `5.0` for `BGMM`, `1.0` for `GMM`|
+""" ],
+                                                [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 5 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Format: `((x_min, x_max), (y_min, y_max), (z_min, z_max), (None, None))`" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "The last tuple is for time (unbounded)" ] ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent "**Notes on `dims`:**" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 1 ;
+                                            oc:sectionTitle "Required Keys" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 5 ;
+                                                    oc:tableCaption "##### DBSCAN Pre-clustering Keys (Optional)" ;
+                                                    oc:tableMarkdown """| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `use_dbscan` | bool | `True` | Enable DBSCAN pre-clustering |
+| `dbscan_eps` | float | `25` | Max time between picks (seconds) |
+| `dbscan_min_samples` | int | `3` | Min samples in DBSCAN neighborhood |
+| `dbscan_min_cluster_size` | int | `500` | Min cluster size for hierarchical splitting |
+| `dbscan_max_time_space_ratio` | float | `10` | Max time/space ratio for splitting |
+""" ],
+                                                [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`dbscan_eps` is obtained from `estimate_eps` Function" ] ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 3 ;
+                                            oc:sectionTitle "DBSCAN Pre-clustering Keys (Optional)" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 2 ;
+                                                    oc:tableCaption "##### Velocity Model Keys" ;
+                                                    oc:tableMarkdown """| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `vel` | dict | `{"p": 6.0, "s": 3.47}` | Uniform velocity model (km/s) |
+| `eikonal` | dict/None | `None` | 1D velocity model for travel times |
+""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 2 ;
+                                            oc:sectionTitle "Velocity Model Keys" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:textContent """| Key | Type | Default | Description |
+|-----|------|-------------|
+| `max_sigma22` | float | `1.0` | Max phase amplitude residual in log scale (required if `use_amplitude=True`) |
+| `max_sigma12` | float | `1.0` | Max covariance |
+| `max_sigma11` | float | `2.0` | Max phase time residual (s) |
+| `min_p_picks_per_eq` | int | `0` | Min P-phase picks per event |
+| `min_s_picks_per_eq` | int | `0` |Min S-phase picks per event |
+| `min_stations` | int | `5` |Min unique stations per event |""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 4 ;
+                                            oc:sectionTitle "Filtering Keys (Optional)" ],
+                                        [ a oc:Section ;
+                                            oc:hasContent [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 2 ;
+                                                    oc:tableCaption "##### Other Optional Keys" ;
+                                                    oc:tableMarkdown """| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `covariance_prior` | list[float] | auto | Prior for covariance `[time, amp]` |
+| `ncpu` | int | auto | Number of CPUs for parallel processing |
+""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 5 ;
+                                            oc:sectionTitle "Other Optional Keys" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 5 ;
+                                    oc:sectionTitle "3. Config Dictionary Keys" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "Associates seismic phase picks (P and S waves) to earthquake events using Bayesian or standard Gaussian Mixture Models. It clusters picks based on arrival time and amplitude information, then fits GMMs to estimate earthquake locations, times, and magnitudes." ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Purpose" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`association`" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "Estimates an appropriate DBSCAN epsilon (eps) parameter for clustering seismic phase picks based on station spacing. The eps parameter controls the maximum time distance between picks that should be considered neighbors in the DBSCAN clustering algorithm." ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Purpose" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Practitioners may prefer manual tuning for specific networks/regions" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Typical output values range from **10-20 seconds** depending on station density" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "In example notebooks, the function is often **commented out** in favor of hardcoded values (10-15 seconds)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Useful when optimal eps is unknown or when working with new networks" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 7 ;
+                                    oc:sectionTitle "5. Practical Notes" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Table ;
+                                            oc:blockType "table" ;
+                                            oc:contentOrder 1 ;
+                                            oc:rowCount 1 ;
+                                            oc:tableCaption "#### 3. Return Value" ;
+                                            oc:tableMarkdown """| Type | Description |
+|------|-------------|
+| float | Epsilon value in **seconds** for use with DBSCAN clustering |
+""" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 5 ;
+                                    oc:sectionTitle "3. Return Value" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from gamma.utils import estimate_eps
+
+# Assuming stations DataFrame is already prepared with x(km), y(km), z(km) columns
+vp = 6.0  # P-wave velocity in km/s
+
+# Estimate eps automatically based on station spacing
+eps = estimate_eps(stations, vp, sigma=2.0)
+
+# Use in config
+config = {
+    "use_dbscan": True,
+    "dbscan_eps": eps,  # or use estimate_eps(stations, config["vel"]["p"])
+    "dbscan_min_samples": 3,
+    # ... other config options
+}
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 204-220" ] ;
+                                    oc:hasSubsection [ a oc:Section ;
+                                            oc:hasContent [ a oc:CodeExample ;
+                                                    oc:blockType "code_block" ;
+                                                    oc:codeContent """from gamma.utils import association, estimate_eps
+
+# Automatic eps estimation
+config["dbscan_eps"] = estimate_eps(stations, config["vel"]["p"])
+
+# Or manual override (common in practice)
+config["dbscan_eps"] = 15  # seconds
+""" ;
+                                                    oc:codeLanguage "python" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:sourceLocation "lines 224-232" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 1 ;
+                                            oc:sectionTitle "Typical Usage Pattern" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 6 ;
+                                    oc:sectionTitle "4. Example Usage" ],
+                                [ a oc:Section ;
+                                    oc:hasSubsection [ a oc:Section ;
+                                            oc:hasContent [ a oc:Table ;
+                                                    oc:blockType "table" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:rowCount 3 ;
+                                                    oc:tableCaption "##### `stations` DataFrame" ;
+                                                    oc:tableMarkdown """| Column | Type | Description | Example |
+|--------|------|-------------|---------|
+| `x(km)` | float | X coordinate in km | `-35.6` |
+| `y(km)` | float | Y coordinate in km | `45.2` |
+| `z(km)` | float | Z coordinate in km | `-0.67` |
+""" ] ;
+                                            oc:sectionLevel 5 ;
+                                            oc:sectionOrder 1 ;
+                                            oc:sectionTitle "`stations` DataFrame" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 4 ;
+                                    oc:sectionTitle "2. Required DataFrame Columns" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "The output is typically used with these config parameters:" ],
+                                        [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """config["dbscan_eps"] = estimate_eps(stations, config["vel"]["p"])
+config["dbscan_min_samples"] = 3
+config["dbscan_min_cluster_size"] = 500
+config["dbscan_max_time_space_ratio"] = 10
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 2 ;
+                                            oc:sourceLocation "lines 245-250" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 8 ;
+                                    oc:sectionTitle "6. Related Configuration" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Table ;
+                                            oc:blockType "table" ;
+                                            oc:contentOrder 1 ;
+                                            oc:rowCount 3 ;
+                                            oc:tableCaption "#### 1. Input Parameters" ;
+                                            oc:tableMarkdown """| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `stations` | DataFrame | required | Station metadata with 3D coordinates |
+| `vp` | float | required | P-wave velocity in km/s |
+| `sigma` | float | `2.0` | Number of standard deviations above the mean |
+""" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "1. Input Parameters" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """def estimate_eps(stations, vp, sigma=2.0)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 170-172" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Function Signature" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "`estimate_eps` Function Documentation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "GaMMA core API" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "`pip install git+https://github.com/wayneweiqiang/GaMMA.git`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Installing GaMMA" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "`Zhu, W., McBrearty, I. W., Mousavi, S. M., Ellsworth, W. L., & Beroza, G. C. (2022). Earthquake phase association using a Bayesian Gaussian mixture model. Journal of Geophysical Research: Solid Earth, 127(5).`" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "GaMMA is an earthquake phase association algorithm that treats association as an unsupervised clustering problem. It uses multivariate Gaussian distribution to model the collection of phase picks of an event, and uses Expectation-Maximization to carry out pick assignment and estimate source parameters i.e., earthquake location, origin time, and magnitude." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "The skill is a derivative of the repo https://github.com/AI4EPS/GaMMA" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "`GaMMA` is a python library implementing the algorithm. For the input earthquake traces, this library assumes P/S wave picks have already been extracted. We provide documentation of its core API." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "What is GaMMA?" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "GaMMA Associator Library" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Estimate appropriate DBSCAN epsilon parameter for pre-clustering based on station spacing" ;
+            oc:hasStep _:ref_592930a20aedfb4d,
+                _:ref_5bb641d790f297b1,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Set config['dbscan_eps'] to estimated value or override manually based on domain knowledge" ;
+                    oc:expectedOutcome "Config dict with appropriate dbscan_eps for DBSCAN pre-clustering" ;
+                    oc:stepDependsOn _:ref_5bb641d790f297b1 ;
+                    oc:stepId "apply-to-config" ] ;
+            oc:workflowId "eps-estimation-workflow" ;
+            oc:workflowName "DBSCAN Epsilon Estimation" ],
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for associating seismic phase picks to earthquake events using the GaMMA library" ;
+            oc:hasStep _:ref_1ad23573d6ee7c01,
+                _:ref_313a88079887112e,
+                _:ref_486bf90e652f5432,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Parse events list for source parameters (location, time, magnitude) and assignments for pick-to-event mapping with gamma_scores" ;
+                    oc:expectedOutcome "Earthquake catalog with locations, origin times, magnitudes, and quality scores" ;
+                    oc:stepDependsOn _:ref_313a88079887112e ;
+                    oc:stepId "interpret-results" ],
+                _:ref_a660052cab5501a4,
+                _:ref_ae87357eb2e4ba55,
+                _:ref_f4f6198e1fc2a091 ;
+            oc:workflowId "gamma-association-workflow" ;
+            oc:workflowName "GaMMA Phase Association" ] ;
+    oc:impartsKnowledge oc:kn_0f4f3132,
+        oc:kn_2a4d3540,
+        oc:kn_3b1f0a5e,
+        oc:kn_4194c0d1,
+        oc:kn_512e10a5,
+        oc:kn_595a3f3a,
+        oc:kn_5aa540dd,
+        oc:kn_5ba09271,
+        oc:kn_b0ed4fae,
+        oc:kn_b1209362,
+        oc:kn_ecf2ccef,
+        oc:kn_eee97e51 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:PhasePicksExtracted,
+        oc:StationMetadataPrepared ;
+    oc:resolvesIntent "associate seismic phase picks to earthquake events",
+        "configure and run GaMMA association algorithm",
+        "estimate DBSCAN epsilon parameter for phase clustering",
+        "prepare input data for earthquake phase association" ;
+    oc:yieldsState oc:EarthquakeEventsAssociated,
+        oc:PickAssignmentsGenerated .
+
+oc:kn_0f4f3132 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing input data for association()" ;
+    oc:directiveContent "Timestamps in the picks DataFrame must be in UTC. Phase types must be 'p' or 's' (lowercase). Picks with amp==0 or amp==-1 are filtered out when use_amplitude=True." ;
+    oc:hasRationale "Non-UTC timestamps lead to incorrect travel-time calculations; non-lowercase phase types are internally forced but explicit correctness prevents edge cases." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2a4d3540 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When interpreting output events" ;
+    oc:directiveContent "When use_amplitude=False, the magnitude field in output events is set to 999 (sentinel value). Events with fewer than min_picks_per_eq picks are discarded." ;
+    oc:hasRationale "Using the sentinel magnitude value as a real measurement would corrupt downstream analysis. Filtered events may still appear in intermediate results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3b1f0a5e a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Interpreting association() output" ;
+    oc:directiveContent """events: list[dict] with keys: time, magnitude, sigma_time, sigma_amp, cov_time_amp, gamma_score, num_picks, num_p_picks, num_s_picks, event_index, x(km), y(km), z(km)
+assignments: list[tuple(pick_index, event_index, gamma_score)]""" ;
+    oc:templateVariables "assignments",
+        "events" .
+
+oc:kn_4194c0d1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring DBSCAN pre-clustering" ;
+    oc:directiveContent "Estimate dbscan_eps using estimate_eps(stations, vp) for new networks, but practitioners often manually tune it to 10-15 seconds for specific regions after empirical testing." ;
+    oc:hasRationale "The auto-estimated eps provides a reasonable starting point but network geometry and seismicity rate may require adjustment for optimal clustering." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_512e10a5 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Full GaMMA association workflow" ;
+    oc:directiveContent "1. Prepare picks DataFrame (id, timestamp, type, prob, amp) ensuring UTC timestamps and lowercase phase types. 2. Prepare stations DataFrame (id, x(km), y(km), z(km)) with projected coordinates. 3. Verify id columns match between picks and stations. 4. Build config dict with required keys (dims, min_picks_per_eq, max_sigma11, use_amplitude, bfgs_bounds, oversample_factor). 5. Estimate dbscan_eps via estimate_eps() or set manually. 6. Call association(picks, stations, config, method='BGMM'). 7. Parse (events, assignments) output tuple." ;
+    oc:stepOrder 1 .
+
+oc:kn_595a3f3a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing large continuous datasets" ;
+    oc:directiveContent "Use DBSCAN pre-clustering to reduce the problem size before running the full GMM association. Tune dbscan_min_samples and dbscan_min_cluster_size based on expected seismicity rate." ;
+    oc:hasRationale "Without pre-clustering, the GMM must consider all picks simultaneously, which is computationally intractable for large datasets." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5aa540dd a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting the association method" ;
+    oc:directiveContent "Use BGMM (Bayesian Gaussian Mixture Model) method with oversample_factor=5.0 for robust association. Use GMM with oversample_factor=1.0 only for simpler cases." ;
+    oc:hasRationale "BGMM provides better uncertainty quantification and is less prone to overfitting with sparse data." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5ba09271 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing station metadata and config" ;
+    oc:directiveContent "Station coordinates must be in a projected local coordinate system (e.g., UTM via pyproj), not geographic lat/lon. The bfgs_bounds must match the projected coordinate ranges." ;
+    oc:hasRationale "GaMMA performs distance calculations in km; geographic coordinates would produce incorrect spatial relationships." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b0ed4fae a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Standard association workflow" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from gamma.utils import association, estimate_eps
+
+config = {
+    "dims": ["x(km)", "y(km)", "z(km)"],
+    "use_amplitude": True,
+    "vel": {"p": 6.0, "s": 3.47},
+    "bfgs_bounds": ((x_min, x_max), (y_min, y_max), (z_min, z_max), (None, None)),
+    "max_sigma11": 2.0,
+    "min_picks_per_eq": 5,
+    "oversample_factor": 5.0,
+    "use_dbscan": True,
+    "dbscan_eps": estimate_eps(stations, 6.0),
+}
+events, assignments = association(picks, stations, config, method="BGMM")""" .
+
+oc:kn_b1209362 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before calling association()" ;
+    oc:directiveContent "Picks DataFrame must contain columns: id, timestamp, type, prob, amp. Stations DataFrame must contain columns: id, x(km), y(km), z(km). The id columns must match between both DataFrames." ;
+    oc:hasRationale "Mismatched or missing columns will cause runtime errors or silently incorrect association results." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ecf2ccef a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before using this skill" ;
+    oc:directiveContent "P/S wave phase picks must already be extracted from seismic traces before using GaMMA. GaMMA does not perform phase picking." ;
+    oc:hasRationale "GaMMA only performs association; a separate phase picking tool (e.g., EqTransformer, PhaseNet via seisbench-model-api) is needed upstream." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_eee97e51 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Estimating DBSCAN epsilon parameter" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from gamma.utils import estimate_eps
+eps = estimate_eps(stations, vp, sigma=2.0)""" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_4d64f8b0 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Seismic phase picking (P/S wave identification)" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_c1ea9da0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scikit-learn" .
+
+oc:req_daebd8f7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Gaussian Mixture Models and Expectation-Maximization" .
+
+oc:req_e0952fcd a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "GaMMA Python package (pip install git+https://github.com/wayneweiqiang/GaMMA.git)" .
+
+oc:req_e6370e7a a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pyproj" .
+
+_:ref_1ad23573d6ee7c01 a oc:WorkflowStep ;
+    dcterms:description "Build config dict with required keys (dims, min_picks_per_eq, max_sigma11, use_amplitude, bfgs_bounds, oversample_factor) and optional keys (vel, DBSCAN params, filtering)" ;
+    oc:expectedOutcome "Complete config dictionary for association" ;
+    oc:stepDependsOn _:ref_f4f6198e1fc2a091 ;
+    oc:stepId "configure-gamma" .
+
+_:ref_313a88079887112e a oc:WorkflowStep ;
+    dcterms:description "Call association(picks, stations, config, method='BGMM') and collect (events, assignments) output" ;
+    oc:expectedOutcome "Tuple of earthquake events and pick-to-event assignments" ;
+    oc:stepDependsOn _:ref_1ad23573d6ee7c01,
+        _:ref_a660052cab5501a4 ;
+    oc:stepId "run-association" .
+
+_:ref_592930a20aedfb4d a oc:WorkflowStep ;
+    dcterms:description "Ensure stations DataFrame has x(km), y(km), z(km) columns in projected coordinates" ;
+    oc:expectedOutcome "Stations DataFrame with valid 3D coordinates" ;
+    oc:stepId "prepare-station-coords" .
+
+_:ref_5bb641d790f297b1 a oc:WorkflowStep ;
+    dcterms:description "Call estimate_eps(stations, vp, sigma=2.0) with P-wave velocity and optional sigma" ;
+    oc:expectedOutcome "Epsilon value in seconds (typically 10-20s depending on station density)" ;
+    oc:stepDependsOn _:ref_592930a20aedfb4d ;
+    oc:stepId "run-estimate-eps" .
+
+_:ref_a660052cab5501a4 a oc:WorkflowStep ;
+    dcterms:description "Estimate DBSCAN epsilon using estimate_eps(stations, vp) or set manually (typically 10-15 seconds)" ;
+    oc:expectedOutcome "Appropriate dbscan_eps value for the network geometry" ;
+    oc:stepDependsOn _:ref_486bf90e652f5432 ;
+    oc:stepId "estimate-eps" .
+
+_:ref_ae87357eb2e4ba55 a oc:WorkflowStep ;
+    dcterms:description "Prepare picks DataFrame with columns id, timestamp (UTC), type (lowercase 'p'/'s'), prob, amp" ;
+    oc:expectedOutcome "Validated picks DataFrame ready for association" ;
+    oc:stepId "prepare-picks" .
+
+_:ref_f4f6198e1fc2a091 a oc:WorkflowStep ;
+    dcterms:description "Verify that station ids in picks DataFrame match ids in stations DataFrame" ;
+    oc:expectedOutcome "Confirmed id alignment between picks and stations" ;
+    oc:stepDependsOn _:ref_486bf90e652f5432,
+        _:ref_ae87357eb2e4ba55 ;
+    oc:stepId "verify-id-match" .
+
+_:ref_486bf90e652f5432 a oc:WorkflowStep ;
+    dcterms:description "Prepare stations DataFrame with projected coordinates (x(km), y(km), z(km)) and matching id values" ;
+    oc:expectedOutcome "Validated stations DataFrame with projected coordinate system" ;
+    oc:stepId "prepare-stations" .
+

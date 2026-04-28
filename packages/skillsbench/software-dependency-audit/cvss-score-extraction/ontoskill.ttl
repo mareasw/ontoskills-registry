@@ -1,0 +1,675 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_software_dependency_audit_cvss_score_extraction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "cvss-score-extraction" ;
+    skos:broader "Data extraction methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/software-dependency-audit/cvss-score-extraction" ;
+    oc:contentHash "418c3fc3c08d04e1d8114158cf1d50097baced3712d54dcf481e4b5c34018251" ;
+    oc:dependsOnSkill oc:skill_ontoskills_trivy_offline_vulnerability_scanning ;
+    oc:differentia "extracts CVSS severity scores from multi-source vulnerability data using priority cascade fallback logic (NVD → GHSA → RedHat) with version preference (v3 > v2)" ;
+    oc:handlesFailure oc:DataFormatError,
+        oc:InvalidInput ;
+    oc:hasCategory "security" ;
+    oc:hasDescription "Extract CVSS (Common Vulnerability Scoring System) scores from vulnerability data sources with proper fallback handling. This skill covers understanding CVSS v3, handling multiple score sources (NVD, GHSA, RedHat), implementing source priority logic, and dealing with missing scores in security reporting." ;
+    oc:hasName "cvss-score-extraction" ;
+    oc:hasRequirement oc:req_009cb318,
+        oc:req_07ad97d9,
+        oc:req_cddc37d6 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: cvss-score-extraction
+description: Extract CVSS (Common Vulnerability Scoring System) scores from vulnerability data sources with proper fallback handling. This skill covers understanding CVSS v3, handling multiple score sources (NVD, GHSA, RedHat), implementing source priority logic, and dealing with missing scores in security reporting.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill provides guidance on extracting CVSS scores from vulnerability data—a critical component of security report generation." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[CVSS v3.1 Specification](https://www.first.org/cvss/v3.1/specification-document)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[NVD CVSS Calculator](https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[GitHub Security Advisories](https://github.com/advisories)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "CVSS assigns a numerical score (0.0-10.0) representing vulnerability severity:" ],
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 2 ;
+                                    oc:rowCount 5 ;
+                                    oc:tableCaption "CVSS assigns a numerical score (0.0-10.0) representing vulnerability severity" ;
+                                    oc:tableMarkdown """| Score Range | Severity Level | Description |
+|-------------|----------------|-------------|
+| 0.0 | None | No impact |
+| 0.1-3.9 | **Low** | Minimal impact |
+| 4.0-6.9 | **Medium** | Moderate impact |
+| 7.0-8.9 | **High** | Significant impact |
+| 9.0-10.0 | **Critical** | Severe impact |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "CVSS Scoring System" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Best Practice**: Prefer CVSS v3/v3.1 scores when available." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**CVSS v3.1**: Minor refinement of v3" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**CVSS v2**: Legacy scoring system (0-10 scale)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**CVSS v3**: Current standard with refined metrics" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "CVSS Versions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "What is CVSS?" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`json` (standard library)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Python Modules" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Expects Trivy JSON format or similar structured vulnerability data" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Data Format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import json
+
+def get_cvss_score(vuln_data):
+    \"\"\"Extract CVSS v3 score with source priority.\"\"\"
+    cvss = vuln_data.get('CVSS', {})
+    
+    for source in ['nvd', 'ghsa', 'redhat']:
+        if source in cvss:
+            score = cvss[source].get('V3Score')
+            if score is not None:
+                return score
+    
+    return 'N/A'
+
+def generate_report_with_cvss(json_file):
+    \"\"\"Generate vulnerability report with CVSS scores.\"\"\"
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+    
+    print(f"{'Package':<20} {'CVE ID':<20} {'CVSS':<8} {'Severity':<10}")
+    print("-" * 60)
+    
+    if 'Results' in data:
+        for result in data['Results']:
+            for vuln in result.get('Vulnerabilities', []):
+                pkg = vuln.get('PkgName', 'Unknown')
+                cve = vuln.get('VulnerabilityID', 'N/A')
+                cvss = get_cvss_score(vuln)
+                severity = vuln.get('Severity', 'UNKNOWN')
+                
+                print(f"{pkg:<20} {cve:<20} {cvss:<8} {severity:<10}")
+
+# Usage
+generate_report_with_cvss('trivy_report.json')
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 263-298" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Complete Example" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Use case**: Simple reports where missing scores are acceptable" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """cvss_score = get_cvss_score(vuln)
+# Returns: 9.8 or 'N/A'
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 199-202" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 1: Numeric Score or 'N/A'" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def is_high_severity(vuln_data, threshold=7.0):
+    \"\"\"Check if vulnerability meets severity threshold.\"\"\"
+    score = get_cvss_score(vuln_data)
+    if score == 'N/A':
+        # If no score, use severity label
+        return vuln_data.get('Severity') in ['HIGH', 'CRITICAL']
+    return score >= threshold
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 217-225" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 3: Filtering by Score Threshold" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """cvss_info = get_cvss_score_with_fallback(vuln)
+# Returns: {'score': 9.8, 'version': 'v3', 'source': 'nvd'}
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 208-211" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Use case**: Detailed reports showing data provenance" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 2: Score with Metadata" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Patterns" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def safe_get_cvss_score(vuln_data):
+    \"\"\"Safely extract CVSS score with comprehensive error handling.\"\"\"
+    try:
+        cvss = vuln_data.get('CVSS', {})
+        
+        # Validate cvss is a dictionary
+        if not isinstance(cvss, dict):
+            return 'N/A'
+        
+        for source in ['nvd', 'ghsa', 'redhat']:
+            if source in cvss and isinstance(cvss[source], dict):
+                score = cvss[source].get('V3Score')
+                # Validate score is numeric
+                if score is not None and isinstance(score, (int, float)):
+                    return score
+        
+        return 'N/A'
+    except (AttributeError, TypeError):
+        return 'N/A'
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 231-251" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Handling Missing Data" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import json
+
+def parse_vulnerabilities(json_file):
+    \"\"\"Parse Trivy JSON and extract vulnerabilities with CVSS scores.\"\"\"
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+    
+    vulnerabilities = []
+    
+    if 'Results' in data:
+        for result in data['Results']:
+            for vuln in result.get('Vulnerabilities', []):
+                # Extract basic fields
+                record = {
+                    'Package': vuln.get('PkgName'),
+                    'Version': vuln.get('InstalledVersion'),
+                    'CVE_ID': vuln.get('VulnerabilityID'),
+                    'Severity': vuln.get('Severity'),
+                    'CVSS_Score': get_cvss_score(vuln),  # Use extraction function
+                    'Fixed_Version': vuln.get('FixedVersion', 'N/A'),
+                    'Title': vuln.get('Title', 'No description')
+                }
+                vulnerabilities.append(record)
+    
+    return vulnerabilities
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 167-193" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Integrating CVSS Extraction" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Usage in Report Generation" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0de64eff80fee2df ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Trivy (and similar tools) return CVSS data in nested format:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """{
+  "VulnerabilityID": "CVE-2021-44906",
+  "PkgName": "minimist",
+  "Severity": "CRITICAL",
+  "CVSS": {
+    "nvd": {
+      "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+      "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "V2Score": 7.5,
+      "V3Score": 9.8
+    },
+    "ghsa": {
+      "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "V3Score": 9.8
+    }
+  }
+}
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 77-95" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Data Structure" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_cvss_score(vuln_data):
+    \"\"\"
+    Extract CVSS v3 score from vulnerability data.
+    Uses priority: NVD > GHSA > RedHat
+    
+    Args:
+        vuln_data: Dictionary containing vulnerability information
+        
+    Returns:
+        CVSS v3 score as float, or 'N/A' if not available
+    \"\"\"
+    cvss = vuln_data.get('CVSS', {})
+    
+    # Priority 1: NVD (National Vulnerability Database)
+    if 'nvd' in cvss:
+        score = cvss['nvd'].get('V3Score')
+        if score is not None:
+            return score
+    
+    # Priority 2: GHSA (GitHub Security Advisory)
+    if 'ghsa' in cvss:
+        score = cvss['ghsa'].get('V3Score')
+        if score is not None:
+            return score
+    
+    # Priority 3: RedHat
+    if 'redhat' in cvss:
+        score = cvss['redhat'].get('V3Score')
+        if score is not None:
+            return score
+    
+    # No score available
+    return 'N/A'
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 101-135" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Score Extraction" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_cvss_score_with_fallback(vuln_data):
+    \"\"\"
+    Extract CVSS score with v2 fallback.
+    Priority: NVD v3 > GHSA v3 > RedHat v3 > NVD v2 > N/A
+    \"\"\"
+    cvss = vuln_data.get('CVSS', {})
+    
+    # Try v3 scores first
+    for source in ['nvd', 'ghsa', 'redhat']:
+        if source in cvss:
+            v3_score = cvss[source].get('V3Score')
+            if v3_score is not None:
+                return {'score': v3_score, 'version': 'v3', 'source': source}
+    
+    # Fallback to v2 if v3 not available
+    if 'nvd' in cvss:
+        v2_score = cvss['nvd'].get('V2Score')
+        if v2_score is not None:
+            return {'score': v2_score, 'version': 'v2', 'source': 'nvd'}
+    
+    return {'score': 'N/A', 'version': None, 'source': None}
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 139-161" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Enhanced Version with V2 Fallback" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Python Implementation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When multiple sources provide scores, use a **priority cascade**:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Rationale**: NVD is the most comprehensive and authoritative, followed by community sources, then vendor-specific databases." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """NVD → GHSA → RedHat → N/A
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 67-69" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Source Priority Strategy" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Vulnerability scanners often aggregate data from multiple sources, each providing their own CVSS assessment:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_99801ed70deeba25 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Common Sources" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Need fallback logic when primary source unavailable" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Not all sources have scores for every CVE" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Scores may differ based on interpretation" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Why Multiple Sources?" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Multiple Vulnerability Data Sources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "CVSS (Common Vulnerability Scoring System) provides a standardized way to assess the severity of security vulnerabilities. When generating security reports, extracting the correct CVSS score from multiple data sources is essential for accurate risk assessment." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "CVSS Score Extraction from Vulnerability Data" ] ;
+    oc:hasWorkflow _:ref_0de64eff80fee2df,
+        _:ref_99801ed70deeba25 ;
+    oc:impartsKnowledge oc:kn_0f46fbe7,
+        oc:kn_18a26703,
+        oc:kn_8c263e5b,
+        oc:kn_91d91416,
+        oc:kn_a4ff7a00,
+        oc:kn_a98dc8c2,
+        oc:kn_c0b65dd9 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:VulnerabilityDataAvailable ;
+    oc:resolvesIntent "extract CVSS scores from vulnerability data",
+        "filter vulnerabilities by CVSS score threshold",
+        "generate vulnerability reports with CVSS scores",
+        "get severity score from Trivy JSON output",
+        "implement CVSS score fallback logic across multiple sources" ;
+    oc:yieldsState oc:CVSSScoresExtracted,
+        oc:VulnerabilityReportReady .
+
+oc:kn_0f46fbe7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When no CVSS score is found across all sources" ;
+    oc:directiveContent "Always return 'N/A' when no score is available. Never return None, 0.0, or raise exceptions for missing scores." ;
+    oc:hasRationale "Consistent sentinel value ('N/A') makes downstream report generation predictable and avoids null-reference errors" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_18a26703 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before extracting CVSS scores from any vulnerability record" ;
+    oc:directiveContent "Validate that vulnerability data contains a 'CVSS' key that is a dictionary before attempting score extraction. Use isinstance(cvss, dict) guard." ;
+    oc:hasRationale "Prevents AttributeError/TypeError when CVSS field is missing or unexpectedly non-dict (e.g., null, string)" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8c263e5b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When parsing vulnerability data from any source" ;
+    oc:directiveContent "Never assume CVSS data is always present or well-formed. Always use safe dictionary access (.get()), validate types (isinstance checks), and return 'N/A' for missing scores." ;
+    oc:hasRationale "Vulnerability databases may have missing entries, malformed data, or unexpected types. Hard failures on missing data break report generation pipelines" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_91d91416 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When multiple CVSS versions are available for the same vulnerability" ;
+    oc:directiveContent "Prefer CVSS v3/v3.1 scores over v2 scores. Only fall back to v2 when no v3 score exists across all sources." ;
+    oc:hasRationale "CVSS v3 provides refined metrics and more accurate severity assessments than the legacy v2 system" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a4ff7a00 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "CVSS score extraction is purely read-only and idempotent — calling the extraction function multiple times on the same data always returns the same result with no side effects." ;
+    oc:hasRationale "Read-only data extraction from static vulnerability records guarantees reproducible reports" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a98dc8c2 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When multiple sources provide conflicting CVSS scores" ;
+    oc:directiveContent "Different sources may assign different CVSS scores to the same CVE due to differing interpretations of impact. Always use the highest-priority source's score rather than averaging or picking extremes." ;
+    oc:hasRationale "Averaging scores loses the authority signal of the primary source; the priority cascade resolves conflicts deterministically" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c0b65dd9 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting CVSS scores from multi-source vulnerability data" ;
+    oc:directiveContent "Use source priority cascade: NVD → GHSA → RedHat → N/A. NVD is most authoritative; never skip to a lower-priority source when a higher one has a valid score." ;
+    oc:hasRationale "NVD (NIST) is the most comprehensive and authoritative source; vendor-specific sources may have incomplete coverage or biased assessments" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_009cb318 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python with json module (standard library)" .
+
+oc:req_07ad97d9 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Understanding of CVSS scoring system (v2/v3) and severity ranges" .
+
+oc:req_cddc37d6 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Familiarity with Trivy JSON output format or similar vulnerability scanner output" .
+
+_:ref_01a3281a6a0cec97 a oc:WorkflowStep ;
+    dcterms:description "**Document source**: In detailed reports, note which source provided the score" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_035d521bdfab2430 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "RedHat's security team assessments" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "**Priority: Lower**" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Focused on enterprise Linux ecosystem" ] .
+
+_:ref_14fc70c4668130a2 a oc:WorkflowStep ;
+    dcterms:description "**RedHat Security Data**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_035d521bdfab2430 ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_16a4b745e2e1c8f3 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "**Priority: Medium**" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Community-driven vulnerability database" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Strong for open-source packages" ] .
+
+_:ref_1f7c7e62754f62e9 a oc:WorkflowStep ;
+    dcterms:description "**Respect source hierarchy**: NVD is most authoritative" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_301aa2263d0dfbe7 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Maintained by NIST (U.S. government)" .
+
+_:ref_3bcd762691b9bf1c a oc:WorkflowStep ;
+    dcterms:description "**GHSA (GitHub Security Advisory)**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_16a4b745e2e1c8f3 ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4dc2a6549cbc78fb a oc:WorkflowStep ;
+    dcterms:description "**NVD (National Vulnerability Database)**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_301aa2263d0dfbe7,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Most authoritative source" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "**Priority: Highest**" ] ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_692f47cc161e9e36 a oc:WorkflowStep ;
+    dcterms:description "**Prefer newer versions**: V3 > V2" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_718be79425b2d230 a oc:WorkflowStep ;
+    dcterms:description "**Validate data types**: Ensure scores are numeric before using" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_b6a4a7ad8425a7e6 a oc:WorkflowStep ;
+    dcterms:description "**Always provide fallback**: Use 'N/A' when scores unavailable" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0de64eff80fee2df a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_01a3281a6a0cec97,
+        _:ref_1f7c7e62754f62e9,
+        _:ref_692f47cc161e9e36,
+        _:ref_718be79425b2d230,
+        _:ref_b6a4a7ad8425a7e6 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_99801ed70deeba25 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_14fc70c4668130a2,
+        _:ref_3bcd762691b9bf1c,
+        _:ref_4dc2a6549cbc78fb ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

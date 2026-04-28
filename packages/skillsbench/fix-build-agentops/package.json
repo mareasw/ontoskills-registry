@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/fix-build-agentops",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "analyze-ci/ontoskill.ttl",
+    "temporal-python-testing/ontoskill.ttl",
+    "testing-python/ontoskill.ttl",
+    "uv-package-manager/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "analyze-ci/intents.json",
+    "temporal-python-testing/intents.json",
+    "testing-python/intents.json",
+    "uv-package-manager/intents.json"
+  ],
+  "skills": []
+}

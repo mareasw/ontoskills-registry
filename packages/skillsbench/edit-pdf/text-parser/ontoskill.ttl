@@ -1,0 +1,155 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_edit_pdf_text_parser a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "text-parser" ;
+    skos:broader "Parser" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/edit-pdf/text-parser" ;
+    oc:contentHash "dcd91e88b9fd2ca435d43b65fc96af54e2662430e3e6cda9998632bbee04adff" ;
+    oc:differentia "extracts key-value pairs from structured text input files for downstream consumption" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Guide for parsing structured text input files." ;
+    oc:hasName "text-parser" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def parse_input(text):
+    \"\"\"Parse key-value pairs from text.\"\"\"
+    data = {}
+    for line in text.strip().split('\\n'):
+        if ':' in line:
+            # Remove leading dash/bullet if present
+            line = line.lstrip('- ').strip()
+            key, value = line.split(':', 1)
+            data[key.strip()] = value.strip()
+    return data
+
+# Usage
+with open("input.txt") as f:
+    content = f.read()
+
+data = parse_input(content)
+# data["Name"] -> "John Smith"
+# data["Email"] -> "john@example.com"
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key-Value Parsing" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Match field names to PDF labels" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Handle special instructions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Read the entire input file first" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Parse structured text files to extract data for filling PDFs." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Or without dashes:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Name: John Smith
+Email: john@example.com
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 44-47" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """- Name: John Smith
+- Email: john@example.com
+- Phone: 555-1234
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 37-41" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Common Input Formats" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Text Parser Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: text-parser
+description: "Guide for parsing structured text input files."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_06b04d82,
+        oc:kn_7e84f723,
+        oc:kn_85d77246,
+        oc:kn_aa6316b5,
+        oc:kn_ce92e765 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "extract key-value data from text input",
+        "parse structured text files",
+        "prepare input data for PDF form filling" ;
+    oc:yieldsState oc:DataParsed .
+
+oc:kn_06b04d82 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing parsing logic for structured text" ;
+    oc:directiveContent "Handle both dash-prefixed and plain key-value formats to maximize input flexibility." ;
+    oc:hasRationale "Users may provide input in slightly different formats; robust parsing reduces preprocessing errors." .
+
+oc:kn_7e84f723 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "This skill reads files from the local filesystem but does not modify any files." ;
+    oc:hasRationale "Parsing is a read-only operation; no external state is mutated." .
+
+oc:kn_85d77246 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When parsing any structured text input" ;
+    oc:directiveContent "Read the entire input file before parsing to ensure all key-value pairs are captured." ;
+    oc:hasRationale "Partial reads may miss fields defined later in the file, leading to incomplete data extraction." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_aa6316b5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing parsed data for PDF filling" ;
+    oc:directiveContent "Match parsed field names to target PDF labels to ensure correct form field population." ;
+    oc:hasRationale "Mismatched field names cause silent failures where PDF fields remain empty or get wrong values." .
+
+oc:kn_ce92e765 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When parsing input text" ;
+    oc:directiveContent "Only lines containing a colon (:) delimiter are parsed as key-value pairs; all other lines are silently skipped." ;
+    oc:hasRationale "The colon delimiter is the sole structural indicator for valid data lines. Lines without it are ignored." .
+

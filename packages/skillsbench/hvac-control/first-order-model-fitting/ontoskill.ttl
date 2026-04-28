@@ -1,0 +1,325 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_hvac_control_first_order_model_fitting a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "first-order-model-fitting" ;
+    skos:broader "System identification technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/hvac-control/first-order-model-fitting" ;
+    oc:contentHash "e20cd9be569cf1486edc19569aa7c37d63f3f330132431fde60cdf5b6689bcc2" ;
+    oc:dependsOnSkill oc:skill_ontoskills_scipy_curve_fit ;
+    oc:differentia "that extracts first-order dynamic model parameters (gain K and time constant tau) from experimental step response data" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Fit first-order dynamic models to experimental step response data and extract K (gain) and tau (time constant) parameters." ;
+    oc:hasName "first-order-model-fitting" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: first-order-model-fitting
+description: Fit first-order dynamic models to experimental step response data and extract K (gain) and tau (time constant) parameters.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When you apply a step input from 0 to u, the output follows:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "This is the key equation for fitting." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """y(t) = y_ambient + K * u * (1 - exp(-t/tau))
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 31-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Step Response Formula" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0378304e2f800e07 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Practical Tips" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "At t = tau:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """y(tau) = y_ambient + K*u*(1 - exp(-1))
+       = y_ambient + 0.632 * (y_steady - y_ambient)
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 58-61" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "So tau is the time to reach 63.2% of the final output change." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The time constant can be found from the 63.2% rise point:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Time Constant (tau)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Therefore:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """K = (y_steady - y_ambient) / u
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 49-51" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "At steady state (t -> infinity), the exponential term goes to zero:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """y_steady = y_ambient + K * u
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 43-45" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Process Gain (K)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Extracting Parameters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`K` = process gain (output change per unit input at steady state)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`y` = output variable (e.g., temperature, voltage, position)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`u` = input variable (e.g., power, current, force)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "`y_ambient` = baseline/ambient value" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`tau` = time constant (seconds) - characterizes response speed" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Where:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The dynamics are described by:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tau * dy/dt + y = y_ambient + K * u
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-18" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "The First-Order Model" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """residuals = y_measured - y_model
+ss_res = np.sum(residuals**2)
+ss_tot = np.sum((y_measured - np.mean(y_measured))**2)
+r_squared = 1 - (ss_res / ss_tot)
+fitting_error = np.sqrt(np.mean(residuals**2))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 93-99" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**R-squared (R^2)**: How well the model explains variance (want > 0.9)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Fitting error**: RMS difference between model and data" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After fitting, calculate:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Quality Metrics" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def step_response(t, K, tau, y_ambient, u):
+    \"\"\"First-order step response model.\"\"\"
+    return y_ambient + K * u * (1 - np.exp(-t / tau))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 67-71" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def model(t, K, tau):
+    return y_ambient + K * u * (1 - np.exp(-t / tau))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 75-78" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "When fitting, you typically fix `y_ambient` (from initial reading) and `u` (known input), leaving only `K` and `tau` as unknowns:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Model Function for Curve Fitting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Many physical systems (thermal, electrical, mechanical) exhibit first-order dynamics. This skill explains the mathematical model and how to extract parameters from experimental data." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "First-Order System Model Fitting" ] ;
+    oc:hasWorkflow _:ref_0378304e2f800e07,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for extracting K and tau from experimental step response data" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate R-squared and RMS fitting error to validate model quality (target R² > 0.9)" ;
+                    oc:expectedOutcome "Quality metrics confirming the first-order model is appropriate" ;
+                    oc:stepDependsOn _:ref_9a69b85c132e11f8 ;
+                    oc:stepId "step-4" ],
+                _:ref_8d2d1555f900be03,
+                _:ref_908152c525a188b6,
+                _:ref_9a69b85c132e11f8 ;
+            oc:workflowId "fit-first-order-model" ;
+            oc:workflowName "Fit First-Order Model to Step Response Data" ] ;
+    oc:impartsKnowledge oc:kn_141879f4,
+        oc:kn_195924a2,
+        oc:kn_2af55ab4,
+        oc:kn_6aed65cf,
+        oc:kn_d06a459a ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "calculate R-squared quality metric for model fit",
+        "estimate first-order system parameters",
+        "extract process gain and time constant from experimental data",
+        "fit first-order model to step response data" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_141879f4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting fitted parameters" ;
+    oc:directiveContent "Verify K has correct physical units (output units / input units) after fitting." ;
+    oc:hasRationale "Unit mismatches propagate into controller design errors downstream." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_195924a2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring the curve fitting model" ;
+    oc:directiveContent "Fix y_ambient (from initial reading) and u (known input) before fitting, leaving only K and tau as free parameters." ;
+    oc:hasRationale "Reducing free parameters improves fit stability and convergence, especially with limited data." .
+
+oc:kn_2af55ab4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting data points for curve fitting" ;
+    oc:directiveContent "The step response formula applies only during the transient (rising) phase; exclude the initial flat region before the input changes." ;
+    oc:hasRationale "Including pre-step or post-steady-state data introduces model mismatch and biases parameter estimates." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6aed65cf a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After fitting the first-order model to data" ;
+    oc:directiveContent "Target R-squared > 0.9 and examine RMS fitting error to validate model quality." ;
+    oc:hasRationale "R-squared below 0.9 suggests the system may not be well-modeled as first-order or the data is too noisy." .
+
+oc:kn_d06a459a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When estimating tau from step response data" ;
+    oc:directiveContent "Use the 63.2% rise point as a quick initial estimate for tau before running nonlinear optimization." ;
+    oc:hasRationale "At t=tau, y(tau) = y_ambient + 0.632*(y_steady - y_ambient), providing a direct geometric estimate." .
+
+_:ref_285a0049b3494bef a oc:WorkflowStep ;
+    dcterms:description "**Check units**: Ensure K has correct units (output units / input units)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_29ffd2a76365a768 a oc:WorkflowStep ;
+    dcterms:description "**Handle noisy data**: Fitting naturally averages out measurement noise" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_74c2eaecf1b7a51a a oc:WorkflowStep ;
+    dcterms:description "**Use rising portion data**: The step response formula applies during the transient phase" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_89629d856fe93ac9 a oc:WorkflowStep ;
+    dcterms:description "**Exclude initial flat region**: Start your fit from when the input changes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_0378304e2f800e07 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_285a0049b3494bef,
+        _:ref_29ffd2a76365a768,
+        _:ref_74c2eaecf1b7a51a,
+        _:ref_89629d856fe93ac9 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8d2d1555f900be03 a oc:WorkflowStep ;
+    dcterms:description "Identify and extract the transient (rising) portion of the step response data, excluding the initial flat region" ;
+    oc:expectedOutcome "Clean time-series data array covering only the transient phase" ;
+    oc:stepId "step-1" .
+
+_:ref_908152c525a188b6 a oc:WorkflowStep ;
+    dcterms:description "Fix y_ambient from initial readings and u from known input, then define the model function with K and tau as free parameters" ;
+    oc:expectedOutcome "Callable model function ready for scipy.optimize.curve_fit" ;
+    oc:stepDependsOn _:ref_8d2d1555f900be03 ;
+    oc:stepId "step-2" .
+
+_:ref_9a69b85c132e11f8 a oc:WorkflowStep ;
+    dcterms:description "Run curve_fit to estimate K and tau parameters" ;
+    oc:expectedOutcome "Optimal K and tau values with confidence intervals" ;
+    oc:stepDependsOn _:ref_908152c525a188b6 ;
+    oc:stepId "step-3" .
+

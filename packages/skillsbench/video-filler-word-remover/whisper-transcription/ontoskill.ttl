@@ -1,0 +1,338 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_filler_word_remover_whisper_transcription a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "whisper-transcription" ;
+    skos:broader "Speech-to-text transcription" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-filler-word-remover/whisper-transcription" ;
+    oc:contentHash "76915dead22daf9c4f60fcc46ec8ff465f30787657f594002af6b9a0ac5dece4" ;
+    oc:dependsOnSkill oc:skill_ontoskills_ffmpeg_video_editing ;
+    oc:differentia "Uses OpenAI Whisper with word-level timestamps for precise timing information" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "audio_path or video file path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Transcribe audio/video to text with word-level timestamps using OpenAI Whisper. Use when you need speech-to-text with accurate timing information for each word." ;
+    oc:hasName "whisper-transcription" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: whisper-transcription
+description: "Transcribe audio/video to text with word-level timestamps using OpenAI Whisper. Use when you need speech-to-text with accurate timing information for each word."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "OpenAI Whisper provides accurate speech-to-text with word-level timestamps." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import whisper
+import json
+
+def transcribe_with_timestamps(audio_path, output_path):
+    \"\"\"
+    Transcribe audio and get word-level timestamps.
+
+    Args:
+        audio_path: Path to audio/video file
+        output_path: Path to save JSON output
+    \"\"\"
+    # Use tiny model for speed
+    model = whisper.load_model("tiny")
+
+    # Transcribe with word timestamps
+    result = model.transcribe(
+        audio_path,
+        word_timestamps=True,
+        language="en"  # Specify language for better accuracy
+    )
+
+    # Extract words with timestamps
+    words = []
+    for segment in result["segments"]:
+        if "words" in segment:
+            for word_info in segment["words"]:
+                words.append({
+                    "word": word_info["word"].strip(),
+                    "start": word_info["start"],
+                    "end": word_info["end"]
+                })
+
+    with open(output_path, "w") as f:
+        json.dump(words, f, indent=2)
+
+    return words
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 30-67" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Basic Usage with Word Timestamps" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def find_phrases(transcription, phrases):
+    \"\"\"Find multi-word phrases in transcription.\"\"\"
+    matches = []
+    words = [w["word"].lower().strip() for w in transcription]
+
+    for phrase in phrases:
+        phrase_words = phrase.lower().split()
+        phrase_len = len(phrase_words)
+
+        for i in range(len(words) - phrase_len + 1):
+            if words[i:i+phrase_len] == phrase_words:
+                matches.append({
+                    "word": phrase,
+                    "timestamp": transcription[i]["start"]
+                })
+
+    return matches
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 155-173" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For detecting phrases like \"you know\" or \"I mean\":" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Multi-Word Phrases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import whisper
+import json
+
+# Filler words to detect
+FILLER_WORDS = {
+    "um", "uh", "hum", "hmm", "mhm",
+    "like", "so", "well", "yeah", "okay",
+    "basically", "actually", "literally"
+}
+
+def detect_fillers(audio_path, output_path):
+    # Load tiny model (fast!)
+    model = whisper.load_model("tiny")
+
+    # Transcribe
+    result = model.transcribe(audio_path, word_timestamps=True, language="en")
+
+    # Find fillers
+    fillers = []
+    for segment in result["segments"]:
+        for word_info in segment.get("words", []):
+            word = word_info["word"].lower().strip()
+            clean = ''.join(c for c in word if c.isalnum())
+
+            if clean in FILLER_WORDS:
+                fillers.append({
+                    "word": clean,
+                    "timestamp": round(word_info["start"], 2)
+                })
+
+    with open(output_path, "w") as f:
+        json.dump(fillers, f, indent=2)
+
+    return fillers
+
+# Usage
+detect_fillers("/root/input.mp4", "/root/annotations.json")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 102-140" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Complete Example: Find Filler Words" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install openai-whisper
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def find_words(transcription, target_words):
+    \"\"\"
+    Find specific words in transcription with their timestamps.
+
+    Args:
+        transcription: List of word dicts with 'word', 'start', 'end'
+        target_words: Set of words to find (lowercase)
+
+    Returns:
+        List of matches with word and timestamp
+    \"\"\"
+    matches = []
+    target_lower = {w.lower() for w in target_words}
+
+    for item in transcription:
+        word = item["word"].lower().strip()
+        # Remove punctuation for matching
+        clean_word = ''.join(c for c in word if c.isalnum())
+
+        if clean_word in target_lower:
+            matches.append({
+                "word": clean_word,
+                "timestamp": item["start"]
+            })
+
+    return matches
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 71-98" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Detecting Specific Words" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Whisper can process video files directly, but for cleaner results:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Extract audio as 16kHz mono WAV
+ffmpeg -i input.mp4 -vn -acodec pcm_s16le -ar 16000 -ac 1 audio.wav
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 146-149" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Audio Extraction (if needed)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Use the `tiny` model for fast transcription** - it's sufficient for most tasks and runs much faster:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Recommendation: Start with `tiny` - it handles clear interview/podcast audio well.**" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "**Use the `tiny` model for fast transcription** - it's sufficient for most tasks and runs much faster" ;
+                            oc:tableMarkdown """| Model | Size | Speed | Accuracy |
+|-------|------|-------|----------|
+| tiny | 39 MB | Fastest | Good for clear speech |
+| base | 74 MB | Fast | Better accuracy |
+| small | 244 MB | Medium | High accuracy |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Model Selection" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Whisper Transcription" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Full workflow from installing Whisper to producing a timestamped transcription JSON" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Save extracted words to JSON file" ;
+                    oc:expectedOutcome "JSON file with word-level timestamp data" ;
+                    oc:stepDependsOn _:ref_62e579ecb51a2ddb ;
+                    oc:stepId "save-json" ],
+                _:ref_62e579ecb51a2ddb,
+                _:ref_92e3894078c8877a,
+                _:ref_d7e0a11b60e6d7e1,
+                _:ref_e16acf82cc713ade ;
+            oc:workflowId "whisper-transcribe" ;
+            oc:workflowName "Transcribe Audio/Video with Word Timestamps" ] ;
+    oc:impartsKnowledge oc:kn_47bd727d,
+        oc:kn_9576f539,
+        oc:kn_a562633b,
+        oc:kn_bd649d6c,
+        oc:kn_ccfbf5e3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "detect filler words in speech",
+        "detect specific words in audio with timestamps",
+        "find multi-word phrases in audio",
+        "transcribe audio to text with timestamps",
+        "transcribe video to text with timestamps" ;
+    oc:yieldsState oc:TimestampsExtracted,
+        oc:TranscriptionComplete .
+
+oc:kn_47bd727d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing video files with poor audio quality" ;
+    oc:directiveContent "Whisper can process video files directly, but for cleaner results extract audio as 16kHz mono WAV first using ffmpeg." ;
+    oc:hasRationale "16kHz mono WAV is the optimal format for Whisper and avoids codec issues in video containers" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_9576f539 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a Whisper model" ;
+    oc:directiveContent "Start with the 'tiny' model (39 MB) for transcription - it handles clear interview/podcast audio well and runs fastest." ;
+    oc:hasRationale "The tiny model is sufficient for most tasks and avoids the overhead of larger models. Escalate to 'base' or 'small' only if accuracy is insufficient." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a562633b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running any transcription" ;
+    oc:directiveContent "openai-whisper must be installed (pip install openai-whisper)" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bd649d6c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When searching for specific words in transcription output" ;
+    oc:directiveContent "Do not compare raw words directly - always strip punctuation and lowercase before matching target words." ;
+    oc:hasRationale "Whisper may include punctuation attached to words; direct comparison will miss matches" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ccfbf5e3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calling whisper.transcribe()" ;
+    oc:directiveContent "Always specify language='en' in transcribe() for better accuracy when the audio is known to be English." ;
+    oc:hasRationale "Explicit language specification prevents misdetection and improves transcription quality" ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_62e579ecb51a2ddb a oc:WorkflowStep ;
+    dcterms:description "Iterate segments and extract word, start, end for each word entry" ;
+    oc:expectedOutcome "Flat list of words with timestamps" ;
+    oc:stepDependsOn _:ref_92e3894078c8877a ;
+    oc:stepId "extract-words" .
+
+_:ref_92e3894078c8877a a oc:WorkflowStep ;
+    dcterms:description "Call model.transcribe() with word_timestamps=True and language='en'" ;
+    oc:expectedOutcome "Raw transcription result with segments containing word-level timing" ;
+    oc:stepDependsOn _:ref_d7e0a11b60e6d7e1 ;
+    oc:stepId "transcribe" .
+
+_:ref_d7e0a11b60e6d7e1 a oc:WorkflowStep ;
+    dcterms:description "Load the tiny Whisper model using whisper.load_model('tiny')" ;
+    oc:expectedOutcome "Model loaded in memory" ;
+    oc:stepDependsOn _:ref_e16acf82cc713ade ;
+    oc:stepId "load-model" .
+
+_:ref_e16acf82cc713ade a oc:WorkflowStep ;
+    dcterms:description "Install openai-whisper via pip" ;
+    oc:expectedOutcome "Whisper library available for import" ;
+    oc:stepId "install-whisper" .
+

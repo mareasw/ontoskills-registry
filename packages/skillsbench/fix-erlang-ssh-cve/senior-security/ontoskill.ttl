@@ -1,0 +1,638 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_erlang_ssh_cve_senior_security a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "senior-security" ;
+    skos:broader "Security engineering toolkit" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-erlang-ssh-cve/senior-security" ;
+    oc:contentHash "4b11b4bc8454ddf07a72f071f211c058ce930ffd67c090c5b197dba1ff511de7" ;
+    oc:dependsOnSkill oc:skill_ontoskills_ssh_penetration_testing ;
+    oc:differentia "provides threat modeling, security auditing, and penetration testing automation across modern application stacks" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied,
+        oc:ToolInstalled ;
+    oc:hasArgumentHint "project-path or target-path for security assessment" ;
+    oc:hasCategory "security" ;
+    oc:hasDescription "Comprehensive security engineering skill for application security, penetration testing, security architecture, and compliance auditing. Includes security assessment tools, threat modeling, crypto implementation, and security automation. Use when designing security architecture, conducting penetration tests, implementing cryptography, or performing security audits." ;
+    oc:hasName "senior-security" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: senior-security
+description: Comprehensive security engineering skill for application security, penetration testing, security architecture, and compliance auditing. Includes security assessment tools, threat modeling, crypto implementation, and security automation. Use when designing security architecture, conducting penetration tests, implementing cryptography, or performing security audits.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Complete toolkit for senior security with modern tools and best practices." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Code examples" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Real-world scenarios" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Anti-patterns to avoid" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Best practices" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Detailed patterns and practices" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Comprehensive guide available in `references/security_architecture_patterns.md`:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Security Architecture Patterns" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Technology stack details" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Scalability guidelines" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Configuration examples" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Security considerations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Integration patterns" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Technical reference guide in `references/cryptography_implementation.md`:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Cryptography Implementation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Performance tuning" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Tool integrations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Optimization strategies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Step-by-step processes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Troubleshooting guide" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Complete workflow documentation in `references/penetration_testing_guide.md`:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Penetration Testing Guide" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Reference Documentation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Pattern Reference: `references/security_architecture_patterns.md`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Workflow Guide: `references/penetration_testing_guide.md`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Tool Scripts: `scripts/` directory" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Technical Guide: `references/cryptography_implementation.md`" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """**Languages:** TypeScript, JavaScript, Python, Go, Swift, Kotlin
+**Frontend:** React, Next.js, React Native, Flutter
+**Backend:** Node.js, Express, GraphQL, REST APIs
+**Database:** PostgreSQL, Prisma, NeonDB, Supabase
+**DevOps:** Docker, Kubernetes, Terraform, GitHub Actions, CircleCI
+**Cloud:** AWS, GCP, Azure""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Tech Stack" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python scripts/security_auditor.py <target-path> [--verbose]
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 55-57" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Comprehensive analysis and optimization tool." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Automated fixes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Deep analysis" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Performance metrics" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Security Auditor" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python scripts/pentest_automator.py [arguments] [options]
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 70-72" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Integration ready" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Custom configurations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Production-grade output" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Expert-level automation" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Advanced tooling for specialized tasks." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Pentest Automator" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Automated tool for threat modeler tasks." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Quality checks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Automated scaffolding" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Best practices built-in" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Configurable templates" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python scripts/threat_modeler.py <project-path> [options]
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 40-42" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Threat Modeler" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Core Capabilities" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Check script output messages" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Consult tech stack documentation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Review error logs" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Review reference documentation" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Getting Help" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Check the comprehensive troubleshooting section in `references/cryptography_implementation.md`." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Common Issues" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Follow the patterns and practices documented in:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`references/penetration_testing_guide.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`references/cryptography_implementation.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`references/security_architecture_patterns.md`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Implement Best Practices" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Use the analyzer script
+python scripts/security_auditor.py .
+
+# Review recommendations
+# Apply fixes
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 131-137" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Run Quality Checks" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Install dependencies
+npm install
+# or
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 119-127" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Setup and Configuration" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Development Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Development
+npm run dev
+npm run build
+npm run test
+npm run lint
+
+# Analysis
+python scripts/security_auditor.py .
+python scripts/pentest_automator.py --analyze
+
+# Deployment
+docker build -t app:latest .
+docker-compose up -d
+kubectl apply -f k8s/
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 174-189" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Common Commands" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Write clear code" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use consistent naming" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Add helpful comments" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Keep it simple" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Maintainability" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Validate all inputs" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Keep dependencies updated" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Implement proper authentication" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use parameterized queries" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Security" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Review regularly" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Document decisions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Follow established patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Write comprehensive tests" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Code Quality" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Monitor in production" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Measure before optimizing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use appropriate caching" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Optimize critical paths" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Performance" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices Summary" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Script 1: Threat Modeler
+python scripts/threat_modeler.py [options]
+
+# Script 2: Security Auditor
+python scripts/security_auditor.py [options]
+
+# Script 3: Pentest Automator
+python scripts/pentest_automator.py [options]
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 16-25" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "This skill provides three core capabilities through automated scripts:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Main Capabilities" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Quick Start" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Senior Security" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Full security assessment workflow from setup through remediation" ;
+            oc:hasStep _:ref_1240df528e295c37,
+                _:ref_1f037384976fa8ff,
+                _:ref_23f3f0847572993c,
+                _:ref_3028857e262c5f6c,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Review audit/pentest recommendations and apply fixes following patterns in references/" ;
+                    oc:expectedOutcome "Security vulnerabilities remediated with documented fixes" ;
+                    oc:stepDependsOn _:ref_1f037384976fa8ff ;
+                    oc:stepId "remediation" ] ;
+            oc:workflowId "security-assessment" ;
+            oc:workflowName "Comprehensive Security Assessment" ] ;
+    oc:impartsKnowledge oc:kn_15d26c27,
+        oc:kn_213fe58d,
+        oc:kn_2a323297,
+        oc:kn_b1f4aa26,
+        oc:kn_bc32d16d,
+        oc:kn_eba23a77 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:EnvironmentReady ;
+    oc:resolvesIntent "audit application security",
+        "automate security assessments",
+        "conduct penetration tests",
+        "design security architecture",
+        "implement cryptography",
+        "perform security audits",
+        "threat model a project" ;
+    oc:yieldsState oc:SecurityAssessmentComplete,
+        oc:ThreatModelGenerated .
+
+oc:kn_15d26c27 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any security-relevant code or reviewing application security" ;
+    oc:directiveContent "Always validate all inputs, use parameterized queries, implement proper authentication, and keep dependencies updated as baseline security practices." ;
+    oc:hasRationale "These four practices prevent the most common vulnerability classes: injection, broken authentication, and known vulnerability exploitation" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_213fe58d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running security audits or building security tooling" ;
+    oc:directiveContent "Do not optimize security tooling performance before measuring baseline metrics; do not skip comprehensive testing for security controls." ;
+    oc:hasRationale "Premature optimization of security tooling can miss critical findings; untested security controls provide false confidence" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2a323297 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing security architecture for any application" ;
+    oc:directiveContent "Follow established security architecture patterns, document security decisions, and review them regularly against evolving threats." ;
+    oc:hasRationale "Security architecture must evolve with the threat landscape; documented decisions enable consistent review and improvement" .
+
+oc:kn_b1f4aa26 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When security tooling fails or produces unexpected results" ;
+    oc:directiveContent "Check reference documentation in references/cryptography_implementation.md for troubleshooting, review script output messages, and consult error logs for diagnosis." ;
+    oc:hasRationale "Structured troubleshooting paths reduce time to resolution and prevent compounding errors during security assessments" .
+
+oc:kn_bc32d16d a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When conducting a comprehensive security assessment" ;
+    oc:directiveContent "Run threat modeling first to identify attack surfaces, then security auditing to find vulnerabilities, then penetration testing to validate exploitable weaknesses." ;
+    oc:hasRationale "This sequence ensures testing is targeted and prioritized by actual risk rather than theoretical vulnerability" .
+
+oc:kn_eba23a77 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any security assessment workflow" ;
+    oc:directiveContent "Ensure Python runtime is available for running security scripts (threat_modeler.py, security_auditor.py, pentest_automator.py) and that npm dependencies are installed if auditing Node.js projects." ;
+    oc:hasRationale "Missing runtime dependencies cause silent failures or incomplete security assessments" ;
+    oc:severityLevel "HIGH" .
+
+_:ref_1240df528e295c37 a oc:WorkflowStep ;
+    dcterms:description "Run python scripts/threat_modeler.py <project-path> to generate threat model" ;
+    oc:expectedOutcome "Threat model generated identifying attack surfaces and threat categories" ;
+    oc:stepDependsOn _:ref_23f3f0847572993c ;
+    oc:stepId "threat-model" .
+
+_:ref_1f037384976fa8ff a oc:WorkflowStep ;
+    dcterms:description "Run python scripts/pentest_automator.py to validate exploitable weaknesses found in audit" ;
+    oc:expectedOutcome "Penetration test results confirming or refuting audit findings" ;
+    oc:stepDependsOn _:ref_1240df528e295c37,
+        _:ref_3028857e262c5f6c ;
+    oc:stepId "pentest" .
+
+_:ref_3028857e262c5f6c a oc:WorkflowStep ;
+    dcterms:description "Run python scripts/security_auditor.py . --verbose to perform deep security analysis" ;
+    oc:expectedOutcome "Security audit report with findings, severity ratings, and recommendations" ;
+    oc:stepDependsOn _:ref_23f3f0847572993c ;
+    oc:stepId "security-audit" .
+
+_:ref_23f3f0847572993c a oc:WorkflowStep ;
+    dcterms:description "Install dependencies (npm install or pip install -r requirements.txt) and configure environment (cp .env.example .env)" ;
+    oc:expectedOutcome "All dependencies installed and environment configured" ;
+    oc:stepId "setup" .
+

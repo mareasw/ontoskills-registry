@@ -1,0 +1,611 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_python_scala_translation_python_scala_functional a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "python-scala-functional" ;
+    skos:broader "Translation guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/python-scala-translation/python-scala-functional" ;
+    oc:contentHash "70bea7309b0c37fea5cb495488cd27c217040c80d111e45e37f96e146cdafc79" ;
+    oc:dependsOnSkill oc:skill_ontoskills_python_scala_syntax_mapping ;
+    oc:differentia "maps Python functional programming patterns (higher-order functions, decorators, generators, Option handling, pattern matching, monadic operations) to idiomatic Scala equivalents" ;
+    oc:extends oc:skill_ontoskills_python_scala_idioms ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "Python functional code snippet or pattern to translate" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Guide for translating Python code to functional Scala style. Use when converting Python code involving higher-order functions, decorators, closures, generators, or when aiming for idiomatic functional Scala with pattern matching, Option handling, and monadic operations." ;
+    oc:hasName "python-scala-functional" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: python-scala-functional
+description: Guide for translating Python code to functional Scala style. Use when converting Python code involving higher-order functions, decorators, closures, generators, or when aiming for idiomatic functional Scala with pattern matching, Option handling, and monadic operations.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+# Take first 10
+fibs = list(itertools.islice(fibonacci(), 10))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 167-177" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - LazyList (was Stream in Scala 2.12)
+def fibonacci: LazyList[BigInt] = {
+  def loop(a: BigInt, b: BigInt): LazyList[BigInt] =
+    a #:: loop(b, a + b)
+  loop(0, 1)
+}
+
+val fibs = fibonacci.take(10).toList
+
+// Alternative: Iterator
+def fibonacciIterator: Iterator[BigInt] = new Iterator[BigInt] {
+  private var (a, b) = (BigInt(0), BigInt(1))
+  def hasNext: Boolean = true
+  def next(): BigInt = {
+    val result = a
+    val newB = a + b
+    a = b
+    b = newB
+    result
+  }
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 179-201" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Generators → Iterators/LazyList" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - no direct equivalent
+# Duck typing provides flexibility
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 343-346" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - type classes via implicits (Scala 2) or given/using (Scala 3)
+
+// Scala 3
+trait Show[A]:
+  def show(a: A): String
+
+given Show[Int] with
+  def show(a: Int): String = s"Int: $a"
+
+def display[A](a: A)(using s: Show[A]): String = s.show(a)
+
+// Scala 2
+trait Show[A] {
+  def show(a: A): String
+}
+
+implicit val intShow: Show[Int] = new Show[Int] {
+  def show(a: Int): String = s"Int: $a"
+}
+
+def display[A](a: A)(implicit s: Show[A]): String = s.show(a)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 348-370" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Implicit Conversions and Type Classes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - exceptions
+def parse_int(s: str) -> int:
+    try:
+        return int(s)
+    except ValueError:
+        return 0
+
+# Python - Optional for errors
+def safe_parse_int(s: str) -> Optional[int]:
+    try:
+        return int(s)
+    except ValueError:
+        return None
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 205-219" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - Try monad
+import scala.util.{Try, Success, Failure}
+
+def parseInt(s: String): Try[Int] = Try(s.toInt)
+
+val result = parseInt("123") match {
+  case Success(n) => s"Got: $n"
+  case Failure(e) => s"Error: ${e.getMessage}"
+}
+
+// Chaining Try operations
+val doubled = parseInt("123").map(_ * 2)
+
+// Either for custom error types
+def parsePositive(s: String): Either[String, Int] = {
+  Try(s.toInt).toEither
+    .left.map(_ => "Not a number")
+    .flatMap { n =>
+      if (n > 0) Right(n)
+      else Left("Must be positive")
+    }
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 221-244" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Try/Either for Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def log_calls(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}")
+        result = func(*args, **kwargs)
+        print(f"Finished {func.__name__}")
+        return result
+    return wrapper
+
+@log_calls
+def add(a, b):
+    return a + b
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 34-47" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - function composition
+def logCalls[A, B](f: A => B, name: String): A => B = { a =>
+  println(s"Calling $name")
+  val result = f(a)
+  println(s"Finished $name")
+  result
+}
+
+val add = (a: Int, b: Int) => a + b
+val loggedAdd = logCalls(add.tupled, "add")
+
+// Alternative: using by-name parameters
+def withLogging[A](name: String)(block: => A): A = {
+  println(s"Calling $name")
+  val result = block
+  println(s"Finished $name")
+  result
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 49-68" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Decorators → Function Composition" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+from functools import partial
+
+def add(a, b, c):
+    return a + b + c
+
+add_5 = partial(add, 5)
+result = add_5(3, 2)  # 10
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 281-290" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - curried functions
+def add(a: Int)(b: Int)(c: Int): Int = a + b + c
+
+val add5 = add(5) _  // Partially applied
+val result = add5(3)(2)  // 10
+
+// Converting between curried and uncurried
+val uncurried = Function.uncurried(add _)
+val curried = (uncurried _).curried
+
+// Multiple parameter lists
+def fold[A, B](init: B)(list: List[A])(f: (B, A) => B): B =
+  list.foldLeft(init)(f)
+
+val sum = fold(0)(List(1, 2, 3))(_ + _)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 292-308" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Currying and Partial Application" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def compose(f, g):
+    return lambda x: f(g(x))
+
+def pipe(*functions):
+    def inner(x):
+        result = x
+        for f in functions:
+            result = f(result)
+        return result
+    return inner
+
+# Usage
+add_one = lambda x: x + 1
+double = lambda x: x * 2
+pipeline = pipe(add_one, double, add_one)  # (x + 1) * 2 + 1
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 248-265" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - built-in composition
+val addOne: Int => Int = _ + 1
+val double: Int => Int = _ * 2
+
+// compose: f.compose(g) = f(g(x))
+val composed = addOne.compose(double)  // addOne(double(x))
+
+// andThen: f.andThen(g) = g(f(x))
+val pipeline = addOne.andThen(double).andThen(addOne)  // (x + 1) * 2 + 1
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 267-277" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Function Composition" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - Option monad
+def findUser(userId: Int): Option[User] = db.get(userId)
+
+def getUserEmail(userId: Int): Option[String] =
+  findUser(userId).map(_.email)
+
+// Chained operations with flatMap
+def getUserCity(userId: Int): Option[String] =
+  findUser(userId)
+    .flatMap(_.address)
+    .map(_.city)
+
+// For-comprehension (cleaner for multiple operations)
+def getUserCity(userId: Int): Option[String] = for {
+  user <- findUser(userId)
+  address <- user.address
+  city <- Option(address.city)
+} yield city
+
+// Getting values out
+val email = getUserEmail(1).getOrElse("no-email@example.com")
+val emailOrThrow = getUserEmail(1).get  // Throws if None
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 140-163" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def find_user(user_id: int) -> Optional[User]:
+    user = db.get(user_id)
+    return user if user else None
+
+def get_user_email(user_id: int) -> Optional[str]:
+    user = find_user(user_id)
+    if user is None:
+        return None
+    return user.email
+
+# Chained operations
+def get_user_city(user_id: int) -> Optional[str]:
+    user = find_user(user_id)
+    if user is None:
+        return None
+    address = user.address
+    if address is None:
+        return None
+    return address.city
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 117-138" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Option Handling (None/null Safety)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - no tail call optimization
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Workaround: iterative
+def factorial_iter(n):
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 312-325" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - tail recursion with annotation
+import scala.annotation.tailrec
+
+def factorial(n: Int): BigInt = {
+  @tailrec
+  def loop(n: Int, acc: BigInt): BigInt = {
+    if (n <= 1) acc
+    else loop(n - 1, n * acc)
+  }
+  loop(n, 1)
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 327-339" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Tail Recursion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python (3.10+)
+def describe(value):
+    match value:
+        case 0:
+            return "zero"
+        case int(x) if x > 0:
+            return "positive int"
+        case int(x):
+            return "negative int"
+        case [x, y]:
+            return f"pair: {x}, {y}"
+        case {"name": name, "age": age}:
+            return f"{name} is {age}"
+        case _:
+            return "unknown"
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 72-88" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - pattern matching is more powerful
+def describe(value: Any): String = value match {
+  case 0 => "zero"
+  case x: Int if x > 0 => "positive int"
+  case _: Int => "negative int"
+  case (x, y) => s"pair: $x, $y"
+  case List(x, y) => s"list of two: $x, $y"
+  case m: Map[_, _] if m.contains("name") =>
+    s"${m("name")} is ${m("age")}"
+  case _ => "unknown"
+}
+
+// Case class pattern matching (preferred)
+sealed trait Result
+case class Success(value: Int) extends Result
+case class Error(message: String) extends Result
+
+def handle(result: Result): String = result match {
+  case Success(v) if v > 100 => s"Big success: $v"
+  case Success(v) => s"Success: $v"
+  case Error(msg) => s"Failed: $msg"
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 90-113" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Pattern Matching" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala
+def applyTwice[A](f: A => A, x: A): A = f(f(x))
+
+def makeMultiplier(n: Int): Int => Int = x => x * n
+
+val double = makeMultiplier(2)
+val result = applyTwice(double, 5)  // 20
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 22-30" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def apply_twice(f, x):
+    return f(f(x))
+
+def make_multiplier(n):
+    return lambda x: x * n
+
+double = make_multiplier(2)
+result = apply_twice(double, 5)  # 20
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 10-20" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Higher-Order Functions" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python to Scala Functional Programming Translation" ] ;
+    oc:impartsKnowledge oc:kn_16cbab8d,
+        oc:kn_4e409461,
+        oc:kn_51a6a893,
+        oc:kn_7916a8ea,
+        oc:kn_7b47136a,
+        oc:kn_7d78acfc,
+        oc:kn_a6e394d3,
+        oc:kn_b0d48980,
+        oc:kn_b2c49450,
+        oc:kn_c49d673a,
+        oc:kn_f0854af8,
+        oc:kn_f191f3a7 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "convert Python Optional/None handling to Scala Option monad",
+        "convert Python decorators to Scala function composition",
+        "convert Python exception handling to Scala Try/Either",
+        "convert Python recursion to Scala tail recursion",
+        "translate Python duck typing to Scala type classes",
+        "translate Python function composition and currying to Scala",
+        "translate Python generators to Scala LazyList/Iterator",
+        "translate Python higher-order functions to Scala",
+        "translate Python pattern matching to Scala pattern matching" ;
+    oc:yieldsState oc:CodeTranslated .
+
+oc:kn_16cbab8d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python yield-based generators to Scala" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """// Python generators → Scala LazyList
+def fibonacci: LazyList[BigInt] = {
+  def loop(a: BigInt, b: BigInt): LazyList[BigInt] =
+    a #:: loop(b, a + b)
+  loop(0, 1)
+}""" .
+
+oc:kn_4e409461 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python recursive functions to Scala" ;
+    oc:directiveContent "Use @tailrec annotation on all recursive functions that should be tail-optimized; Python has no equivalent guarantee." ;
+    oc:hasRationale "The @tailrec annotation causes a compile-time error if the compiler cannot optimize tail calls, preventing silent stack overflows." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_51a6a893 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When translating Python compose() or pipe() helpers to Scala" ;
+    oc:directiveContent "Use Scala's built-in compose and andThen for function composition instead of defining custom compose/pipe utilities." ;
+    oc:hasRationale "Scala's Function1 has compose and andThen built in, providing idiomatic and type-safe composition." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7916a8ea a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python try/except patterns to Scala" ;
+    oc:directiveContent "Prefer Try for wrapping exceptions and Either for custom error types with meaningful error information." ;
+    oc:hasRationale "Try captures exceptions as values; Either allows typed error channels that are more informative than exception hierarchies." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7b47136a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python @decorator patterns to Scala" ;
+    oc:directiveContent "Translate Python decorators to Scala function composition using higher-order functions or by-name parameters, not via annotation-based decoration." ;
+    oc:hasRationale "Scala lacks Python-style decorators; function composition and by-name parameters achieve the same cross-cutting concerns more explicitly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7d78acfc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python match/case on structured data to Scala" ;
+    oc:directiveContent "Use sealed traits with case classes for pattern matching instead of open inheritance hierarchies." ;
+    oc:hasRationale "Sealed traits enable exhaustive matching checked by the compiler, preventing unhandled cases." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6e394d3 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python recursive functions to Scala" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """// Tail recursion with accumulator pattern
+import scala.annotation.tailrec
+def factorial(n: Int): BigInt = {
+  @tailrec
+  def loop(n: Int, acc: BigInt): BigInt = {
+    if (n <= 1) acc else loop(n - 1, n * acc)
+  }
+  loop(n, 1)
+}""" .
+
+oc:kn_b0d48980 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Translation output format for each functional pattern" ;
+    oc:directiveContent """## {Pattern Name}
+```python
+# Python
+{python_code}
+```
+```scala
+// Scala
+{scala_code}
+```""" ;
+    oc:templateVariables "Pattern Name",
+        "python_code",
+        "scala_code" .
+
+oc:kn_b2c49450 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python Optional[T] or None-returning functions" ;
+    oc:directiveContent "Never translate Python None checks to null in Scala; always use Option[T] with map/flatMap/for-comprehensions." ;
+    oc:hasRationale "Using null defeats Scala's null-safety guarantees and loses the monadic chaining benefits of Option." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c49d673a a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When translating any Python functional code to Scala" ;
+    oc:directiveContent "1. Identify the Python functional pattern (HOF, decorator, generator, Option, exception, composition, currying, recursion, type class) 2. Map to the corresponding Scala idiom 3. Use Scala's type system (generics, sealed traits, Option/Either/Try) 4. Verify pattern exhaustiveness and type safety" ;
+    oc:stepOrder 1 .
+
+oc:kn_f0854af8 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting chained Python None checks to Scala Option chaining" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """// Python: nested None checks → Scala: for-comprehension
+def getUserCity(userId: Int): Option[String] = for {
+  user <- findUser(userId)
+  address <- user.address
+  city <- Option(address.city)
+} yield city""" .
+
+oc:kn_f191f3a7 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When converting Python generator functions to Scala" ;
+    oc:directiveContent "Translate Python generators (yield) to Scala LazyList for memoized lazy sequences or Iterator for non-memoized ones." ;
+    oc:hasRationale "LazyList (Scala 2.13+) is the idiomatic replacement for Python generators, with #:: as the lazy cons operator." ;
+    oc:severityLevel "MEDIUM" .
+

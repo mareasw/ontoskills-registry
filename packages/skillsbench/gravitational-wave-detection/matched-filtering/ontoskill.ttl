@@ -1,0 +1,639 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_gravitational_wave_detection_matched_filtering a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "matched-filtering" ;
+    skos:broader "Signal detection technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/gravitational-wave-detection/matched-filtering" ;
+    oc:contentHash "323cb6d8cc3a0bdbf74c15dc680245e9491328a9c2a38993391f358429298f61" ;
+    oc:dependsOnSkill oc:skill_ontoskills_conditioning ;
+    oc:differentia "correlates template waveforms with detector data to identify gravitational wave signals via SNR peak finding" ;
+    oc:handlesFailure oc:ApproximantNotAvailable,
+        oc:LowSNR,
+        oc:TemplateSizeMismatch ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "conditioned strain data, template parameters (mass1, mass2, approximant)" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Matched filtering techniques for gravitational wave detection. Use when searching for signals in detector data using template waveforms, including both time-domain and frequency-domain approaches. Works with PyCBC for generating templates and performing matched filtering." ;
+    oc:hasName "matched-filtering" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_648bc415,
+        oc:req_c5d36a86 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: matched-filtering
+description: Matched filtering techniques for gravitational wave detection. Use when searching for signals in detector data using template waveforms, including both time-domain and frequency-domain approaches. Works with PyCBC for generating templates and performing matched filtering.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Matched filtering is the primary technique for detecting gravitational wave signals in noisy detector data. It correlates known template waveforms with the detector data to find signals with high signal-to-noise ratio (SNR)." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Templates are only meaningful above this frequency" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Lower values = more signal, but more noise" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Should match your high-pass filter cutoff (typically 15-20 Hz)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`low_frequency_cutoff`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**PSD filtering**: 4 seconds at both ends" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Template length**: Additional 4 seconds at start (for time-domain)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Total**: `snr.crop(8, 4)` for time-domain, `snr.crop(4, 4)` for frequency-domain" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "After matched filtering, crop edges corrupted by:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Crop Amounts" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Critical for proper correlation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Frequency domain**: `hp.resize(len(psd))` - match PSD length" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Time domain**: `hp.resize(len(conditioned))` - match data length" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Template Resizing" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Matched Filter Parameters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Generate templates in frequency domain using `get_fd_waveform`:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pycbc.waveform import get_fd_waveform
+from pycbc.filter import matched_filter
+
+# Calculate frequency resolution
+delta_f = 1.0 / conditioned.duration
+
+# Generate frequency-domain waveform
+hp, hc = get_fd_waveform(
+    approximant='IMRPhenomD',
+    mass1=25,
+    mass2=20,
+    delta_f=delta_f,           # Frequency resolution (must match data)
+    f_lower=20                 # Lower frequency cutoff (Hz)
+)
+
+# Resize template to match PSD length
+hp.resize(len(psd))
+
+# Perform matched filtering
+snr = matched_filter(
+    hp,
+    conditioned,
+    psd=psd,
+    low_frequency_cutoff=20
+)
+
+# Find peak SNR
+import numpy as np
+peak_idx = np.argmax(abs(snr).numpy())
+peak_snr = abs(snr[peak_idx])
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 70-101" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Frequency-Domain Waveforms" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_d09ebdbf036fd7c2 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Phenomenological models (fast, good accuracy)
+'IMRPhenomD'      # Good for most binary black hole systems
+'IMRPhenomPv2'    # More accurate for precessing systems
+
+# Effective One-Body models (very accurate, slower)
+'SEOBNRv4_opt'    # Optimized EOB model (time-domain only typically)
+
+# Post-Newtonian models (approximate, fast)
+'TaylorT4'        # Post-Newtonian expansion
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 119-129" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Common waveform approximants:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Note**: Some approximants may not be available in frequency domain. If `get_fd_waveform` fails, use `get_td_waveform` instead." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Approximants" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pycbc numpy
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 175-177" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Use when**: Approximant supports it and you want computational efficiency" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Pros**: Faster for matched filtering, directly in frequency space" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Cons**: Not all approximants support it (e.g., SEOBNRv4_opt may not be available)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Frequency Domain (`get_fd_waveform`)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Pros**: Works for all approximants, simpler to understand" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Use when**: Approximant doesn't support frequency domain, or you need time-domain manipulation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Cons**: Can be slower for long waveforms" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Time Domain (`get_td_waveform`)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Key Differences: Time vs Frequency Domain" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "**Problem**: Edge artifacts in SNR time series" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Problem**: \"Approximant not available\" error" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Problem**: Poor SNR even with correct masses" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 8 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Increase crop amounts or verify filtering pipeline order" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Problem**: Template size mismatch" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Check that PSD low_frequency_cutoff matches your high-pass filter, verify data conditioning" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Try time-domain instead of frequency-domain, or use different approximant" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Ensure template is resized to match data length (TD) or PSD length (FD)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Generate templates in time domain using `get_td_waveform`:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pycbc.waveform import get_td_waveform
+from pycbc.filter import matched_filter
+
+# Generate time-domain waveform
+hp, hc = get_td_waveform(
+    approximant='IMRPhenomD',  # or 'SEOBNRv4_opt', 'TaylorT4'
+    mass1=25,                  # Primary mass (solar masses)
+    mass2=20,                  # Secondary mass (solar masses)
+    delta_t=conditioned.delta_t,  # Must match data sampling
+    f_lower=20                 # Lower frequency cutoff (Hz)
+)
+
+# Resize template to match data length
+hp.resize(len(conditioned))
+
+# Align template: cyclic shift so merger is at the start
+template = hp.cyclic_time_shift(hp.start_time)
+
+# Perform matched filtering
+snr = matched_filter(
+    template,
+    conditioned,
+    psd=psd,
+    low_frequency_cutoff=20
+)
+
+# Crop edges corrupted by filtering
+# Remove 4 seconds for PSD + 4 seconds for template length at start
+# Remove 4 seconds at end for PSD
+snr = snr.crop(4 + 4, 4)
+
+# Find peak SNR
+import numpy as np
+peak_idx = np.argmax(abs(snr).numpy())
+peak_snr = abs(snr[peak_idx])
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 24-60" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Waveforms from `get_td_waveform` have the merger at time zero. For matched filtering, we typically want the merger aligned at the start of the template. `cyclic_time_shift` rotates the waveform appropriately." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Why Cyclic Shift?" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Time-Domain Waveforms" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "PyCBC supports both time-domain and frequency-domain approaches." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Matched filtering requires:" ],
+                        _:ref_5a181f5ac3d20fcd ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[PyCBC Tutorial: Waveform & Matched Filter](https://colab.research.google.com/github/gwastro/pycbc-tutorials/blob/master/tutorial/3_WaveformMatchedFilter.ipynb) - Comprehensive tutorial demonstrating waveform generation, matched filtering in both time and frequency domains, and SNR analysis" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[PyCBC Filter Documentation](https://pycbc.org/pycbc/latest/html/pycbc.filter.html)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[PyCBC Waveform Documentation](https://pycbc.org/pycbc/latest/html/pycbc.waveform.html)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "References" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Matched Filtering for Gravitational Wave Detection" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Generate a time-domain template waveform and perform matched filtering against conditioned data" ;
+            oc:hasStep _:ref_1103e0639f281cdd,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Find peak SNR using np.argmax(abs(snr).numpy())" ;
+                    oc:expectedOutcome "Peak SNR value and index identified" ;
+                    oc:stepDependsOn _:ref_eea42734030958f6 ;
+                    oc:stepId "td-peak" ],
+                _:ref_30617a46b6943536,
+                _:ref_31221a11e2c313c1,
+                _:ref_857a2429b81f0451,
+                _:ref_eea42734030958f6 ;
+            oc:workflowId "matched-filter-time-domain" ;
+            oc:workflowName "Time-Domain Matched Filtering" ],
+        _:ref_5a181f5ac3d20fcd,
+        [ a oc:Workflow ;
+            dcterms:description "Generate a frequency-domain template waveform and perform matched filtering against conditioned data" ;
+            oc:hasStep _:ref_5ad3e6d2bd076383,
+                _:ref_669ec01c29b9d5bb,
+                _:ref_6e7ecd1e4a6d283c,
+                _:ref_aac22b01a67550c2,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Find peak SNR using np.argmax(abs(snr).numpy())" ;
+                    oc:expectedOutcome "Peak SNR value and index identified" ;
+                    oc:stepDependsOn _:ref_669ec01c29b9d5bb ;
+                    oc:stepId "fd-peak" ] ;
+            oc:workflowId "matched-filter-freq-domain" ;
+            oc:workflowName "Frequency-Domain Matched Filtering" ],
+        [ a oc:Workflow ;
+            dcterms:description "Choose the appropriate waveform approximant based on the physical system and domain requirements" ;
+            oc:hasStep _:ref_75d8e93b9fc166ae,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "If get_fd_waveform fails, fall back to get_td_waveform with same approximant or try IMRPhenomD" ;
+                    oc:expectedOutcome "Working template generated" ;
+                    oc:stepDependsOn _:ref_75d8e93b9fc166ae ;
+                    oc:stepId "as-fallback" ],
+                _:ref_b575efb30a8f58c7 ;
+            oc:workflowId "approximant-selection" ;
+            oc:workflowName "Approximant Selection Guide" ],
+        _:ref_d09ebdbf036fd7c2 ;
+    oc:impartsKnowledge oc:kn_1866de55,
+        oc:kn_4c1dcca9,
+        oc:kn_5b9937a7,
+        oc:kn_6cff4105,
+        oc:kn_97c81748,
+        oc:kn_9b64bf77,
+        oc:kn_b2af4a2b,
+        oc:kn_bb58fd2e ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ConditionedData,
+        oc:PSDCalculated ;
+    oc:resolvesIntent "calculate signal-to-noise ratio from template matching",
+        "detect gravitational wave signals",
+        "generate template waveforms for gravitational wave analysis",
+        "perform matched filtering on detector data" ;
+    oc:yieldsState oc:PeakSNRFound,
+        oc:SNRCalculated .
+
+oc:kn_1866de55 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When frequency-domain waveform generation fails" ;
+    oc:directiveContent "If get_fd_waveform raises 'Approximant not available', switch to get_td_waveform with the same approximant or try a different approximant like IMRPhenomD." ;
+    oc:hasRationale "Not all waveform models implement frequency-domain generation; time-domain is universally supported." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4c1dcca9 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When interpreting or finding peaks in SNR" ;
+    oc:directiveContent "Always use abs() on matched filter SNR output to get the magnitude — matched_filter returns complex-valued SNR." ;
+    oc:hasRationale "The complex SNR encodes phase information; for detection only the magnitude matters." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5b9937a7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After running matched_filter" ;
+    oc:directiveContent "Never use raw matched_filter output without cropping edge artifacts. Time-domain: crop(8, 4). Frequency-domain: crop(4, 4)." ;
+    oc:hasRationale "Filtering corrupts edges of the SNR time series due to PSD estimation and template wrap-around effects." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6cff4105 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When diagnostic SNR values are poor" ;
+    oc:directiveContent "If SNR is unexpectedly low despite correct masses, verify that low_frequency_cutoff matches the high-pass filter used during data conditioning and check PSD estimation." ;
+    oc:hasRationale "Mismatched frequency cutoffs between conditioning and filtering suppress signal power in the SNR calculation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_97c81748 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between time-domain and frequency-domain approaches" ;
+    oc:directiveContent "Use frequency-domain waveforms (get_fd_waveform) for computational efficiency when the approximant supports it; fall back to time-domain (get_td_waveform) for unsupported approximants like SEOBNRv4_opt." ;
+    oc:hasRationale "Frequency-domain templates avoid FFT overhead and are faster, but not all approximants are available in frequency domain." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9b64bf77 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring matched_filter parameters" ;
+    oc:directiveContent "Set low_frequency_cutoff to match the high-pass filter cutoff used during data conditioning (typically 15-20 Hz). Lower values capture more signal but also more noise." ;
+    oc:hasRationale "Consistency between conditioning and filtering cutoffs ensures the template only operates in the frequency band where data is reliable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b2af4a2b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before generating any template waveform" ;
+    oc:directiveContent "Template delta_t (time domain) or delta_f (frequency domain) must exactly match the conditioned data's sampling parameters." ;
+    oc:hasRationale "Mismatched sampling leads to incorrect correlation and meaningless SNR values." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bb58fd2e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After generating template, before matched filtering" ;
+    oc:directiveContent "Resize templates to the correct target length: time-domain templates to len(conditioned_data), frequency-domain templates to len(psd)." ;
+    oc:hasRationale "Improperly sized templates cause correlation errors and filter failures." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_648bc415 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Understanding of gravitational wave waveform approximants and their domain support" .
+
+oc:req_c5d36a86 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pycbc" .
+
+_:ref_11a19bf501da4c01 a oc:WorkflowStep ;
+    dcterms:description "**Crop after filtering**: Always crop edges corrupted by filtering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_1e3408813b379da1 a oc:WorkflowStep ;
+    dcterms:description "**Handle failures gracefully**: Some approximants may not work for certain mass combinations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_4506a415f2e9ceb3 a oc:WorkflowStep ;
+    dcterms:description "Conditioned detector data (preprocessed strain)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_540235fb0a5f1849 a oc:WorkflowStep ;
+    dcterms:description "Power spectral density (PSD) of the noise" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_717c017ea5b077d8 a oc:WorkflowStep ;
+    dcterms:description "**Resize templates correctly**: Time-domain → data length, Frequency-domain → PSD length" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_87dbfd131567c4d4 a oc:WorkflowStep ;
+    dcterms:description "SNR calculation and peak finding" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_9c73f0a8ece67ff8 a oc:WorkflowStep ;
+    dcterms:description "Template waveform (expected signal shape)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_cc36696bc18382e0 a oc:WorkflowStep ;
+    dcterms:description "**Use `abs()` for SNR**: Matched filter returns complex SNR; use magnitude" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d8a4a1b0bd18bdc4 a oc:WorkflowStep ;
+    dcterms:description "**Match sampling/frequency resolution**: Template `delta_t`/`delta_f` must match data" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_1103e0639f281cdd a oc:WorkflowStep ;
+    dcterms:description "Run matched_filter(template, conditioned, psd=psd, low_frequency_cutoff=20)" ;
+    oc:expectedOutcome "Complex SNR time series produced" ;
+    oc:stepDependsOn _:ref_857a2429b81f0451 ;
+    oc:stepId "td-filter" .
+
+_:ref_30617a46b6943536 a oc:WorkflowStep ;
+    dcterms:description "Resize template to match conditioned data length with hp.resize(len(conditioned))" ;
+    oc:expectedOutcome "Template and data have same length" ;
+    oc:stepDependsOn _:ref_31221a11e2c313c1 ;
+    oc:stepId "td-resize" .
+
+_:ref_31221a11e2c313c1 a oc:WorkflowStep ;
+    dcterms:description "Generate time-domain waveform with get_td_waveform using matching delta_t" ;
+    oc:expectedOutcome "hp, hc TimeSeries objects created" ;
+    oc:stepId "td-gen-template" .
+
+_:ref_5a181f5ac3d20fcd a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_4506a415f2e9ceb3,
+        _:ref_540235fb0a5f1849,
+        _:ref_87dbfd131567c4d4,
+        _:ref_9c73f0a8ece67ff8 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_5ad3e6d2bd076383 a oc:WorkflowStep ;
+    dcterms:description "Generate frequency-domain waveform with get_fd_waveform using matching delta_f" ;
+    oc:expectedOutcome "hp, hc FrequencySeries objects created" ;
+    oc:stepDependsOn _:ref_aac22b01a67550c2 ;
+    oc:stepId "fd-gen-template" .
+
+_:ref_669ec01c29b9d5bb a oc:WorkflowStep ;
+    dcterms:description "Run matched_filter(hp, conditioned, psd=psd, low_frequency_cutoff=20)" ;
+    oc:expectedOutcome "Complex SNR time series produced" ;
+    oc:stepDependsOn _:ref_6e7ecd1e4a6d283c ;
+    oc:stepId "fd-filter" .
+
+_:ref_6e7ecd1e4a6d283c a oc:WorkflowStep ;
+    dcterms:description "Resize template to match PSD length with hp.resize(len(psd))" ;
+    oc:expectedOutcome "Template and PSD have same length" ;
+    oc:stepDependsOn _:ref_5ad3e6d2bd076383 ;
+    oc:stepId "fd-resize" .
+
+_:ref_75d8e93b9fc166ae a oc:WorkflowStep ;
+    dcterms:description "Check if approximant supports frequency-domain generation — if yes and efficiency matters, use get_fd_waveform" ;
+    oc:expectedOutcome "Domain choice made (TD or FD)" ;
+    oc:stepDependsOn _:ref_b575efb30a8f58c7 ;
+    oc:stepId "as-check-domain" .
+
+_:ref_857a2429b81f0451 a oc:WorkflowStep ;
+    dcterms:description "Apply cyclic_time_shift(hp.start_time) to align merger at start of template" ;
+    oc:expectedOutcome "Template properly aligned for correlation" ;
+    oc:stepDependsOn _:ref_30617a46b6943536 ;
+    oc:stepId "td-cyclic-shift" .
+
+_:ref_aac22b01a67550c2 a oc:WorkflowStep ;
+    dcterms:description "Calculate delta_f = 1.0 / conditioned.duration" ;
+    oc:expectedOutcome "Frequency resolution determined" ;
+    oc:stepId "fd-calc-delta-f" .
+
+_:ref_b575efb30a8f58c7 a oc:WorkflowStep ;
+    dcterms:description "Determine if system exhibits precession — if yes, prefer IMRPhenomPv2" ;
+    oc:expectedOutcome "Precession requirement established" ;
+    oc:stepId "as-check-precession" .
+
+_:ref_d09ebdbf036fd7c2 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_11a19bf501da4c01,
+        _:ref_1e3408813b379da1,
+        _:ref_717c017ea5b077d8,
+        _:ref_cc36696bc18382e0,
+        _:ref_d8a4a1b0bd18bdc4 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_eea42734030958f6 a oc:WorkflowStep ;
+    dcterms:description "Crop SNR edges: snr.crop(8, 4) to remove PSD and template-corrupted regions" ;
+    oc:expectedOutcome "Clean SNR time series with valid values only" ;
+    oc:stepDependsOn _:ref_1103e0639f281cdd ;
+    oc:stepId "td-crop" .
+

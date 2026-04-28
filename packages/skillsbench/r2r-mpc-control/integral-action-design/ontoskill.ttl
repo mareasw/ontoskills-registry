@@ -1,0 +1,197 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_r2r_mpc_control_integral_action_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "integral-action-design" ;
+    skos:broader "Control design technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/r2r-mpc-control/integral-action-design" ;
+    oc:contentHash "eca2a793b7e3a2125374ac831463c4b470091384500e9fc81133b0a05beaceb3" ;
+    oc:dependsOnSkill oc:skill_ontoskills_finite_horizon_lqr,
+        oc:skill_ontoskills_state_space_linearization ;
+    oc:differentia "that augments MPC with a leaky integrator to eliminate steady-state tension tracking error in web handling systems" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Adding integral action to MPC for offset-free tension tracking." ;
+    oc:hasName "integral-action-design" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: integral-action-design
+description: Adding integral action to MPC for offset-free tension tracking.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """u_I = np.clip(u_I, -max_integral, max_integral)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 40-42" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Limit integral term to prevent windup during saturation:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Anti-Windup" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "MPC with model mismatch may have steady-state error. Integral action eliminates offset by accumulating error over time." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Why Integral Action?" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Apply integral action per tension section:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """for i in range(num_sections):
+    u_I[i] = gamma * u_I[i] - c_I * dt * (T[i] - T_ref[i])
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 47-50" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "For R2R Systems" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Too high: Oscillations, instability" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Too low: Slow offset correction" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Start with 0.1-0.3" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "gamma < 1.0: Leaky integrator (safer)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "gamma = 1.0: Pure integral (may wind up)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Typical: 0.9-0.99" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Decay factor gamma**:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Integral gain c_I**:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Tuning Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Where:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "gamma: Decay factor (0.9-0.99)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "u_I: Integral control term" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "c_I: Integral gain (0.1-0.5 for web systems)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "dt: Timestep" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """u_I = gamma * u_I - c_I * dt * (T - T_ref)
+u_total = u_mpc + u_I
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-17" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Implementation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Integral Action for Offset-Free Control" ] ;
+    oc:impartsKnowledge oc:kn_4a1a4094,
+        oc:kn_78bdd66c,
+        oc:kn_859802b8,
+        oc:kn_9652aaf7,
+        oc:kn_e2b521a2 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "add integral action to MPC controller",
+        "eliminate steady-state tension offset in MPC",
+        "prevent integrator windup in tension control",
+        "tune integral gain and decay factor for web handling" ;
+    oc:yieldsState oc:IntegralActionDesigned .
+
+oc:kn_4a1a4094 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing integral action in any control loop" ;
+    oc:directiveContent "Never omit the anti-windup clamp on the integral term. Without np.clip, saturation causes unbounded integral accumulation." ;
+    oc:hasRationale "Actuator saturation without clamping lets the integrator grow without bound, leading to large overshoots and instability on recovery." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_78bdd66c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning integral gain for web tension control" ;
+    oc:directiveContent "Integral gain c_I must stay in range 0.1–0.5 for web systems. Start with 0.1–0.3 and increase cautiously." ;
+    oc:hasRationale "Too low gain results in slow offset correction; too high gain causes oscillations and instability." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_859802b8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing multi-section web handling controllers" ;
+    oc:directiveContent "Apply integral action independently per tension section in R2R systems, each with its own u_I state and tuned parameters." ;
+    oc:hasRationale "Each tension zone has different dynamics and disturbance characteristics; independent integrators prevent cross-coupling issues." .
+
+oc:kn_9652aaf7 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When implementing integral action for offset-free MPC" ;
+    oc:directiveContent "1. Set initial u_I = 0 for all sections. 2. Choose gamma (0.9–0.99) and c_I (0.1–0.3). 3. Each timestep: update u_I = gamma * u_I - c_I * dt * (T - T_ref), clamp with anti-windup limits, compute u_total = u_mpc + u_I. 4. Tune c_I upward if offset persists; reduce if oscillations appear." ;
+    oc:hasRationale "Provides a systematic commissioning workflow that avoids instability from aggressive initial tuning." ;
+    oc:stepOrder 1 .
+
+oc:kn_e2b521a2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting decay factor gamma for integral action" ;
+    oc:directiveContent "Use a leaky integrator (gamma < 1.0) rather than pure integral (gamma = 1.0) to reduce windup risk in web handling tension control." ;
+    oc:hasRationale "Pure integral action (gamma=1.0) can wind up during actuator saturation, causing large overshoots; leaky integration provides inherent decay." ;
+    oc:severityLevel "HIGH" .
+

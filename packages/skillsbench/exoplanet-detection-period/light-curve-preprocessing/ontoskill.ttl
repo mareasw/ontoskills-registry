@@ -1,0 +1,558 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_exoplanet_detection_period_light_curve_preprocessing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "light-curve-preprocessing" ;
+    skos:broader "Data preprocessing pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/exoplanet-detection-period/light-curve-preprocessing" ;
+    oc:contentHash "f6109ef5022fb07b156c0a0a6d575211f8340d38a8053dbdc4455689a57ceb67" ;
+    oc:differentia "Cleans astronomical light curves by removing outliers, trends, and quality-flagged data while preserving transit signals for exoplanet detection" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:OverProcessedData ;
+    oc:hasArgumentHint "light-curve-data" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Preprocessing and cleaning techniques for astronomical light curves. Use when preparing light curve data for period analysis, including outlier removal, trend removal, flattening, and handling data quality flags. Works with lightkurve and general time series data." ;
+    oc:hasName "light-curve-preprocessing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Preprocessing is essential before period analysis. Raw light curves often contain outliers, long-term trends, and instrumental effects that can mask or create false periodic signals." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Lightkurve Preprocessing Tutorials](https://lightkurve.github.io/lightkurve/tutorials/index.html)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Removing Instrumental Noise](https://lightkurve.github.io/lightkurve/tutorials/2.3-removing-noise.html)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import lightkurve as lk
+
+# Remove outliers using sigma clipping
+lc_clean, mask = lc.remove_outliers(sigma=3, return_mask=True)
+outliers = lc[mask]  # Points that were removed
+
+# Common sigma values:
+# sigma=3: Standard (removes ~0.3% of data)
+# sigma=5: Conservative (removes fewer points)
+# sigma=2: Aggressive (removes more points)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 22-33" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Using Lightkurve" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import numpy as np
+
+# Calculate median and standard deviation
+median = np.median(flux)
+std = np.std(flux)
+
+# Remove points beyond 3 sigma
+good = np.abs(flux - median) < 3 * std
+time_clean = time[good]
+flux_clean = flux[good]
+error_clean = error[good]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 37-49" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Manual Outlier Removal" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Outlier Removal" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0359296c6388f451 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Always verify your data format!** Check which approach gives cleaner results." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**IMPORTANT**: Quality flag conventions vary by data source!" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# For standard TESS files (flag=0 is GOOD):
+good = flag == 0
+time_clean = time[good]
+flux_clean = flux[good]
+error_clean = error[good]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 94-100" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Standard TESS format" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# For some exported files (flag=0 is BAD):
+good = flag != 0
+time_clean = time[good]
+flux_clean = flux[good]
+error_clean = error[good]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 103-109" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Alternative formats" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Handling Data Quality Flags" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When building a preprocessing pipeline for exoplanet detection:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_c0b45523812abe3e ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Key Steps (Order Matters!)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Don't over-process**: Too aggressive preprocessing can remove real signals" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Preserve transit shapes**: Use methods like `flatten()` that preserve short-duration dips" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Always include flux_err**: Critical for proper weighting in period search algorithms" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Verify visually**: Plot each step to ensure quality" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Important Principles" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**When to do two passes**: Remove obvious outliers before detrending, then remove residual outliers after" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Outlier removal sigma**: Lower sigma (2-3) is aggressive, higher (5-7) is conservative" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Flattening window**: Should be longer than transit duration but shorter than stellar rotation period" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Parameter Selection" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Preprocessing Pipeline Considerations" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Flatten to remove low-frequency variability
+# window_length: number of cadences to use for smoothing
+lc_flat = lc_clean.flatten(window_length=500)
+
+# Common window lengths:
+# 100-200: Remove short-term trends
+# 300-500: Remove medium-term trends (typical for TESS)
+# 500-1000: Remove long-term trends
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 55-64" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "The `flatten()` method uses a Savitzky-Golay filter to remove trends while preserving transit signals." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Flattening with Lightkurve" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Warning**: This removes periodic signals, so use carefully if you're searching for periodic transits." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For removing high-frequency stellar variability (rotation, pulsation):" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def sine_fitting(lc):
+    \"\"\"Remove dominant periodic signal by fitting sine wave.\"\"\"
+    pg = lc.to_periodogram()
+    model = pg.model(time=lc.time, frequency=pg.frequency_at_max_power)
+    lc_new = lc.copy()
+    lc_new.flux = lc_new.flux / model.flux
+    return lc_new, model
+
+# Iterate multiple times to remove multiple periodic components
+lc_processed = lc_clean.copy()
+for i in range(50):  # Number of iterations
+    lc_processed, model = sine_fitting(lc_processed)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 72-85" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Iterative Sine Fitting" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Removing Long-Term Trends" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install lightkurve numpy matplotlib
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 161-163" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_c46003af80638041,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Common preprocessing steps:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always plot your light curve to verify preprocessing quality:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import matplotlib.pyplot as plt
+
+# Use .plot() method on LightCurve objects
+lc.plot()
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 149-155" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Best practice**: Plot before and after each major step to ensure you're improving data quality, not removing real signals." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Visualizing Results" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_9a3598547fc69b5a,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For transit detection, be careful not to remove the transit signal:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Preprocessing for Exoplanet Detection" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Light Curve Preprocessing" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: light-curve-preprocessing
+description: Preprocessing and cleaning techniques for astronomical light curves. Use when preparing light curve data for period analysis, including outlier removal, trend removal, flattening, and handling data quality flags. Works with lightkurve and general time series data.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_0359296c6388f451,
+        _:ref_9a3598547fc69b5a,
+        _:ref_c0b45523812abe3e,
+        _:ref_c46003af80638041 ;
+    oc:impartsKnowledge oc:kn_13e9c3aa,
+        oc:kn_269d45c8,
+        oc:kn_4b877361,
+        oc:kn_6445c735,
+        oc:kn_77c2e302,
+        oc:kn_9ef578aa,
+        oc:kn_c188e38b,
+        oc:kn_cccaf3ed,
+        oc:kn_cf5122ed,
+        oc:kn_d47f57a6,
+        oc:kn_dd7da208,
+        oc:kn_e3f3ba28 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:LightCurveLoaded ;
+    oc:resolvesIntent "detrend and flatten light curves",
+        "handle data quality flags in time series",
+        "prepare light curve for period analysis",
+        "preprocess light curve data",
+        "remove outliers from light curves" ;
+    oc:yieldsState oc:LightCurveCleaned,
+        oc:LightCurveDetrended .
+
+oc:kn_13e9c3aa a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When applying data quality flag filters to any light curve" ;
+    oc:directiveContent "Quality flag conventions are NOT universal: flag=0 may mean GOOD (TESS standard) or BAD (some exported formats). Always verify which convention your data source uses." ;
+    oc:hasRationale "Incorrect flag interpretation inverts the filter, removing all good data and keeping bad data" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_269d45c8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting outlier removal and flattening parameters" ;
+    oc:directiveContent "Sigma values: σ=2 aggressive (removes ~5%), σ=3 standard (removes ~0.3%), σ=5 conservative (removes fewer points). Window lengths: 100-200 short trends, 300-500 medium/TESS, 500-1000 long trends." ;
+    oc:hasRationale "Provides reasonable starting parameters that can be tuned based on data characteristics" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4b877361 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Standard lightkurve preprocessing pipeline" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """lc_clean, mask = lc.remove_outliers(sigma=3, return_mask=True)
+lc_flat = lc_clean.flatten(window_length=500)""" ;
+    oc:hasRationale "Canonical lightkurve API for outlier removal and detrending" .
+
+oc:kn_6445c735 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When considering iterative sine fitting for stellar variability removal" ;
+    oc:directiveContent "Iterative sine fitting removes periodic signals — use with extreme caution when searching for periodic transits" ;
+    oc:hasRationale "Each iteration removes the dominant remaining periodic component, which could be the transit signal itself" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_77c2e302 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Building a preprocessing pipeline for exoplanet transit detection" ;
+    oc:directiveContent "1. Apply data quality flags to remove bad cadences 2. Remove outliers via sigma clipping (σ=3–5) 3. Flatten long-term trends with Savitzky-Golay filter (window_length=100–1000 depending on data) 4. Optional second-pass outlier removal on detrended residuals" ;
+    oc:hasRationale "Order matters: quality flags remove systematic bad data, then outlier removal before detrending prevents outliers from biasing the trend model, and flattening preserves transit shapes" ;
+    oc:severityLevel "CRITICAL" ;
+    oc:stepOrder 1 .
+
+oc:kn_9ef578aa a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "lightkurve, numpy, and matplotlib must be installed (pip install lightkurve numpy matplotlib)" .
+
+oc:kn_c188e38b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting flatten() window_length parameter" ;
+    oc:directiveContent "Flattening window_length must be longer than the expected transit duration but shorter than the stellar rotation period" ;
+    oc:hasRationale "Window too short removes the transit signal itself; window too long fails to remove the stellar variability trend" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cccaf3ed a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before applying quality flag filtering" ;
+    oc:directiveContent "Verify quality flag convention for your data source before filtering. Check which approach (flag==0 or flag!=0) yields cleaner results." ;
+    oc:hasRationale "Prevents catastrophic data loss from inverted flag logic" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cf5122ed a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning preprocessing parameters for transit detection" ;
+    oc:directiveContent "Never apply aggressive preprocessing (low sigma, short window lengths, multiple iterations of sine fitting) when searching for shallow transits — it will remove real signals" ;
+    oc:hasRationale "Over-processing is the most common cause of missed exoplanet detections; transit signals are shallow, short-duration dips easily removed by aggressive smoothing" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d47f57a6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When any preprocessing step filters or transforms data" ;
+    oc:directiveContent "Always include flux_err in all preprocessing outputs — it is critical for proper weighting in downstream period search algorithms (BLS, Lomb-Scargle, TLS)" ;
+    oc:hasRationale "Period search algorithms weight data points by uncertainty; discarding error information degrades detection sensitivity" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dd7da208 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After each preprocessing step (outlier removal, flattening, quality filtering)" ;
+    oc:directiveContent "Plot the light curve before and after each major preprocessing step to verify data quality is improving and real signals are preserved" ;
+    oc:hasRationale "Visual inspection catches over-processing, incorrect parameters, and removed transit signals that statistics alone may miss" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e3f3ba28 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When removing dominant stellar variability components iteratively" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def sine_fitting(lc):
+    pg = lc.to_periodogram()
+    model = pg.model(time=lc.time, frequency=pg.frequency_at_max_power)
+    lc_new = lc.copy()
+    lc_new.flux = lc_new.flux / model.flux
+    return lc_new, model""" ;
+    oc:hasRationale "Removes high-frequency stellar variability (rotation, pulsation) that Savitzky-Golay may not fully capture" .
+
+_:ref_06cb7c78d7059207 a oc:WorkflowStep ;
+    dcterms:description "**Quality filtering**: Apply data quality flags first" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_1ba55dcf399052b9 a oc:WorkflowStep ;
+    dcterms:description "Remove long-term trends" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1dcca99b096820c7 a oc:WorkflowStep ;
+    dcterms:description "**Flatten trends**: Use window_length appropriate for your data" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_5fa06ec3bc1bdcc1 a oc:WorkflowStep ;
+    dcterms:description "**Trend removal**: Remove long-term variations (stellar rotation, instrumental drift)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_74f4ee62c12b987c a oc:WorkflowStep ;
+    dcterms:description "**Don't over-process**: Too much smoothing can remove shallow transits" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_820fd1e8edfb6ffb a oc:WorkflowStep ;
+    dcterms:description "Remove stellar variability (optional)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_8ad0d1e58b12f041 a oc:WorkflowStep ;
+    dcterms:description "**Don't over-process**: More preprocessing isn't always better" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_8dfe1916c3e90348 a oc:WorkflowStep ;
+    dcterms:description "Handle data quality flags" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_8e617bd7baf15e9c a oc:WorkflowStep ;
+    dcterms:description "Remove outliers" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_92f3856c8aaf9656 a oc:WorkflowStep ;
+    dcterms:description "**Optional second pass**: Additional outlier removal after detrending" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_aaa12aae5e37d779 a oc:WorkflowStep ;
+    dcterms:description "**Outlier removal**: Remove bad data points (flares, cosmic rays)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_bf0baa6601dc3e1d a oc:WorkflowStep ;
+    dcterms:description "**Remove outliers first**: Use sigma=3 or sigma=5" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c31bcc4c09cfb2d6 a oc:WorkflowStep ;
+    dcterms:description "**Remove outliers before flattening**: Outliers can affect trend removal" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_cf19f63f8adf1c44 a oc:WorkflowStep ;
+    dcterms:description "**Always check quality flags first**: Remove bad data before processing" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e0e938cfd7cc77fa a oc:WorkflowStep ;
+    dcterms:description "**Choose appropriate window length**: Too short = doesn't remove trends, too long = removes transits" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_efb521adda4b84e5 a oc:WorkflowStep ;
+    dcterms:description "**Visualize each step**: Make sure preprocessing improves the data" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_0359296c6388f451 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_8ad0d1e58b12f041,
+        _:ref_c31bcc4c09cfb2d6,
+        _:ref_cf19f63f8adf1c44,
+        _:ref_e0e938cfd7cc77fa,
+        _:ref_efb521adda4b84e5 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_9a3598547fc69b5a a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_1dcca99b096820c7,
+        _:ref_74f4ee62c12b987c,
+        _:ref_bf0baa6601dc3e1d ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c0b45523812abe3e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_06cb7c78d7059207,
+        _:ref_5fa06ec3bc1bdcc1,
+        _:ref_92f3856c8aaf9656,
+        _:ref_aaa12aae5e37d779 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c46003af80638041 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_1ba55dcf399052b9,
+        _:ref_820fd1e8edfb6ffb,
+        _:ref_8dfe1916c3e90348,
+        _:ref_8e617bd7baf15e9c ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+

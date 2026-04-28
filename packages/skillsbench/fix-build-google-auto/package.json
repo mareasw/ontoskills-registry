@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/fix-build-google-auto",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "maven-build-lifecycle/ontoskill.ttl",
+    "maven-dependency-management/ontoskill.ttl",
+    "maven-plugin-configuration/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "maven-build-lifecycle/intents.json",
+    "maven-dependency-management/intents.json",
+    "maven-plugin-configuration/intents.json"
+  ],
+  "skills": []
+}

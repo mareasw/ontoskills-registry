@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/spring-boot-jakarta-migration",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "hibernate-upgrade/ontoskill.ttl",
+    "jakarta-namespace/ontoskill.ttl",
+    "restclient-migration/ontoskill.ttl",
+    "spring-boot-migration/ontoskill.ttl",
+    "spring-security-6/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "hibernate-upgrade/intents.json",
+    "jakarta-namespace/intents.json",
+    "restclient-migration/intents.json",
+    "spring-boot-migration/intents.json",
+    "spring-security-6/intents.json"
+  ],
+  "skills": []
+}

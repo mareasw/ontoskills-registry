@@ -1,0 +1,398 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_video_processor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "video-processor" ;
+    skos:broader "video processor" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/video-processor" ;
+    oc:contentHash "75e3c0d0e9c980317b24465c75a99fb615fe911c1ba0b5077003014fa0775996" ;
+    oc:dependsOnSkill oc:skill_ontoskills_pause_detector,
+        oc:skill_ontoskills_silence_detector ;
+    oc:differentia "removes specified segments from video files and concatenates remaining parts using ffmpeg filter_complex" ;
+    oc:hasArgumentHint "--input VIDEO_PATH --output OUTPUT_PATH --remove-segments SEGMENTS_JSON [SEGMENTS_JSON...]" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Process videos by removing segments and concatenating remaining parts. Use when you need to remove detected pauses/openings from videos, create highlight reels, or batch process segment removals using ffmpeg filter_complex." ;
+    oc:hasName "video-processor" ;
+    oc:hasRequirement oc:req_00703909,
+        oc:req_165353a6 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: video-processor
+description: Process videos by removing segments and concatenating remaining parts. Use when you need to remove detected pauses/openings from videos, create highlight reels, or batch process segment removals using ffmpeg filter_complex.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Processes videos by removing specified segments and concatenating the remaining parts. Handles multiple removal segments efficiently using ffmpeg's filter_complex." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_879bf7c97f8ce4b9 ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For 3 segments to keep:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """[0:v]trim=start=600:end=610,setpts=PTS-STARTPTS[v0];
+[0:a]atrim=start=600:end=610,asetpts=PTS-STARTPTS[a0];
+[0:v]trim=start=613:end=1000,setpts=PTS-STARTPTS[v1];
+[0:a]atrim=start=613:end=1000,asetpts=PTS-STARTPTS[a1];
+[v0][v1]concat=n=2:v=1:a=0[outv];
+[a0][a1]concat=n=2:v=0:a=1[outa]
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 77-84" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "FFmpeg Filter Example" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "How It Works" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Process video with opening and pause removal
+python3 /root/.claude/skills/video-processor/scripts/process_video.py \\
+    --input /root/lecture.mp4 \\
+    --output /root/compressed.mp4 \\
+    --remove-segments /root/opening.json /root/pauses.json
+
+# Result: 65 min → 51 min (21.2% compression)
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 99-107" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Removing detected pauses and openings from videos" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Batch processing multiple segment removals" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Creating highlight reels by keeping only specific segments" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "ffmpeg with libx264 and aac support" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Python 3.11+" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-preset medium` for balanced speed/quality" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Process on machines with 2+ CPU cores for faster encoding" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use `-crf 23` for good quality at reasonable size" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Performance Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/video-processor/scripts/process_video.py \\
+    --input /path/to/input.mp4 \\
+    --output /path/to/output.mp4 \\
+    --remove-segments /path/to/segments.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-23" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "original_duration": 3908.61,
+  "output_duration": 3078.61,
+  "removed_duration": 830.0,
+  "compression_percentage": 21.24,
+  "segments_removed": 91,
+  "segments_kept": 91
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 55-64" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Creates the processed video and a report JSON:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python3 /root/.claude/skills/video-processor/scripts/process_video.py \\
+    --input video.mp4 \\
+    --output output.mp4 \\
+    --remove-segments opening.json pauses.json
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 44-49" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "segments": [
+    {"start": 0, "end": 600, "duration": 600},
+    {"start": 610, "end": 613, "duration": 3}
+  ]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 33-40" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Or multiple segment files:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Input Segment Format" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--output`: Path to output video file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--input`: Path to input video file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`--remove-segments`: JSON file containing segments to remove" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "May have frame-accurate cuts (not sample-accurate)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Processing time: ~0.3× video duration (e.g., 20 min for 65 min video)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Requires sufficient disk space (output ≈ 70-80% of input size)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Limitations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Handles edge cases (segments at start/end of video)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Maintains audio sync throughout" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Generates detailed statistics for verification" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Preserves video quality using CRF encoding" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Notes" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Video Segment Processor" ] ;
+    oc:hasWorkflow _:ref_879bf7c97f8ce4b9 ;
+    oc:impartsKnowledge oc:kn_2b4d14b9,
+        oc:kn_57fa0432,
+        oc:kn_83198cb6,
+        oc:kn_8fd73cec,
+        oc:kn_a4e29fda,
+        oc:kn_a4feccb1,
+        oc:kn_dff298e6,
+        oc:kn_e3585d9c,
+        oc:kn_e95da1d8,
+        oc:kn_ffd9f8be ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "batch process segment removals from video",
+        "compress video by removing silent segments",
+        "create highlight reels from video",
+        "remove pauses and openings from video" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2b4d14b9 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Always when processing video segments" ;
+    oc:directiveContent "1. Load removal segments from JSON file(s) 2. Calculate keep segments (inverse of removal segments) 3. Build ffmpeg filter to trim and concatenate 4. Process video using ffmpeg with CRF encoding 5. Generate report with statistics" ;
+    oc:stepOrder 1 .
+
+oc:kn_57fa0432 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Report JSON generated after processing" ;
+    oc:directiveContent "{\"original_duration\": NUMBER, \"output_duration\": NUMBER, \"removed_duration\": NUMBER, \"compression_percentage\": NUMBER, \"segments_removed\": NUMBER, \"segments_kept\": NUMBER}" ;
+    oc:templateVariables "compression_percentage",
+        "original_duration",
+        "output_duration",
+        "removed_duration",
+        "segments_kept",
+        "segments_removed" .
+
+oc:kn_83198cb6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "After execution completes" ;
+    oc:directiveContent "Creates a processed video file and a JSON report file with compression statistics on disk" ;
+    oc:hasRationale "Agent must account for disk space consumption and know where to find the output report" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8fd73cec a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running video segment removal" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "python3 /root/.claude/skills/video-processor/scripts/process_video.py --input INPUT --output OUTPUT --remove-segments SEGMENTS_JSON" .
+
+oc:kn_a4e29fda a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing videos requiring sample-level precision" ;
+    oc:directiveContent "Cuts are frame-accurate but not sample-accurate; audio sync is maintained but sub-frame precision may vary" ;
+    oc:hasRationale "Manages expectations for edge-case timing accuracy; not suitable for frame-exact editing requirements" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a4feccb1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring encoding parameters" ;
+    oc:directiveContent "Use -preset medium for balanced speed/quality, -crf 23 for good quality at reasonable size, and 2+ CPU cores for faster encoding" ;
+    oc:hasRationale "Optimizes the tradeoff between processing speed, output quality, and file size" .
+
+oc:kn_dff298e6 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "ffmpeg must be installed with libx264 and aac codec support" .
+
+oc:kn_e3585d9c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running the processing script" ;
+    oc:directiveContent "Verify input video exists, segment JSON files are valid and contain 'segments' array with start/end/duration fields, and sufficient disk space is available" ;
+    oc:hasRationale "Prevents wasting time on long encode jobs that would fail due to missing inputs or insufficient space" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e95da1d8 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing segment JSON input files" ;
+    oc:codeLanguage "json" ;
+    oc:directiveContent "{\"segments\": [{\"start\": NUMBER, \"end\": NUMBER, \"duration\": NUMBER}]}" .
+
+oc:kn_ffd9f8be a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting video processing" ;
+    oc:directiveContent "Processing time is ~0.3× video duration (e.g., 20 min for 65 min video). Requires sufficient disk space (output ≈ 70-80% of input size)." ;
+    oc:hasRationale "Allows accurate time and resource estimation before committing to a long encode job" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_00703909 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.11+" .
+
+oc:req_165353a6 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffmpeg with libx264 and aac support" .
+
+_:ref_4b1bec55037bacb0 a oc:WorkflowStep ;
+    dcterms:description "**Load removal segments** from JSON file(s)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_74e22ed8a14c1bbd a oc:WorkflowStep ;
+    dcterms:description "**Process video** using hardware-accelerated encoding" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_8671f4bb0dcbd51f a oc:WorkflowStep ;
+    dcterms:description "**Build ffmpeg filter** to trim and concatenate" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_9b4b4220f6bf3141 a oc:WorkflowStep ;
+    dcterms:description "**Generate report** with statistics" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_c8c01fed3216b22d a oc:WorkflowStep ;
+    dcterms:description "**Calculate keep segments** (inverse of removal segments)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_879bf7c97f8ce4b9 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_4b1bec55037bacb0,
+        _:ref_74e22ed8a14c1bbd,
+        _:ref_8671f4bb0dcbd51f,
+        _:ref_9b4b4220f6bf3141,
+        _:ref_c8c01fed3216b22d ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

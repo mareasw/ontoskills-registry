@@ -1,0 +1,218 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_r2r_mpc_control_mpc_horizon_tuning a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "mpc-horizon-tuning" ;
+    skos:broader "Tuning methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/r2r-mpc-control/mpc-horizon-tuning" ;
+    oc:contentHash "3707eaacbe02a120bed457730f33b7c28d7f72cfae4a6a56b9b9bd81c542db32" ;
+    oc:dependsOnSkill oc:skill_ontoskills_finite_horizon_lqr,
+        oc:skill_ontoskills_state_space_linearization ;
+    oc:differentia "selects MPC prediction horizon and cost matrices (Q, R) for web handling tension control" ;
+    oc:handlesFailure oc:ExcessiveComputationTime,
+        oc:UnstableClosedLoop ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Selecting MPC prediction horizon and cost matrices for web handling." ;
+    oc:hasName "mpc-horizon-tuning" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: mpc-horizon-tuning
+description: Selecting MPC prediction horizon and cost matrices for web handling.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """P = solve_continuous_are(A, B, Q, R)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 46-48" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use LQR solution for terminal cost to guarantee stability:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Terminal Cost" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "For R2R systems with dt=0.01s: **N = 5-15** typical" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Too short (N < 5): Poor disturbance rejection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Rule of thumb: N ≈ 2-3× settling time / dt" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Too long (N > 20): Excessive computation" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Horizon N** affects performance and computation:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Prediction Horizon Selection" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 2 ;
+                            oc:tableCaption "## Trade-offs" ;
+                            oc:tableMarkdown """| Higher Q | Effect |
+|----------|--------|
+| Faster tracking | More control effort |
+| Lower steady-state error | More aggressive transients |
+""" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 2 ;
+                            oc:tableMarkdown """| Higher R | Effect |
+|----------|--------|
+| Smoother control | Slower response |
+| Less actuator wear | Higher tracking error |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Trade-offs" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """R = 0.01-0.1 × eye(n_u)  # Smaller = more aggressive
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 27-29" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Control cost R**: Penalize actuator effort" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**State cost Q**: Emphasize tension tracking" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Q_tension = 100 / T_ref²  # High weight on tensions
+Q_velocity = 0.1 / v_ref²  # Lower weight on velocities
+Q = diag([Q_tension × 6, Q_velocity × 6])
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 20-24" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Cost Matrix Design" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "MPC Tuning for Tension Control" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Systematic procedure for selecting prediction horizon and cost matrices for R2R tension control MPC." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Choose prediction horizon N using N ≈ 2-3× settling_time / dt, constrained to 5-15 for R2R systems." ;
+                    oc:expectedOutcome "N selected within valid range balancing performance and computation" ;
+                    oc:stepId "select-horizon" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify Q/R trade-offs: check tracking error, control effort, transient aggressiveness, and actuator wear." ;
+                    oc:expectedOutcome "Acceptable balance between tracking performance and actuator effort" ;
+                    oc:stepDependsOn _:ref_a5f892b4d2ed62d0,
+                        _:ref_f42c53f86fd42c0f ;
+                    oc:stepId "validate-tradeoffs" ],
+                _:ref_a5f892b4d2ed62d0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Solve continuous ARE using Q and R to obtain terminal cost P for stability guarantee." ;
+                    oc:expectedOutcome "Terminal cost matrix P ensuring closed-loop stability" ;
+                    oc:stepDependsOn _:ref_a5f892b4d2ed62d0,
+                        _:ref_f42c53f86fd42c0f ;
+                    oc:stepId "compute-terminal-cost" ],
+                _:ref_f42c53f86fd42c0f ;
+            oc:workflowId "mpc-tuning-workflow" ;
+            oc:workflowName "MPC Horizon and Cost Tuning" ] ;
+    oc:impartsKnowledge oc:kn_030ffdeb,
+        oc:kn_080d5fa6,
+        oc:kn_990a943c,
+        oc:kn_a0254ff8,
+        oc:kn_a0bf905c,
+        oc:kn_e9df4199 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:LinearModelAvailable,
+        oc:ReferenceSignalsKnown ;
+    oc:resolvesIntent "configure Q and R weights for tension control",
+        "design MPC cost matrices",
+        "select prediction horizon for web handling",
+        "tune MPC horizon" ;
+    oc:yieldsState oc:MPCTuningConfigured .
+
+oc:kn_030ffdeb a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when choosing horizon for R2R MPC" ;
+    oc:directiveContent "N must be ≥ 5 for adequate disturbance rejection and ≤ 20 to avoid excessive computation in R2R web handling." ;
+    oc:hasRationale "Horizon bounds balance control performance against real-time computational feasibility." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_080d5fa6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing the MPC terminal cost" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "Use the LQR solution P = solve_continuous_are(A, B, Q, R) as the terminal cost to guarantee closed-loop stability." ;
+    oc:hasRationale "The infinite-horizon LQR cost provides a Lyapunov function that ensures the MPC optimization remains stable at the terminal state." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_990a943c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the control cost matrix" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "R = 0.01-0.1 × eye(n_u)  # Smaller = more aggressive" ;
+    oc:hasRationale "Smaller R values allow more aggressive control action; larger values smooth response and reduce actuator wear." .
+
+oc:kn_a0254ff8 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing the state cost matrix for tension control" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "Q_tension = 100 / T_ref²; Q_velocity = 0.1 / v_ref²; Q = diag([Q_tension × 6, Q_velocity × 6])" ;
+    oc:hasRationale "Normalizing by reference values squared ensures consistent weighting across operating points. Tension is weighted 1000× more than velocity." .
+
+oc:kn_a0bf905c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning Q/R ratio" ;
+    oc:directiveContent "Do not set state cost Q too high relative to control cost R — this causes aggressive transients and excessive control effort." ;
+    oc:hasRationale "The Q/R ratio governs the performance/robustness tradeoff; an overly high ratio leads to actuator saturation and wear." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e9df4199 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting MPC prediction horizon" ;
+    oc:directiveContent "Prediction horizon N ≈ 2-3× settling time / dt. For R2R systems with dt=0.01s, N = 5-15 is typical." ;
+    oc:hasRationale "Too short (N<5) causes poor disturbance rejection; too long (N>20) causes excessive computation." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_a5f892b4d2ed62d0 a oc:WorkflowStep ;
+    dcterms:description "Construct state cost Q: normalize tension and velocity weights by their reference values, assign higher weight to tensions." ;
+    oc:expectedOutcome "Q matrix emphasizing tension tracking over velocity regulation" ;
+    oc:stepId "design-q-matrix" .
+
+_:ref_f42c53f86fd42c0f a oc:WorkflowStep ;
+    dcterms:description "Construct control cost R as 0.01-0.1 × identity, adjusting for desired aggressiveness." ;
+    oc:expectedOutcome "R matrix balancing control effort against tracking performance" ;
+    oc:stepId "design-r-matrix" .
+

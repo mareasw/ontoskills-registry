@@ -1,0 +1,494 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_agentops_testing_python a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "testing-python" ;
+    skos:broader "Testing methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-agentops/testing-python" ;
+    oc:contentHash "fcc914b0667ecf98b584124c0d56a282b2f838043d5c3756496147579461838f" ;
+    oc:dependsOnSkill oc:skill_ontoskills_uv_package_manager ;
+    oc:differentia "governs writing, structuring, and running effective Python tests using pytest with project-specific conventions for async, mocking, fixtures, and parameterization" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:TestFailure ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "test file path or test name pattern (optional)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Write and evaluate effective Python tests using pytest. Use when writing tests, reviewing test code, debugging test failures, or improving test coverage. Covers test design, fixtures, parameterization, mocking, and async testing." ;
+    oc:hasName "testing-python" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: testing-python
+description: Write and evaluate effective Python tests using pytest. Use when writing tests, reviewing test code, debugging test failures, or improving test coverage. Covers test design, fixtures, parameterization, mocking, and async testing.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pytest
+
+def test_raises_on_invalid_input():
+    with pytest.raises(ValueError, match="must be positive"):
+        calculate(-1)
+
+async def test_async_raises():
+    with pytest.raises(ConnectionError):
+        await connect_to_invalid_host()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 189-199" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Error Testing" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from unittest.mock import patch, AsyncMock
+
+async def test_external_api_call():
+    with patch("mymodule.external_client.fetch", new_callable=AsyncMock) as mock:
+        mock.return_value = {"data": "test"}
+        result = await my_function()
+        assert result == {"data": "test"}
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 157-165" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Mock at the boundary" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Test your code with real implementations when possible. Mock external services, not internal classes." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Don't mock what you own" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Mocking" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """uv run pytest -n auto              # Run all tests in parallel
+uv run pytest -n auto -x           # Stop on first failure
+uv run pytest path/to/test.py      # Run specific file
+uv run pytest -k "test_name"       # Run tests matching pattern
+uv run pytest -m "not integration" # Exclude integration tests
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 203-209" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Running Tests" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def test_file_writing(tmp_path):
+    file = tmp_path / "test.txt"
+    file.write_text("content")
+    assert file.read_text() == "content"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 146-151" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Use `tmp_path` for file operations" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@pytest.fixture
+def client():
+    return Client()
+
+async def test_with_client(client):
+    result = await client.ping()
+    assert result is not None
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 134-142" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Prefer function-scoped fixtures" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Fixtures" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use descriptive names that explain the scenario:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Good
+def test_login_fails_with_invalid_password():
+def test_user_can_update_own_profile():
+def test_admin_can_delete_any_user():
+
+# Bad
+def test_login():
+def test_update():
+def test_delete():
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 175-185" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Test Naming" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Every test should be **atomic**, **self-contained**, and test **single functionality**. A test that tests multiple things is harder to debug and maintain." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Core Principles" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from fastmcp import FastMCP
+from fastmcp.client import Client
+
+mcp = FastMCP("TestServer")
+
+@mcp.tool
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
+
+async def test_greet_tool():
+    async with Client(mcp) as client:
+        result = await client.call_tool("greet", {"name": "World"})
+        assert result[0].text == "Hello, World!"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 96-110" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Pass FastMCP servers directly to clients:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Only use HTTP transport when explicitly testing network features." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Use in-memory transport for testing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Correct
+async def test_async_operation():
+    result = await some_async_function()
+    assert result == expected
+
+# Wrong - don't add this
+@pytest.mark.asyncio
+async def test_async_operation():
+    ...
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 60-70" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "This project uses `asyncio_mode = \"auto\"` globally. Write async tests without decorators:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "No async markers needed" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`pytest --inline-snapshot=fix` - update after intentional changes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`pytest --inline-snapshot=create` - populate empty snapshots" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from inline_snapshot import snapshot
+
+def test_schema_generation():
+    schema = generate_schema(MyModel)
+    assert schema == snapshot()  # Will auto-populate on first run
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 118-124" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use `inline-snapshot` for testing JSON schemas and complex structures:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Commands:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Inline snapshots for complex data" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Put ALL imports at the top of the file:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Correct
+import pytest
+from fastmcp import FastMCP
+from fastmcp.client import Client
+
+async def test_something():
+    mcp = FastMCP("test")
+    ...
+
+# Wrong - no local imports
+async def test_something():
+    from fastmcp import FastMCP  # Don't do this
+    ...
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 76-90" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Imports at module level" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Project-Specific Rules" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before submitting tests:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "[ ] Separate tests for different behaviors" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Descriptive test names" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] No `@pytest.mark.asyncio` decorators" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] Imports at module level" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] Parameterization for variations of same behavior" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Each test tests one thing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Using in-memory transport (not HTTP) unless testing networking" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Checklist" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Good: Name tells you what's broken
+def test_user_creation_sets_defaults():
+    user = User(name="Alice")
+    assert user.role == "member"
+    assert user.id is not None
+    assert user.created_at is not None
+
+# Bad: If this fails, what behavior is broken?
+def test_user():
+    user = User(name="Alice")
+    assert user.role == "member"
+    user.promote()
+    assert user.role == "admin"
+    assert user.can_delete_others()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 18-33" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Each test should verify a single behavior. The test name should tell you what's broken when it fails. Multiple assertions are fine when they all verify the same behavior." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Atomic unit tests" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytest
+
+@pytest.mark.parametrize("input,expected", [
+    ("hello", "HELLO"),
+    ("World", "WORLD"),
+    ("", ""),
+    ("123", "123"),
+])
+def test_uppercase_conversion(input, expected):
+    assert input.upper() == expected
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 37-48" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Use parameterization for variations of the same concept" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Don't parameterize unrelated behaviors. If the test logic differs, write separate tests." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Use separate tests for different functionality" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Test Structure" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Writing Effective Python Tests" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Steps for writing an effective test following project conventions." ;
+            oc:hasStep _:ref_248f1723aa8aa2bc,
+                _:ref_7672fb95b46d4d8f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify against project checklist: one thing per test, no async markers, module-level imports, descriptive names, correct transport." ;
+                    oc:expectedOutcome "Test conforms to all project conventions." ;
+                    oc:stepDependsOn _:ref_cbda36a4e194095e ;
+                    oc:stepId "checklist-verify" ],
+                _:ref_cbda36a4e194095e,
+                _:ref_f118eb9c90003eee ;
+            oc:workflowId "write-test-workflow" ;
+            oc:workflowName "Write a Python Test" ] ;
+    oc:impartsKnowledge oc:kn_46ad17dc,
+        oc:kn_78871329,
+        oc:kn_86016c2f,
+        oc:kn_b0809e73,
+        oc:kn_b9084762,
+        oc:kn_bde5fbbf,
+        oc:kn_cb15df0f,
+        oc:kn_df3ca6aa ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "debug test failures",
+        "design test structure",
+        "improve test coverage",
+        "mock external dependencies",
+        "review test code",
+        "write python tests" ;
+    oc:yieldsState oc:TestsPassing,
+        oc:TestsWritten .
+
+oc:kn_46ad17dc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding what to mock" ;
+    oc:directiveContent "Mock at the boundary — mock external services and dependencies, not internal classes. Test your own code with real implementations when possible." ;
+    oc:hasRationale "Mocking internal classes hides real bugs; mocking external boundaries isolates your system from flaky or unavailable dependencies." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_78871329 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any test function" ;
+    oc:directiveContent "Never write a test that verifies multiple unrelated behaviors. Each test should be atomic, self-contained, and test a single functionality." ;
+    oc:hasRationale "Tests that assert multiple unrelated behaviors are harder to debug and maintain when they fail." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_86016c2f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing async tests in this project" ;
+    oc:directiveContent "Do not use @pytest.mark.asyncio decorators. The project uses asyncio_mode = \"auto\" globally." ;
+    oc:hasRationale "The auto mode means async test functions are automatically recognized; adding the decorator is redundant and against project convention." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b0809e73 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When testing MCP/fastmcp server code" ;
+    oc:directiveContent "Use in-memory transport (pass FastMCP servers directly to clients) for testing. Only use HTTP transport when explicitly testing network features." ;
+    oc:hasRationale "In-memory transport is faster, more reliable, and avoids network flakiness in tests." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b9084762 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing any test file" ;
+    oc:directiveContent "Before submitting tests verify: each test tests one thing, no @pytest.mark.asyncio decorators, imports at module level, descriptive test names, in-memory transport used, parameterization for variations, separate tests for different behaviors." ;
+    oc:hasRationale "The checklist catches the most common violations of project test conventions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bde5fbbf a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When organizing imports in test files" ;
+    oc:directiveContent "Put ALL imports at the top of the file at module level. Never use local imports inside test functions." ;
+    oc:hasRationale "Module-level imports improve readability, avoid import-time side effects per test, and follow project conventions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cb15df0f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When multiple test inputs exercise the same code path" ;
+    oc:directiveContent "Use parameterization for variations of the same concept/behavior. Write separate tests for fundamentally different behaviors." ;
+    oc:hasRationale "Parameterized tests reduce duplication while keeping related assertions grouped; separate tests maintain atomicity for unrelated behaviors." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_df3ca6aa a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When naming test functions" ;
+    oc:directiveContent "Test names must describe the scenario and tell you what is broken when they fail. Use patterns like test_<action>_<condition/expected>." ;
+    oc:hasRationale "Descriptive names provide immediate diagnostic value in CI output and test reports without reading the test body." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_248f1723aa8aa2bc a oc:WorkflowStep ;
+    dcterms:description "Add all necessary imports at the top of the test module." ;
+    oc:expectedOutcome "Module-level imports with no local imports in test bodies." ;
+    oc:stepId "setup-imports" .
+
+_:ref_7672fb95b46d4d8f a oc:WorkflowStep ;
+    dcterms:description "Write assertions verifying the single behavior. Use pytest.raises for error cases, parameterization for input variations." ;
+    oc:expectedOutcome "Assertions that verify exactly one behavior per test." ;
+    oc:stepDependsOn _:ref_f118eb9c90003eee ;
+    oc:stepId "write-assertions" .
+
+_:ref_cbda36a4e194095e a oc:WorkflowStep ;
+    dcterms:description "Run tests with 'uv run pytest -n auto -x' to execute in parallel and stop on first failure." ;
+    oc:expectedOutcome "All tests pass; if not, debug the failing test." ;
+    oc:stepDependsOn _:ref_248f1723aa8aa2bc,
+        _:ref_7672fb95b46d4d8f ;
+    oc:stepId "run-tests" .
+
+_:ref_f118eb9c90003eee a oc:WorkflowStep ;
+    dcterms:description "Identify the single behavior to test and write a descriptive test name (e.g., test_action_condition)." ;
+    oc:expectedOutcome "A clear, named test function that communicates what it verifies." ;
+    oc:stepId "choose-scope" .
+

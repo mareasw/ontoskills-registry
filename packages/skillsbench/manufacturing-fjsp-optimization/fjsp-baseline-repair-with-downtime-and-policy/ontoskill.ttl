@@ -1,0 +1,245 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_manufacturing_fjsp_optimization_fjsp_baseline_repair_with_downtime_and_policy a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "fjsp-baseline-repair-with-downtime-and-policy" ;
+    skos:broader "Flexible job-shop scheduling repair algorithm" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/manufacturing-fjsp-optimization/fjsp-baseline-repair-with-downtime-and-policy" ;
+    oc:contentHash "9a30f5dd8e4ea9c30e19d9c52cba202dd7fed06b1d9216c5e26230e5f3798cc1" ;
+    oc:differentia "that transforms an infeasible or non-optimal baseline schedule into a downtime-feasible, precedence-feasible schedule while respecting machine-change and start-time-shift policy budgets" ;
+    oc:handlesFailure oc:InvalidBaselineMachine,
+        oc:NoFeasiblePlacement,
+        oc:PolicyBudgetExceeded ;
+    oc:hasCategory "optimization" ;
+    oc:hasDescription "This skill should be considered when you need to repair an infeasible or non-optimal flexible job scheduling planning schedule into a downtime-feasible, precedence-feasible one while keep no worse policy budget." ;
+    oc:hasName "fjsp-baseline-repair-with-downtime-and-policy" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """def has_conflict(m, st, en, machine_intervals, downtime):
+    for a,b in machine_intervals.get(m, []):
+        if overlap(st,en,a,b):
+            return True
+    for a,b in downtime.get(m, []):
+        if overlap(st,en,a,b):
+            return True
+    return False
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 8 ;
+                    oc:sourceLocation "lines 38-47" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """def earliest_feasible_time(m, anchor, dur, machine_intervals, downtime, safety=200000):
+    t = int(anchor)
+    for _ in range(safety):
+        if not has_conflict(m, t, t+dur, machine_intervals, downtime):
+            return t
+        t += 1
+    return t
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 7 ;
+                    oc:sourceLocation "lines 28-36" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# Baseline machine may be illegal
+base_m = base_map[(j,o)]["machine"]
+if base_m not in allowed[(j,o)]:
+    # baseline is invalid; pick a legal default (min duration is a good heuristic)
+    base_m = min(allowed[(j,o)], key=lambda m: allowed[(j,o)][m])
+base_d = allowed[(j,o)][base_m]
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 9 ;
+                    oc:sourceLocation "lines 49-56" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# Precedence-aware repair order
+def precedence_aware_order(base_list):
+    base_map = {(r["job"], r["op"]): r for r in base_list}
+    base_index = {(r["job"], r["op"]): i for i, r in enumerate(base_list)}
+    keys = list(base_map.keys())
+    keys.sort(key=lambda k: (k[1], base_map[k]["start"], base_index[k]))
+    return keys
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 6 ;
+                    oc:sourceLocation "lines 18-26" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "This skill should be considered when you need to enhance a given infeasible or non-optimal fjsp baseline to a feasible schedule with less makespan considering downtime constraints, job precedence violations, policy budget constraints. The following constraints should be satisfied. end(j, o) <= start(j, o+1). Here j means the job index and o means the operation index. There should be no overlaps on the same machine or with downtime windows. Keep the number of machine changes and the total L1 start-time shift within the policy budgets. You can calculate the number of machine changes by MC = \\sum_{(j,o)} [m_{new}(j,o) \\ne m_{base}(j,o)]. You can calculate the total L1 start-time shift by Shift_{L1} = \\sum_{(j,o)} |start_{new}(j,o) - start_{base}(j,o)|. To achieve this, never start any operation earlier than the baseline. When repairing operations in precedence-aware order, place each operation at the earliest feasible time. Anchor is calculated by anchor(j,o) = \\max(start_{base}(j,o), end_{new}(j,o-1)), end_{new}(j,o-1) is end time of the previous operation of the same job at the new schedule. If start > anchor, then start-1 must be infeasible. You guarantee this by scanning integer time forward by +1 from anchor. Jumping to “next gap” without checking every integer may break minimality. If the given baseline is invalid, replace the machine with a feasible one." ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """#Use a lexicographic score that matches your priorities
+machine_change = int(mm != base_m_orig)  
+start_shift    = abs(st - base_start)
+score = (machine_change, start_shift, st, mm)
+#Then pick the smallest score, but respect remaining machine-change budget.
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 10 ;
+                    oc:sourceLocation "lines 58-64" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """#A naive “always keep baseline machine” can cause large start shifts. This often reduces `Shift_L1` enough to pass tight budgets without exploding machine changes. Use a simple trigger to consider alternates *only when it helps*:
+
+THRESH = 6  # tune; small instances often 3~10 works
+# First try baseline machine
+cand = best_candidate_restricted_to([base_m])
+
+# If shift is large and we still can change machines, search alternates
+if (cand.start - base_start) >= THRESH and mc_used < max_mc:
+    cand2 = best_candidate_over_all_allowed_machines()
+    if cand2.start < cand.start:   # or cand2.shift < cand.shift
+        cand = cand2
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 11 ;
+                    oc:sourceLocation "lines 66-78" ],
+                [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: fjsp-baseline-repair-with-downtime-and-policy
+description: This skill should be considered when you need to repair an infeasible or non-optimal flexible job scheduling planning schedule into a downtime-feasible, precedence-feasible one while keep no worse policy budget.
+""" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 3 ;
+                    oc:textContent "Here is the pipeline. For each operation, first find the earliest time to start. It cannot start earlier than the baseline, and it cannot start before the previous operation of the same job finishes. Then list only the machines that are allowed for this operation, and use the processing time that belongs to each machine. For each candidate machine, find the allowed earliest time and pick the first start time that does not overlap with other work on that machine and does not fall into any downtime window. Choose the option that makes the smallest changes overall. Prefer not changing machines and keeping start-time shifts small, and make sure you stay within the policy budgets. After selecting a start time, immediately record this operation on the machine timeline in the same precedence-aware order, so the result matches the evaluator’s step-by-step simulation." ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# sorted Downtime windows
+downtime[m] = sorted([(start,end), ...])
+def overlap(s,e,a,b):
+    return s < b and a < e  
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 5 ;
+                    oc:sourceLocation "lines 11-16" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 4 ;
+                    oc:textContent "Here are reference codes." ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Step-by-step procedure to repair an infeasible FJSP baseline into a feasible schedule respecting downtime, precedence, and policy budgets." ;
+            oc:hasStep _:ref_2d32b68e4d59b585,
+                _:ref_361252b03c325ac4,
+                _:ref_41c8df178366f8ac,
+                _:ref_860002dd263e7fd8,
+                _:ref_cabf90582840b363,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Immediately record the selected operation on the machine timeline so subsequent operations see the updated intervals." ;
+                    oc:expectedOutcome "Machine intervals updated, operation committed." ;
+                    oc:stepDependsOn _:ref_860002dd263e7fd8 ;
+                    oc:stepId "record-placement" ] ;
+            oc:workflowId "repair-pipeline" ;
+            oc:workflowName "FJSP Baseline Repair Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_21f23f92,
+        oc:kn_305d0dcb,
+        oc:kn_4991b2e2,
+        oc:kn_5e8a2a48,
+        oc:kn_7b927ee0,
+        oc:kn_8d87857b,
+        oc:kn_d0e37c4f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:BaselineScheduleExists,
+        oc:DowntimeWindowsDefined,
+        oc:PolicyBudgetsDefined ;
+    oc:resolvesIntent "find earliest feasible placement for scheduling operations",
+        "fix precedence violations in job scheduling",
+        "minimize makespan with downtime constraints",
+        "reduce schedule deviation within policy budget",
+        "repair infeasible fjsp schedule" ;
+    oc:yieldsState oc:DowntimeFeasible,
+        oc:PolicyBudgetRespected,
+        oc:PrecedenceFeasible,
+        oc:ScheduleRepaired .
+
+oc:kn_21f23f92 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, after placing each operation" ;
+    oc:directiveContent "After selecting a start time for an operation, immediately record it on the machine timeline in the same precedence-aware order, so the result matches the evaluator's step-by-step simulation." ;
+    oc:hasRationale "Lazy or batched recording can cause conflicts between operations that the sequential placement would avoid, leading to infeasible results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_305d0dcb a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting machines for operations with tight policy budgets" ;
+    oc:directiveContent "Do not naively always keep the baseline machine if it causes large start-time shifts. A large shift on one operation can cascade and blow up the total L1 shift budget." ;
+    oc:hasRationale "Keeping the baseline machine is preferred, but if the shift exceeds a threshold (e.g., 6 time units), considering alternate machines can reduce total shift enough to stay within budget." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4991b2e2 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When the baseline schedule assigns an illegal machine to an operation" ;
+    oc:directiveContent "If the baseline machine is not in the allowed set for an operation, replace it with the machine having the minimum processing time as a legal default." ;
+    oc:hasRationale "An invalid baseline machine must be replaced to produce any feasible schedule; minimum duration is a good heuristic to minimize makespan impact." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5e8a2a48 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When finding earliest_feasible_time for any operation" ;
+    oc:directiveContent "Scan integer time forward by +1 from anchor to find earliest feasible time. Never jump to 'next gap' without checking every integer, as it may break minimality." ;
+    oc:hasRationale "Skipping integer time points can miss the true earliest feasible slot, violating the optimality guarantee." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7b927ee0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing among candidate machine/time placements for an operation" ;
+    oc:directiveContent "Use a lexicographic score (machine_change, start_shift, start_time, machine) to rank candidate placements. Pick the smallest score while respecting the remaining machine-change budget." ;
+    oc:hasRationale "Lexicographic ordering prioritizes minimizing machine changes first, then start-time shifts, then makespan, which aligns with the policy budget priorities." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8d87857b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When placing any operation during repair" ;
+    oc:directiveContent "Never start any operation earlier than its baseline start time. Anchor(j,o) = max(start_base(j,o), end_new(j,o-1)), and the new start must be >= anchor." ;
+    oc:hasRationale "This ensures monotonicity relative to baseline and maintains the policy constraint on L1 start-time shift." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d0e37c4f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When iterating over operations for repair" ;
+    oc:directiveContent "Operations must be processed in precedence-aware order: sorted by (operation_index, baseline_start_time, baseline_list_position). This ensures end(j,o) <= start(j,o+1) for all jobs." ;
+    oc:hasRationale "Processing out of order would mean later operations are placed before earlier ones, making it impossible to correctly compute the anchor from the previous operation's new end time." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_2d32b68e4d59b585 a oc:WorkflowStep ;
+    dcterms:description "List only machines allowed for this operation with their processing times. If baseline machine is illegal, replace with min-duration legal machine." ;
+    oc:expectedOutcome "Candidate machine set with durations." ;
+    oc:stepDependsOn _:ref_cabf90582840b363 ;
+    oc:stepId "list-machines" .
+
+_:ref_361252b03c325ac4 a oc:WorkflowStep ;
+    dcterms:description "Sort all operations into precedence-aware order: by (op_index, baseline_start, baseline_position)." ;
+    oc:expectedOutcome "Ordered list of (job, op) keys ready for sequential placement." ;
+    oc:stepId "sort-ops" .
+
+_:ref_41c8df178366f8ac a oc:WorkflowStep ;
+    dcterms:description "For each candidate machine, scan forward from anchor by +1 to find the earliest time with no overlap against machine intervals and downtime windows." ;
+    oc:expectedOutcome "Earliest feasible (start_time, machine) pair per candidate." ;
+    oc:stepDependsOn _:ref_2d32b68e4d59b585 ;
+    oc:stepId "find-feasible-times" .
+
+_:ref_860002dd263e7fd8 a oc:WorkflowStep ;
+    dcterms:description "Score each candidate with lexicographic (machine_change, start_shift, start_time, machine). If baseline machine shift >= THRESH and machine-change budget remains, also consider alternate machines. Pick best." ;
+    oc:expectedOutcome "Selected (start_time, machine) for current operation within policy budgets." ;
+    oc:stepDependsOn _:ref_41c8df178366f8ac ;
+    oc:stepId "score-and-select" .
+
+_:ref_cabf90582840b363 a oc:WorkflowStep ;
+    dcterms:description "For each operation, compute anchor = max(start_base(j,o), end_new(j,o-1))." ;
+    oc:expectedOutcome "Anchor time below which placement is forbidden." ;
+    oc:stepDependsOn _:ref_361252b03c325ac4 ;
+    oc:stepId "compute-anchor" .
+

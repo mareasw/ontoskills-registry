@@ -1,0 +1,528 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_speaker_diarization_subtitles_speaker_clustering_methods a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "speaker-clustering-methods" ;
+    skos:broader "Clustering strategy" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/speaker-diarization-subtitles/speaker-clustering" ;
+    oc:contentHash "bf7ec30966afbb830697c9592d70712a45a588956c8056233c60942bf7494051" ;
+    oc:dependsOnSkill oc:skill_ontoskills_voice_activity_detection_vad ;
+    oc:differentia "groups speaker embeddings into unique speaker identities using hierarchical, KMeans, or agglomerative methods with auto-tuning support" ;
+    oc:handlesFailure oc:PoorClusteringQuality,
+        oc:TooFewSpeakers,
+        oc:TooManySpeakers ;
+    oc:hasAllowedTool "python" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Choose and implement clustering algorithms for grouping speaker embeddings after VAD and embedding extraction. Compare Hierarchical clustering (auto-tunes speaker count), KMeans (fast, requires known count), and Agglomerative clustering (fixed clusters). Use Hierarchical clustering when speaker count is unknown, KMeans when count is known, and always normalize embeddings before clustering." ;
+    oc:hasName "speaker-clustering-methods" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After clustering, merge adjacent segments with same speaker:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def merge_speaker_segments(labeled_segments, gap_threshold=0.15):
+    \"\"\"
+    labeled_segments: list of (start, end, speaker_label)
+    gap_threshold: merge if gap <= this (seconds)
+    \"\"\"
+    labeled_segments.sort(key=lambda x: (x[0], x[1]))
+
+    merged = []
+    cur_s, cur_e, cur_spk = labeled_segments[0]
+
+    for s, e, spk in labeled_segments[1:]:
+        if spk == cur_spk and s <= cur_e + gap_threshold:
+            cur_e = max(cur_e, e)
+        else:
+            merged.append((cur_s, cur_e, cur_spk))
+            cur_s, cur_e, cur_spk = s, e, spk
+
+    merged.append((cur_s, cur_e, cur_spk))
+    return merged
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 220-240" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Post-Clustering: Merging Segments" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Start with reasonable threshold
+threshold = 0.7
+labels = fcluster(linkage_matrix, t=threshold, criterion='distance')
+n_speakers = len(set(labels))
+
+# Adjust based on constraints
+if n_speakers > max_speakers:
+    # Increase threshold to merge more
+    threshold = 0.9
+elif n_speakers < min_speakers:
+    # Decrease threshold to split more
+    threshold = 0.5
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 201-214" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Method 2: Threshold Tuning (for Hierarchical)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from sklearn.metrics import silhouette_score
+
+best_k = 2
+best_score = -1
+
+for k in range(2, min(7, len(embeddings))):
+    labels = clusterer.fit_predict(embeddings)
+    score = silhouette_score(embeddings, labels, metric='cosine')
+    if score > best_score:
+        best_score = score
+        best_k = k
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 185-197" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Method 1: Silhouette Score (for KMeans/Agglomerative)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Choosing Number of Speakers" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "After extracting speaker embeddings from VAD segments" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Determining number of speakers automatically or manually" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Need to group similar speakers together" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Cosine**: Best for speaker embeddings (default)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Euclidean**: Can work but less ideal for normalized embeddings" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Distance Metrics" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0a2d4053ded71655 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# L2 normalization
+embeddings_normalized = embeddings_array / np.clip(
+    np.linalg.norm(embeddings_array, axis=1, keepdims=True),
+    1e-9, None
+)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 168-174" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always normalize embeddings before clustering:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Embedding Normalization" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After extracting speaker embeddings from audio segments, you need to cluster them to identify unique speakers. Different clustering methods have different strengths." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** Automatically determining number of speakers, flexible threshold tuning" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from scipy.cluster.hierarchy import linkage, fcluster
+from scipy.spatial.distance import pdist
+import numpy as np
+
+# Prepare embeddings
+embeddings_array = np.array(embeddings_list)
+n_segments = len(embeddings_array)
+
+# Compute distance matrix
+distances = pdist(embeddings_array, metric='cosine')
+
+# Create linkage matrix
+linkage_matrix = linkage(distances, method='average')
+
+# Auto-tune threshold to get reasonable speaker count
+min_speakers = 2
+max_speakers = max(2, min(10, n_segments // 2))
+
+threshold = 0.7
+labels = fcluster(linkage_matrix, t=threshold, criterion='distance')
+n_speakers = len(set(labels))
+
+# Adjust threshold if needed
+if n_speakers > max_speakers:
+    for t in [0.8, 0.9, 1.0, 1.1, 1.2]:
+        labels = fcluster(linkage_matrix, t=t, criterion='distance')
+        n_speakers = len(set(labels))
+        if n_speakers <= max_speakers:
+            threshold = t
+            break
+elif n_speakers < min_speakers:
+    for t in [0.6, 0.5, 0.4]:
+        labels = fcluster(linkage_matrix, t=t, criterion='distance')
+        n_speakers = len(set(labels))
+        if n_speakers >= min_speakers:
+            threshold = t
+            break
+
+print(f"Selected: t={threshold}, {n_speakers} speakers")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 24-64" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Good for unknown number of speakers" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Can visualize dendrogram" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Flexible threshold tuning" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Automatically determines speaker count" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Hierarchical Clustering (Recommended for Auto-tuning)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** Known number of speakers, fast clustering" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Requires specifying number of clusters" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "May get stuck in local minima" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Fast and efficient" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Simple to implement" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Works well with known speaker count" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Disadvantages:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+import numpy as np
+
+# Normalize embeddings
+embeddings_array = np.array(embeddings_list)
+norms = np.linalg.norm(embeddings_array, axis=1, keepdims=True)
+embeddings_normalized = embeddings_array / np.clip(norms, 1e-9, None)
+
+# Try different k values and choose best
+best_k = 2
+best_score = -1
+best_labels = None
+
+for k in range(2, min(7, len(embeddings_normalized))):
+    kmeans = KMeans(n_clusters=k, random_state=0, n_init=10)
+    labels = kmeans.fit_predict(embeddings_normalized)
+
+    if len(set(labels)) < 2:
+        continue
+
+    score = silhouette_score(embeddings_normalized, labels, metric='cosine')
+    if score > best_score:
+        best_score = score
+        best_k = k
+        best_labels = labels
+
+print(f"Best k={best_k}, silhouette score={best_score:.3f}")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 76-105" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. KMeans Clustering" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from sklearn.cluster import AgglomerativeClustering
+from sklearn.metrics import silhouette_score
+import numpy as np
+
+# Normalize embeddings
+embeddings_array = np.array(embeddings_list)
+norms = np.linalg.norm(embeddings_array, axis=1, keepdims=True)
+embeddings_normalized = embeddings_array / np.clip(norms, 1e-9, None)
+
+# Try different numbers of clusters
+best_n = 2
+best_score = -1
+best_labels = None
+
+for n_clusters in range(2, min(6, len(embeddings_normalized))):
+    clustering = AgglomerativeClustering(n_clusters=n_clusters)
+    labels = clustering.fit_predict(embeddings_normalized)
+
+    if len(set(labels)) < 2:
+        continue
+
+    score = silhouette_score(embeddings_normalized, labels, metric='cosine')
+    if score > best_score:
+        best_score = score
+        best_n = n_clusters
+        best_labels = labels
+
+print(f"Best n_clusters={best_n}, silhouette score={best_score:.3f}")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 120-149" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Good for fixed number of clusters" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Deterministic results" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Can use different linkage methods" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** Similar to hierarchical but with fixed number of clusters" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Agglomerative Clustering" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Available Clustering Methods" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0a75de68f61dd244 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Comparison Table" ;
+                            oc:tableMarkdown """| Method | Auto Speaker Count | Speed | Best For |
+|--------|-------------------|-------|----------|
+| Hierarchical | ✅ Yes | Medium | Unknown speaker count |
+| KMeans | ❌ No | Fast | Known speaker count |
+| Agglomerative | ❌ No | Medium | Fixed clusters needed |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Comparison Table" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Speaker Clustering Methods" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: Speaker Clustering Methods
+description: Choose and implement clustering algorithms for grouping speaker embeddings after VAD and embedding extraction. Compare Hierarchical clustering (auto-tunes speaker count), KMeans (fast, requires known count), and Agglomerative clustering (fixed clusters). Use Hierarchical clustering when speaker count is unknown, KMeans when count is known, and always normalize embeddings before clustering.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_0a2d4053ded71655,
+        _:ref_0a75de68f61dd244 ;
+    oc:impartsKnowledge oc:kn_b203b33b,
+        oc:kn_e9db9087 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EmbeddingsExtracted ;
+    oc:resolvesIntent "choose clustering algorithm for speaker diarization",
+        "cluster speaker embeddings",
+        "determine number of speakers automatically",
+        "identify unique speakers from embeddings",
+        "merge speaker segments after clustering" ;
+    oc:yieldsState oc:SegmentsMerged,
+        oc:SpeakersClustered .
+
+oc:kn_b203b33b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when selecting a clustering method" ;
+    oc:directiveContent "Use Hierarchical clustering when speaker count is unknown, KMeans when count is known, and Agglomerative for deterministic fixed-cluster results" ;
+    oc:hasRationale "Each method optimizes for a different constraint: auto-detection, speed, or determinism" .
+
+oc:kn_e9db9087 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "before running any clustering algorithm" ;
+    oc:directiveContent "Always L2-normalize speaker embeddings before clustering to ensure distance metrics work correctly" ;
+    oc:hasRationale "Unnormalized embeddings produce unreliable cosine distances and degrade clustering quality" ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_1b95e3031af9afbb a oc:WorkflowStep ;
+    dcterms:description "**Poor clustering**: Check embedding quality, try different normalization" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_47177f9294ad7bfb a oc:WorkflowStep ;
+    dcterms:description "**Over-segmentation**: Increase gap_threshold when merging segments" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_6b733296c19095b7 a oc:WorkflowStep ;
+    dcterms:description "**Merge adjacent segments** after clustering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_91c48397f6d31256 a oc:WorkflowStep ;
+    dcterms:description "**Try multiple methods** and compare results" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_91fd60dcf9ae8bf2 a oc:WorkflowStep ;
+    dcterms:description "**Validate speaker count** with visual features if available" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_9eb8b27d938129b9 a oc:WorkflowStep ;
+    dcterms:description "**Too few speakers**: Decrease threshold (hierarchical) or increase k (KMeans)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a667feef6079067d a oc:WorkflowStep ;
+    dcterms:description "**Too many speakers**: Increase threshold (hierarchical) or decrease k (KMeans)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_cbfa74b8585ee415 a oc:WorkflowStep ;
+    dcterms:description "**Use cosine distance** for speaker embeddings" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_cce0f68d1be71ec6 a oc:WorkflowStep ;
+    dcterms:description "**Normalize embeddings** before clustering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_f90670ee4dda4e43 a oc:WorkflowStep ;
+    dcterms:description "**After diarization, use high-quality ASR**: Use Whisper `small` or `large-v3` model for transcription (see automatic-speech-recognition skill)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_0a2d4053ded71655 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1b95e3031af9afbb,
+        _:ref_47177f9294ad7bfb,
+        _:ref_9eb8b27d938129b9,
+        _:ref_a667feef6079067d ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_0a75de68f61dd244 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_6b733296c19095b7,
+        _:ref_91c48397f6d31256,
+        _:ref_91fd60dcf9ae8bf2,
+        _:ref_cbfa74b8585ee415,
+        _:ref_cce0f68d1be71ec6,
+        _:ref_f90670ee4dda4e43 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

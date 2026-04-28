@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/earthquake-phase-association",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "gamma-phase-associator/ontoskill.ttl",
+    "obspy-data-api/ontoskill.ttl",
+    "seisbench-model-api/ontoskill.ttl",
+    "seismic-picker-selection/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "gamma-phase-associator/intents.json",
+    "obspy-data-api/intents.json",
+    "seisbench-model-api/intents.json",
+    "seismic-picker-selection/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,559 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_visual_stability_browser_testing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "browser-testing" ;
+    skos:broader "Browser performance testing tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-visual-stability/browser-testing" ;
+    oc:contentHash "44649ef17759e50f994925b6ce23ca91d4ea518f84200fb7ae9b87604e332fc1" ;
+    oc:dependsOnSkill oc:skill_ontoskills_react_best_practices ;
+    oc:differentia "that uses Playwright CDP to measure page load, CLS, theme flicker, and network waterfalls programmatically" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "url to test (e.g., http://localhost:3000)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "VERIFY your changes work. Measure CLS, detect theme flicker, test visual stability, check performance. Use BEFORE and AFTER making changes to confirm fixes. Includes ready-to-run scripts: measure-cls.ts, detect-flicker.ts" ;
+    oc:hasName "browser-testing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Diagnose performance issues by measuring actual load times and network activity." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "**Playwright is pre-installed.** Just use the measurement script." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """{
+  "url": "http://localhost:3000",
+  "totalMs": 1523,
+  "requests": [
+    { "url": "http://localhost:3000/", "ms": 45.2 },
+    { "url": "http://localhost:3000/api/products", "ms": 512.3 },
+    { "url": "http://localhost:3000/api/featured", "ms": 301.1 }
+  ],
+  "metrics": {
+    "JSHeapUsedSize": 4521984,
+    "LayoutCount": 12,
+    "ScriptDuration": 0.234
+  }
+}
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 30-45" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The script outputs JSON with:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 4 ;
+                                    oc:tableCaption "### Key Metrics" ;
+                                    oc:tableMarkdown """| Metric | What it means | Red flag |
+|--------|---------------|----------|
+| `totalMs` | Total page load time | > 1000ms |
+| `JSHeapUsedSize` | Memory used by JS | Growing over time |
+| `LayoutCount` | Layout recalculations | > 50 per page |
+| `ScriptDuration` | Time in JS execution | > 0.5s |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Key Metrics" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """BAD (sequential - each waits for previous):
+  /api/products    |████████|                        512ms
+  /api/featured             |██████|                 301ms  (starts AFTER products)
+  /api/categories                  |████|            201ms  (starts AFTER featured)
+  Total: 1014ms
+
+GOOD (parallel - all start together):
+  /api/products    |████████|                        512ms
+  /api/featured    |██████|                          301ms  (starts SAME TIME)
+  /api/categories  |████|                            201ms  (starts SAME TIME)
+  Total: 512ms (just the slowest one)
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 51-63" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The `requests` array shows network timing. Look for **sequential patterns**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Reading the Waterfall" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Understanding the Output" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """async function measureAPI(url: string) {
+  const start = Date.now();
+  const response = await fetch(url);
+  const elapsed = Date.now() - start;
+  return { url, time_ms: elapsed, status: response.status };
+}
+
+// Example
+const endpoints = [
+  'http://localhost:3000/api/products',
+  'http://localhost:3000/api/products?cache=false',
+  'http://localhost:3000/api/checkout',
+];
+
+for (const endpoint of endpoints) {
+  const result = await measureAPI(endpoint);
+  console.log(`${endpoint}: ${result.time_ms}ms`);
+}
+""" ;
+                            oc:codeLanguage "typescript" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 87-106" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For quick API timing without browser overhead:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Measuring API Endpoints Directly" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## What to Look For" ;
+                            oc:tableMarkdown """| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| Requests in sequence | Sequential `await` statements | Use `Promise.all()` |
+| Same URL requested twice | Fetch before cache check | Check cache first |
+| Long time before response starts | Blocking operation before sending | Make it async/non-blocking |
+| High LayoutCount | Components re-rendering | Add `React.memo`, `useMemo` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "What to Look For" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "This gives you the same data as Chrome DevTools Network tab, but programmatically." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The script uses Chrome DevTools Protocol (CDP) to intercept browser internals:" ],
+                        _:ref_60d0e3a6f7605a17 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "How the Measurement Script Works" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 7 ;
+                                    oc:tableCaption "### Common CLS Causes" ;
+                                    oc:tableMarkdown """| Shift Source | Likely Cause | Fix |
+|--------------|--------------|-----|
+| `<img>` elements | Missing width/height | Add dimensions or use `next/image` |
+| Theme wrapper | Hydration flicker | Use inline script before React |
+| Skeleton loaders | Size mismatch | Match skeleton to final content size |
+| Dynamic banners | No reserved space | Add `min-height` to container |
+| Late-loading sidebars | Content appears and pushes main content | Reserve space with CSS or show placeholder |
+| Pagination/results bars | UI element appears after data loads | Show immediately with loading state |
+| Font loading | Custom fonts cause text reflow | Use `font-display: swap` or preload fonts |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Common CLS Causes" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Network conditions affect when content loads" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Viewport size affects what's \"in view\" during shifts" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "setTimeout delays vary slightly between runs" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Production vs development builds have different timing" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "CLS only measures shifts **within the viewport**. Content that loads below the fold doesn't contribute until you scroll. For accurate measurement:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Basic measurement (may miss shifts from late content)
+npx ts-node <path-to-this-skill>/measure-cls.ts http://localhost:3000
+
+# With scrolling (catches more shifts)
+npx ts-node <path-to-this-skill>/measure-cls.ts http://localhost:3000 --scroll
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 173-179" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "The relative difference (before/after fix) matters more than absolute values." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Why measurements vary:**" ],
+                                _:ref_b71027a1eb9fac9a,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Recommended testing sequence:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Accurate CLS Measurement" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "### CLS Thresholds" ;
+                                    oc:tableMarkdown """| CLS Score | Rating | Action |
+|-----------|--------|--------|
+| < 0.1 | Good | No action needed |
+| 0.1 - 0.25 | Needs Improvement | Review shift sources |
+| > 0.25 | Poor | Fix immediately |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "CLS Thresholds" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Detects if dark theme flashes white before loading. Sets localStorage theme before navigation and checks background color at first paint." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """npx ts-node <path-to-this-skill>/detect-flicker.ts http://localhost:3000
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 154-156" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Detect Theme Flicker" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """npx ts-node <path-to-this-skill>/measure-cls.ts http://localhost:3000
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 122-124" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Output:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "url": "http://localhost:3000",
+  "cls": 0.42,
+  "rating": "poor",
+  "shifts": [
+    {
+      "value": 0.15,
+      "hadRecentInput": false,
+      "sources": [
+        {"nodeId": 42, "previousRect": {...}, "currentRect": {...}}
+      ]
+    }
+  ]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 127-142" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Measure CLS (Cumulative Layout Shift)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Visual Stability Measurement" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The script is in the same directory as this SKILL.md file." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Measure a page (outputs JSON with waterfall data)
+npx ts-node <path-to-this-skill>/measure.ts http://localhost:3000
+
+# Measure an API endpoint
+npx ts-node <path-to-this-skill>/measure.ts http://localhost:3000/api/products
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-22" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A `measure.ts` script is included in this skill's directory. Find it and run:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Quick Start" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Performance Measurement with Playwright CDP" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: browser-testing
+description: "VERIFY your changes work. Measure CLS, detect theme flicker, test visual stability, check performance. Use BEFORE and AFTER making changes to confirm fixes. Includes ready-to-run scripts: measure-cls.ts, detect-flicker.ts"
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_60d0e3a6f7605a17,
+        [ a oc:Workflow ;
+            dcterms:description "Measure performance before and after making changes to confirm fixes" ;
+            oc:hasStep _:ref_0839648444cf58cf,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Compare before and after metrics to confirm improvement" ;
+                    oc:stepDependsOn _:ref_b6365756c2d25834 ;
+                    oc:stepId "compare" ],
+                _:ref_67ae1143e9a251b7,
+                _:ref_b6365756c2d25834 ;
+            oc:workflowId "performance-baseline" ;
+            oc:workflowName "Before/After Performance Verification" ],
+        _:ref_b71027a1eb9fac9a,
+        [ a oc:Workflow ;
+            dcterms:description "Recommended testing sequence to capture all layout shifts including those from late-loading content" ;
+            oc:hasStep _:ref_22a0c314d7f21b7d,
+                _:ref_2e3b012060da5f06,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Read final CLS score" ;
+                    oc:expectedOutcome "Accurate CLS measurement captured" ;
+                    oc:stepDependsOn _:ref_2e3b012060da5f06 ;
+                    oc:stepId "read-cls" ],
+                _:ref_5cc54e4b233af61e,
+                _:ref_60e72d53568723a2,
+                _:ref_bb5ad5e5d344af53,
+                _:ref_c7e7d318fcb64dfb ;
+            oc:workflowId "cls-accurate-measurement" ;
+            oc:workflowName "Accurate CLS Measurement Sequence" ] ;
+    oc:impartsKnowledge oc:kn_33f0e9bc,
+        oc:kn_647f1135,
+        oc:kn_741be530,
+        oc:kn_747d367c,
+        oc:kn_8f5e2138,
+        oc:kn_c1797ed6,
+        oc:kn_dc584e3d ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze network request waterfalls",
+        "detect cumulative layout shift (CLS)",
+        "detect theme flicker on dark mode pages",
+        "measure API endpoint response times",
+        "measure page load performance",
+        "verify visual stability before and after changes" ;
+    oc:yieldsState oc:PerformanceMetricsCaptured .
+
+oc:kn_33f0e9bc a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Measurement scripts are read-only and produce no side effects. They can be run multiple times safely. Results may vary slightly between runs." ;
+    oc:hasRationale "Non-destructive measurement enables iterative before/after comparison" .
+
+oc:kn_647f1135 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating CLS scores" ;
+    oc:directiveContent "CLS score < 0.1 is Good (no action), 0.1-0.25 Needs Improvement (review sources), > 0.25 is Poor (fix immediately)." ;
+    oc:hasRationale "Google's Core Web Vitals thresholds determine SEO and UX impact" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_741be530 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When reading measurement output metrics" ;
+    oc:directiveContent "Key thresholds: totalMs > 1000ms is a red flag, LayoutCount > 50 per page indicates excessive reflows, ScriptDuration > 0.5s signals heavy JS execution, JSHeapUsedSize growing over time indicates memory leak." ;
+    oc:hasRationale "These thresholds identify the most impactful performance regressions" .
+
+oc:kn_747d367c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing network waterfall showing sequential patterns" ;
+    oc:directiveContent "Sequential await statements cause network requests to run one after another instead of in parallel. Use Promise.all() to run independent requests concurrently." ;
+    oc:hasRationale "Sequential fetches waste time; parallel fetches reduce total load time to the slowest single request" .
+
+oc:kn_8f5e2138 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When fixing CLS issues identified by measurement" ;
+    oc:directiveContent "Common CLS fixes: add width/height to images (or use next/image), use inline script before React for theme, match skeleton sizes to final content, add min-height to dynamic containers, use font-display: swap or preload fonts." ;
+    oc:hasRationale "These address the most frequent causes of layout shift in modern web apps" .
+
+oc:kn_c1797ed6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When measuring CLS" ;
+    oc:directiveContent "CLS only measures shifts within the viewport. Content below the fold doesn't contribute until scrolled. Use --scroll flag or manual scrolling sequence for accurate measurement." ;
+    oc:hasRationale "Incomplete CLS measurements can give false confidence that layout is stable" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dc584e3d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting CLS scores" ;
+    oc:directiveContent "The relative difference (before/after fix) matters more than absolute CLS values. Measurements vary due to build mode, viewport size, setTimeout jitter, and network conditions." ;
+    oc:hasRationale "Absolute CLS values are non-deterministic; comparative measurement isolates the actual impact of changes" .
+
+_:ref_0d8912bc987b3e07 a oc:WorkflowStep ;
+    dcterms:description "Load page" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_2c1577ab3bd5ed06 a oc:WorkflowStep ;
+    dcterms:description "Wait 2 seconds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_2dc00498bf6f0946 a oc:WorkflowStep ;
+    dcterms:description "**Network.responseReceived** - Event fired when response arrives, we calculate duration" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4cb6eeb5cd2b24c7 a oc:WorkflowStep ;
+    dcterms:description "Wait 3 seconds (let late-loading content appear)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4d346df6cf215b58 a oc:WorkflowStep ;
+    dcterms:description "Read final CLS" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_6fd33eb3990462cd a oc:WorkflowStep ;
+    dcterms:description "Trigger 1-2 UI actions (theme toggle, filter click, etc.)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_7ac81c020d6f4d0e a oc:WorkflowStep ;
+    dcterms:description "Wait 2 seconds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_8cf96f3c34e80557 a oc:WorkflowStep ;
+    dcterms:description "**Performance.getMetrics** - Returns Chrome's internal counters (memory, layout, script time)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_9d042f17c1404170 a oc:WorkflowStep ;
+    dcterms:description "Scroll to bottom" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d6a6e00525c55173 a oc:WorkflowStep ;
+    dcterms:description "**Network.requestWillBeSent** - Event fired when request starts, we record timestamp" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0839648444cf58cf a oc:WorkflowStep ;
+    dcterms:description "Run measurement scripts BEFORE making any changes" ;
+    oc:expectedOutcome "Baseline metrics captured (totalMs, CLS, LayoutCount, etc.)" ;
+    oc:stepId "measure-before" .
+
+_:ref_22a0c314d7f21b7d a oc:WorkflowStep ;
+    dcterms:description "Wait 2 seconds after scrolling" ;
+    oc:expectedOutcome "Scroll-triggered content loaded" ;
+    oc:stepDependsOn _:ref_60e72d53568723a2 ;
+    oc:stepId "wait-scroll" .
+
+_:ref_2e3b012060da5f06 a oc:WorkflowStep ;
+    dcterms:description "Wait 2 seconds after UI actions" ;
+    oc:expectedOutcome "Action-triggered layout settled" ;
+    oc:stepDependsOn _:ref_c7e7d318fcb64dfb ;
+    oc:stepId "wait-actions" .
+
+_:ref_5cc54e4b233af61e a oc:WorkflowStep ;
+    dcterms:description "Wait 3 seconds for late-loading content to appear" ;
+    oc:expectedOutcome "All async content rendered" ;
+    oc:stepDependsOn _:ref_bb5ad5e5d344af53 ;
+    oc:stepId "wait-initial" .
+
+_:ref_60d0e3a6f7605a17 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_2dc00498bf6f0946,
+        _:ref_8cf96f3c34e80557,
+        _:ref_d6a6e00525c55173 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_60e72d53568723a2 a oc:WorkflowStep ;
+    dcterms:description "Scroll to bottom of page" ;
+    oc:expectedOutcome "Below-fold content now in viewport" ;
+    oc:stepDependsOn _:ref_5cc54e4b233af61e ;
+    oc:stepId "scroll-bottom" .
+
+_:ref_67ae1143e9a251b7 a oc:WorkflowStep ;
+    dcterms:description "Apply the code changes intended to fix the performance issue" ;
+    oc:expectedOutcome "Code changes applied" ;
+    oc:stepDependsOn _:ref_0839648444cf58cf ;
+    oc:stepId "make-changes" .
+
+_:ref_b6365756c2d25834 a oc:WorkflowStep ;
+    dcterms:description "Run the same measurement scripts AFTER changes" ;
+    oc:expectedOutcome "Post-fix metrics captured" ;
+    oc:stepDependsOn _:ref_67ae1143e9a251b7 ;
+    oc:stepId "measure-after" .
+
+_:ref_b71027a1eb9fac9a a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_0d8912bc987b3e07,
+        _:ref_2c1577ab3bd5ed06,
+        _:ref_4cb6eeb5cd2b24c7,
+        _:ref_4d346df6cf215b58,
+        _:ref_6fd33eb3990462cd,
+        _:ref_7ac81c020d6f4d0e,
+        _:ref_9d042f17c1404170 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_bb5ad5e5d344af53 a oc:WorkflowStep ;
+    dcterms:description "Load the target page in browser" ;
+    oc:expectedOutcome "Page fully loaded" ;
+    oc:stepId "load-page" .
+
+_:ref_c7e7d318fcb64dfb a oc:WorkflowStep ;
+    dcterms:description "Trigger 1-2 UI actions (theme toggle, filter click, etc.)" ;
+    oc:expectedOutcome "Interactive state changes applied" ;
+    oc:stepDependsOn _:ref_22a0c314d7f21b7d ;
+    oc:stepId "trigger-actions" .
+

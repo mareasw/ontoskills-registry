@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/syzkaller-ppdev-syzlang",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "syz-extract-constants/ontoskill.ttl",
+    "syzkaller-build-loop/ontoskill.ttl",
+    "syzlang-ioctl-basics/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "syz-extract-constants/intents.json",
+    "syzkaller-build-loop/intents.json",
+    "syzlang-ioctl-basics/intents.json"
+  ],
+  "skills": []
+}

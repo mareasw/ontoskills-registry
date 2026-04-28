@@ -1,0 +1,396 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_hvac_control_imc_tuning_rules a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "imc-tuning-rules" ;
+    skos:broader "Controller tuning method" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/hvac-control/imc-tuning-rules" ;
+    oc:contentHash "05804c640af1746a209b90709e845adaa6a10dcb13b6dfe35036c8e4ad76b49a" ;
+    oc:dependsOnSkill oc:skill_ontoskills_first_order_model_fitting ;
+    oc:differentia "that uses Internal Model Control (IMC) principles to derive PI/PID gains from first-order process models with a single tuning parameter lambda" ;
+    oc:handlesFailure oc:InvalidModelParameters,
+        oc:UnstableResponse ;
+    oc:hasArgumentHint "K (process gain), tau (time constant), lambda_factor (optional, default 1.0)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Calculate PI/PID controller gains using Internal Model Control (IMC) tuning rules for first-order systems." ;
+    oc:hasName "imc-tuning-rules" ;
+    oc:hasRequirement oc:req_c11c97e1,
+        oc:req_fbc68fd9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_3d0304f3fa392c8f ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Internal Model Control (IMC) is a systematic method for tuning PI/PID controllers based on a process model. Once you've identified system parameters (K and tau), IMC provides controller gains." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def calculate_imc_gains(K, tau, lambda_factor=1.0):
+    \"\"\"
+    Calculate IMC-tuned PI gains for a first-order system.
+
+    Args:
+        K: Process gain
+        tau: Time constant
+        lambda_factor: Multiplier for lambda (default 1.0 = lambda equals tau)
+
+    Returns:
+        dict with Kp, Ki, Kd, lambda
+    \"\"\"
+    lambda_cl = lambda_factor * tau
+
+    Kp = tau / (K * lambda_cl)
+    Ki = Kp / tau
+    Kd = 0.0
+
+    return {
+        "Kp": Kp,
+        "Ki": Ki,
+        "Kd": Kd,
+        "lambda": lambda_cl
+    }
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 59-84" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Implementation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """class PIController:
+    def __init__(self, Kp, Ki, setpoint):
+        self.Kp = Kp
+        self.Ki = Ki
+        self.setpoint = setpoint
+        self.integral = 0.0
+
+    def compute(self, measurement, dt):
+        \"\"\"Compute control output.\"\"\"
+        error = self.setpoint - measurement
+
+        # Integral term
+        self.integral += error * dt
+
+        # PI control law
+        output = self.Kp * error + self.Ki * self.integral
+
+        # Clamp to valid range
+        output = max(output_min, min(output_max, output))
+
+        return output
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 88-110" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "PI Controller Implementation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Default recommendation**: Start with `lambda = tau`" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Lambda controls the trade-off between speed and robustness:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent """For noisy systems or uncertain models, use larger lambda.
+For precise models and fast response needs, use smaller lambda.""" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "Lambda controls the trade-off between speed and robustness" ;
+                            oc:tableMarkdown """| Lambda | Behavior |
+|--------|----------|
+| `lambda = 0.1 * tau` | Very aggressive, fast but sensitive to model error |
+| `lambda = 0.5 * tau` | Aggressive, good for accurate models |
+| `lambda = 1.0 * tau` | Moderate, balanced speed and robustness |
+| `lambda = 2.0 * tau` | Conservative, robust to model uncertainty |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Choosing Lambda (λ)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Single tuning parameter**: Just choose the closed-loop speed (lambda)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Guaranteed stability**: For first-order systems, always stable if model is accurate" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Predictable response**: Closed-loop time constant equals lambda" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Model-based**: Uses identified process parameters directly" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Why IMC?" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Key properties:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "With IMC tuning, the closed-loop response is approximately:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Overshoot**: Minimal for first-order systems" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Settling time**: ~4 * lambda to reach 98% of setpoint" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Steady-state error**: Zero (integral action eliminates offset)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Rise time**: ~2.2 * lambda to reach 90% of setpoint" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """y(t) = y_setpoint * (1 - exp(-t / lambda))
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 116-118" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Expected Closed-Loop Behavior" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The IMC-tuned PI controller gains are:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Process: G(s) = K / (tau*s + 1)
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 23-25" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For a first-order process with gain K and time constant tau:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Where:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`lambda` = Desired closed-loop time constant (tuning parameter)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`Kd` = Derivative gain (zero for first-order)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`Ki` = Integral gain (units: 1/time)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`Kp` = Proportional gain" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Kp = tau / (K * lambda)
+Ki = Kp / tau = 1 / (K * lambda)
+Kd = 0  (derivative not needed for first-order systems)
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 29-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "IMC Tuning for First-Order Systems" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "IMC Tuning Rules for PI/PID Controllers" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: imc-tuning-rules
+description: Calculate PI/PID controller gains using Internal Model Control (IMC) tuning rules for first-order systems.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_3d0304f3fa392c8f ;
+    oc:impartsKnowledge oc:kn_002f3742,
+        oc:kn_0bd859a9,
+        oc:kn_3fd3d12c,
+        oc:kn_4656be75,
+        oc:kn_493e27ca,
+        oc:kn_6e69d841,
+        oc:kn_7aa8d562,
+        oc:kn_82bcb61b,
+        oc:kn_e8292fe2,
+        oc:kn_ef630764 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:ModelParametersIdentified ;
+    oc:resolvesIntent "calculate PI controller gains",
+        "choose lambda for speed-robustness tradeoff",
+        "implement IMC-tuned PI controller",
+        "tune PID controller using IMC method" ;
+    oc:yieldsState oc:ControllerGainsCalculated .
+
+oc:kn_002f3742 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When verifying IMC-tuned controller performance" ;
+    oc:directiveContent "Closed-loop time constant equals lambda, giving predictable response: rise time ≈ 2.2*lambda, settling time ≈ 4*lambda, zero steady-state error." ;
+    oc:hasRationale "IMC guarantees that the closed-loop response shape is a first-order exponential with time constant lambda, enabling performance prediction before deployment" .
+
+oc:kn_0bd859a9 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When observing oscillatory closed-loop behavior" ;
+    oc:directiveContent "If output oscillates after tuning, increase lambda to reduce Kp and restore stability." ;
+    oc:hasRationale "Oscillation indicates the controller is too aggressive for the actual process dynamics or model mismatch; larger lambda reduces gain" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3fd3d12c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing a PI controller with output clamping" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """class PIController:
+    def __init__(self, Kp, Ki, setpoint):
+        self.Kp = Kp
+        self.Ki = Ki
+        self.setpoint = setpoint
+        self.integral = 0.0
+    def compute(self, measurement, dt):
+        error = self.setpoint - measurement
+        self.integral += error * dt
+        output = self.Kp * error + self.Ki * self.integral
+        output = max(output_min, min(output_max, output))
+        return output""" .
+
+oc:kn_4656be75 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting lambda for IMC tuning" ;
+    oc:directiveContent "Start with lambda = tau (lambda_factor = 1.0) as the default. Increase lambda for noisy or uncertain models; decrease for fast response with accurate models." ;
+    oc:hasRationale "Lambda = tau provides balanced speed and robustness; deviating in either direction trades one property for the other" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_493e27ca a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When model parameters K and tau have significant estimation error" ;
+    oc:directiveContent "Do not use small lambda (e.g., 0.1*tau) with an inaccurate or uncertain process model — this causes aggressive gains and potential instability." ;
+    oc:hasRationale "Small lambda amplifies model mismatch through higher Kp, risking oscillation and instability" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6e69d841 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Process model parameters K (gain) and tau (time constant) must be identified from experimental data before IMC tuning can be applied." .
+
+oc:kn_7aa8d562 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When implementing a PI controller with output clamping" ;
+    oc:directiveContent "Integral windup can occur when the control output saturates. Implement anti-windup mechanisms to prevent the integral term from accumulating unbounded error." ;
+    oc:hasRationale "Windup causes large overshoots and slow recovery when the actuator saturates, degrading closed-loop performance" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_82bcb61b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning a controller for a first-order system G(s) = K/(tau*s+1)" ;
+    oc:directiveContent "IMC PI tuning for first-order systems sets Kd = 0. Derivative action is not needed for first-order process models." ;
+    oc:hasRationale "First-order systems have simple dynamics that PI control fully addresses; adding derivative introduces noise sensitivity without benefit" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e8292fe2 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating IMC-tuned PI gains for a first-order system" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def calculate_imc_gains(K, tau, lambda_factor=1.0):
+    lambda_cl = lambda_factor * tau
+    Kp = tau / (K * lambda_cl)
+    Ki = Kp / tau
+    Kd = 0.0
+    return {"Kp": Kp, "Ki": Ki, "Kd": Kd, "lambda": lambda_cl}""" .
+
+oc:kn_ef630764 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When tuning a PI controller using IMC" ;
+    oc:directiveContent "1. Identify process model parameters K (gain) and tau (time constant) from step response data. 2. Choose lambda_factor (default 1.0). 3. Compute Kp = tau/(K*lambda_factor*tau), Ki = Kp/tau. 4. Implement PI controller with anti-windup. 5. Verify closed-loop response matches predicted behavior." ;
+    oc:stepOrder 1 .
+
+oc:req_c11c97e1 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "First-order process model parameters (K, tau) from system identification" .
+
+oc:req_fbc68fd9 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Understanding of PI/PID control fundamentals" .
+
+_:ref_0ecd2341738348fa a oc:WorkflowStep ;
+    dcterms:description "**Decrease lambda carefully**: Smaller lambda = larger Kp = faster but riskier" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_8e613cb77993b534 a oc:WorkflowStep ;
+    dcterms:description "**Start conservative**: Use `lambda = tau` initially" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_b7e75a54aac1e0ea a oc:WorkflowStep ;
+    dcterms:description "**Watch for oscillation**: If output oscillates, increase lambda" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d1112a667981b178 a oc:WorkflowStep ;
+    dcterms:description "**Anti-windup**: Prevent integral wind-up when output saturates" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_3d0304f3fa392c8f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0ecd2341738348fa,
+        _:ref_8e613cb77993b534,
+        _:ref_b7e75a54aac1e0ea,
+        _:ref_d1112a667981b178 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

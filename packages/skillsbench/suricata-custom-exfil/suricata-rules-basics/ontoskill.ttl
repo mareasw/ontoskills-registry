@@ -1,0 +1,445 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_suricata_custom_exfil_suricata_rules_basics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "suricata-rules-basics" ;
+    skos:broader "Domain-specific language reference" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/suricata-custom-exfil/suricata-rules-basics" ;
+    oc:contentHash "65b0957c55cf20613c953d9194e0c348f2cf9e545e28c9b4215651c67e792644" ;
+    oc:differentia "that teaches Suricata signature anatomy, content matching, PCRE, and HTTP sticky buffers for composing DPI rules" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "rule-specification or detection-requirements" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Core building blocks of Suricata signatures and multi-condition DPI logic" ;
+    oc:hasName "suricata-rules-basics" ;
+    oc:hasRequirement oc:req_80b4becb,
+        oc:req_b30d1e1e,
+        oc:req_f15977d7 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: suricata-rules-basics
+description: Core building blocks of Suricata signatures and multi-condition DPI logic
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill covers the core building blocks of Suricata signatures and how to express multi-condition DPI logic." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Common HTTP sticky buffers include:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For application protocols (e.g., HTTP), prefer protocol-specific buffers so you don’t accidentally match on unrelated bytes in the TCP stream." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`http_client_body` (request body)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`http.uri`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`http.header`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`http.method`" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Sticky buffers (protocol aware)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A typical alert rule looks like:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """alert <proto> <src> <sport> -> <dst> <dport> (
+  msg:"...";
+  flow:...;
+  content:"..."; <buffer/modifier>;
+  pcre:"/.../"; <buffer/modifier>;
+  sid:1000001;
+  rev:1;
+)
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 13-22" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Key ideas:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Use `flow:established,to_server` (or similar) to constrain direction/state." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`sid` is a unique rule id." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`rev` is the rule revision." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Rule anatomy" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Add modifiers/buffers (depending on protocol) to scope where the match occurs." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`content:\"...\";` matches fixed bytes." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Content matching" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Keep rules readable: group related matches and keep `msg` specific." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Avoid overly generic rules that alert on unrelated traffic." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Start with strict conditions (method/path/header), then add body checks." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Practical tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pcre:"/[0-9a-fA-F]{64}/";
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 36-38" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use PCRE when you need patterns like “N hex chars” or “base64-ish payload”:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Regex (PCRE)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Important: This skill intentionally does **not** provide a full working rule. You should build the final rule by combining the conditions from the task." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For the `suricata-custom-exfil` task, the reliable approach is to compose a rule using HTTP sticky buffers." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http_client_body;
+content:"blob=";
+
+http_client_body;
+content:"sig=";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 8 ;
+                                    oc:sourceLocation "lines 103-109" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**Body contains required parameters**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 11 ;
+                                    oc:textContent """**Regex for Base64-ish blob with a length constraint**
+Notes:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent "**Regex for 64 hex characters (for sig=...)**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent """**Header contains a specific field/value**
+Tip: represent `:` safely as hex (`|3a|`) to avoid formatting surprises.""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http.uri;
+content:"/telemetry/v2/report";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 90-93" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http_client_body;
+pcre:"/blob=[A-Za-z0-9+\\\\/]{80,}/";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 13 ;
+                                    oc:sourceLocation "lines 121-124" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Exact HTTP method**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 12 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Keep the character class fairly strict to avoid false positives." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Anchor the match to `blob=` so you don’t match unrelated Base64-looking data." ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http_client_body;
+pcre:"/sig=[0-9a-fA-F]{64}/";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 10 ;
+                                    oc:sourceLocation "lines 112-115" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http.header;
+content:"X-TLM-Mode|3a| exfil";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 6 ;
+                                    oc:sourceLocation "lines 97-100" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """http.method;
+content:"POST";
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 84-87" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Exact URI/path match**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Focused examples (compose these, don’t copy/paste blindly)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """alert http any any -> any any (
+  msg:"TLM exfil";
+  flow:established,to_server;
+
+  # 1) Method constraint (use http.method)
+
+  # 2) Exact path constraint (use http.uri)
+
+  # 3) Header constraint (use http.header)
+
+  # 4) Body constraints (use http_client_body)
+  #    - blob= parameter that is Base64-ish AND length >= 80
+  #    - sig= parameter that is exactly 64 hex characters
+
+  sid:1000001;
+  rev:1;
+)
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 61-79" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "A minimal scaffold (fill in the key patterns yourself)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Making the Base64 regex too permissive (false positives) or too strict (false negatives)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Using `content:\"POST\";` without `http.method;` (can match inside the body)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Forgetting `http_client_body` and accidentally matching strings in headers/URI." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Matching `sig=` but not enforcing exactly 64 hex characters." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Common failure modes" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Task template: Custom telemetry exfil" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Suricata Rules Basics" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Step-by-step process for building a Suricata HTTP detection rule by layering constraints from strict to general." ;
+            oc:hasStep _:ref_16e7717ccddcf40c,
+                _:ref_5cb136f051be9573,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Set unique sid, rev, and descriptive msg. Review all match blocks for correctness and absence of missing sticky buffers." ;
+                    oc:expectedOutcome "Complete, valid Suricata rule ready for deployment" ;
+                    oc:stepDependsOn _:ref_16e7717ccddcf40c,
+                        _:ref_6f74c1eb9dbb3fa4,
+                        _:ref_91fd80f1b67015fd,
+                        _:ref_d934b455ac30d4b4 ;
+                    oc:stepId "finalize-rule" ],
+                _:ref_65ea39ed09829836,
+                _:ref_6f74c1eb9dbb3fa4,
+                _:ref_91fd80f1b67015fd,
+                _:ref_d934b455ac30d4b4 ;
+            oc:workflowId "suricata-rule-composition" ;
+            oc:workflowName "Compose a Multi-Condition Suricata Rule" ] ;
+    oc:impartsKnowledge oc:kn_08fa51c6,
+        oc:kn_158c57ca,
+        oc:kn_5acf37c9,
+        oc:kn_80733146,
+        oc:kn_d19d11cd,
+        oc:kn_e9db2e33,
+        oc:kn_f996e160 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build custom exfil detection rules",
+        "compose multi-condition suricata alerts",
+        "create DPI signatures",
+        "write suricata rules" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_08fa51c6 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When composing multi-condition Suricata rules" ;
+    oc:directiveContent "Start with strict conditions (method, path, header), then add body checks. Compose rules from focused, single-purpose match blocks rather than one monolithic pattern." ;
+    oc:hasRationale "Layered constraints from specific to general reduce false positives and keep rules readable and maintainable." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_158c57ca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing content matches containing special characters" ;
+    oc:directiveContent "Represent special characters like colons as hex (e.g., |3a| for ':') in content matches to avoid formatting surprises." ;
+    oc:hasRationale "Suricata rule parsing can misinterpret literal special characters; hex encoding is unambiguous." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5acf37c9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing PCRE for body content matching" ;
+    oc:directiveContent "Avoid overly generic Base64 regex patterns that are too permissive (false positives) or too strict (false negatives)." ;
+    oc:hasRationale "A too-permissive regex fires on unrelated traffic; a too-strict one misses encoded payloads. Anchor patterns to parameter names like blob=." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_80733146 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any Suricata alert rule" ;
+    oc:directiveContent "Every Suricata rule must have a unique sid (rule ID) and a rev (revision number). The msg field should be specific and descriptive." ;
+    oc:hasRationale "sid uniqueness is required for rule management and updates; rev tracks rule evolution; specific msg aids alert triage." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d19d11cd a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building HTTP inspection rules" ;
+    oc:directiveContent "Always prefer protocol-specific sticky buffers (http.method, http.uri, http.header, http_client_body) over raw content matching." ;
+    oc:hasRationale "Sticky buffers scope matches to the correct protocol field, preventing accidental matches on unrelated bytes in the TCP stream." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e9db2e33 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing HTTP content matches in Suricata rules" ;
+    oc:directiveContent "Never use content:\"POST\"; without http.method; buffer — it will match the string 'POST' anywhere in the packet including the body." ;
+    oc:hasRationale "Without protocol-aware sticky buffers, string matches scan the entire raw TCP stream causing false positives." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f996e160 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When writing rules that inspect client-to-server traffic" ;
+    oc:directiveContent "Use flow:established,to_server (or similar flow keywords) to constrain rule evaluation to specific direction and connection state." ;
+    oc:hasRationale "Flow keywords prevent rules from firing on incomplete handshakes or return traffic, improving accuracy and performance." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_80b4becb a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Suricata IDS/IPS" .
+
+oc:req_b30d1e1e a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Regular expressions (PCRE syntax)" .
+
+oc:req_f15977d7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "HTTP protocol structure (methods, headers, URIs, body)" .
+
+_:ref_16e7717ccddcf40c a oc:WorkflowStep ;
+    dcterms:description "Add HTTP method constraint using http.method sticky buffer with exact content match (e.g., POST)." ;
+    oc:expectedOutcome "Rule only triggers on the specified HTTP method" ;
+    oc:stepDependsOn _:ref_5cb136f051be9573 ;
+    oc:stepId "add-method-constraint" .
+
+_:ref_65ea39ed09829836 a oc:WorkflowStep ;
+    dcterms:description "Add body parameter presence checks using http_client_body sticky buffer for each required parameter." ;
+    oc:expectedOutcome "Rule verifies required POST body parameters exist" ;
+    oc:stepDependsOn _:ref_5cb136f051be9573 ;
+    oc:stepId "add-body-content-checks" .
+
+_:ref_6f74c1eb9dbb3fa4 a oc:WorkflowStep ;
+    dcterms:description "Add PCRE patterns anchored to parameter names (e.g., sig= with exactly 64 hex chars, blob= with Base64 min length 80) in http_client_body." ;
+    oc:expectedOutcome "Rule enforces format and length constraints on body parameters" ;
+    oc:stepDependsOn _:ref_65ea39ed09829836 ;
+    oc:stepId "add-body-pcre-checks" .
+
+_:ref_91fd80f1b67015fd a oc:WorkflowStep ;
+    dcterms:description "Add header constraint using http.header sticky buffer, using hex encoding for special characters like colons." ;
+    oc:expectedOutcome "Rule checks for required custom header presence" ;
+    oc:stepDependsOn _:ref_5cb136f051be9573 ;
+    oc:stepId "add-header-constraint" .
+
+_:ref_d934b455ac30d4b4 a oc:WorkflowStep ;
+    dcterms:description "Add URI/path constraint using http.uri sticky buffer with exact content match for the target endpoint." ;
+    oc:expectedOutcome "Rule scoped to specific API path" ;
+    oc:stepDependsOn _:ref_5cb136f051be9573 ;
+    oc:stepId "add-uri-constraint" .
+
+_:ref_5cb136f051be9573 a oc:WorkflowStep ;
+    dcterms:description "Define the rule header: protocol (http), source/destination (any any -> any any), and flow direction (flow:established,to_server)." ;
+    oc:expectedOutcome "Rule header with correct protocol and flow constraints set" ;
+    oc:stepId "define-rule-header" .
+

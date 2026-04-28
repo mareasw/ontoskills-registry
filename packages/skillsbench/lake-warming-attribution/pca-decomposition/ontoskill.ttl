@@ -1,0 +1,396 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_lake_warming_attribution_pca_decomposition a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pca-decomposition" ;
+    skos:broader "Dimensionality reduction technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/lake-warming-attribution/pca-decomposition" ;
+    oc:contentHash "366916f4761d612254ee626b68cb970865461f4b80a85662288f3f7b37147118" ;
+    oc:dependsOnSkill oc:skill_ontoskills_meteorology_driver_classification ;
+    oc:differentia "Uses PCA with varimax rotation to transform correlated variables into interpretable uncorrelated factors" ;
+    oc:handlesFailure oc:InsufficientVariance,
+        oc:InvalidInputData ;
+    oc:hasArgumentHint "dataframe with correlated numeric variables" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Reduce dimensionality of multivariate data using PCA with varimax rotation. Use when you have many correlated variables and need to identify underlying factors or reduce collinearity." ;
+    oc:hasName "pca-decomposition" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pca-decomposition
+description: Reduce dimensionality of multivariate data using PCA with varimax rotation. Use when you have many correlated variables and need to identify underlying factors or reduce collinearity.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "For attribution analysis, run ONE global PCA on all variables" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Use Kaiser criterion or domain knowledge for n_factors" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Always standardize data before PCA" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Check factor loadings to name components" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use varimax rotation for interpretability" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check eigenvalues
+eigenvalues, _ = fa.get_eigenvalues()
+
+# Keep factors with eigenvalue > 1
+n_factors = sum(eigenvalues > 1)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 106-112" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Option 1: Kaiser Criterion" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Example: health data with 3 expected categories (lifestyle, genetics, environment)
+fa = FactorAnalyzer(n_factors=3, rotation='varimax')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 117-120" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If you know how many categories your variables should group into, specify directly:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Option 2: Domain Knowledge" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Choosing Number of Factors" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from sklearn.preprocessing import StandardScaler
+from factor_analyzer import FactorAnalyzer
+
+# Standardize data first
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# PCA with varimax rotation
+fa = FactorAnalyzer(n_factors=4, rotation='varimax')
+fa.fit(X_scaled)
+
+# Get factor loadings
+loadings = fa.loadings_
+
+# Get component scores for each observation
+scores = fa.transform(X_scaled)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 21-38" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Basic PCA with Varimax Rotation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| Loadings all similar | Too few factors | Increase n_factors |
+| Negative loadings | Inverse relationship | Normal, interpret direction |
+| Low variance explained | Data not suitable for PCA | Check correlations first |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "Loadings show correlation between original variables and components" ;
+                            oc:tableMarkdown """| Loading | Interpretation |
+|---------|----------------|
+| > 0.7 | Strong association |
+| 0.4 - 0.7 | Moderate association |
+| < 0.4 | Weak association |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Loadings show correlation between original variables and components:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Interpreting Factor Loadings" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from factor_analyzer import FactorAnalyzer
+
+# Variables: gdp, unemployment, inflation, interest_rate, exports, imports
+df = pd.read_csv('economic_data.csv')
+variables = ['gdp', 'unemployment', 'inflation',
+             'interest_rate', 'exports', 'imports']
+
+X = df[variables].values
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+fa = FactorAnalyzer(n_factors=3, rotation='varimax')
+fa.fit(X_scaled)
+
+# View loadings
+loadings_df = pd.DataFrame(
+    fa.loadings_,
+    index=variables,
+    columns=['RC1', 'RC2', 'RC3']
+)
+print(loadings_df.round(2))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 77-101" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Example: Economic Indicators" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Principal Component Analysis (PCA) reduces many correlated variables into fewer uncorrelated components. Varimax rotation makes components more interpretable by maximizing variance." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Include all variables from all categories in one matrix
+all_vars = ['AirTemp', 'NetRadiation', 'Precip', 'Inflow', 'Outflow',
+            'WindSpeed', 'DevelopedArea', 'AgricultureArea']
+X = df[all_vars].values
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# PCA on ALL variables together
+fa = FactorAnalyzer(n_factors=4, rotation='varimax')
+fa.fit(X_scaled)
+scores = fa.transform(X_scaled)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 45-58" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Important**: Do NOT run separate PCA for each category. Run one global PCA on all variables, then use the resulting factor scores for contribution analysis." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When using PCA for contribution analysis with predefined categories:" ],
+                        _:ref_cb6aff7dda900a45,
+                        _:ref_fa96c6fe6efc83ea ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Workflow for Attribution Analysis" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Need to identify underlying factor groups" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Many correlated predictor variables" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Reduce multicollinearity before regression" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Exploratory data analysis" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use PCA" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PCA Decomposition Guide" ] ;
+    oc:hasWorkflow _:ref_cb6aff7dda900a45,
+        _:ref_fa96c6fe6efc83ea ;
+    oc:impartsKnowledge oc:kn_0297ad8d,
+        oc:kn_249af064,
+        oc:kn_53a706a7,
+        oc:kn_6e81e25e,
+        oc:kn_79bb5b6f,
+        oc:kn_97961dd2,
+        oc:kn_a637c6d0,
+        oc:kn_af9a7210,
+        oc:kn_e8d26d32,
+        oc:kn_f8ddea95,
+        oc:kn_faf0e648 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:DataLoaded,
+        oc:VariablesSelected ;
+    oc:resolvesIntent "identify underlying factor groups in correlated variables",
+        "prepare factor scores for contribution analysis",
+        "reduce dimensionality of multivariate data",
+        "reduce multicollinearity before regression" ;
+    oc:yieldsState oc:FactorScoresComputed,
+        oc:PCAFactorsDerived .
+
+oc:kn_0297ad8d a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Factor loadings output as DataFrame with variables as rows and rotated components as columns" ;
+    oc:directiveContent """       RC1    RC2    RC3
+var1   0.82   0.15  -0.10
+var2   0.05   0.78   0.20
+var3  -0.12   0.08   0.85""" ;
+    oc:templateVariables "RC1",
+        "RC2",
+        "RC3",
+        "var1",
+        "var2",
+        "var3" .
+
+oc:kn_249af064 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Kaiser criterion for selecting number of factors" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """eigenvalues, _ = fa.get_eigenvalues()
+n_factors = sum(eigenvalues > 1)""" .
+
+oc:kn_53a706a7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using PCA for attribution/contribution analysis with predefined categories" ;
+    oc:directiveContent "Do NOT run separate PCA for each category. Run ONE global PCA on all variables together, then use the resulting factor scores for contribution analysis." ;
+    oc:hasRationale "Separate PCA per category destroys the shared variance structure needed for valid R² decomposition across categories." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6e81e25e a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Core PCA with varimax rotation pattern" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+fa = FactorAnalyzer(n_factors=4, rotation='varimax')
+fa.fit(X_scaled)
+loadings = fa.loadings_
+scores = fa.transform(X_scaled)""" .
+
+oc:kn_79bb5b6f a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running any PCA decomposition" ;
+    oc:directiveContent "Requires scikit-learn (StandardScaler) and factor_analyzer (FactorAnalyzer) Python packages." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_97961dd2 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When fitting FactorAnalyzer for PCA" ;
+    oc:directiveContent "Use varimax rotation for interpretability — it maximizes variance of squared loadings, producing simpler factor structures." ;
+    oc:hasRationale "Unrotated components are often hard to interpret; varimax produces near-simple structure where each variable loads highly on few factors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a637c6d0 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When interpreting factor loadings or low variance explained" ;
+    oc:directiveContent "If all loadings are similar, increase n_factors. If variance explained is low, check correlations first — PCA is unsuitable for uncorrelated data." ;
+    oc:hasRationale "These symptoms indicate either under-extraction of factors or data that lacks the correlational structure PCA requires." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_af9a7210 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Complete PCA decomposition workflow" ;
+    oc:directiveContent "1. Select all variables from all categories into one matrix 2. Standardize with StandardScaler 3. Fit FactorAnalyzer with n_factors and varimax rotation 4. Extract factor loadings for interpretation 5. Compute factor scores for downstream analysis" ;
+    oc:stepOrder 1 .
+
+oc:kn_e8d26d32 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before fitting PCA on any dataset" ;
+    oc:directiveContent "Always standardize data before PCA using StandardScaler — raw-scale differences will dominate components." ;
+    oc:hasRationale "Variables measured on different scales produce misleading components dominated by high-variance features." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f8ddea95 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Re-running PCA decomposition" ;
+    oc:directiveContent "PCA with fixed random_state is deterministic — same input yields identical loadings and scores." ;
+    oc:hasRationale "Deterministic results ensure reproducible attribution analyses." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_faf0e648 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding number of factors to extract" ;
+    oc:directiveContent "Choose n_factors using Kaiser criterion (eigenvalue > 1) or domain knowledge of expected category count." ;
+    oc:hasRationale "Kaiser criterion provides data-driven factor count; domain knowledge ensures factors align with meaningful conceptual groupings." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_0febbfb0b52aa385 a oc:WorkflowStep ;
+    dcterms:description "**Use factor scores directly** for R² decomposition" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1eadb028767c799f a oc:WorkflowStep ;
+    dcterms:description "**Interpret loadings** to map factors to categories (optional for understanding)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_47cf0a9d7556c4cf a oc:WorkflowStep ;
+    dcterms:description "**Combine ALL variables first**, then do PCA together:" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_cb6aff7dda900a45 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_47cf0a9d7556c4cf ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_fa96c6fe6efc83ea a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_0febbfb0b52aa385,
+        _:ref_1eadb028767c799f ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+

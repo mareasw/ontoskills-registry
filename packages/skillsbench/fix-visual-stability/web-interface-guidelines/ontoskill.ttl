@@ -1,0 +1,309 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_visual_stability_web_interface_guidelines a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "web-interface-guidelines" ;
+    skos:broader "guideline collection" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-visual-stability/web-interface-guidelines" ;
+    oc:contentHash "509c52631b477de2695ef3e9b29c3804c23c7e9ede01c2d5bd7c19e06af69942" ;
+    oc:differentia "codifies Vercel's UI rules for accessibility, performance, animations, and visual stability into actionable review criteria" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Vercel's comprehensive UI guidelines for building accessible, performant web interfaces. Use this skill when reviewing or building UI components for compliance with best practices around accessibility, performance, animations, and visual stability." ;
+    oc:hasName "web-interface-guidelines" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: web-interface-guidelines
+description: Vercel's comprehensive UI guidelines for building accessible, performant web interfaces. Use this skill when reviewing or building UI components for compliance with best practices around accessibility, performance, animations, and visual stability.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Review UI code for compliance with Vercel's web interface standards." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Quick Reference - Visual Stability" ;
+                            oc:tableMarkdown """| Issue | Rule |
+|-------|------|
+| Images without dimensions | `<img>` needs explicit `width` and `height` (prevents CLS) |
+| Font loading flash | Critical fonts: `<link rel="preload" as="font">` with `font-display: swap` |
+| Large lists | Virtualize lists >50 items (`content-visibility: auto`) |
+| Layout reads in render | No `getBoundingClientRect`, `offsetHeight` in render path |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Quick Reference - Visual Stability" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Critical fonts: `<link rel=\"preload\" as=\"font\">` with `font-display: swap`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Add `<link rel=\"preconnect\">` for CDN/asset domains" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Batch DOM reads/writes; avoid interleaving" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "No layout reads in render (`getBoundingClientRect`, `offsetHeight`, `offsetWidth`, `scrollTop`)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Large lists (>50 items): virtualize (`virtua`, `content-visibility: auto`)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Performance" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Handle empty states—don't render broken UI for empty strings/arrays" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Flex children need `min-w-0` to allow text truncation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Text containers handle long content: `truncate`, `line-clamp-*`, or `break-words`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Content Handling" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Inputs need `autocomplete` and meaningful `name`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use correct `type` (`email`, `tel`, `url`, `number`) and `inputmode`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Never block paste (`onPaste` + `preventDefault`)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Labels clickable (`htmlFor` or wrapping control)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Forms" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Never `outline-none` / `outline: none` without focus replacement" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Interactive elements need visible focus: `focus-visible:ring-*` or equivalent" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Use `:focus-visible` over `:focus` (avoid focus ring on click)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Focus States" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`<img>` needs explicit `width` and `height` (prevents CLS)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Above-fold critical images: `priority` or `fetchpriority=\"high\"`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Below-fold images: `loading=\"lazy\"`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Images" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`outline-none` without focus-visible replacement" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Images without dimensions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`user-scalable=no` or `maximum-scale=1` disabling zoom" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Large arrays `.map()` without virtualization" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`transition: all`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Form inputs without labels" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Icon buttons without `aria-label`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Anti-patterns (flag these)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Honor `prefers-reduced-motion` (provide reduced variant or disable)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Never `transition: all`—list properties explicitly" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Animate `transform`/`opacity` only (compositor-friendly)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Animation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Interactive elements need keyboard handlers (`onKeyDown`/`onKeyUp`)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Icon-only buttons need `aria-label`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Form controls need `<label>` or `aria-label`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Images need `alt` (or `alt=\"\"` if decorative)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`<button>` for actions, `<a>`/`<Link>` for navigation (not `<div onClick>`)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Accessibility" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Full Rules" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Web Interface Guidelines" ] ;
+    oc:impartsKnowledge oc:kn_0ae67ecd,
+        oc:kn_317305b1,
+        oc:kn_806a53fc,
+        oc:kn_9c1023be,
+        oc:kn_b8c5d552,
+        oc:kn_cd0279f0,
+        oc:kn_ee13f506 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "audit UI components for anti-patterns",
+        "build accessible web interfaces",
+        "ensure proper image, form, and animation handling",
+        "prevent visual stability issues",
+        "review UI code for compliance" ;
+    oc:yieldsState oc:UIComplianceVerified .
+
+oc:kn_0ae67ecd a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building interactive UI components" ;
+    oc:directiveContent "Interactive elements need visible focus (focus-visible:ring-*). Use :focus-visible over :focus. Never outline-none without focus replacement. Icon-only buttons need aria-label. Use <button> for actions, <a>/<Link> for navigation—never <div onClick>." ;
+    oc:hasRationale "Keyboard and screen reader users depend on visible focus states and semantic HTML for navigation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_317305b1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing CSS transitions or animations" ;
+    oc:directiveContent "Animate only transform and opacity properties. Never use transition: all—list properties explicitly. Honor prefers-reduced-motion by providing reduced variants or disabling animation." ;
+    oc:hasRationale "Only transform/opacity are compositor-friendly; animating layout properties causes jank. Reduced motion is an accessibility requirement." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_806a53fc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing or reviewing image elements" ;
+    oc:directiveContent "All <img> elements need explicit width and height to prevent CLS. Below-fold images get loading='lazy'. Above-fold critical images get priority or fetchpriority='high'." ;
+    oc:hasRationale "Images without dimensions cause Cumulative Layout Shift, a Core Web Vital metric" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9c1023be a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When rendering large datasets or optimizing rendering performance" ;
+    oc:directiveContent "Virtualize lists with >50 items using virtua or content-visibility: auto. Avoid layout reads (getBoundingClientRect, offsetHeight, offsetWidth, scrollTop) in the render path. Batch DOM reads/writes—never interleave them. Preconnect to CDN/asset domains." ;
+    oc:hasRationale "Unvirtualized large lists cause excessive DOM nodes; layout reads in render force synchronous reflows" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b8c5d552 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building form controls" ;
+    oc:directiveContent "Inputs need autocomplete and meaningful name attributes. Use correct type (email, tel, url, number) and inputmode. Never block paste. Labels must be clickable via htmlFor or wrapping the control." ;
+    oc:hasRationale "Proper form semantics enable browser autofill, mobile keyboard selection, and accessibility" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cd0279f0 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing any UI code" ;
+    oc:directiveContent "Flag these anti-patterns on sight: user-scalable=no, transition: all, outline-none without focus-visible replacement, images without dimensions, large arrays .map() without virtualization, form inputs without labels, icon buttons without aria-label" ;
+    oc:hasRationale "These are the most common and impactful violations that degrade accessibility and performance" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ee13f506 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building content-displaying components" ;
+    oc:directiveContent "Text containers must handle long content using truncate, line-clamp-*, or break-words. Flex children need min-w-0 to allow text truncation. Handle empty states—never render broken UI for empty strings/arrays." ;
+    oc:hasRationale "Overflow text breaks layout; empty data states cause visual glitches and confuse users" ;
+    oc:severityLevel "MEDIUM" .
+

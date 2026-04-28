@@ -1,0 +1,422 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_hvac_control_scipy_curve_fit a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "scipy-curve-fit" ;
+    skos:broader "Parameter estimation tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/hvac-control/scipy-curve-fit" ;
+    oc:contentHash "eda4bf70a07c9fbbfb6268b981235db4a0639934e3bab22e255d6653eef6d546" ;
+    oc:differentia "uses scipy.optimize.curve_fit for nonlinear least squares fitting of models to experimental data" ;
+    oc:handlesFailure oc:ConvergenceFailed,
+        oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use scipy.optimize.curve_fit for nonlinear least squares parameter estimation from experimental data." ;
+    oc:hasName "scipy-curve-fit" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_607f9638,
+        oc:req_b6767859 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Estimate K from steady-state data
+K_guess = (y_data[-1] - y_initial) / u
+
+# Estimate tau from 63.2% rise time
+y_63 = y_initial + 0.632 * (y_data[-1] - y_initial)
+idx_63 = np.argmin(np.abs(y_data - y_63))
+tau_guess = t_data[idx_63]
+
+p0 = [K_guess, tau_guess]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 64-74" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Good initial guesses speed up convergence:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Setting Initial Guesses (p0)" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_09ef0426e8aa40ed ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import numpy as np
+from scipy.optimize import curve_fit
+
+def fit_first_order_model(data, y_initial, input_value):
+    \"\"\"
+    Fit first-order model to step response data.
+
+    Returns dict with K, tau, r_squared, fitting_error
+    \"\"\"
+    t_data = np.array([d["time"] for d in data])
+    y_data = np.array([d["output"] for d in data])
+
+    def model(t, K, tau):
+        return y_initial + K * input_value * (1 - np.exp(-t / tau))
+
+    # Initial guesses
+    K_guess = (y_data[-1] - y_initial) / input_value
+    tau_guess = t_data[len(t_data)//3]  # Rough guess
+
+    # Fit with bounds
+    popt, _ = curve_fit(
+        model, t_data, y_data,
+        p0=[K_guess, tau_guess],
+        bounds=([0, 0], [np.inf, np.inf])
+    )
+
+    K, tau = popt
+
+    # Calculate quality metrics
+    y_pred = model(t_data, K, tau)
+    ss_res = np.sum((y_data - y_pred) ** 2)
+    ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
+    r_squared = 1 - (ss_res / ss_tot)
+    fitting_error = np.sqrt(np.mean((y_data - y_pred) ** 2))
+
+    return {
+        "K": float(K),
+        "tau": float(tau),
+        "r_squared": float(r_squared),
+        "fitting_error": float(fitting_error)
+    }
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 110-152" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Complete Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import numpy as np
+from scipy.optimize import curve_fit
+
+# Known values from experiment
+y_initial = ...  # Initial output value
+u = ...          # Input magnitude during step test
+
+# Define the step response model
+def step_response(t, K, tau):
+    \"\"\"First-order step response with fixed initial value and input.\"\"\"
+    return y_initial + K * u * (1 - np.exp(-t / tau))
+
+# Your experimental data
+t_data = np.array([...])  # Time points
+y_data = np.array([...])  # Output readings
+
+# Perform the fit
+popt, pcov = curve_fit(
+    step_response,
+    t_data,
+    y_data,
+    p0=[K_guess, tau_guess],      # Initial guesses
+    bounds=([K_min, tau_min], [K_max, tau_max])  # Parameter bounds
+)
+
+K_estimated, tau_estimated = popt
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 31-58" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Fitting a First-Order Step Response" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from scipy.optimize import curve_fit
+import numpy as np
+
+# Define your model function
+def model(x, param1, param2):
+    return param1 * (1 - np.exp(-x / param2))
+
+# Fit to data
+popt, pcov = curve_fit(model, x_data, y_data)
+
+# popt contains the optimal parameters [param1, param2]
+# pcov contains the covariance matrix
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-27" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Basic Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "`scipy.optimize.curve_fit` is a tool for fitting models to experimental data using nonlinear least squares optimization." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Bounds prevent physically impossible solutions:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """bounds = (
+    [lower_K, lower_tau],    # Lower bounds
+    [upper_K, upper_tau]     # Upper bounds
+)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 80-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Setting Parameter Bounds" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Predicted values from fitted model
+y_predicted = step_response(t_data, K_estimated, tau_estimated)
+
+# Calculate R-squared
+ss_residuals = np.sum((y_data - y_predicted) ** 2)
+ss_total = np.sum((y_data - np.mean(y_data)) ** 2)
+r_squared = 1 - (ss_residuals / ss_total)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 91-99" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "R-squared (Coefficient of Determination)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """residuals = y_data - y_predicted
+rmse = np.sqrt(np.mean(residuals ** 2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 103-106" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Root Mean Square Error (RMSE)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Calculating Fit Quality" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Using scipy.optimize.curve_fit for Parameter Estimation" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: scipy-curve-fit
+description: Use scipy.optimize.curve_fit for nonlinear least squares parameter estimation from experimental data.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_09ef0426e8aa40ed,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for fitting a first-order model to experimental step response data using scipy.optimize.curve_fit" ;
+            oc:hasStep _:ref_3e5c00cf5b0ed1ef,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate R-squared and RMSE to assess fit quality" ;
+                    oc:expectedOutcome "Fit quality metrics confirming reliability of estimated parameters" ;
+                    oc:stepDependsOn _:ref_3e5c00cf5b0ed1ef ;
+                    oc:stepId "validate-fit" ],
+                _:ref_efe34388a9ccdde3,
+                _:ref_f3640d584913f814,
+                _:ref_fdff6284514be8a6 ;
+            oc:workflowId "curve-fit-workflow" ;
+            oc:workflowName "Parameter Estimation via Curve Fitting" ] ;
+    oc:impartsKnowledge oc:kn_1f83b64b,
+        oc:kn_344fcd8c,
+        oc:kn_3a537a51,
+        oc:kn_5924f9f3,
+        oc:kn_85522208,
+        oc:kn_aad6b3a5,
+        oc:kn_c9836e12,
+        oc:kn_df1cf212 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ExperimentalDataCollected ;
+    oc:resolvesIntent "calculate fit quality metrics for curve fitting",
+        "estimate parameters from experimental data",
+        "fit first-order model to step response data",
+        "fit nonlinear models using least squares optimization" ;
+    oc:yieldsState oc:ModelFitted,
+        oc:ParametersEstimated .
+
+oc:kn_1f83b64b a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "On curve_fit failure" ;
+    oc:directiveContent "RuntimeError ('Optimal parameters not found') indicates bad initial guesses or invalid data (NaN, wrong range). Fix guesses first, then validate data." ;
+    oc:hasRationale "This is the most common failure mode and has a clear diagnostic path." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_344fcd8c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting initial guesses for first-order step response models" ;
+    oc:directiveContent "Estimate K from steady-state: K_guess = (y_final - y_initial) / u. Estimate tau from 63.2% rise time: find t where output reaches 63.2% of total change." ;
+    oc:hasRationale "These physics-based estimates place the optimizer close to the true solution, ensuring rapid convergence." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3a537a51 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fitting a model with initial guesses and bounds" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "popt, pcov = curve_fit(model, t_data, y_data, p0=[K_guess, tau_guess], bounds=([K_min, tau_min], [K_max, tau_max]))" .
+
+oc:kn_5924f9f3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining the fitting problem" ;
+    oc:directiveContent "Always set parameter bounds to prevent physically impossible solutions (e.g., negative time constants, negative gains for positive systems)." ;
+    oc:hasRationale "Bounds constrain the search space to physically meaningful parameter values and improve convergence reliability." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_85522208 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When fit quality is poor" ;
+    oc:directiveContent "If R-squared is low, check: (1) data is from the correct step response phase, (2) system is actually first-order, (3) noise level is acceptable." ;
+    oc:hasRationale "Poor fit quality indicates a model-data mismatch that must be diagnosed before proceeding with controller tuning." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_aad6b3a5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After any curve fitting operation" ;
+    oc:directiveContent "Always report fit quality metrics (R-squared and RMSE) alongside estimated parameters to validate the fit." ;
+    oc:hasRationale "Parameters from a poor fit are unreliable and will produce bad controller tuning results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c9836e12 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calling curve_fit" ;
+    oc:directiveContent "Never run curve_fit without initial guesses (p0) — poor or missing guesses cause convergence failures and wrong solutions." ;
+    oc:hasRationale "Without good initial guesses, the optimizer may converge to local minima or fail entirely with RuntimeError." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df1cf212 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "scipy and numpy must be installed (pip install scipy numpy). Python 3.7+ required." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_607f9638 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scipy" .
+
+oc:req_b6767859 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Nonlinear least squares optimization fundamentals" .
+
+_:ref_14f7db06b168582c a oc:WorkflowStep ;
+    dcterms:description "**RuntimeError**: Optimal parameters not found" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Try better initial guesses" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Check that data is valid (no NaN, reasonable range)" ] ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_1a79fa63f3f914ab a oc:WorkflowStep ;
+    dcterms:description "**Poor fit (low R^2)**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Data might not be from step response phase" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Too much noise in measurements" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "System might not be first-order" ] ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_47013ad54bc6a55f a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Add bounds to constrain solution" .
+
+_:ref_5d6efd3f1e1ab515 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_47013ad54bc6a55f,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Check units are consistent" ] .
+
+_:ref_f7aab67f03bb5d68 a oc:WorkflowStep ;
+    dcterms:description "**Unrealistic parameters**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_5d6efd3f1e1ab515 ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_09ef0426e8aa40ed a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_14f7db06b168582c,
+        _:ref_1a79fa63f3f914ab,
+        _:ref_f7aab67f03bb5d68 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_3e5c00cf5b0ed1ef a oc:WorkflowStep ;
+    dcterms:description "Call curve_fit with model function, data, p0, and bounds" ;
+    oc:expectedOutcome "popt array with estimated K and tau parameters" ;
+    oc:stepDependsOn _:ref_f3640d584913f814,
+        _:ref_fdff6284514be8a6 ;
+    oc:stepId "run-curve-fit" .
+
+_:ref_f3640d584913f814 a oc:WorkflowStep ;
+    dcterms:description "Estimate K_guess from steady-state change and tau_guess from 63.2% rise time" ;
+    oc:expectedOutcome "p0 array with reasonable initial parameter estimates" ;
+    oc:stepDependsOn _:ref_efe34388a9ccdde3 ;
+    oc:stepId "set-initial-guesses" .
+
+_:ref_fdff6284514be8a6 a oc:WorkflowStep ;
+    dcterms:description "Define physically meaningful parameter bounds (e.g., K >= 0, tau > 0)" ;
+    oc:expectedOutcome "Bounds tuple constraining the optimizer to realistic values" ;
+    oc:stepDependsOn _:ref_efe34388a9ccdde3 ;
+    oc:stepId "set-bounds" .
+
+_:ref_efe34388a9ccdde3 a oc:WorkflowStep ;
+    dcterms:description "Load experimental data into numpy arrays (t_data, y_data) and identify y_initial and input magnitude u" ;
+    oc:expectedOutcome "Clean numpy arrays of time and output data ready for fitting" ;
+    oc:stepId "prepare-data" .
+

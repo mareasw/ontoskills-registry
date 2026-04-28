@@ -1,0 +1,273 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_seismic_phase_picking_obspy_datacenter_client a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "obspy-datacenter-client" ;
+    skos:broader "Data retrieval interface guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/seismic-phase-picking/obspy-datacenter-client" ;
+    oc:contentHash "e1a2a3ac0bb65ff16ded5717d15b58ed810cc7bd796ec129822032c3a4594736" ;
+    oc:differentia "catalogs ObsPy client modules for downloading seismic data from FDSN, IRIS, Earthworm, NEIC, SeedLink, and Syngine data centers" ;
+    oc:extends oc:skill_ontoskills_obspy_data_api ;
+    oc:handlesFailure oc:DataNotFound,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "data_type (waveforms, station info, event info) and data_center or geographic query" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "ObsPy allows you to easily download earthquake data from various data centers/networks through its client API. This is an overview of available services and a demo of the client API for International Federation of Digital Seismograph Networks (FDSN). Use this if you need to download earthquake research data." ;
+    oc:hasName "obspy-datacenter-client" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: obspy-datacenter-client
+description: ObsPy allows you to easily download earthquake data from various data centers/networks through its client API. This is an overview of available services and a demo of the client API for International Federation of Digital Seismograph Networks (FDSN). Use this if you need to download earthquake research data.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "Read [obspy-client-fdsn.md](obspy-client-fdsn.md) for usage of the FDSN client API." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "The most common use case is likely to download waveforms and event/station meta information. In almost all cases you will want to use the `obspy.clients.fdsn` module for this. It supports the largest number of data centers and uses the most modern data formats. There are still a number of reasons to choose a different module but please make sure you have one." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Available Data Types and Formats:** Various" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "IRIS (in addition to FDSN web services) offers a variety of special-purpose web services, for some of which ObsPy has interfaces in the `obspy.clients.iris` module. Use this if you require response information in the SAC poles & zeros or in the RESP format. If you just care about the instrument response, please use the `obspy.clients.fdsn` module to request StationXML data which contains the same information." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The interfaces for the calculation tools are kept around for legacy reasons; internal ObsPy functionality should be considered as an alternative when working within ObsPy:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 4 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "The interfaces for the calculation tools are kept around for legacy reasons; internal ObsPy functionality should be considered as an alternative when working within ObsPy" ;
+                            oc:tableMarkdown """| IRIS Web Service | Equivalent ObsPy Function/Module |
+|-----------------|----------------------------------|
+| `obspy.clients.iris.client.Client.traveltime()` | `obspy.taup` |
+| `obspy.clients.iris.client.Client.distaz()` | `obspy.geodetics` |
+| `obspy.clients.iris.client.Client.flinnengdahl()` | `obspy.geodetics.flinnengdahl.FlinnEngdahl` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "IRIS Web Services" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "If you want to requests waveforms, or station/event meta information **you will most likely want to use the** `obspy.clients.fdsn` **module**. It is able to request data from any data center implementing the [FDSN web service definitions](https://www.fdsn.org/webservices/). Example data centers include IRIS/ORFEUS/INGV/ETH/GFZ/RESIF/… - a curated list can be found [here](https://www.fdsn.org/webservices/datacenters/). As a further advantage it returns data in the most modern and future proof formats." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Note**: Not all data providers offer all three data types. Many offer only one or two." ],
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "### Basic FDSN Web Services" ;
+                                    oc:tableMarkdown """| Available Data Types | Format |
+|---------------------|--------|
+| Waveforms | MiniSEED and optionally others |
+| Station Information | StationXML and Text |
+| Event Information | QuakeML and Text |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic FDSN Web Services" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If you don't know which data center has what data, use one of the routing services. ObsPy has support for two of them:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """i. The [IRIS Federator](https://service.iris.edu/irisws/fedcatalog/1/).
+ii. The [EIDAWS Routing Service](http://www.orfeus-eu.org/data/eida/webservices/routing/).""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "FDSN Routing Web Services" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If you want to download a lot of data across a number of data centers, ObsPy's mass (or batch) downloader is for you. You can formulate your queries for example in terms of geographical domains and ObsPy will download waveforms and corresponding station meta information to produce complete data sets, ready for research, including some basic quality control." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "FDSN Mass Downloader" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "The FDSN Web Services" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "The Continuous Waveform Buffer (CWB) is a repository for seismic waveform data that passes through the NEIC \"Edge\" processing system. Use the `obspy.clients.neic` module to request data from it." ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 1 ;
+                            oc:tableCaption "## NEIC" ;
+                            oc:tableMarkdown """| Available Data Types | Format |
+|---------------------|--------|
+| Waveforms | MiniSEED |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "NEIC" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This service is largely deprecated as the data can just as well be requested via the `obspy.clients.fdsn` module." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "NERIES Web Services" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use the `obspy.clients.earthworm` module to request data from the [Earthworm](http://www.earthwormcentral.org/) data acquisition system." ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 1 ;
+                            oc:tableCaption "## Earthworm Wave Server" ;
+                            oc:tableMarkdown """| Available Data Types | Format |
+|---------------------|--------|
+| Waveforms | Custom Format |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Earthworm Wave Server" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 1 ;
+                            oc:tableCaption "## SeedLink" ;
+                            oc:tableMarkdown """| Available Data Types | Format |
+|---------------------|--------|
+| Waveforms | MiniSEED |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "To connect to a real time SeedLink server, use the `obspy.clients.seedlink` module. Also see the ObsPy Tutorial for a more detailed introduction." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "SeedLink" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 1 ;
+                            oc:tableCaption "## Syngine Service" ;
+                            oc:tableMarkdown """| Available Data Types | Format |
+|---------------------|--------|
+| Waveforms | MiniSEED and zipped SAC files |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use the `obspy.clients.syngine` module to download high-frequency global synthetic seismograms for any source receiver combination from the IRIS syngine service." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Syngine Service" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Retrieving Data from Data Centers" ] ;
+    oc:impartsKnowledge oc:kn_1bbeaede,
+        oc:kn_55e6b5b3,
+        oc:kn_57f2fb6c,
+        oc:kn_ad023bce,
+        oc:kn_b443e471,
+        oc:kn_c1ab87c6,
+        oc:kn_c1afea6e,
+        oc:kn_d325aff0,
+        oc:kn_fe3a4af0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "discover which data center holds desired seismic data",
+        "download seismic waveform data",
+        "retrieve earthquake event information",
+        "retrieve station metadata",
+        "select appropriate ObsPy client module for data source" ;
+    oc:yieldsState oc:DataDownloaded,
+        oc:StationMetadataRetrieved .
+
+oc:kn_1bbeaede a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When retrieving seismic data from any data center" ;
+    oc:directiveContent "1. Identify data type needed (waveforms, station info, event info) 2. Default to `obspy.clients.fdsn` unless a specialized service is required 3. If data center is unknown, use IRIS Federator or EIDAWS routing service 4. For large batch downloads, use FDSN Mass Downloader 5. For real-time data, use `obspy.clients.seedlink` 6. For synthetic seismograms, use `obspy.clients.syngine`" ;
+    oc:stepOrder 1 .
+
+oc:kn_55e6b5b3 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a client module for data retrieval" ;
+    oc:directiveContent "Default to `obspy.clients.fdsn` for waveform, station, and event data retrieval. It supports the largest number of data centers and returns data in the most modern formats (MiniSEED, StationXML, QuakeML)." ;
+    oc:hasRationale "FDSN is the most broadly supported and future-proof interface; using it avoids unnecessary complexity from niche clients" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_57f2fb6c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using IRIS web service calculation interfaces" ;
+    oc:directiveContent "Do not use `obspy.clients.iris` calculation tools (traveltime, distaz, flinnengdahl) for new work; use the equivalent internal ObsPy modules (`obspy.taup`, `obspy.geodetics`) instead." ;
+    oc:hasRationale "The IRIS client calculation tools are maintained only for legacy compatibility; internal ObsPy functionality is preferred and more reliable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ad023bce a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When the data center for desired data is unknown" ;
+    oc:directiveContent "If you don't know which data center holds the data you need, use a routing service: IRIS Federator or EIDAWS Routing Service." ;
+    oc:hasRationale "Routing services query across multiple data centers automatically, saving manual discovery effort" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b443e471 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before using any ObsPy client module" ;
+    oc:directiveContent "ObsPy must be installed (pip install obspy) and network access to the target data center is required." .
+
+oc:kn_c1ab87c6 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initializing an FDSN client for a specific data center" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from obspy.clients.fdsn import Client
+client = Client("IRIS")""" .
+
+oc:kn_c1afea6e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When considering NERIES for data retrieval" ;
+    oc:directiveContent "Do not use the NERIES web services module; it is deprecated. Use `obspy.clients.fdsn` instead." ;
+    oc:hasRationale "NERIES data is available through the FDSN client, which is actively maintained" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d325aff0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When downloading large volumes of seismic data" ;
+    oc:directiveContent "For large-scale batch downloads across multiple data centers, use the FDSN Mass Downloader, which handles geographic queries, quality control, and pairs waveforms with station metadata." ;
+    oc:hasRationale "The mass downloader automates quality control and completeness checks that would be error-prone to implement manually" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fe3a4af0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When requesting data from a specific FDSN data center" ;
+    oc:directiveContent "Not all FDSN data providers offer all three data types (waveforms, station information, event information). Many offer only one or two." ;
+    oc:hasRationale "Assuming all data types are available at every center will cause request failures" ;
+    oc:severityLevel "HIGH" .
+

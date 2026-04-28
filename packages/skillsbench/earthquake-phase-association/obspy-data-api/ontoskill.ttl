@@ -1,0 +1,362 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_earthquake_phase_association_obspy_data_api a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "obspy-data-api" ;
+    skos:broader "API reference" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/earthquake-phase-association/obspy-data-api" ;
+    oc:contentHash "b43a22bec5326fd049064968708d107197baedfda3473edd7cb27413ae6b804d" ;
+    oc:differentia "for ObsPy's core data objects (Stream, Trace, Catalog, Inventory) used in seismological data processing" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidFileFormat ;
+    oc:hasArgumentHint "file-path or URL to seismological data file" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "An overview of the core data API of ObsPy, a Python framework for processing seismological data. It is useful for parsing common seismological file formats, or manipulating custom data into standard objects for downstream use cases such as ObsPy's signal processing routines or SeisBench's modeling API." ;
+    oc:hasName "obspy-data-api" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: obspy-data-api
+description: An overview of the core data API of ObsPy, a Python framework for processing seismological data. It is useful for parsing common seismological file formats, or manipulating custom data into standard objects for downstream use cases such as ObsPy's signal processing routines or SeisBench's modeling API.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Station metadata are handled in a hierarchy of classes closely modelled after the de-facto standard format [FDSN StationXML](https://www.fdsn.org/xml/station/) which was developed as a human readable XML replacement for Dataless SEED. See `read_inventory()` and `Inventory.write()` for supported formats." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Station:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Network:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Channel:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Hierarchy:** `Inventory` → `networks` → `Network` → `stations` → `Station` → `channels` → `Channel`" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`code`, `latitude`, `longitude`, `elevation`, `start_date`, `end_date`, ..." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`code`, `description`, ..." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 7 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`code`, `location_code`, `latitude`, `longitude`, `elevation`, `depth`, `dip`, `azimuth`, `sample_rate`, `start_date`, `end_date`, `response`, ..." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Inventory Class Structure" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Station Metadata" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Event metadata are handled in a hierarchy of classes closely modelled after the de-facto standard format [QuakeML](https://quake.ethz.ch/quakeml/). See `read_events()` and `Catalog.write()` for supported formats." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`focal_mechanisms`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`mag`, `magnitude_type`, ..." ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`magnitudes` → `Magnitude` (multiple)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`picks`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`latitude`, `longitude`, `depth`, `time`, ..." ] ] ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`origins` → `Origin` (multiple)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Event contains:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Hierarchy:** `Catalog` → `events` → `Event` (multiple)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Event Class Structure" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Event Metadata" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 7 ;
+                            oc:tableCaption "## Modules" ;
+                            oc:tableMarkdown """| Module | Description |
+|--------|-------------|
+| `obspy.core.trace` | Module for handling ObsPy `Trace` and `Stats` objects. |
+| `obspy.core.stream` | Module for handling ObsPy `Stream` objects. |
+| `obspy.core.utcdatetime` | Module containing a UTC-based datetime class. |
+| `obspy.core.event` | Module handling event metadata. |
+| `obspy.core.inventory` | Module for handling station metadata. |
+| `obspy.core.util` | Various utilities for ObsPy. |
+| `obspy.core.preview` | Tools for creating and merging previews. |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Modules" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 10 ;
+                            oc:tableCaption "## Classes & Functions" ;
+                            oc:tableMarkdown """| Class/Function | Description |
+|----------------|-------------|
+| `read` | Read waveform files into an ObsPy `Stream` object. |
+| `Stream` | List-like object of multiple ObsPy `Trace` objects. |
+| `Trace` | An object containing data of a continuous series, such as a seismic trace. |
+| `Stats` | A container for additional header information of an ObsPy `Trace` object. |
+| `UTCDateTime` | A UTC-based datetime object. |
+| `read_events` | Read event files into an ObsPy `Catalog` object. |
+| `Catalog` | Container for `Event` objects. |
+| `Event` | Describes a seismic event which does not necessarily need to be a tectonic earthquake. |
+| `read_inventory` | Function to read inventory files. |
+| `Inventory` | The root object of the `Network` → `Station` → `Channel` hierarchy. |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Classes & Functions" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """>>> from obspy import read
+>>> st = read()
+>>> print(st)
+3 Trace(s) in Stream:
+BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
+BW.RJOB..EHN | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
+BW.RJOB..EHE | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
+>>> tr = st[0]
+>>> print(tr)
+BW.RJOB..EHZ | 2009-08-24T00:20:03.000000Z - ... | 100.0 Hz, 3000 samples
+>>> tr.data
+array([ 0.        ,  0.00694644,  0.07597424, ...,  1.93449584,
+        0.98196204,  0.44196924])
+>>> print(tr.stats)
+         network: BW
+         station: RJOB
+        location:
+         channel: EHZ
+       starttime: 2009-08-24T00:20:03.000000Z
+         endtime: 2009-08-24T00:20:32.990000Z
+   sampling_rate: 100.0
+           delta: 0.01
+            npts: 3000
+           calib: 1.0
+           ...
+>>> tr.stats.starttime
+UTCDateTime(2009, 8, 24, 0, 20, 3)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 41-69" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "A `Stream` with an example seismogram can be created by calling `read()` without any arguments. Local files can be read by specifying the filename, files stored on http servers (e.g. at https://examples.obspy.org) can be read by specifying their URL." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Example" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Seismograms of various formats (e.g. SAC, MiniSEED, GSE2, SEISAN, Q, etc.) can be imported into a `Stream` object using the `read()` function." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Streams are list-like objects which contain multiple `Trace` objects, i.e. gap-less continuous time series and related header/meta information." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "A multitude of helper methods are attached to `Stream` and `Trace` objects for handling and modifying the waveform data." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Each Trace object has the attribute `data` pointing to a NumPy `ndarray` of the actual time series and the attribute `stats` which contains all meta information in a dict-like `Stats` object. Both attributes `starttime` and `endtime` of the Stats object are `UTCDateTime` objects." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Summary" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`integrate()` — Integrates the data with respect to time." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`taper()` — Tapers the data." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`resample()` — Resamples the data in the frequency domain." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`filter()` — Filters the data." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`remove_response()` — Deconvolves the instrument response." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Trace - DATA:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Hierarchy:** `Stream` → `Trace` (multiple)" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Trace - METHODS:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`data` → NumPy array" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`network`, `station`, `location`, `channel` — Determine physical location and instrument" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "`starttime`, `sampling_rate`, `delta`, `endtime`, `npts` — Interrelated" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`stats`:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Stream and Trace Class Structure" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Waveform Data" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "ObsPy Data API" ] ;
+    oc:impartsKnowledge oc:kn_3021cdec,
+        oc:kn_5b591a4d,
+        oc:kn_75103d1d,
+        oc:kn_c0c77518,
+        oc:kn_daa34c4f,
+        oc:kn_f70ce07c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:PythonEnvironmentReady ;
+    oc:resolvesIntent "manipulate seismic trace data",
+        "parse seismological waveform files",
+        "prepare seismological data for downstream processing",
+        "read event metadata",
+        "read station metadata" ;
+    oc:yieldsState oc:SeismicDataLoaded,
+        oc:SeismicMetadataLoaded .
+
+oc:kn_3021cdec a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When loading any seismological data file" ;
+    oc:directiveContent "Use read() for waveforms, read_events() for event metadata (Catalog), and read_inventory() for station metadata (Inventory). Each returns the root object of its respective hierarchy." ;
+    oc:hasRationale "These three functions are the canonical entry points for ObsPy's three data domains and handle format auto-detection." .
+
+oc:kn_5b591a4d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When working with real-world seismic data that may contain gaps" ;
+    oc:directiveContent "A Trace represents a gap-less continuous time series. Gaps in data require splitting into multiple Trace objects within a Stream." ;
+    oc:hasRationale "Trace objects enforce continuous data assumption; gap handling must be done at the Stream level using merge/split operations." .
+
+oc:kn_75103d1d a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before attempting to read any seismological data file" ;
+    oc:directiveContent "Verify that obspy is installed (pip install obspy) and that the data file format is among the supported types (SAC, MiniSEED, GSE2, SEISAN, Q, etc.)." .
+
+oc:kn_c0c77518 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring or navigating seismological data in ObsPy" ;
+    oc:directiveContent "ObsPy organizes seismic data into three independent hierarchies: waveform data (Stream→Trace), event metadata (Catalog→Event), and station metadata (Inventory→Network→Station→Channel). Each hierarchy models a distinct domain concern." ;
+    oc:hasRationale "Separating concerns into three hierarchies keeps waveform time-series data, earthquake event information, and instrument station metadata modular and independently manageable." .
+
+oc:kn_daa34c4f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When serializing or deserializing event or station metadata" ;
+    oc:directiveContent "Event metadata follows QuakeML structure; Station metadata follows FDSN StationXML structure. Use Catalog.write() and Inventory.write() for serialization to supported formats." ;
+    oc:hasRationale "ObsPy's metadata classes are modelled after these de-facto standard seismological formats to ensure interoperability." .
+
+oc:kn_f70ce07c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When loading and accessing seismic waveform data" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from obspy import read
+st = read()          # example seismogram
+st = read('path')    # local file
+st = read('https://...')  # remote file
+tr = st[0]           # first Trace
+tr.data              # numpy ndarray
+tr.stats             # Stats (metadata)
+tr.stats.starttime   # UTCDateTime""" ;
+    oc:hasRationale "The read() function is the universal entry point for waveform data — it auto-detects format and returns a Stream object containing one or more Trace objects." .
+

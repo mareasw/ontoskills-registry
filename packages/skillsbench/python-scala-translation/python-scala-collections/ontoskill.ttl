@@ -1,0 +1,608 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_python_scala_translation_python_scala_collections a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "python-scala-collections" ;
+    skos:broader "Translation reference guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/python-scala-translation/python-scala-collections" ;
+    oc:contentHash "feb0d23de9eead60ca1ddf6eadf15f81e3bad88cffe839459ce5ffd192eb3d26" ;
+    oc:dependsOnSkill oc:skill_ontoskills_python_scala_syntax_mapping ;
+    oc:differentia "maps Python collection operations (lists, dicts, sets, transformations) to idiomatic Scala equivalents, covering creation, transformation, access, sorting, grouping, and mutability patterns" ;
+    oc:extends oc:skill_ontoskills_python_scala_idioms ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "Python collection code snippet or operation name to translate" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Guide for translating Python collection operations to idiomatic Scala. Use when converting Python code that uses lists, dictionaries, sets, or involves collection transformations like map, filter, reduce, sorting, and aggregations." ;
+    oc:hasName "python-scala-collections" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val evens = nums.filter(_ % 2 == 0)
+val evens = nums.filter(x => x % 2 == 0)
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 84-88" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+evens = [x for x in nums if x % 2 == 0]
+evens = list(filter(lambda x: x % 2 == 0, nums))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 78-82" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Filter" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val nested = List(List(1, 2), List(3, 4))
+val flat = nested.flatten
+// or with transformation:
+val flat = nested.flatMap(identity)
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 116-122" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+nested = [[1, 2], [3, 4]]
+flat = [x for sublist in nested for x in sublist]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 110-114" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "FlatMap" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val total = nums.reduce(_ + _)
+val total = nums.sum
+val product = nums.foldLeft(1)(_ * _)
+// Use foldLeft when you need an initial value
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 100-106" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+from functools import reduce
+total = reduce(lambda a, b: a + b, nums)
+total = sum(nums)
+product = reduce(lambda a, b: a * b, nums, 1)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 92-98" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Reduce/Fold" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val doubled = nums.map(_ * 2)
+val doubled = nums.map(x => x * 2)
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 70-74" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+doubled = [x * 2 for x in nums]
+doubled = list(map(lambda x: x * 2, nums))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 64-68" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Map" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Transformation Operations" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val pairs = list1.zip(list2)
+val indexed = items.zipWithIndex
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 253-257" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+pairs = list(zip(list1, list2))
+indexed = list(enumerate(items))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 247-251" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Zipping" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+first_even = next((x for x in nums if x % 2 == 0), None)
+all_evens = all(x % 2 == 0 for x in nums)
+any_even = any(x % 2 == 0 for x in nums)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 231-236" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val firstEven = nums.find(_ % 2 == 0)  // Returns Option[Int]
+val allEvens = nums.forall(_ % 2 == 0)
+val anyEven = nums.exists(_ % 2 == 0)
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 238-243" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Finding Elements" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val grouped = items.groupBy(_.category)
+// Returns Map[Category, List[Item]]
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 205-209" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+from itertools import groupby
+from collections import defaultdict
+
+# Group by key
+grouped = defaultdict(list)
+for item in items:
+    grouped[item.category].append(item)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 194-203" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Grouping" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 8 ;
+                                    oc:tableCaption "### Access" ;
+                                    oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `lst[0]` | `lst(0)` or `lst.head` |
+| `lst[-1]` | `lst.last` |
+| `lst[1:3]` | `lst.slice(1, 3)` |
+| `lst[:3]` | `lst.take(3)` |
+| `lst[3:]` | `lst.drop(3)` |
+| `dct["key"]` | `map("key")` (throws if missing) |
+| `dct.get("key")` | `map.get("key")` (returns Option) |
+| `dct.get("key", default)` | `map.getOrElse("key", default)` |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Access" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val sortedList = items.sorted
+val sortedDesc = items.sorted(Ordering[Int].reverse)
+val sortedByKey = items.sortBy(_.name)
+// Note: Scala collections are immutable by default, no in-place sort
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 184-190" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+sorted_list = sorted(items)
+sorted_desc = sorted(items, reverse=True)
+sorted_by_key = sorted(items, key=lambda x: x.name)
+items.sort()  # in-place
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 176-182" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Sorting" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 2 ;
+                                    oc:tableCaption "### Length/Size" ;
+                                    oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `len(lst)` | `lst.length` or `lst.size` |
+| `len(dct)` | `map.size` |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Length/Size" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+total = sum(nums)
+minimum = min(nums)
+maximum = max(nums)
+average = sum(nums) / len(nums)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 213-219" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val total = nums.sum
+val minimum = nums.min
+val maximum = nums.max
+val average = nums.sum.toDouble / nums.length
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 221-227" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Aggregations" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+if x in lst: ...
+if key in dct: ...
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 148-152" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+if (lst.contains(x)) ...
+if (map.contains(key)) ...
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 154-158" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Membership" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+combined = list1 + list2
+merged = {**dict1, **dict2}
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 162-166" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val combined = list1 ++ list2
+val merged = map1 ++ map2
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 168-172" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Concatenation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Common Operations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala
+val keys = map.keys.toList
+val values = map.values.toList
+val items = map.toList  // List[(K, V)]
+
+for ((key, value) <- map) {
+  process(key, value)
+}
+
+// Update (creates new map, immutable)
+val updated = map + ("new_key" -> value)
+val updated = map.updated("new_key", value)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 275-288" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+keys = list(dct.keys())
+values = list(dct.values())
+items = list(dct.items())
+
+for key, value in dct.items():
+    process(key, value)
+
+# Update
+dct["new_key"] = value
+updated = {**dct, "new_key": value}
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 261-273" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Dictionary/Map Operations" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+empty = set()
+nums = {1, 2, 3}
+from_list = set([1, 2, 2, 3])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 46-51" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val empty = Set.empty[Int]
+val nums = Set(1, 2, 3)
+val fromList = List(1, 2, 2, 3).toSet
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 53-58" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Sets" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val empty = Map.empty[String, Int]
+val person = Map("name" -> "Alice", "age" -> 30)
+val fromPairs = List(("a", 1), ("b", 2)).toMap
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 37-42" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+empty = {}
+person = {"name": "Alice", "age": 30}
+from_pairs = dict([("a", 1), ("b", 2)])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 30-35" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Dictionaries → Maps" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+val empty = List.empty[Int]  // or List[Int]()
+val nums = List(1, 2, 3)
+val repeated = List.fill(5)(0)
+val fromRange = (1 to 10).toList
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 20-26" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+empty = []
+nums = [1, 2, 3]
+repeated = [0] * 5
+from_range = list(range(1, 11))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 12-18" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Lists" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Collection Creation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """object BaseType {
+  case object STRING extends BaseType { val value = "string" }
+  case object NUMERIC extends BaseType { val value = "numeric" }
+  case object TEMPORAL extends BaseType { val value = "temporal" }
+  case object STRUCTURED extends BaseType { val value = "structured" }
+  case object BINARY extends BaseType { val value = "binary" }
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 328-336" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use UPPERCASE for enum and constant names in Scala (same as in Python) E.g." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """object BaseType {
+  case object String extends BaseType { val value = "string" }
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 340-344" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Do not use PascalCase. E.g. the following is against the principle:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """class TokenType(Enum):
+    STRING = "string"
+    NUMERIC = "numeric"
+    TEMPORAL = "temporal"
+    STRUCTURED = "structured"
+    BINARY = "binary"
+    NULL = "null"
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 318-326" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "enum type" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - mutable
+lst.append(4)
+lst.extend([5, 6])
+dct["key"] = value
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 294-299" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Python collections are mutable by default. Scala defaults to immutable." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - immutable (creates new collection)
+val newList = lst :+ 4
+val newList = lst ++ List(5, 6)
+val newMap = map + ("key" -> value)
+
+// Scala - mutable (when needed)
+import scala.collection.mutable
+val mutableList = mutable.ListBuffer(1, 2, 3)
+mutableList += 4
+mutableList ++= List(5, 6)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 301-312" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Mutable vs Immutable" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python to Scala Collections Translation" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: python-scala-collections
+description: Guide for translating Python collection operations to idiomatic Scala. Use when converting Python code that uses lists, dictionaries, sets, or involves collection transformations like map, filter, reduce, sorting, and aggregations.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_25c9119c,
+        oc:kn_2d63813c,
+        oc:kn_4f0601e9,
+        oc:kn_51982489,
+        oc:kn_59e89266,
+        oc:kn_770ed8b4,
+        oc:kn_c85c641d,
+        oc:kn_e71fef0b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "convert Python list comprehensions to Scala map/filter",
+        "convert Python set operations to Scala Set",
+        "map Python mutable collection patterns to Scala immutable/mutable collections",
+        "translate Python collection operations to Scala",
+        "translate Python dictionary operations to Scala Map",
+        "translate Python sorting and grouping to Scala equivalents" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_25c9119c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python in-place collection mutations to Scala" ;
+    oc:directiveContent "Scala collections are immutable by default — operations like :+ (append), ++ (concat), + (map add) create new collections rather than modifying in place. Use map + ('key' -> value) instead of mutation." ;
+    oc:hasRationale "Immutability is a core Scala design principle. Understanding that Scala collection operations return new instances is essential for correct translation." .
+
+oc:kn_2d63813c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing Scala collection transformations" ;
+    oc:directiveContent "Prefer Scala's underscore placeholder syntax (_) for simple lambda expressions: nums.map(_ * 2) over nums.map(x => x * 2). Use full lambda syntax only for multi-parameter or complex expressions." ;
+    oc:hasRationale "Underscore syntax is more concise and idiomatic Scala, reducing verbosity when translating Python lambda expressions." .
+
+oc:kn_4f0601e9 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python dictionary access patterns to Scala Map" ;
+    oc:directiveContent "Scala's map('key') throws an exception if the key is missing, unlike Python's dct['key'] which raises KeyError. Prefer map.get('key') which returns Option[V], or map.getOrElse('key', default) for safe access." ;
+    oc:hasRationale "Scala's Option type provides safer null-handling than exceptions. Using get/getOrElse is idiomatic and avoids runtime crashes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_51982489 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python Enum classes to Scala sealed traits/objects" ;
+    oc:directiveContent "Never use PascalCase for enum case object names in Scala. Always use UPPERCASE (e.g., case object STRING, not case object String)." ;
+    oc:hasRationale "Scala convention for constants and enum-like case objects is UPPERCASE, matching Python Enum naming conventions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_59e89266 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any Python-to-Scala collection translation" ;
+    oc:directiveContent "Before translating Python collection code, identify whether the code uses mutable operations (append, extend, in-place sort). If so, decide whether to use Scala immutable patterns (preferred) or mutable collections." ;
+    oc:hasRationale "The mutable vs immutable choice is the single most important architectural decision when translating Python collections to Scala." .
+
+oc:kn_770ed8b4 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using Scala immutable collections (default)" ;
+    oc:directiveContent "All Scala immutable collection operations are idempotent — calling the same transformation multiple times on the same input produces the same result without side effects." ;
+    oc:hasRationale "Immutability guarantees referential transparency and safe reuse of collection values." .
+
+oc:kn_c85c641d a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting Scala collection types for performance-critical code" ;
+    oc:directiveContent "This guide assumes default Scala collections (scala.collection.immutable). It does not cover performance-tuned collections like Vector, Array, or specialized mutable collections unless explicitly noted." ;
+    oc:hasRationale "For simple translation tasks, default List/Map/Set suffices, but production code may require choosing the right collection for performance characteristics." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e71fef0b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python mutable collection operations to Scala" ;
+    oc:directiveContent "Never use mutable Scala collections by default; Scala collections are immutable by default. Only use mutable collections (e.g., mutable.ListBuffer) when performance requirements demand it." ;
+    oc:hasRationale "Python collections are mutable by default, but Scala's immutable collections are safer, thread-safe, and idiomatic. Translating Python mutation patterns directly to mutable Scala is an anti-pattern." ;
+    oc:severityLevel "HIGH" .
+

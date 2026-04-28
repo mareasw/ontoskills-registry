@@ -1,0 +1,754 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_quantum_numerical_simulation_qutip a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "qutip" ;
+    skos:broader "Quantum simulation framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/quantum-numerical-simulation/qutip" ;
+    oc:contentHash "85160b9233a5620ba6bd4d00b7b887eabfcad658780caa951cb815f307681d18" ;
+    oc:differentia "provides Python-based solvers and analysis tools for both closed and open quantum mechanical systems including state construction, time evolution, measurement, and visualization" ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "quantum system description (Hamiltonian, states, dissipation parameters)" ;
+    oc:hasCategory "scientific-computing" ;
+    oc:hasDescription "Quantum mechanics simulations and analysis using QuTiP (Quantum Toolbox in Python). Use when working with quantum systems including: (1) quantum states (kets, bras, density matrices), (2) quantum operators and gates, (3) time evolution and dynamics (Schrödinger, master equations, Monte Carlo), (4) open quantum systems with dissipation, (5) quantum measurements and entanglement, (6) visualization (Bloch sphere, Wigner functions), (7) steady states and correlation functions, or (8) advanced methods (Floquet theory, HEOM, stochastic solvers). Handles both closed and open quantum systems across various domains including quantum optics, quantum computing, and condensed matter physics." ;
+    oc:hasName "qutip" ;
+    oc:hasPackageName "quantum-numerical-simulation" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_046253d5,
+        oc:req_1ee8fca4,
+        oc:req_5bca6d13,
+        oc:req_5da7162d,
+        oc:req_c8d4e7b9,
+        oc:req_fe6b6a53 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_4cbee825c173c4df ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Tips for Efficient Simulations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill includes detailed reference documentation:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**`references/analysis.md`**: Expectation values, entropy, fidelity, entanglement measures, correlation functions, steady states" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**`references/advanced.md`**: Floquet theory, HEOM, permutational invariance, stochastic methods, superoperators, performance tips" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**`references/visualization.md`**: Bloch sphere, Wigner functions, Q-functions, Fock distributions, matrix plots" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**`references/core_concepts.md`**: Quantum objects, states, operators, tensor products, composite systems" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**`references/time_evolution.md`**: All solvers (sesolve, mesolve, mcsolve, brmesolve, etc.), time-dependent Hamiltonians, solver options" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from qutip import *
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create quantum state
+psi = basis(2, 0)  # |0⟩ state
+
+# Create operator
+H = sigmaz()  # Hamiltonian
+
+# Time evolution
+tlist = np.linspace(0, 10, 100)
+result = sesolve(H, psi, tlist, e_ops=[sigmaz()])
+
+# Plot results
+plt.plot(tlist, result.expect[0])
+plt.xlabel('Time')
+plt.ylabel('⟨σz⟩')
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 30-50" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Specialized techniques for complex scenarios:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Floquet theory (periodic Hamiltonians)
+T = 2 * np.pi / w_drive
+f_modes, f_energies = floquet_modes(H, T, args)
+result = fmmesolve(H, psi0, tlist, c_ops, T=T, args=args)
+
+# HEOM (non-Markovian, strong coupling)
+from qutip.nonmarkov.heom import HEOMSolver, BosonicBath
+bath = BosonicBath(Q, ck_real, vk_real)
+hsolver = HEOMSolver(H_sys, [bath], max_depth=5)
+result = hsolver.run(rho0, tlist)
+
+# Permutational invariance (identical particles)
+psi = dicke(N, j, m)  # Dicke states
+Jz = jspin(N, 'z')  # Collective operators
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 155-170" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**See** `references/advanced.md` for Floquet theory, HEOM, permutational invariance, stochastic solvers, superoperators, and performance optimization." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Advanced Methods" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Create and manipulate quantum states and operators:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# States
+psi = basis(N, n)  # Fock state |n⟩
+psi = coherent(N, alpha)  # Coherent state |α⟩
+rho = thermal_dm(N, n_avg)  # Thermal density matrix
+
+# Operators
+a = destroy(N)  # Annihilation operator
+H = num(N)  # Number operator
+sx, sy, sz = sigmax(), sigmay(), sigmaz()  # Pauli matrices
+
+# Composite systems
+psi_AB = tensor(psi_A, psi_B)  # Tensor product
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 58-71" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**See** `references/core_concepts.md` for comprehensive coverage of quantum objects, states, operators, and tensor products." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Quantum Objects and States" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**See** `references/analysis.md` for entropy, fidelity, measurements, correlation functions, and steady state calculations." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Expectation values
+n_avg = expect(num(N), psi)
+
+# Entropy measures
+S = entropy_vn(rho)  # Von Neumann entropy
+C = concurrence(rho)  # Entanglement (two qubits)
+
+# Fidelity and distance
+F = fidelity(psi1, psi2)
+D = tracedist(rho1, rho2)
+
+# Correlation functions
+corr = correlation_2op_1t(H, rho0, taulist, c_ops, A, B)
+w, S = spectrum_correlation_fft(taulist, corr)
+
+# Steady states
+rho_ss = steadystate(H, c_ops)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 104-122" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Compute physical quantities:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Analysis and Measurement" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`mcsolve`: Quantum jumps, photon counting, individual trajectories" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`mesolve`: Mixed states, dissipation, general open systems" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`fmmesolve`: Time-periodic Hamiltonians (Floquet)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`sesolve`: Pure states, unitary evolution" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`brmesolve`: Weak system-bath coupling" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Multiple solvers for different scenarios:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**See** `references/time_evolution.md` for detailed solver documentation, time-dependent Hamiltonians, and advanced options." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Solver selection guide:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Closed systems (unitary evolution)
+result = sesolve(H, psi0, tlist, e_ops=[num(N)])
+
+# Open systems (dissipation)
+c_ops = [np.sqrt(0.1) * destroy(N)]  # Collapse operators
+result = mesolve(H, psi0, tlist, c_ops, e_ops=[num(N)])
+
+# Quantum trajectories (Monte Carlo)
+result = mcsolve(H, psi0, tlist, c_ops, ntraj=500, e_ops=[num(N)])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 79-89" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Time Evolution and Dynamics" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Bloch sphere
+b = Bloch()
+b.add_states(psi)
+b.show()
+
+# Wigner function (phase space)
+xvec = np.linspace(-5, 5, 200)
+W = wigner(psi, xvec, xvec)
+plt.contourf(xvec, xvec, W, 100, cmap='RdBu')
+
+# Fock distribution
+plot_fock_distribution(psi)
+
+# Matrix visualization
+hinton(rho)  # Hinton diagram
+matrix_histogram(H.full())  # 3D bars
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 130-147" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Visualize quantum states and dynamics:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**See** `references/visualization.md` for Bloch sphere animations, Wigner functions, Q-functions, and matrix visualizations." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Visualization" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Core Capabilities" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# System parameters
+N = 10  # Cavity Fock space
+wc = 1.0  # Cavity frequency
+wa = 1.0  # Atom frequency
+g = 0.05  # Coupling strength
+
+# Operators
+a = tensor(destroy(N), qeye(2))  # Cavity
+sm = tensor(qeye(N), sigmam())  # Atom
+
+# Hamiltonian (RWA)
+H = wc * a.dag() * a + wa * sm.dag() * sm + g * (a.dag() * sm + a * sm.dag())
+
+# Initial state: cavity in coherent state, atom in ground state
+psi0 = tensor(coherent(N, 2), basis(2, 0))
+
+# Dissipation
+kappa = 0.1  # Cavity decay
+gamma = 0.05  # Atomic decay
+c_ops = [np.sqrt(kappa) * a, np.sqrt(gamma) * sm]
+
+# Observables
+n_cav = a.dag() * a
+n_atom = sm.dag() * sm
+
+# Evolve
+tlist = np.linspace(0, 50, 200)
+result = mesolve(H, psi0, tlist, c_ops, e_ops=[n_cav, n_atom])
+
+# Plot
+fig, axes = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+axes[0].plot(tlist, result.expect[0])
+axes[0].set_ylabel('⟨n_cavity⟩')
+axes[1].plot(tlist, result.expect[1])
+axes[1].set_ylabel('⟨n_atom⟩')
+axes[1].set_xlabel('Time')
+plt.tight_layout()
+plt.show()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 236-275" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Jaynes-Cummings Model" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# System parameters
+N = 20  # Hilbert space dimension
+omega = 1.0  # Oscillator frequency
+kappa = 0.1  # Decay rate
+
+# Hamiltonian and collapse operators
+H = omega * num(N)
+c_ops = [np.sqrt(kappa) * destroy(N)]
+
+# Initial state
+psi0 = coherent(N, 3.0)
+
+# Time evolution
+tlist = np.linspace(0, 50, 200)
+result = mesolve(H, psi0, tlist, c_ops, e_ops=[num(N)])
+
+# Visualize
+plt.plot(tlist, result.expect[0])
+plt.xlabel('Time')
+plt.ylabel('⟨n⟩')
+plt.title('Photon Number Decay')
+plt.show()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 178-201" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Simulating a Damped Harmonic Oscillator" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create Bell state
+psi0 = bell_state('00')
+
+# Local dephasing on each qubit
+gamma = 0.1
+c_ops = [
+    np.sqrt(gamma) * tensor(sigmaz(), qeye(2)),
+    np.sqrt(gamma) * tensor(qeye(2), sigmaz())
+]
+
+# Track entanglement
+def compute_concurrence(t, psi):
+    rho = ket2dm(psi) if psi.isket else psi
+    return concurrence(rho)
+
+tlist = np.linspace(0, 10, 100)
+result = mesolve(qeye([2, 2]), psi0, tlist, c_ops)
+
+# Compute concurrence for each state
+C_t = [concurrence(state.proj()) for state in result.states]
+
+plt.plot(tlist, C_t)
+plt.xlabel('Time')
+plt.ylabel('Concurrence')
+plt.title('Entanglement Decay')
+plt.show()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 205-232" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Two-Qubit Entanglement Dynamics" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Workflows" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Import errors**: Ensure QuTiP is installed correctly; quantum gates require `qutip-qip` package" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Slow simulations**: Use string-based time-dependence, increase tolerances slightly, or try `method='bdf'` for stiff problems" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Memory issues**: Reduce Hilbert space dimension, use `store_final_state` option, or consider Krylov methods" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Numerical instabilities**: Decrease time steps (`nsteps` option), increase tolerances, or check Hamiltonian/operators are properly defined" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "QuTiP provides comprehensive tools for simulating and analyzing quantum mechanical systems. It handles both closed (unitary) and open (dissipative) quantum systems with multiple solvers optimized for different scenarios." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Optional packages for additional functionality:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """uv pip install qutip
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-16" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Quantum information processing (circuits, gates)
+uv pip install qutip-qip
+
+# Quantum trajectory viewer
+uv pip install qutip-qtrl
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 20-26" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "API Reference: https://qutip.readthedocs.io/en/stable/apidoc/apidoc.html" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "GitHub: https://github.com/qutip/qutip" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Documentation: https://qutip.readthedocs.io/" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Tutorials: https://qutip.org/qutip-tutorials/" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "External Resources" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "QuTiP: Quantum Toolbox in Python" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: qutip
+description: "Quantum mechanics simulations and analysis using QuTiP (Quantum Toolbox in Python). Use when working with quantum systems including: (1) quantum states (kets, bras, density matrices), (2) quantum operators and gates, (3) time evolution and dynamics (Schrödinger, master equations, Monte Carlo), (4) open quantum systems with dissipation, (5) quantum measurements and entanglement, (6) visualization (Bloch sphere, Wigner functions), (7) steady states and correlation functions, or (8) advanced methods (Floquet theory, HEOM, stochastic solvers). Handles both closed and open quantum systems across various domains including quantum optics, quantum computing, and condensed matter physics."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_4cbee825c173c4df,
+        [ a oc:Workflow ;
+            dcterms:description "Standard workflow for setting up and running a quantum mechanics simulation with QuTiP" ;
+            oc:hasStep _:ref_2bc361565734be27,
+                _:ref_3766fec3a084f05a,
+                _:ref_3af5b47493b64260,
+                _:ref_3d899a70d03e1011,
+                _:ref_6aa1933465d3c166,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Compute derived quantities (entropy, fidelity, concurrence) and visualize results" ;
+                    oc:expectedOutcome "Plots generated and physical quantities computed from simulation data" ;
+                    oc:stepDependsOn _:ref_6aa1933465d3c166 ;
+                    oc:stepId "analyze-results" ],
+                _:ref_7d716a8cb37d5077,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Check convergence by varying parameters (ntraj, Hilbert space size, tolerances)" ;
+                    oc:expectedOutcome "Results confirmed to be numerically converged and physically reasonable" ;
+                    oc:stepDependsOn _:ref_6aa1933465d3c166 ;
+                    oc:stepId "verify-convergence" ] ;
+            oc:workflowId "quantum-simulation" ;
+            oc:workflowName "Quantum System Simulation" ] ;
+    oc:impartsKnowledge oc:kn_14c33aa5,
+        oc:kn_39a46b3b,
+        oc:kn_54c804cd,
+        oc:kn_5838a03c,
+        oc:kn_5fb965d8,
+        oc:kn_6e4e1c40,
+        oc:kn_75bb73e6,
+        oc:kn_90ae6a89,
+        oc:kn_9448b8e6,
+        oc:kn_9bbd5c96,
+        oc:kn_bcde3751,
+        oc:kn_cb3a4f35,
+        oc:kn_ccde9769 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:resolvesIntent "analyze quantum entanglement and fidelity",
+        "compute steady states and correlation functions",
+        "create quantum states and operators",
+        "model open quantum systems with dissipation",
+        "simulate quantum system dynamics",
+        "solve time evolution of quantum systems",
+        "visualize quantum states on Bloch sphere and Wigner functions" .
+
+oc:kn_14c33aa5 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When running time evolution simulations" ;
+    oc:directiveContent "Use e_ops parameter to compute expectation values during evolution instead of storing all intermediate states." ;
+    oc:hasRationale "Storing all states consumes large amounts of memory; e_ops computes observables on-the-fly." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_39a46b3b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After running simulations" ;
+    oc:directiveContent "Always verify convergence by varying ntraj (for mcsolve), Hilbert space dimension, and solver tolerances." ;
+    oc:hasRationale "Numerical quantum simulations can silently produce wrong results if truncation or sampling is insufficient." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_54c804cd a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Basic closed system time evolution" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from qutip import *
+import numpy as np
+
+psi0 = basis(2, 0)  # initial state
+H = sigmaz()  # Hamiltonian
+tlist = np.linspace(0, 10, 100)
+result = sesolve(H, psi0, tlist, e_ops=[sigmaz()])""" .
+
+oc:kn_5838a03c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When defining quantum systems" ;
+    oc:directiveContent "Always truncate Hilbert spaces to the smallest dimension that captures the relevant dynamics to avoid memory issues and slow simulations." ;
+    oc:hasRationale "Hilbert space dimension grows exponentially with system size; truncation is essential for computational feasibility." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5fb965d8 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When working with multi-particle quantum systems" ;
+    oc:directiveContent "Composite systems with tensor products scale exponentially in memory and compute. A two-qubit system is trivial; a 10-qubit system may be infeasible without specialized techniques." ;
+    oc:hasRationale "Quantum state vectors and operators grow as d^N where d is local dimension and N is particle count." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6e4e1c40 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When encountering simulation errors" ;
+    oc:directiveContent "For memory issues: reduce Hilbert space dimension, use store_final_state option, or switch to Krylov methods. For slow simulations: use string-based time-dependence, increase tolerances, or try method='bdf' for stiff problems. For numerical instabilities: decrease time steps via nsteps, increase tolerances, verify Hamiltonian/operators are properly defined." ;
+    oc:hasRationale "These are the most common failure modes in quantum simulations with known remedies." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_75bb73e6 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Composite/multi-partite quantum systems" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """psi_AB = tensor(psi_A, psi_B)  # composite state
+a = tensor(destroy(N), qeye(2))  # operator on subsystem A
+C = concurrence(rho)  # entanglement measure""" .
+
+oc:kn_90ae6a89 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining time-dependent Hamiltonians" ;
+    oc:directiveContent "Use string format for time-dependent Hamiltonian terms (e.g., 'cos(w*t)') as it is the fastest evaluation method." ;
+    oc:hasRationale "String-based time dependence is compiled internally and evaluated faster than callback functions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9448b8e6 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent """result.expect[i]  # array of expectation values over time
+result.states  # list of Qobj states at each time step
+result.final_state  # last state
+""" ;
+    oc:templateVariables "expect",
+        "final_state",
+        "states" .
+
+oc:kn_9bbd5c96 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before first use" ;
+    oc:directiveContent "Install qutip via 'uv pip install qutip'. Optionally install qutip-qip for quantum circuits/gates and qutip-qtrl for trajectory viewing." ;
+    oc:hasRationale "QuTiP is a Python package that must be installed before use; optional packages provide additional domain-specific functionality." .
+
+oc:kn_bcde3751 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When simulating any quantum system" ;
+    oc:directiveContent "1. Define Hilbert space dimension N and construct operators (destroy, num, sigmax, etc.) 2. Build Hamiltonian H from operators 3. Define initial state (basis, coherent, thermal_dm) 4. Define collapse operators c_ops for dissipation (if open system) 5. Create time list tlist with np.linspace 6. Run solver (sesolve/mesolve/mcsolve) with H, psi0, tlist, c_ops, e_ops 7. Analyze results via result.expect or result.states" ;
+    oc:stepOrder 1 .
+
+oc:kn_cb3a4f35 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting a time evolution solver" ;
+    oc:directiveContent "Choose solver based on system type: sesolve for pure states/unitary evolution, mesolve for mixed states/dissipation, mcsolve for quantum jumps/individual trajectories, brmesolve for weak system-bath coupling, fmmesolve for time-periodic Hamiltonians." ;
+    oc:hasRationale "Each solver is optimized for specific physical scenarios; using the wrong solver wastes computation or produces incorrect results." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ccde9769 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Open quantum system with dissipation and steady state" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """c_ops = [np.sqrt(kappa) * destroy(N)]  # collapse operators
+result = mesolve(H, psi0, tlist, c_ops, e_ops=[num(N)])
+rho_ss = steadystate(H, c_ops)""" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_046253d5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "qutip" .
+
+oc:req_1ee8fca4 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Density matrix formalism for open quantum systems" .
+
+oc:req_5bca6d13 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "qutip-qtrl" .
+
+oc:req_5da7162d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Quantum mechanics fundamentals (states, operators, Hilbert spaces)" .
+
+oc:req_c8d4e7b9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "qutip-qip" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "matplotlib" .
+
+_:ref_4a5a753158e74b5e a oc:WorkflowStep ;
+    dcterms:description "**Truncate Hilbert spaces**: Use smallest dimension that captures dynamics" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_6e7e6a8161afc3a8 a oc:WorkflowStep ;
+    dcterms:description "**Adjust tolerances**: Balance accuracy with computation time via `Options`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_93ab680198f3b5d2 a oc:WorkflowStep ;
+    dcterms:description "**Choose appropriate solver**: `sesolve` for pure states is faster than `mesolve`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_aae9db66858bf088 a oc:WorkflowStep ;
+    dcterms:description "**Store only needed data**: Use `e_ops` instead of storing all states" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_ae32cdc41c289704 a oc:WorkflowStep ;
+    dcterms:description "**Parallel trajectories**: `mcsolve` automatically uses multiple CPUs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_eeb2da0d1f86549f a oc:WorkflowStep ;
+    dcterms:description "**Time-dependent terms**: String format (e.g., `'cos(w*t)'`) is fastest" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fa9126c16d70749e a oc:WorkflowStep ;
+    dcterms:description "**Check convergence**: Vary `ntraj`, Hilbert space size, and tolerances" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_2bc361565734be27 a oc:WorkflowStep ;
+    dcterms:description "Select appropriate solver (sesolve/mesolve/mcsolve/brmesolve/fmmesolve) and set time list and observables" ;
+    oc:expectedOutcome "Solver selected based on system type; tlist and e_ops defined" ;
+    oc:stepDependsOn _:ref_3766fec3a084f05a,
+        _:ref_3d899a70d03e1011,
+        _:ref_7d716a8cb37d5077 ;
+    oc:stepId "choose-solver" .
+
+_:ref_3766fec3a084f05a a oc:WorkflowStep ;
+    dcterms:description "Define collapse operators c_ops for open system dissipation (skip for closed systems)" ;
+    oc:expectedOutcome "List of collapse operator Qobjs, or empty list for unitary evolution" ;
+    oc:stepDependsOn _:ref_3af5b47493b64260 ;
+    oc:stepId "define-dissipation" .
+
+_:ref_3d899a70d03e1011 a oc:WorkflowStep ;
+    dcterms:description "Define initial quantum state (pure state ket or density matrix)" ;
+    oc:expectedOutcome "Initial state Qobj with correct Hilbert space dimension" ;
+    oc:stepDependsOn _:ref_3af5b47493b64260 ;
+    oc:stepId "define-state" .
+
+_:ref_4cbee825c173c4df a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_4a5a753158e74b5e,
+        _:ref_6e7e6a8161afc3a8,
+        _:ref_93ab680198f3b5d2,
+        _:ref_aae9db66858bf088,
+        _:ref_ae32cdc41c289704,
+        _:ref_eeb2da0d1f86549f,
+        _:ref_fa9126c16d70749e ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7d716a8cb37d5077 a oc:WorkflowStep ;
+    dcterms:description "Build Hamiltonian H from operators, optionally with time-dependent terms" ;
+    oc:expectedOutcome "Hamiltonian Qobj or list of [Qobj, time_func] pairs for time-dependent systems" ;
+    oc:stepDependsOn _:ref_3af5b47493b64260 ;
+    oc:stepId "build-hamiltonian" .
+
+_:ref_6aa1933465d3c166 a oc:WorkflowStep ;
+    dcterms:description "Execute solver with all parameters and collect results" ;
+    oc:expectedOutcome "Result object containing expectation values and/or state trajectory" ;
+    oc:stepDependsOn _:ref_2bc361565734be27 ;
+    oc:stepId "run-simulation" .
+
+_:ref_3af5b47493b64260 a oc:WorkflowStep ;
+    dcterms:description "Define Hilbert space dimension and construct quantum operators (destroy, num, sigmax, etc.)" ;
+    oc:expectedOutcome "Operators are defined as Qobj instances with correct dimensions" ;
+    oc:stepId "define-system" .
+

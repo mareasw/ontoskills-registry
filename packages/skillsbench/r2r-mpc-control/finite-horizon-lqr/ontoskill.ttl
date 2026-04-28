@@ -1,0 +1,202 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_r2r_mpc_control_finite_horizon_lqr a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "finite-horizon-lqr" ;
+    skos:broader "Optimal control algorithm" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/r2r-mpc-control/finite-horizon-lqr" ;
+    oc:contentHash "3b86d9a1ed1cf954d7b2d70050234c31552472c7ec0199b944c7fe85b127143c" ;
+    oc:dependsOnSkill oc:skill_ontoskills_state_space_linearization ;
+    oc:differentia "solves finite-horizon LQR via backward Riccati recursion for use in receding-horizon MPC" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Solving finite-horizon LQR via dynamic programming for MPC." ;
+    oc:hasName "finite-horizon-lqr" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """J = Σ(k=0 to N-1) [x'Qx + u'Ru] + x_N' P x_N
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 11-13" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Minimize cost over horizon N:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Problem Formulation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """u_k = -K_k @ x_k
+x_{k+1} = A @ x_k + B @ u_k
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 28-31" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Starting from x_0:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Forward Simulation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "For k = N-1 down to 0:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """K_k = inv(R + B'P_{k+1}B) @ B'P_{k+1}A
+P_k = Q + A'P_{k+1}(A - B @ K_k)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 20-23" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Initialize: P_N = Q (or LQR solution for stability)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Backward Riccati Recursion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "At each timestep:" ],
+                        _:ref_b87dd5efdb438f43 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "MPC Application" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def finite_horizon_lqr(A, B, Q, R, N, x0):
+    nx, nu = A.shape[0], B.shape[1]
+    K = np.zeros((nu, nx, N))
+    P = Q.copy()
+
+    # Backward pass
+    for k in range(N-1, -1, -1):
+        K[:,:,k] = np.linalg.solve(R + B.T @ P @ B, B.T @ P @ A)
+        P = Q + A.T @ P @ (A - B @ K[:,:,k])
+
+    # Return first control
+    return -K[:,:,0] @ x0
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 35-48" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Python Implementation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Finite-Horizon LQR for MPC" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: finite-horizon-lqr
+description: Solving finite-horizon LQR via dynamic programming for MPC.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_b87dd5efdb438f43 ;
+    oc:impartsKnowledge oc:kn_1438be88,
+        oc:kn_47c4d9ff,
+        oc:kn_5ad3cf8e,
+        oc:kn_808772bb,
+        oc:kn_b1aeba9f,
+        oc:kn_f26e0f92 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "compute MPC control action",
+        "design optimal controller for linear systems",
+        "solve finite-horizon LQR" ;
+    oc:yieldsState oc:ControllerComputed .
+
+oc:kn_1438be88 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initializing the backward Riccati recursion" ;
+    oc:directiveContent "Terminal cost P_N should be set to Q for a simple terminal penalty, or to the steady-state LQR solution for improved stability guarantees" ;
+    oc:hasRationale "Proper terminal cost selection ensures closed-loop stability of the finite-horizon MPC scheme" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_47c4d9ff a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Receding-horizon MPC loop" ;
+    oc:directiveContent "1. Measure current state x 2. Solve finite-horizon LQR from x 3. Apply first control u_0 4. Repeat next timestep" ;
+    oc:stepOrder 2 .
+
+oc:kn_5ad3cf8e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing the Riccati recursion in Python" ;
+    oc:directiveContent "Use np.linalg.solve instead of explicit matrix inversion when computing the gain K_k = inv(R + B'P_{k+1}B) @ B'P_{k+1}A" ;
+    oc:hasRationale "np.linalg.solve is numerically more stable and efficient than computing an explicit inverse" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_808772bb a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When solving finite-horizon LQR" ;
+    oc:directiveContent "1. Initialize terminal cost P_N = Q (or steady-state LQR solution) 2. Backward pass: compute K_k and P_k for k=N-1 down to 0 via Riccati recursion 3. Return first control u_0 = -K_0 @ x_0" ;
+    oc:stepOrder 1 .
+
+oc:kn_b1aeba9f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing receding-horizon MPC" ;
+    oc:directiveContent "Only the first control input u_0 is applied at each MPC timestep; the full horizon solution is recomputed at the next step" ;
+    oc:hasRationale "Receding horizon handles disturbances and model mismatch by re-optimizing from the current measured state" .
+
+oc:kn_f26e0f92 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Backward Riccati recursion step" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """K[:,:,k] = np.linalg.solve(R + B.T @ P @ B, B.T @ P @ A)
+P = Q + A.T @ P @ (A - B @ K[:,:,k])""" .
+
+_:ref_466b65e49f70aa86 a oc:WorkflowStep ;
+    dcterms:description "Repeat next timestep" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_583001af074dfec6 a oc:WorkflowStep ;
+    dcterms:description "Solve finite-horizon LQR from x" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_6d030f78428fecc8 a oc:WorkflowStep ;
+    dcterms:description "Measure current state x" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e79fd5f3c35b6222 a oc:WorkflowStep ;
+    dcterms:description "Apply first control u_0" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_b87dd5efdb438f43 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_466b65e49f70aa86,
+        _:ref_583001af074dfec6,
+        _:ref_6d030f78428fecc8,
+        _:ref_e79fd5f3c35b6222 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+

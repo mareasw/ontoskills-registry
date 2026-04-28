@@ -1,0 +1,263 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_invoice_fraud_detection_fuzzy_match a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "fuzzy-match" ;
+    skos:broader "String comparison utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/invoice-fraud-detection/fuzzy-match" ;
+    oc:contentHash "7411a4f2a724623d8beed329cc8138c76236631d7b480cd0075c9fb7d71d1ca5" ;
+    oc:differentia "uses Levenshtein distance and similarity metrics to match entity names across datasets with spelling variations, typos, or formatting differences" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "A toolkit for fuzzy string matching and data reconciliation. Useful for matching entity names (companies, people) across different datasets where spelling variations, typos, or formatting differences exist." ;
+    oc:hasName "fuzzy-match" ;
+    oc:hasPayload oc:payload_7411a4f2a724623d ;
+    oc:hasRequirement oc:req_09678abc,
+        oc:req_4c51c81b ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The `difflib` module provides classes and functions for comparing sequences." ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from difflib import SequenceMatcher
+
+def get_similarity(str1, str2):
+    \"\"\"Returns a ratio between 0 and 1.\"\"\"
+    return SequenceMatcher(None, str1, str2).ratio()
+
+# Example
+s1 = "Acme Corp"
+s2 = "Acme Corporation"
+print(f"Similarity: {get_similarity(s1, s2)}")
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 33-44" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Basic Similarity" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from difflib import get_close_matches
+
+word = "appel"
+possibilities = ["ape", "apple", "peach", "puppy"]
+matches = get_close_matches(word, possibilities, n=1, cutoff=0.6)
+print(matches)
+# Output: ['apple']
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 48-56" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Finding Best Match in a List" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "difflib (Standard Library)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from rapidfuzz import fuzz, process
+
+# Simple Ratio
+score = fuzz.ratio("this is a test", "this is a test!")
+print(score)
+
+# Partial Ratio (good for substrings)
+score = fuzz.partial_ratio("this is a test", "this is a test!")
+print(score)
+
+# Extraction
+choices = ["Atlanta Falcons", "New York Jets", "New York Giants", "Dallas Cowboys"]
+best_match = process.extractOne("new york jets", choices)
+print(best_match)
+# Output: ('New York Jets', 100.0, 1)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 62-78" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If `rapidfuzz` is available (pip install rapidfuzz), it is much faster and offers more metrics." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "rapidfuzz (Recommended for Performance)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Python Libraries" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from difflib import SequenceMatcher
+
+def similarity(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+print(similarity("Apple Inc.", "Apple Incorporated"))
+# Output: 0.7...
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 15-23" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill provides methods to compare strings and find the best matches using Levenshtein distance and other similarity metrics. It is essential when joining datasets on string keys that are not identical." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """clean_names = ["Google LLC", "Microsoft Corp", "Apple Inc"]
+dirty_names = ["google", "Microsft", "Apple"]
+
+results = {}
+for dirty in dirty_names:
+    # simple containment check first
+    match = None
+    for clean in clean_names:
+        if dirty.lower() in clean.lower():
+            match = clean
+            break
+
+    # fallback to fuzzy
+    if not match:
+        matches = get_close_matches(dirty, clean_names, n=1, cutoff=0.6)
+        if matches:
+            match = matches[0]
+
+    results[dirty] = match
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 109-129" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "When matching a list of dirty names to a clean database:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Entity Resolution" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Always normalize strings before comparing to improve accuracy." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import re
+
+def normalize(text):
+    # Convert to lowercase
+    text = text.lower()
+    # Remove special characters
+    text = re.sub(r'[^\\w\\s]', '', text)
+    # Normalize whitespace
+    text = " ".join(text.split())
+    # Common abbreviations
+    text = text.replace("limited", "ltd").replace("corporation", "corp")
+    return text
+
+s1 = "Acme  Corporation, Inc."
+s2 = "acme corp inc"
+print(normalize(s1) == normalize(s2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 86-103" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Normalization before Matching" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Common Patterns" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Fuzzy Matching Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: fuzzy-match
+description: A toolkit for fuzzy string matching and data reconciliation. Useful for matching entity names (companies, people) across different datasets where spelling variations, typos, or formatting differences exist.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_217295e6,
+        oc:kn_8fc3493b,
+        oc:kn_c7efa139,
+        oc:kn_cfec95b8,
+        oc:kn_fae84f79 ;
+    oc:isUserInvocable true ;
+    oc:nature "Toolkit" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "find similar strings",
+        "match entity names across datasets",
+        "normalize and compare company or person names",
+        "reconcile data with inconsistent string keys" ;
+    oc:yieldsState oc:MatchResultsComputed .
+
+oc:kn_217295e6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring fuzzy matching similarity thresholds" ;
+    oc:directiveContent "Set an appropriate cutoff threshold (e.g., 0.6 for get_close_matches) to balance precision vs recall for your use case." ;
+    oc:hasRationale "Too low a threshold produces false positives; too high misses valid matches. 0.6 is a reasonable default starting point." .
+
+oc:kn_8fc3493b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Before any fuzzy matching operation" ;
+    oc:directiveContent "Always normalize strings (lowercase, remove special chars, normalize whitespace, expand/contract abbreviations) before comparing to improve matching accuracy." ;
+    oc:hasRationale "Normalization reduces false negatives caused by formatting differences rather than genuine string differences." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c7efa139 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When matching large datasets or performance matters" ;
+    oc:directiveContent "Prefer rapidfuzz over difflib for production workloads due to significantly better performance." ;
+    oc:hasRationale "rapidfuzz is C-optimized and offers more metrics (partial_ratio, token_sort_ratio) than difflib." .
+
+oc:kn_cfec95b8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing entity resolution against a clean database" ;
+    oc:directiveContent "Use containment checks (substring matching) as a fast first pass before falling back to fuzzy matching." ;
+    oc:hasRationale "Containment is O(n) and eliminates obvious matches quickly, reserving expensive fuzzy computation for ambiguous cases." .
+
+oc:kn_fae84f79 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When processing large lists of strings" ;
+    oc:directiveContent "difflib.SequenceMatcher is O(N*M) in the worst case for strings of length N and M. rapidfuzz is much faster for bulk operations." ;
+    oc:hasRationale "Naive pairwise comparison scales quadratically; use process.extract or process.extractOne from rapidfuzz for efficient bulk matching." .
+
+oc:payload_7411a4f2a724623d a oc:ExecutionPayload ;
+    oc:code "pip install rapidfuzz" ;
+    oc:executor "python" ;
+    oc:timeout 30000 .
+
+oc:req_09678abc a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "rapidfuzz (optional, recommended for performance)" .
+
+oc:req_4c51c81b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Python standard library (difflib)" .
+

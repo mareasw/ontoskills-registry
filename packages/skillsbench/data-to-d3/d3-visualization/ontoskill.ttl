@@ -1,0 +1,664 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_data_to_d3_d3js_visualization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "d3js-visualization" ;
+    skos:broader "Visualization builder" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/data-to-d3/d3-visualization" ;
+    oc:contentHash "a8c43c13feb9bf6f1193b7310b64abc968f42c1818e178ce5a2d2304bf3692e7" ;
+    oc:differentia "generates deterministic, standalone D3.js (v7) HTML/SVG charts from local data files without external network dependencies" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "data-file path + chart type or intent description" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Build deterministic, verifiable data visualizations with D3.js (v6). Generate standalone HTML/SVG (and optional PNG) from local data files without external network dependencies. Use when tasks require charts, plots, axes/scales, legends, tooltips, or data-driven SVG output." ;
+    oc:hasName "d3js-visualization" ;
+    oc:hasRequirement oc:req_74d0551e,
+        oc:req_835c94a7,
+        oc:req_99113997 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: d3js-visualization
+description: Build deterministic, verifiable data visualizations with D3.js (v6). Generate standalone HTML/SVG (and optional PNG) from local data files without external network dependencies. Use when tasks require charts, plots, axes/scales, legends, tooltips, or data-driven SVG output.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Use this skill to turn structured data (CSV/TSV/JSON) into **clean, reproducible** visualizations using **D3.js**. The goal is to produce **stable outputs** that can be verified by diffing files or hashing." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To keep results stable across runs and machines:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Prefer vendoring a minified D3 bundle (e.g., `vendor/d3.v7.9.0.min.js`) or bundling with a lockfile." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Do **not** load D3 from a CDN." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Pin D3 to a specific version (default: **d3@7.9.0**)." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Offline + dependency determinism" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "run exactly N ticks and stop." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "fix initial positions deterministically (e.g., sorted nodes placed on a grid)," ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "fix the tick count," ] ] ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Avoid layout algorithms with non-deterministic iteration unless you control seeds/iterations (e.g., force simulation). If a force layout is required:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**No randomness**: do not use `Math.random()` or `d3-random`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Use **explicit tick counts** only when needed; otherwise rely on D3 defaults but keep domains fixed." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Fixed** `width`, `height`, `margin`, `viewBox`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**No transitions/animations** by default (transitions can introduce timing variance)." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Rendering determinism" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use LF line endings." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Keep numeric precision consistent (e.g., round to 2–4 decimals if needed)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "If you must use IDs (clipPath, gradients), derive them from stable strings (e.g., `\"clip-plot\"`)." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Avoid auto-generated IDs that may change." ] ] ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Stable SVG output:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "File determinism" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Sort** input rows deterministically before binding to marks (e.g., by x then by category)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Avoid locale-dependent formatting unless fixed (use `d3.format`, `d3.timeFormat` with explicit formats)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use stable grouping order (explicit `Array.from(grouped.keys()).sort()`)." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Data determinism" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Determinism rules (non-negotiable)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """dist/
+  chart.html        # standalone HTML with inline or linked JS/CSS
+  chart.svg         # exported SVG (optional but nice)
+  chart.png         # rasterized (optional)
+vendor/
+  d3.v7.9.0.min.js  # pinned D3 library
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 91-98" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If the task doesn't specify an existing structure, use:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Recommended project layout" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "chart type (or you infer the best type)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "dimensions (width/height) and margins" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "any labeling requirements (title, axis labels, units)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "color rules (categorical / sequential)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "x/y fields and aggregation rules" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "sorting/filtering rules" ] ] ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "A chart intent:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "One or more local data files: `*.csv`, `*.tsv`, `*.json`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "“static only”, “no animation”, “must be deterministic”, “offline”, etc." ] ] ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Output constraints:" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "If details are missing, **make reasonable defaults** and document them in comments near the top of the output file." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Inputs you should expect" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When the task requires interactivity (e.g., tooltips on hover, click to highlight):" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Use `opacity: 0` by default (not `display: none`) for smooth transitions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use `.classed('visible', true/false)` to toggle visibility" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Position tooltip relative to mouse with `event.pageX/pageY`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`pointer-events: none` prevents tooltip from blocking mouse events" ] ],
+                                _:ref_0ea54477014e135d,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**Key points:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """svg.selectAll('circle')
+    .on('mouseover', function(event, d) {
+        d3.select('#tooltip')
+            .classed('visible', true)  // Add .visible class
+            .html(`<strong>${d.name}</strong><br/>${d.value}`)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
+    })
+    .on('mouseout', function() {
+        d3.select('#tooltip').classed('visible', false);  // Remove .visible class
+    });
+""" ;
+                                    oc:codeLanguage "javascript" ;
+                                    oc:contentOrder 6 ;
+                                    oc:sourceLocation "lines 133-145" ],
+                                _:ref_7c457916dfc5c941,
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """.tooltip {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    pointer-events: none;  /* Prevent mouse interference */
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.tooltip.visible {
+    opacity: 1;  /* Show when .visible class is added */
+}
+""" ;
+                                    oc:codeLanguage "css" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 114-130" ],
+                                _:ref_a801b4ce6c8440eb,
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<div id="tooltip" class="tooltip"></div>
+""" ;
+                                    oc:codeLanguage "html" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 109-111" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Tooltip pattern (recommended)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """.on('mouseover', function(event, d) {
+    // Example: Don't show tooltip for certain categories
+    if (d.category === 'excluded') {
+        return;  // Exit early, no tooltip
+    }
+    // Show tooltip for others
+    showTooltip(event, d);
+})
+""" ;
+                                    oc:codeLanguage "javascript" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 177-186" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Sometimes only certain elements should be interactive:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Conditional interactivity" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Add 'selected' class on click
+svg.selectAll('.bar')
+    .on('click', function(event, d) {
+        // Remove previous selection
+        d3.selectAll('.bar').classed('selected', false);
+        // Add to clicked element
+        d3.select(this).classed('selected', true);
+    });
+""" ;
+                                    oc:codeLanguage "javascript" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 155-164" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """.bar.selected {
+    stroke: #000;
+    stroke-width: 3px;
+}
+""" ;
+                                    oc:codeLanguage "css" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 167-172" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "CSS for highlighting:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "Click handlers for selection/highlighting" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Interactive features (tooltips, click handlers, hover effects)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Activate this skill when the user asks for any of the following:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "timelines, small multiples, faceting" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "axis ticks, scales, legends, tooltips" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "data-driven SVG output for a report or web page" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "converting data to a static SVG or HTML visualization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "“Make a chart/plot/graph/visualization”" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "bar/line/scatter/area/histogram/box/violin/heatmap" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "If the user only needs a quick table or summary, **don’t** use D3—use a spreadsheet or plain markdown instead." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to use" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_2a97f80006b620aa,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Prefer producing **all of** the following when feasible:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Always keep outputs in a predictable folder (default: `dist/`), unless the task specifies paths." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Outputs you should produce" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "D3.js Visualization Skill" ] ;
+    oc:hasWorkflow _:ref_0ea54477014e135d,
+        _:ref_2a97f80006b620aa,
+        _:ref_7c457916dfc5c941,
+        [ a oc:Workflow ;
+            dcterms:description "Produce a deterministic, standalone D3.js visualization from local data files" ;
+            oc:hasStep _:ref_14c6648d0098ffc7,
+                _:ref_99cec9861b5eb0de,
+                _:ref_c2159b50c0066837,
+                _:ref_e0036bfd28303edd,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Optionally rasterize to PNG if task explicitly requires it" ;
+                    oc:expectedOutcome "dist/chart.png raster image" ;
+                    oc:stepDependsOn _:ref_99cec9861b5eb0de ;
+                    oc:stepId "optional-png" ] ;
+            oc:workflowId "d3-viz-standard" ;
+            oc:workflowName "Standard D3 Visualization Workflow" ],
+        _:ref_a801b4ce6c8440eb ;
+    oc:impartsKnowledge oc:kn_134d696b,
+        oc:kn_1ebc83e6,
+        oc:kn_6da2c848,
+        oc:kn_7551fe15,
+        oc:kn_8a9790c4,
+        oc:kn_9087e954,
+        oc:kn_bc113387,
+        oc:kn_bce564b0,
+        oc:kn_cc2f4d19,
+        oc:kn_e20002f2,
+        oc:kn_ef995e1d ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "build bar/line/scatter/heatmap chart",
+        "create chart from data",
+        "create interactive tooltips for data visualization",
+        "export data-driven SVG output",
+        "generate visualization from CSV/TSV/JSON",
+        "produce diff-friendly reproducible charts" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_134d696b a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent """dist/chart.html — standalone HTML rendering
+vendor/d3.v7.9.0.min.js — pinned D3 library
+Optionally: dist/chart.svg, dist/chart.png""" ;
+    oc:templateVariables "chart.html",
+        "chart.png",
+        "chart.svg",
+        "d3.v7.9.0.min.js" .
+
+oc:kn_1ebc83e6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user provides incomplete specifications" ;
+    oc:directiveContent "When chart details are missing, make reasonable defaults and document them in comments near the top of the output file." ;
+    oc:hasRationale "Documenting defaults ensures reproducibility and helps users understand what was assumed" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6da2c848 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "All rendering code" ;
+    oc:directiveContent "Never use Math.random(), d3-random, transitions, or animations. Sort input rows deterministically before binding. Use explicit d3.format/d3.timeFormat with fixed locale strings." ;
+    oc:hasRationale "Randomness and animations introduce non-deterministic output that prevents diffing and hashing verification" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7551fe15 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When using d3.forceSimulation" ;
+    oc:directiveContent "Force simulation layouts are non-deterministic by default. If required, fix tick count, set deterministic initial positions (sorted nodes on a grid), and run exactly N ticks then stop." ;
+    oc:hasRationale "Force layouts iterate until convergence, producing different positions across runs unless seeded and bounded" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8a9790c4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when generating D3 visualizations" ;
+    oc:directiveContent "Never load D3 from a CDN. Pin to d3@7.9.0 and vendor a minified bundle (vendor/d3.v7.9.0.min.js) or use a lockfile." ;
+    oc:hasRationale "CDN loading introduces network dependency and version drift, breaking determinism and offline reproducibility" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9087e954 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding click-to-select highlighting on chart elements" ;
+    oc:codeLanguage "javascript" ;
+    oc:directiveContent """svg.selectAll('.bar')
+    .on('click', function(event, d) {
+        d3.selectAll('.bar').classed('selected', false);
+        d3.select(this).classed('selected', true);
+    });
+
+.bar.selected { stroke: #000; stroke-width: 3px; }""" .
+
+oc:kn_bc113387 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user requests data display without visual encoding" ;
+    oc:directiveContent "Avoid using D3 for simple tables or summary outputs—use markdown or a spreadsheet instead." ;
+    oc:hasRationale "Over-engineering with D3 adds unnecessary complexity for tasks that don't need visual encoding" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bce564b0 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before visualization generation" ;
+    oc:directiveContent "Local data files must exist: CSV, TSV, or JSON format. D3 v7.9.0 must be vendored locally." .
+
+oc:kn_cc2f4d19 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Standard visualization workflow" ;
+    oc:directiveContent "1. Read local data files (CSV/TSV/JSON) 2. Sort data deterministically 3. Create standalone HTML with vendored D3 and fixed dimensions 4. Generate SVG with stable IDs and explicit formatting 5. Output to dist/chart.html, dist/chart.svg, optionally dist/chart.png" ;
+    oc:stepOrder 1 .
+
+oc:kn_e20002f2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "All SVG/HTML output generation" ;
+    oc:directiveContent "Produce stable SVG output by avoiding auto-generated IDs. If IDs are needed (clipPath, gradients), derive them from stable strings like 'clip-plot'. Use LF line endings and round numerics to 2–4 decimals." ;
+    oc:hasRationale "Auto-generated IDs and floating-point variance cause spurious diffs in version control" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ef995e1d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When adding interactive tooltips to D3 visualizations" ;
+    oc:codeLanguage "html" ;
+    oc:directiveContent """<div id="tooltip" class="tooltip"></div>
+
+.tooltip { position: absolute; padding: 10px; background: rgba(0,0,0,0.8); color: white; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 1000; }
+.tooltip.visible { opacity: 1; }
+
+svg.selectAll('circle')
+    .on('mouseover', function(event, d) {
+        d3.select('#tooltip').classed('visible', true)
+            .html(`<strong>${d.name}</strong><br/>${d.value}`)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
+    })
+    .on('mouseout', function() {
+        d3.select('#tooltip').classed('visible', false);
+    });""" .
+
+oc:req_74d0551e a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "D3.js scales, axes, and data-binding API" .
+
+oc:req_835c94a7 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "D3.js v7.9.0 (vendored locally as vendor/d3.v7.9.0.min.js)" .
+
+oc:req_99113997 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "SVG/HTML/CSS/JavaScript" .
+
+_:ref_1b277bc21a1ff68d a oc:WorkflowStep ;
+    dcterms:description "`dist/chart.svg` — exported SVG (stable and diff-friendly)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a309cbc499f0a2e8 a oc:WorkflowStep ;
+    dcterms:description "**Style with CSS** using `.visible` class for show/hide:" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_ac3e05ada0c9379c a oc:WorkflowStep ;
+    dcterms:description "**Create a tooltip element** in HTML:" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_b95a7026ee6630d8 a oc:WorkflowStep ;
+    dcterms:description "(Optional) `dist/chart.png` — if the task explicitly needs a raster image" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d1277e0500f954b6 a oc:WorkflowStep ;
+    dcterms:description "`dist/chart.html` — standalone HTML that renders the visualization" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_fc68ca609bb166d9 a oc:WorkflowStep ;
+    dcterms:description "**Add event handlers** to SVG elements:" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0ea54477014e135d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_ac3e05ada0c9379c ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_14c6648d0098ffc7 a oc:WorkflowStep ;
+    dcterms:description "Generate standalone HTML with vendored D3, fixed dimensions, stable IDs, and explicit formatting" ;
+    oc:expectedOutcome "dist/chart.html file that renders the visualization without network access" ;
+    oc:stepDependsOn _:ref_c2159b50c0066837 ;
+    oc:stepId "build-html" .
+
+_:ref_2a97f80006b620aa a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_1b277bc21a1ff68d,
+        _:ref_b95a7026ee6630d8,
+        _:ref_d1277e0500f954b6 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7c457916dfc5c941 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 5 ;
+    oc:hasStep _:ref_fc68ca609bb166d9 ;
+    oc:workflowId "procedure_5" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_99cec9861b5eb0de a oc:WorkflowStep ;
+    dcterms:description "Export SVG output with stable IDs and LF line endings" ;
+    oc:expectedOutcome "dist/chart.svg that is diff-friendly and hashable" ;
+    oc:stepDependsOn _:ref_14c6648d0098ffc7 ;
+    oc:stepId "export-svg" .
+
+_:ref_a801b4ce6c8440eb a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_a309cbc499f0a2e8 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c2159b50c0066837 a oc:WorkflowStep ;
+    dcterms:description "Sort data rows deterministically (e.g., by x field then category)" ;
+    oc:expectedOutcome "Stable row ordering that produces identical output across runs" ;
+    oc:stepDependsOn _:ref_e0036bfd28303edd ;
+    oc:stepId "sort-deterministically" .
+
+_:ref_e0036bfd28303edd a oc:WorkflowStep ;
+    dcterms:description "Read and parse local data files (CSV/TSV/JSON)" ;
+    oc:expectedOutcome "Data loaded into memory as arrays of objects" ;
+    oc:stepId "read-data" .
+

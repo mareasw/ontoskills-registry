@@ -1,0 +1,23 @@
+{
+  "package_id": "skillsbench/multilingual-video-dubbing",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "ffmpeg-audio-processing/ontoskill.ttl",
+    "ffmpeg-format-conversion/ontoskill.ttl",
+    "ffmpeg-media-info/ontoskill.ttl",
+    "ffmpeg-video-editing/ontoskill.ttl",
+    "ffmpeg-video-filters/ontoskill.ttl",
+    "text-to-speech/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "ffmpeg-audio-processing/intents.json",
+    "ffmpeg-format-conversion/intents.json",
+    "ffmpeg-media-info/intents.json",
+    "ffmpeg-video-editing/intents.json",
+    "ffmpeg-video-filters/intents.json",
+    "text-to-speech/intents.json"
+  ],
+  "skills": []
+}

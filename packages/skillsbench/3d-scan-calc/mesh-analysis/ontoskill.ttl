@@ -1,0 +1,267 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_3d_scan_calc_mesh_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "mesh-analysis" ;
+    skos:broader "3D mesh file analyzer" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-3d-scan-calc/mesh-analysis" ;
+    oc:contentHash "3e983ab962c850b46b4d6ccf8e8c357bede752cb63c2d2faf472e356c801d844" ;
+    oc:differentia "calculates geometric properties and extracts attribute data from Binary STL files with noise filtering" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "file-path to STL file" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Analyzes 3D mesh files (STL) to calculate geometric properties (volume, components) and extract attribute data. Use this skill to process noisy 3D scan data and filter debris." ;
+    oc:hasName "mesh-analysis" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: mesh-analysis
+description: "Analyzes 3D mesh files (STL) to calculate geometric properties (volume, components) and extract attribute data. Use this skill to process noisy 3D scan data and filter debris."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill provides the `MeshAnalyzer` tool for robustly processing 3D STL files. It handles Binary STL parsing and connected component analysis." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Attribute extraction**: The tool extracts the 2-byte attribute stored in the binary STL format (often used for color or material ID)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Binary Support**: The tool automatically handles Binary STL files." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Critical Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_d2de53b290dd6bb7,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use this skill for:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The tool is provided as a Python module in the `scripts/` directory." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Critical Note on Units**:" ],
+                                _:ref_805a7356f16caa76,
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "The **Volume** returned is in the **same units** as the STL file's coordinates (cubed)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "If your density table uses the same unit (e.g., g/cm³ and cm³), **multiply directly**. No unit conversion is needed." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Do not assume** millimeters or inches. Check your task instructions for the coordinate system units (e.g., if coordinates are in cm, volume is in cm³)." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The tool provides the **Volume** and **Material ID**. To calculate **Mass**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Calculating Mass" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import sys
+# Add skill path to sys.path
+sys.path.append('/root/.claude/skills/mesh-analysis/scripts')
+
+from mesh_tool import MeshAnalyzer
+
+# Initialize with file path
+analyzer = MeshAnalyzer('/path/to/your/file.stl')
+
+# Analyze specific components
+# Automatically identifies the largest component (main part)
+report = analyzer.analyze_largest_component()
+
+volume = report['main_part_volume']
+mat_id = report['main_part_material_id']
+
+print(f"Volume: {volume}")
+print(f"Material ID: {mat_id}")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 23-42" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Mesh Analysis" ] ;
+    oc:hasWorkflow _:ref_805a7356f16caa76,
+        [ a oc:Workflow ;
+            dcterms:description "Calculate mass from mesh volume using material density lookup" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate Mass = Volume × Density, ensuring units are consistent" ;
+                    oc:expectedOutcome "Mass value calculated correctly" ;
+                    oc:stepDependsOn _:ref_9812a06cd1aa61dc ;
+                    oc:stepId "calculate-mass" ],
+                _:ref_9812a06cd1aa61dc,
+                _:ref_e855f673c15389a3 ;
+            oc:workflowId "mass-calculation" ;
+            oc:workflowName "Mass Calculation from Mesh" ],
+        _:ref_d2de53b290dd6bb7,
+        [ a oc:Workflow ;
+            dcterms:description "Analyze an STL file to extract geometric properties and metadata" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Extract volume and material_id from the report dictionary" ;
+                    oc:expectedOutcome "Volume and material ID values available for downstream use" ;
+                    oc:stepDependsOn _:ref_c6fabb018ec731f0 ;
+                    oc:stepId "output" ],
+                _:ref_c081f43a34d5f442,
+                _:ref_c6fabb018ec731f0 ;
+            oc:workflowId "mesh-analysis-basic" ;
+            oc:workflowName "Basic Mesh Analysis" ] ;
+    oc:impartsKnowledge oc:kn_4373f8e6,
+        oc:kn_680789a8,
+        oc:kn_b3177c24,
+        oc:kn_fff70353 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "analyze 3D mesh geometry",
+        "calculate mass from mesh volume",
+        "calculate mesh volume",
+        "extract material attributes from STL files",
+        "filter noise from 3D scan data" ;
+    oc:yieldsState oc:MeshAnalyzed .
+
+oc:kn_4373f8e6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating mass from mesh analysis results" ;
+    oc:directiveContent "To calculate Mass: 1) Read Material ID from analysis report, 2) Look up density from material reference data, 3) Mass = Volume × Density. If density table uses same unit system, multiply directly without conversion." ;
+    oc:hasRationale "Mass calculation is the primary downstream use of volume analysis results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_680789a8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting volume results or calculating mass" ;
+    oc:directiveContent "Volume is returned in the same units as the STL file's coordinates (cubed). Do not assume millimeters or inches — check task instructions for coordinate system units." ;
+    oc:hasRationale "Incorrect unit assumptions lead to mass calculation errors by orders of magnitude." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b3177c24 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing dirty scan data with multiple disconnected components" ;
+    oc:directiveContent "Use analyze_largest_component() to isolate the main part from noisy 3D scan data containing debris and disconnected fragments." ;
+    oc:hasRationale "Noisy 3D scans typically contain small disconnected fragments; the largest component is usually the intended part." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fff70353 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When working with STL files that contain embedded metadata" ;
+    oc:directiveContent "The tool automatically handles Binary STL files and extracts the 2-byte attribute field (often used for color or material ID)." ;
+    oc:hasRationale "Binary STL attribute bytes are commonly used to encode material or color information that is critical for manufacturing workflows." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_0e476473280b1f2f a oc:WorkflowStep ;
+    dcterms:description "Read the **Material ID** from the analysis report." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_264aee94b091e709 a oc:WorkflowStep ;
+    dcterms:description "Consult your provided material reference data (e.g. density tables) to find the density." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_2789e7c6b4149b1a a oc:WorkflowStep ;
+    dcterms:description "Calculate: `Mass = Volume * Density`." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_49bdc646ecf9866f a oc:WorkflowStep ;
+    dcterms:description "**Noise Filtering**: Isolating the largest connected component from \"dirty\" scan data." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_7380dee1ac21dabe a oc:WorkflowStep ;
+    dcterms:description "**Attribute Extraction**: Extracting metadata (e.g. material IDs) stored in the STL file attribute bytes." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_b8bed49be1f46b8b a oc:WorkflowStep ;
+    dcterms:description "**Geometric Analysis**: Calculating volume of complex or noisy meshes." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_805a7356f16caa76 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0e476473280b1f2f,
+        _:ref_264aee94b091e709,
+        _:ref_2789e7c6b4149b1a ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_9812a06cd1aa61dc a oc:WorkflowStep ;
+    dcterms:description "Look up material density from reference data using material ID" ;
+    oc:expectedOutcome "Density value for the identified material" ;
+    oc:stepDependsOn _:ref_e855f673c15389a3 ;
+    oc:stepId "lookup-density" .
+
+_:ref_c081f43a34d5f442 a oc:WorkflowStep ;
+    dcterms:description "Import MeshAnalyzer and initialize with STL file path" ;
+    oc:expectedOutcome "MeshAnalyzer instance ready for analysis" ;
+    oc:stepId "init" .
+
+_:ref_c6fabb018ec731f0 a oc:WorkflowStep ;
+    dcterms:description "Call analyze_largest_component() to process the mesh" ;
+    oc:stepDependsOn _:ref_c081f43a34d5f442 ;
+    oc:stepId "analyze" .
+
+_:ref_d2de53b290dd6bb7 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_49bdc646ecf9866f,
+        _:ref_7380dee1ac21dabe,
+        _:ref_b8bed49be1f46b8b ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_e855f673c15389a3 a oc:WorkflowStep ;
+    dcterms:description "Obtain volume and material ID from mesh analysis report" ;
+    oc:expectedOutcome "Volume value and material ID available" ;
+    oc:stepId "get-report" .
+

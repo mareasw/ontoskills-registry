@@ -1,0 +1,368 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_syzkaller_ppdev_syzlang_syz_extract_constants a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "syz-extract-constants" ;
+    skos:broader "Kernel constant definition methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/syzkaller-ppdev-syzlang/syz-extract-constants" ;
+    oc:contentHash "daded956974aca0628a7cc37e294605ee97910a72dcd664f0210792edd1dee34" ;
+    oc:dependsOnSkill oc:skill_ontoskills_syzlang_ioctl_basics ;
+    oc:differentia "that provides manual and automated extraction of ioctl numbers, flags, and other kernel constants for syzkaller syzlang fuzzing descriptions" ;
+    oc:handlesFailure oc:ConstantNotDefinedForArches,
+        oc:MissingKernelHeaders,
+        oc:UnknownFileError ;
+    oc:hasArgumentHint "syzlang-description-file-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Defining and extracting kernel constants for syzkaller syzlang descriptions" ;
+    oc:hasName "syz-extract-constants" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_4753f565b1d462a9,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Syzkaller needs to know the actual values of kernel constants (ioctl numbers, flags, etc.) to generate valid fuzzing programs. There are two ways to provide these values:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Create a `.const` file alongside your `.txt` file with the constant values:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Constants file: `sys/linux/dev_ppdev.txt.const`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Syzlang description: `sys/linux/dev_ppdev.txt`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "File naming" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "For ppdev (type='p'=0x70):" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Linux ioctl numbers are encoded as:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`_IOW(type, nr, size)` = `(1 << 30) | (size << 16) | (type << 8) | nr`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`_IO(type, nr)` = `(type << 8) | nr`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`_IOWR(type, nr, size)` = `(3 << 30) | (size << 16) | (type << 8) | nr`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`_IOR(type, nr, size)` = `(2 << 30) | (size << 16) | (type << 8) | nr`" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`PPCLAIM = _IO('p', 0x8b)` = `0x708b` = `28811`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Calculating ioctl values" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Constants for your syzlang descriptions
+arches = 386, amd64, arm, arm64, mips64le, ppc64le, riscv64, s390x
+PPCLAIM = 28811
+PPRELEASE = 28812
+IEEE1284_MODE_NIBBLE = 0
+IEEE1284_MODE_BYTE = 1
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 25-32" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "The `arches` line declares which architectures these constants are valid for. For architecture-independent constants (like ioctls), list all architectures." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Constants file format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Method 1: Manual Constants File (Recommended when no kernel source)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Note:** This environment does not include kernel source. Use Method 1 (manual constants file) instead." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If kernel source is available:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """cd /opt/syzkaller
+
+# Extract constants for a specific file
+make extract TARGETOS=linux SOURCEDIR=/path/to/linux FILES=sys/linux/dev_ppdev.txt
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 51-56" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Method 2: Using syz-extract (Requires kernel source)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+Solution: Check the kernel source path and ensure headers are properly configured.
+
+### "unknown file"
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 84-89" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "cannot find include file: uapi/linux/ppdev.h" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+Solution: Run `make extract` with the correct kernel source path and FILES parameter.
+
+### Missing headers
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 77-82" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "This means the constant is used in the `.txt` file but not defined in the `.const` file." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "unknown file: sys/linux/dev_ppdev.txt" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+Solution: Use `make extract FILES=...` instead of calling `bin/syz-extract` directly.
+
+## Example Workflow
+
+1. Write the syzlang description file (`sys/linux/dev_ppdev.txt`)
+2. Run `make extract TARGETOS=linux SOURCEDIR=/opt/linux/source FILES=sys/linux/dev_ppdev.txt`
+3. Run `make generate` to regenerate Go code
+4. Run `make` to build syzkaller
+5. Test with `make descriptions` to verify everything compiles
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 91-101" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText """Ensure `arches` line lists the target architectures
+PPCLAIM is defined for none of the arches""" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Add the missing constant to your `.const` file" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "\"is defined for none of the arches\"" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Errors" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """cd /opt/syzkaller
+make descriptions  # Compiles descriptions + constants
+make all           # Full build
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 64-68" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After creating the `.const` file, build syzkaller:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "After Defining Constants" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Defining Constants in Syzlang" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: syz-extract-constants
+description: Defining and extracting kernel constants for syzkaller syzlang descriptions
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_4753f565b1d462a9,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for defining kernel constants and building syzkaller with new syzlang descriptions" ;
+            oc:hasStep _:ref_0bd9f5016cc69d99,
+                _:ref_4272ff31011764dd,
+                _:ref_7dfd5bf176e567f6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run 'make all' to complete the full syzkaller build" ;
+                    oc:expectedOutcome "Syzkaller binary built successfully with new descriptions" ;
+                    oc:stepDependsOn _:ref_7dfd5bf176e567f6 ;
+                    oc:stepId "full-build" ],
+                _:ref_c9ece573b90c57d8 ;
+            oc:workflowId "define-constants-workflow" ;
+            oc:workflowName "Define and Extract Constants Workflow" ] ;
+    oc:impartsKnowledge oc:kn_043d32b1,
+        oc:kn_5177690d,
+        oc:kn_9e045a03,
+        oc:kn_aafa3d70,
+        oc:kn_ac4a7215,
+        oc:kn_cf96a411,
+        oc:kn_d51f180a,
+        oc:kn_dd4ad27a,
+        oc:kn_f4b31968 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SyzkallerInstalled,
+        oc:SyzlangDescriptionWritten ;
+    oc:resolvesIntent "calculate Linux ioctl numbers from type and nr",
+        "create manual .const files for syzlang",
+        "define kernel constants for syzlang descriptions",
+        "extract ioctl values for syzkaller fuzzing",
+        "troubleshoot syzkaller constant extraction errors" ;
+    oc:yieldsState oc:ConstantsFileCreated,
+        oc:SyzlangDescriptionsCompiled .
+
+oc:kn_043d32b1 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After creating .const file to compile and build syzkaller" ;
+    oc:directiveContent "cd /opt/syzkaller && make descriptions && make all" .
+
+oc:kn_5177690d a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When encountering build or extraction errors" ;
+    oc:directiveContent "'is defined for none of the arches' → add missing constant to .const file and verify arches line. 'cannot find include file' → check kernel source path. 'unknown file' → use 'make extract FILES=...' instead of calling bin/syz-extract directly." ;
+    oc:hasRationale "These are the most common errors when working with syzlang constants and each has a specific resolution" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9e045a03 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running make descriptions" ;
+    oc:directiveContent "Verify all constants referenced in the .txt file are defined in the .const file and the arches line lists all target architectures before building." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aafa3d70 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between manual and automated constant extraction methods" ;
+    oc:directiveContent "Use manual .const files (Method 1) when kernel source is unavailable; use syz-extract (Method 2) only when kernel source headers are accessible." ;
+    oc:hasRationale "This environment lacks kernel source, making automated extraction impossible" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ac4a7215 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating a manual .const file for syzlang descriptions" ;
+    oc:codeLanguage "syzlang-const" ;
+    oc:directiveContent """arches = 386, amd64, arm, arm64, mips64le, ppc64le, riscv64, s390x
+PPCLAIM = 28811
+PPRELEASE = 28812
+IEEE1284_MODE_NIBBLE = 0""" .
+
+oc:kn_cf96a411 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting constants automatically from kernel source headers" ;
+    oc:directiveContent "make extract TARGETOS=linux SOURCEDIR=/path/to/linux FILES=sys/linux/dev_ppdev.txt" .
+
+oc:kn_d51f180a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When manually calculating ioctl numbers from kernel macro definitions" ;
+    oc:directiveContent "Linux ioctl encoding: _IO(type,nr) = type<<8|nr; _IOR = 2<<30|size<<16|type<<8|nr; _IOW = 1<<30|size<<16|type<<8|nr; _IOWR = 3<<30|size<<16|type<<8|nr" ;
+    oc:hasRationale "Ioctl numbers are bit-encoded values that must be computed from type, number, and size parameters" .
+
+oc:kn_dd4ad27a a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Full workflow for defining constants and building syzkaller" ;
+    oc:directiveContent "1. Write syzlang description file (.txt) 2. Create companion .const file with arches line and constant values 3. Run 'make descriptions' to compile 4. Run 'make all' for full build" ;
+    oc:stepOrder 1 .
+
+oc:kn_f4b31968 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when creating manual constants files" ;
+    oc:directiveContent "The .const file must be named exactly as the .txt file with '.const' suffix (e.g., dev_ppdev.txt → dev_ppdev.txt.const) and must include an 'arches' line listing all supported architectures." ;
+    oc:hasRationale "Syzkaller's build system uses strict file naming conventions to locate and validate constants" ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_79c28b020fe88611 a oc:WorkflowStep ;
+    dcterms:description "**`syz-extract` tool** - Extract values from kernel source headers (requires kernel source)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c5f035a736b4c9f0 a oc:WorkflowStep ;
+    dcterms:description "**Manual `.const` file** - Define constants directly in a companion file" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0bd9f5016cc69d99 a oc:WorkflowStep ;
+    dcterms:description "Create the companion .const file with arches line and all constant values" ;
+    oc:expectedOutcome "Constants file created with all referenced constants defined" ;
+    oc:stepDependsOn _:ref_4272ff31011764dd ;
+    oc:stepId "create-const-file" .
+
+_:ref_4272ff31011764dd a oc:WorkflowStep ;
+    dcterms:description "Write the syzlang description file (e.g., sys/linux/dev_ppdev.txt)" ;
+    oc:expectedOutcome "Syzlang description file created with syscall/resource definitions" ;
+    oc:stepId "write-description" .
+
+_:ref_4753f565b1d462a9 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_79c28b020fe88611,
+        _:ref_c5f035a736b4c9f0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7dfd5bf176e567f6 a oc:WorkflowStep ;
+    dcterms:description "Run 'make descriptions' to compile descriptions and validate constants" ;
+    oc:expectedOutcome "Descriptions compile without 'defined for none of the arches' errors" ;
+    oc:stepDependsOn _:ref_c9ece573b90c57d8 ;
+    oc:stepId "compile-descriptions" .
+
+_:ref_c9ece573b90c57d8 a oc:WorkflowStep ;
+    dcterms:description "Either run 'make extract' with kernel source OR manually verify constants in .const file" ;
+    oc:expectedOutcome "All constants resolved with correct numeric values" ;
+    oc:stepDependsOn _:ref_0bd9f5016cc69d99 ;
+    oc:stepId "extract-or-verify" .
+

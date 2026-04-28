@@ -1,0 +1,25 @@
+{
+  "package_id": "skillsbench/video-silence-remover",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "audio-extractor/ontoskill.ttl",
+    "energy-calculator/ontoskill.ttl",
+    "pause-detector/ontoskill.ttl",
+    "report-generator/ontoskill.ttl",
+    "segment-combiner/ontoskill.ttl",
+    "silence-detector/ontoskill.ttl",
+    "video-processor/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "audio-extractor/intents.json",
+    "energy-calculator/intents.json",
+    "pause-detector/intents.json",
+    "report-generator/intents.json",
+    "segment-combiner/intents.json",
+    "silence-detector/intents.json",
+    "video-processor/intents.json"
+  ],
+  "skills": []
+}

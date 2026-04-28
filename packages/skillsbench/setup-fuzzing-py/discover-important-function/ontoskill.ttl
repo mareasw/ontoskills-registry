@@ -1,0 +1,1628 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_setup_fuzzing_py_discover_important_function a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "discover-important-function" ;
+    skos:broader "Code analysis methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/setup-fuzzing-py/discover-important-function" ;
+    oc:contentHash "a2b24860a8f050f81db64941d27d88ebe9308be35c56c6f22de562e3b66cb1ca" ;
+    oc:dependsOnSkill oc:skill_ontoskills_setup_env ;
+    oc:differentia "Identifies and ranks high-value fuzz targets in Python repositories by combining static analysis, test inspection, and heuristic scoring" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Grep",
+        "Read" ;
+    oc:hasArgumentHint "path to Python repository root" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "When given a project codebase, this skill observes the important functions in the codebase for future action." ;
+    oc:hasName "discover-important-function" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "At the end of the report, include a JSON object with:" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 2 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "selected_futs: [{qualname, file, line_range, justification}]" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "test_summary: {test_map, inferred_oracles, gaps}" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "important_files: [{path, score, rationale, indicators_hit}]" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "important_functions: [{qualname, file, line_range, score, rationale, dependencies, harnessability}]" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "notes_to_self: [{target_qualname, note}]" ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 29 ;
+            oc:sectionTitle "Final JSON block" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Ranking functions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Proposing seed corpus sources" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Designing input models and oracles" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Selecting FUTs" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always inspect and incorporate existing tests in the repository when:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Hard requirement" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "test_map: module_under_test → tests → asserted behaviors" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "inferred_oracles: list of reusable invariants with the functions they apply to" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "gaps: ranked list of untested or weakly-tested candidates" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "Output format" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_aa66a852ac87cae3 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 22 ;
+                    oc:sectionTitle "Procedure" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Summarize what is already tested, infer test oracles, and identify gaps that fuzzing can complement." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 20 ;
+                    oc:sectionTitle "Goal" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 19 ;
+            oc:sectionTitle "Summarize existing unit tests" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill helps an agent quickly narrow a Python repository down to a small set of high-value fuzz targets. It produces:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "A final shortlist of functions-under-test (FUTs) for fuzzing, each with a structured \"note to self\" for follow-up actions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "A summary of existing unit tests and inferred oracles" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "A ranked list of important files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "A ranked list of important functions and methods" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Purpose" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "If running commands could be disruptive, default to read-only analysis." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Avoid assumptions about runtime behavior; base conclusions on code and tests." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Prefer analysis and reporting over code changes." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Do not modify source code unless the user explicitly requests changes." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Keep the final FUT shortlist small (typically 1–5)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Explicitly consider existing tests in the repo when selecting targets and deciding harness shape." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Guardrails" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The agent should assume access to:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Preferred repository listing command:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `tree` to get a fast, high-signal view of repository structure (limit depth if needed)." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "If `tree` is not available, fall back to a recursive listing via other standard shell tooling." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Repository filesystem" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Ability to read files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Ability to run local commands (optional but recommended)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Inputs expected from the environment" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Produce result:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """A report in any format with the following information: - Localize important files - Localize important functions - Summarize existing unit tests - Decide function under test for fuzzing
+This file should be placed in the root of the repository as `APIs.txt`,
+which servers as the guidelines for future fuzzing harness implementation.""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Outputs" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use this skill when the user asks to:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Identify parsers, decoders, validators, or boundary code that is fuzz-worthy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Produce a structured shortlist of fuzz targets with harness guidance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Decide what to fuzz based on existing test coverage and API surface" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Find the best functions to fuzz in a Python package/library" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Automating testing pipeline setup for a new or existing Python project." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """Do not use this skill when the user primarily wants to fix a specific bug,
+refactor code, or implement a harness immediately
+(unless they explicitly ask for target selection first).""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "When to use" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Fuzz Target Localizer" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Module docstring" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Function and async function headers (name, args, defaults, annotations, decorators)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Class headers and method headers" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Docstrings for modules, classes, and functions/methods" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each localized Python file, parse it using Python’s `ast` module and extract only:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Do not read full function bodies during the initial pass unless needed for disambiguation or final selection." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_891fc32002037d9d ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Procedure" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For each function/method:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "rationale (2–6 bullets)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "harnessability (low/medium/high)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "line_range (if available)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "score (relative)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "qualname" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "dependencies (key helpers, modules, external state)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "file" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "Output format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Approach 1: AST-based header and docstring scan" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "From the important files, identify and rank functions or methods that are strong fuzz targets while minimizing full-body reading until needed." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Goal" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "This approach reads complete file contents, allowing for deeper analysis at the cost of higher token usage." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Class definitions and their methods" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Full function bodies and implementation details" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Function and async function definitions (name, args, defaults, annotations, decorators)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Docstrings for modules, classes, and functions/methods" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Module docstring and overall structure" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each localized Python file, read the file contents directly to extract:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_b10ded269f38c6f3 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Procedure" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "dependencies (key helpers, modules, external state)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "score (relative)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "qualname" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "line_range (if available)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "implementation_notes (key observations from body analysis)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "harnessability (low/medium/high)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "rationale (2–6 bullets)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For each function/method:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "Output format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "Approach 2: Scanning all important files yourself" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 11 ;
+            oc:sectionTitle "Localize important functions" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "indicators_hit (list)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "score (relative, not necessarily normalized)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "rationale (2–5 bullets)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "path" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each file:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Output format" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_199673c24e805c8f ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Procedure" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Produce a ranked list of files that are most likely to contain fuzz-worthy logic: parsing, decoding, deserialization, validation, protocol handling, file/network boundaries, or native bindings." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Goal" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 7 ;
+            oc:sectionTitle "Localize important files" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Prefer FUTs that maximize:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "High fuzzability (simple input channel, clear oracle or crash-only target)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Security/robustness payoff (parsing, decoding, validation, native boundary)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Low existing test assurance or narrow test input coverage" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Reachability with minimal setup" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "What tests already cover (and what they do not)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "What seeds can be extracted from tests, fixtures, and sample data" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Explicitly weigh:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 26 ;
+                    oc:sectionTitle "Selection criteria" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Select a final set of FUTs (typically 1–5) and produce a structured \"note to self\" for each FUT so the agent can proceed to harness implementation, corpus seeding, and fuzz execution." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 25 ;
+                    oc:sectionTitle "Goal" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each selected FUT, produce exactly this structure:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Fuzzing Target Note" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Minimal harness signature:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Timeouts and resource limits:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Recommended approach:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Seed corpus ideas:" ] ] ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Harness plan:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 9 ;
+                                    oc:itemText """Next actions:
+  1.
+  2.
+  3.
+  4.""" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Native extension involved:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "External I/O:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Potential DoS paths:" ] ] ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Risk flags:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "File / location:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Input surface:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Complexity or path depth:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Boundary or native considerations:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Current test gaps:" ] ] ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Why this target:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Target:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Decoding or parsing steps:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Edge classes to emphasize:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Primary payload type:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Constraints to respect:" ] ] ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Input model:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "External dependencies:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Required imports or initialization:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Determinism concerns:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Preconditions:" ] ] ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Callable contract:" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Suspicious exceptions:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Acceptable exceptions:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Crash-only vs correctness-checking:" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Must-hold properties:" ] ] ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Oracles:" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 27 ;
+                    oc:sectionTitle "Required \"note to self\" template" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "selected_futs: list of chosen FUTs with brief justification" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "notes_to_self: one \"Fuzzing Target Note\" per FUT" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 28 ;
+                    oc:sectionTitle "Output format" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 24 ;
+            oc:sectionTitle "Decide function under test for fuzzing" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: discover-important-function
+description: "When given a project codebase, this skill observes the important functions in the codebase for future action."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_199673c24e805c8f,
+        _:ref_891fc32002037d9d,
+        _:ref_aa66a852ac87cae3,
+        _:ref_b10ded269f38c6f3,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for analyzing a Python repository to identify, rank, and document fuzz targets." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Compile all outputs into APIs.txt at repository root, including the final JSON block with important_files, important_functions, test_summary, selected_futs, and notes_to_self." ;
+                    oc:expectedOutcome "APIs.txt file written to repository root with complete structured report." ;
+                    oc:stepDependsOn _:ref_f354ae054f4a4d95 ;
+                    oc:stepId "produce-report" ],
+                _:ref_33de080cf2869efa,
+                _:ref_53b7caf996cb0ed6,
+                _:ref_e250ac6c2ec6d124,
+                _:ref_f354ae054f4a4d95 ;
+            oc:workflowId "discover-fuzz-targets" ;
+            oc:workflowName "Discover and Rank Fuzz Targets" ] ;
+    oc:impartsKnowledge oc:kn_08062b8f,
+        oc:kn_314652c7,
+        oc:kn_77b95de4,
+        oc:kn_7c6d95dc,
+        oc:kn_93534c18,
+        oc:kn_eb05a528,
+        oc:kn_f65aafca ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "analyze Python repository for boundary code and input-handling functions",
+        "find fuzz-worthy functions in a Python codebase",
+        "identify parsers decoders and validators for fuzzing",
+        "produce structured shortlist of fuzz targets with harness guidance",
+        "rank functions by fuzzing priority based on test coverage and API surface" ;
+    oc:yieldsState oc:FuzzTargetsIdentified .
+
+oc:kn_08062b8f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When localizing important functions via Approach 1 (AST-based scan)" ;
+    oc:directiveContent "Do not read full function bodies during the initial analysis pass. Use AST-based header/docstring scanning first, then targeted reading only for top candidates." ;
+    oc:hasRationale "Reading all function bodies upfront wastes tokens and time; headers and docstrings contain enough signal to filter candidates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_314652c7 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning file localization" ;
+    oc:directiveContent "Use `tree` to get a fast high-signal view of repository structure. Fall back to recursive shell listing if tree is unavailable." ;
+    oc:hasRationale "A structural overview is essential to orient the analysis and identify package layouts, test directories, and native bindings." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_77b95de4 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Throughout the entire analysis workflow" ;
+    oc:directiveContent "Always inspect and incorporate existing tests when ranking functions, selecting FUTs, designing input models and oracles, and proposing seed corpus sources." ;
+    oc:hasRationale "Existing tests reveal oracles, document expected behavior, and highlight coverage gaps that fuzzing should target." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_7c6d95dc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When localizing important files" ;
+    oc:directiveContent "Score files higher when they exhibit: public API exposure, input boundary keywords (parse/load/decode/validate), format handlers (json/yaml/xml), native boundaries (ctypes/cffi), high import fan-in, or heavy test references." ;
+    oc:hasRationale "These indicators are strong predictors of fuzz-worthy logic and boundary code." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_93534c18 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When executing commands during analysis" ;
+    oc:directiveContent "This skill is read-only analysis. Default to read-only commands and avoid any source code modifications." ;
+    oc:hasRationale "Analysis should not alter the codebase; any changes require explicit user consent." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_eb05a528 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting fuzz targets and producing final output" ;
+    oc:directiveContent "Keep the final FUT shortlist small (typically 1–5 functions). Do not modify source code unless explicitly requested." ;
+    oc:hasRationale "A focused shortlist ensures the agent can produce high-quality harnesses rather than spreading effort across too many targets." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f65aafca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scoring and ranking function candidates for fuzzing" ;
+    oc:directiveContent "Prioritize functions that accept bytes/str/file-like/dict payloads, convert between representations, perform validation/parsing/decoding, touch filesystem/network/protocol boundaries, or call into native extensions." ;
+    oc:hasRationale "These characteristics correlate strongly with security-relevant attack surfaces where fuzzing has highest payoff." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_0126b626b53f354d a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Enumerate test modules and map them to source modules via imports." .
+
+_:ref_0158851ebcca2dae a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 7 ;
+    oc:itemText "Native calls or external process invocations" .
+
+_:ref_038f37d627c91acb a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "No-crash and no-hang for malformed inputs" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Deterministic output given deterministic input" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Parser consistency across equivalent inputs" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Round-trip properties" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Idempotence of normalization" ] .
+
+_:ref_05dd95fc41751ed1 a oc:WorkflowStep ;
+    dcterms:description "Rank and select" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Produce a Top-N list (default 10–30) with a short rationale per file." ] ] ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_05f46b164e831dec a oc:WorkflowStep ;
+    dcterms:description """Infer oracles and properties
+Common fuzz-friendly oracles include:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_038f37d627c91acb ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_09218a58105f0b4d a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_0158851ebcca2dae,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 8 ;
+            oc:itemText "Resource allocation and cleanup patterns" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Error handling style and exception types raised" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 6 ;
+            oc:itemText "Input transformations and data flow" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Internal helpers called and their purposes" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Preconditions and assumptions (explicit checks, assertions, early returns)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "Statefulness and global dependencies" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Invariants and postconditions (explicit or implicit)" ] .
+
+_:ref_0af71992ee03bf48 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Fixtures that exercise particular entry points" .
+
+_:ref_0c1821f4e2d554d6 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Skip: virtual environments, build outputs, vendored code, documentation-only directories, examples-only directories, generated files." ] .
+
+_:ref_11b5bb8f9c7407e0 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Down-rank candidates that are already well-covered unless they are high-risk boundaries (parsers/native bindings)." .
+
+_:ref_15e0411f33cfca8f a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Convert between representations (raw ↔ structured)" .
+
+_:ref_15ecb218a98e7718 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_0126b626b53f354d,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Identify shared fixtures and data factories (conftest.py, fixture files, test utilities)." ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Locate tests and their discovery configuration (pytest.ini, pyproject.toml, tox.ini, noxfile.py)." ] .
+
+_:ref_18e657137430f88b a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Nested functions only if they are likely to be directly fuzzable via an exposed wrapper" .
+
+_:ref_1b95eb448c2a0cbc a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Full function body" .
+
+_:ref_1f52935e028421d5 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Classes and their methods" .
+
+_:ref_1f993690860a6255 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "What exceptions are expected" .
+
+_:ref_21671aa6077f8749 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Preconditions and assumptions" .
+
+_:ref_2241c4a3cf4c01f9 a oc:WorkflowStep ;
+    dcterms:description "Build a repository map" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "setup.py" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "pyproject.toml" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "setup.cfg" ] ] ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Identify packaging and metadata files such as:" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "conftest.py" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "tox.ini" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "noxfile.py" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "pytest.ini" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "tests/" ] ] ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Identify test configuration and entry points:" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Test directories and configs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Bindings/native directories" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Examples, docs, and tooling directories" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Root packages and layouts (src/ layout vs flat layout)" ] ] ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Start with a repository overview using `tree` to identify:" ] ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_236aadbe8ef7663e a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Signature details (as available from AST)" .
+
+_:ref_23e94c7a0d3d0248 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "For each file from the important files list, read the full contents." .
+
+_:ref_2684180ee656408c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Location information (file, line range if available)" .
+
+_:ref_26c34fc88c2a218e a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Input classes not covered by tests (size extremes, malformed encodings, deep nesting, edge unicode, invalid schemas)" .
+
+_:ref_277e89be228d2a64 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Existing test coverage strength and breadth" .
+
+_:ref_28255a0ef9374d75 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Docstring (if present)" .
+
+_:ref_283f9493d106c68c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Fully-qualified name" .
+
+_:ref_2c7b03091d0ea424 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_277e89be228d2a64,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Input surface and reachability" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "Ease of harnessing" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Boundary risk (parsing/decoding/native)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 6 ;
+            oc:itemText "Observable implementation risks (unsafe operations, unchecked inputs, complex state)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Structural complexity (from full body analysis)" ] .
+
+_:ref_2d5d62ee9b9f6e2e a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Internal helpers called" .
+
+_:ref_3767ede69616d455 a oc:WorkflowStep ;
+    dcterms:description """Score files using explainable heuristics
+Assign a file a higher score when it matches more of these indicators:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 7 ;
+                    oc:itemText "Test adjacency: directly imported or heavily referenced by tests" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 6 ;
+                    oc:itemText "Central modules: high import fan-in across the package" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Format handlers: json, yaml, xml, csv, toml, protobuf, msgpack, pickle" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 5 ;
+                    oc:itemText "Native boundaries: ctypes, cffi, cython, extension modules, bindings" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Public API exposure: **init**.py re-exports, **all**, api modules" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Input boundary keywords in file path or symbols: parse, load, dump, decode, encode, deserialize, serialize, validate, normalize, schema, protocol, message" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "Regex-heavy or templating-heavy code" ] ] ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_395fa7140036a259 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 6 ;
+    oc:itemText "Clearly document strictness, schemas, formats, or error conditions" .
+
+_:ref_396253201c151272 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Classes and their methods with full bodies" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Top-level functions and their complete implementations" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Nested functions if they are exposed or called by public APIs" ] ] ;
+    oc:itemOrder 2 ;
+    oc:itemText "Extract by direct inspection:" .
+
+_:ref_4bf73f6a4de47bf5 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Down-rank candidates that are already well-covered unless they are high-risk boundaries (parsers/native bindings)." .
+
+_:ref_4f530989cb2777fc a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 6 ;
+    oc:itemText "Contain complex control flow, loops, or recursive calls" .
+
+_:ref_5695b134160e94e2 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Existing test coverage strength and breadth" .
+
+_:ref_585c783cc90eaac6 a oc:WorkflowStep ;
+    dcterms:description "Exclude low-value areas" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_0c1821f4e2d554d6 ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_59883cae0bbcd096 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Parameterizations over formats and inputs" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Fixtures that exercise particular entry points" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Direct imports in tests" ] .
+
+_:ref_5e41345d90d5a992 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Parameterizations over formats and inputs" .
+
+_:ref_5fa7d14b3c973fa7 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "FUT candidates with no direct tests" .
+
+_:ref_6443be32a306851c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Fully-qualified name" .
+
+_:ref_68a7e23d06de54e0 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Top-level functions" .
+
+_:ref_69028c540e2af4fe a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_1f993690860a6255,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "What inputs are used" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "What invariants are implied" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "What behaviors are asserted" ] .
+
+_:ref_698d37560993e8f1 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_236aadbe8ef7663e,
+        _:ref_2684180ee656408c,
+        _:ref_6443be32a306851c,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Docstring (if present)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Decorators" ] .
+
+_:ref_6b97618fd130fca0 a oc:WorkflowStep ;
+    dcterms:description """Rank and shortlist
+Rank candidates using an explainable rubric:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_2c7b03091d0ea424 ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_6c2ae03278a2ef34 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 6 ;
+    oc:itemText "Location information (file, approximate line range)" .
+
+_:ref_6dcad8259e346d30 a oc:WorkflowStep ;
+    dcterms:description "Use tests to refine candidate selection" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_11b5bb8f9c7407e0,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild _:ref_59883cae0bbcd096 ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Check if tests reference these functions/modules:" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Note which aspects of each function are tested vs untested." ] ] ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_6e693edd5f7e88ac a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_18e657137430f88b,
+                _:ref_1f52935e028421d5,
+                _:ref_68a7e23d06de54e0 ] ;
+    oc:itemOrder 2 ;
+    oc:itemText "Enumerate:" .
+
+_:ref_6e7fd938ef6e56a4 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Any obvious invariants and postconditions" .
+
+_:ref_6f96a15cf800f486 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_1b95eb448c2a0cbc,
+                _:ref_28255a0ef9374d75,
+                _:ref_283f9493d106c68c,
+                _:ref_6c2ae03278a2ef34,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Decorators" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Complete signature (from source text)" ] ] ;
+    oc:itemOrder 3 ;
+    oc:itemText "For each symbol, collect:" .
+
+_:ref_700a599143588765 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Perform validation, normalization, parsing, decoding, deserialization" .
+
+_:ref_79092ff455cf8fe5 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_5695b134160e94e2,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Structural complexity (from targeted reading only)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Input surface and reachability" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "Ease of harnessing" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Boundary risk (parsing/decoding/native)" ] .
+
+_:ref_80d6b7e1f93cd381 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 7 ;
+    oc:itemText "Handle exceptions or edge cases" .
+
+_:ref_81805edac241e4b9 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_26c34fc88c2a218e,
+        _:ref_5fa7d14b3c973fa7,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Code paths guarded by complex conditionals or exception handlers with no tests" ] .
+
+_:ref_84e97417a6504ac5 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Touch filesystem/network/protocol boundaries" .
+
+_:ref_945f3ed50b1fdb40 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Call into native extensions or bindings" .
+
+_:ref_9dab55b17b08e757 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_15e0411f33cfca8f,
+        _:ref_395fa7140036a259,
+        _:ref_700a599143588765,
+        _:ref_945f3ed50b1fdb40,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Touch filesystem/network/protocol boundaries" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Accept bytes, str, file-like objects, dicts, or user-controlled payloads" ] .
+
+_:ref_a146404eaf7e0697 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild _:ref_698d37560993e8f1 ;
+    oc:itemOrder 3 ;
+    oc:itemText "For each symbol, collect:" .
+
+_:ref_a1d5fe70a992dc37 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_6e693edd5f7e88ac,
+        _:ref_a146404eaf7e0697,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Parse the file with `ast`" ] .
+
+_:ref_abecfb08028ff849 a oc:WorkflowStep ;
+    dcterms:description "Inventory tests" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_15ecb218a98e7718 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_ac41b94635cf4184 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Accept bytes, str, file-like objects, dicts, or user-controlled payloads" .
+
+_:ref_ba6321a867058620 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_23e94c7a0d3d0248,
+        _:ref_396253201c151272,
+        _:ref_6f96a15cf800f486 .
+
+_:ref_c35cc473fdf4ae6e a oc:WorkflowStep ;
+    dcterms:description "Identify coverage gaps" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_81805edac241e4b9 ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_c59d3792c357f579 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_4bf73f6a4de47bf5,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem _:ref_0af71992ee03bf48,
+                        _:ref_5e41345d90d5a992,
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Direct imports in tests" ] ] ;
+            oc:itemOrder 1 ;
+            oc:itemText "Before reading full bodies, check if tests reference these functions/modules:" ] .
+
+_:ref_c5da81cd0791f53f a oc:WorkflowStep ;
+    dcterms:description "Use tests to refine candidate selection early" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_c59d3792c357f579 ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c728d6ad97430890 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 8 ;
+    oc:itemText "Clearly document strictness, schemas, formats, or error conditions" .
+
+_:ref_ce148382ce7d3bc3 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Statefulness and global dependencies" .
+
+_:ref_cf9d37b699fdeb4c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Error handling style and exception types" .
+
+_:ref_d3486baf27a65be3 a oc:WorkflowStep ;
+    dcterms:description """Generate an initial candidate set using full source analysis
+Prioritize functions/methods that:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_4f530989cb2777fc,
+                _:ref_80d6b7e1f93cd381,
+                _:ref_84e97417a6504ac5,
+                _:ref_ac41b94635cf4184,
+                _:ref_c728d6ad97430890,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Perform validation, normalization, parsing, decoding, deserialization" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Convert between representations (raw ↔ structured)" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 5 ;
+                    oc:itemText "Call into native extensions or bindings" ] ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e182424ca132fb2a a oc:WorkflowStep ;
+    dcterms:description """Generate an initial candidate set using headers and docstrings
+Prioritize functions/methods that:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_9dab55b17b08e757 ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e3ea91316ba0eac8 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_21671aa6077f8749,
+        _:ref_2d5d62ee9b9f6e2e,
+        _:ref_6e7fd938ef6e56a4,
+        _:ref_ce148382ce7d3bc3,
+        _:ref_cf9d37b699fdeb4c .
+
+_:ref_e777ba45ec093ea8 a oc:WorkflowStep ;
+    dcterms:description """Summarize test intent
+For each test module:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_69028c540e2af4fe ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ea0c8817fe7626f0 a oc:WorkflowStep ;
+    dcterms:description """Confirm with targeted reading only for top candidates
+For the top candidates (typically 10–20), read the full function bodies and capture:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_e3ea91316ba0eac8 ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f2f30558693ba4ff a oc:WorkflowStep ;
+    dcterms:description "Build per-file declarations via AST" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_a1d5fe70a992dc37 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_f4d4c4f2ec2a6789 a oc:WorkflowStep ;
+    dcterms:description """Analyze implementation details from full bodies
+For each candidate function, inspect the body for:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_09218a58105f0b4d ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fa45e411e612ebe8 a oc:WorkflowStep ;
+    dcterms:description """Rank and shortlist
+Rank candidates using an explainable rubric:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_79092ff455cf8fe5 ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_fdd48e3a3b12d454 a oc:WorkflowStep ;
+    dcterms:description "Read important files sequentially" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_ba6321a867058620 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_199673c24e805c8f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_05dd95fc41751ed1,
+        _:ref_2241c4a3cf4c01f9,
+        _:ref_3767ede69616d455,
+        _:ref_585c783cc90eaac6 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_33de080cf2869efa a oc:WorkflowStep ;
+    dcterms:description "Build repository map via `tree`, exclude low-value areas, score files using explainable heuristics (API exposure, boundary keywords, format handlers, native boundaries, import fan-in, test adjacency), produce Top-N ranked file list." ;
+    oc:expectedOutcome "Ranked list of 10-30 important files with scores and rationale." ;
+    oc:stepId "localize-files" .
+
+_:ref_53b7caf996cb0ed6 a oc:WorkflowStep ;
+    dcterms:description "Inventory existing tests, summarize test intent per module, infer fuzz-friendly oracles (round-trip, idempotence, parser consistency, no-crash), and identify coverage gaps." ;
+    oc:expectedOutcome "Test map, inferred oracles, and ranked list of coverage gaps." ;
+    oc:stepDependsOn _:ref_e250ac6c2ec6d124 ;
+    oc:stepId "summarize-tests" .
+
+_:ref_891fc32002037d9d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_c5da81cd0791f53f,
+        _:ref_e182424ca132fb2a,
+        _:ref_ea0c8817fe7626f0,
+        _:ref_f2f30558693ba4ff,
+        _:ref_fa45e411e612ebe8 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_aa66a852ac87cae3 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_05f46b164e831dec,
+        _:ref_abecfb08028ff849,
+        _:ref_c35cc473fdf4ae6e,
+        _:ref_e777ba45ec093ea8 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_b10ded269f38c6f3 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_6b97618fd130fca0,
+        _:ref_6dcad8259e346d30,
+        _:ref_d3486baf27a65be3,
+        _:ref_f4d4c4f2ec2a6789,
+        _:ref_fdd48e3a3b12d454 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f354ae054f4a4d95 a oc:WorkflowStep ;
+    dcterms:description "Select 1-5 final FUTs maximizing security payoff, reachability, low test coverage, and high fuzzability. Produce a structured 'Fuzzing Target Note' per FUT with target, contract, input model, oracles, harness plan, risk flags, and next actions." ;
+    oc:expectedOutcome "List of selected FUTs with structured notes and final JSON block." ;
+    oc:stepDependsOn _:ref_53b7caf996cb0ed6,
+        _:ref_e250ac6c2ec6d124 ;
+    oc:stepId "select-futs" .
+
+_:ref_e250ac6c2ec6d124 a oc:WorkflowStep ;
+    dcterms:description "From important files, use AST-based header/docstring scan (or full file read) to identify and rank functions/methods as fuzz candidates. Prioritize those accepting bytes/str/dict payloads, performing parsing/validation, touching boundaries, or calling native code." ;
+    oc:expectedOutcome "Ranked list of important functions with qualname, score, rationale, dependencies, and harnessability rating." ;
+    oc:stepDependsOn _:ref_33de080cf2869efa ;
+    oc:stepId "localize-functions" .
+

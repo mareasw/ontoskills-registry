@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/parallel-tfidf-search",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "memory-optimization/ontoskill.ttl",
+    "python-parallelization/ontoskill.ttl",
+    "workload-balancing/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "memory-optimization/intents.json",
+    "python-parallelization/intents.json",
+    "workload-balancing/intents.json"
+  ],
+  "skills": []
+}

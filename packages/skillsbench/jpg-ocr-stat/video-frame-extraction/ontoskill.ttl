@@ -1,0 +1,929 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_jpg_ocr_stat_video_frame_extraction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "video-frame-extraction" ;
+    skos:broader "Video processing utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/jpg-ocr-stat/video-frame-extraction" ;
+    oc:contentHash "0f5978938561a6bbe21b9c2dd327c8d654ffa279370c8733f1dddf64cd35afa4" ;
+    oc:differentia "extracts individual frames from video files using OpenCV and saves them as image files with structured JSON output" ;
+    oc:handlesFailure oc:CodecNotSupported,
+        oc:DiskSpaceExhausted,
+        oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "video-path [output-dir] [--interval N] [--start-frame N] [--end-frame N] [--format jpg|png]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Extract frames from video files and save them as images using OpenCV" ;
+    oc:hasName "video-frame-extraction" ;
+    oc:hasRequirement oc:req_18ea67a0,
+        oc:req_4eb6a902,
+        oc:req_6c111fb3,
+        oc:req_9c58f39c ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: video-frame-extraction
+description: Extract frames from video files and save them as images using OpenCV
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Seeking in variable frame rate videos may be inaccurate" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Damaged or partially corrupted videos may extract partial results" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "OpenCV may not support all video codecs; install additional codecs if needed" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Encrypted or DRM-protected videos cannot be processed" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Some container formats (MKV with certain codecs) may have seeking issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Memory usage increases with video resolution" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Large videos with high frame counts require significant disk space" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Limitations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**1.0.0** (2026-01-21): Initial release with OpenCV video frame extraction" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Version History" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import cv2
+import os
+import json
+from pathlib import Path
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 23-28" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The following Python libraries are required:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Required Libraries" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """{
+  "success": true,
+  "source_video": "sample.mp4",
+  "output_directory": "/path/to/frames",
+  "frames_extracted": 150,
+  "extraction_params": {
+    "interval": 1,
+    "start_frame": 0,
+    "end_frame": null,
+    "output_format": "jpg"
+  },
+  "video_metadata": {
+    "total_frames": 300,
+    "fps": 30.0,
+    "duration_seconds": 10.0,
+    "resolution": [1920, 1080]
+  },
+  "output_files": [
+    "frame_000001.jpg",
+    "frame_000002.jpg"
+  ],
+  "warnings": []
+}
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 40-64" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "All extraction results must be returned as valid JSON conforming to this schema:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 9 ;
+                                            oc:itemText "`video_metadata.total_frames`: Total frame count in source video" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`extraction_params.interval`: Frame sampling interval (1 = every frame, 2 = every other frame, etc.)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 12 ;
+                                            oc:itemText "`video_metadata.resolution`: Video dimensions as [width, height]" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`success`: Boolean indicating whether frame extraction completed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 14 ;
+                                            oc:itemText "`warnings`: Array of issues encountered during extraction" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`extraction_params.end_frame`: Last frame index extracted (null if extracted to end)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`frames_extracted`: Total number of frames successfully saved" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`extraction_params.start_frame`: First frame index extracted" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 11 ;
+                                            oc:itemText "`video_metadata.duration_seconds`: Video duration in seconds" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "`extraction_params.output_format`: Image format used for saving frames" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 13 ;
+                                            oc:itemText "`output_files`: List of generated frame filenames" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`source_video`: Original video filename" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 10 ;
+                                            oc:itemText "`video_metadata.fps`: Frames per second of source video" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`output_directory`: Path where frames were saved" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Field Descriptions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Output Schema" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def get_video_info(video_path):
+    \"\"\"Retrieve video metadata.\"\"\"
+    cap = cv2.VideoCapture(video_path)
+    
+    if not cap.isOpened():
+        return None
+    
+    info = {
+        "total_frames": int(cap.get(cv2.CAP_PROP_FRAME_COUNT)),
+        "fps": cap.get(cv2.CAP_PROP_FPS),
+        "width": int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
+        "height": int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        "codec": int(cap.get(cv2.CAP_PROP_FOURCC)),
+        "duration_seconds": cap.get(cv2.CAP_PROP_FRAME_COUNT) / cap.get(cv2.CAP_PROP_FPS)
+    }
+    
+    cap.release()
+    return info
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 378-397" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Extract video properties before processing:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Video Metadata Retrieval" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Issue**: Frames read as None" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ret, frame = cap.read()
+if not ret or frame is None:
+    print("Failed to read frame - video may be corrupted or ended")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 441-445" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check if video has valid properties
+fps = cap.get(cv2.CAP_PROP_FPS)
+if fps == 0:
+    print("Warning: Could not detect FPS - codec may be unsupported")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 6 ;
+                                    oc:sourceLocation "lines 449-454" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Issue**: Video file cannot be opened" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**Issue**: Disk space exhausted" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import shutil
+
+def check_disk_space(output_dir, required_mb=100):
+    \"\"\"Check available disk space before extraction.\"\"\"
+    stat = shutil.disk_usage(output_dir)
+    available_mb = stat.free / (1024 * 1024)
+    return available_mb >= required_mb
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 8 ;
+                                    oc:sourceLocation "lines 458-466" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Issue**: Codec not supported" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """cap = cv2.VideoCapture(video_path)
+if not cap.isOpened():
+    print(f"Error: Cannot open video file: {video_path}")
+    print("Check file path, permissions, and codec support")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 432-437" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Common Issues and Solutions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before returning results, verify:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] Video was properly released with `cap.release()`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] All required fields are present (`success`, `source_video`, `frames_extracted`, `video_metadata`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] Output directory was created successfully" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Output is valid JSON (use `json.loads()` to validate)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Warnings array includes all detected issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Extracted frame count matches expected value based on interval" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "[ ] Frame filenames follow consistent zero-padded numbering" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Quality Self-Check" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For extracting frames at exact positions:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def extract_specific_frames(video_path, output_dir, frame_numbers):
+    \"\"\"Extract specific frames by their indices.\"\"\"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    cap = cv2.VideoCapture(video_path)
+    extracted = []
+    
+    for frame_num in sorted(frame_numbers):
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_num)
+        ret, frame = cap.read()
+        
+        if ret:
+            filename = os.path.join(output_dir, f"frame_{frame_num:06d}.jpg")
+            cv2.imwrite(filename, frame)
+            extracted.append(frame_num)
+    
+    cap.release()
+    return extracted
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 404-423" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Specific Frame Extraction" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill enables extraction of individual frames from video files (MP4, AVI, MOV, etc.) using OpenCV. Extracted frames are saved as image files in a specified output directory. It is suitable for video analysis, creating training datasets, thumbnail generation, and preprocessing video content for further processing." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Purpose" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# JPEG format (default, good balance of quality and size)
+cv2.imwrite("frame.jpg", frame)
+
+# PNG format (lossless, larger files)
+cv2.imwrite("frame.png", frame)
+
+# JPEG with custom quality (0-100)
+cv2.imwrite("frame.jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 95])
+
+# PNG with compression level (0-9)
+cv2.imwrite("frame.png", frame, [cv2.IMWRITE_PNG_COMPRESSION, 3])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 322-334" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Output Image Formats" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def extract_resized_frames(video_path, output_dir, target_size=(640, 480)):
+    \"\"\"Extract and resize frames to specified dimensions.\"\"\"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    cap = cv2.VideoCapture(video_path)
+    frame_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        resized = cv2.resize(frame, target_size)
+        filename = os.path.join(output_dir, f"frame_{frame_count:06d}.jpg")
+        cv2.imwrite(filename, resized)
+        frame_count += 1
+    
+    cap.release()
+    return frame_count
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 351-371" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Frame Resizing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Seek by frame number
+cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+
+# Seek by milliseconds
+cap.set(cv2.CAP_PROP_POS_MSEC, milliseconds)
+
+# Seek by ratio (0.0 to 1.0)
+cap.set(cv2.CAP_PROP_POS_AVI_RATIO, 0.5)  # Middle of video
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 338-347" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Frame Seeking Methods" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Extraction Configuration Options" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Preprocessing videos for object detection or tracking" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Sampling frames at specific intervals for time-lapse effects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Extracting frames for machine learning training data" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Creating image sequences from video content" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Converting video segments to image collections for analysis" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Generating video thumbnails or preview images" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import os
+
+def extract_all_frames(video_path, output_dir):
+    \"\"\"Extract all frames from a video file.\"\"\"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    cap = cv2.VideoCapture(video_path)
+    frame_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        filename = os.path.join(output_dir, f"frame_{frame_count:06d}.jpg")
+        cv2.imwrite(filename, frame)
+        frame_count += 1
+    
+    cap.release()
+    return frame_count
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 89-111" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Frame Extraction" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import os
+
+def extract_frames_at_interval(video_path, output_dir, interval=1):
+    \"\"\"Extract frames at specified intervals.\"\"\"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    cap = cv2.VideoCapture(video_path)
+    frame_index = 0
+    saved_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        if frame_index % interval == 0:
+            filename = os.path.join(output_dir, f"frame_{saved_count:06d}.jpg")
+            cv2.imwrite(filename, frame)
+            saved_count += 1
+        
+        frame_index += 1
+    
+    cap.release()
+    return saved_count
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 115-141" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Interval-Based Frame Extraction" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import os
+import json
+from pathlib import Path
+
+def process_video_directory(video_dir, output_base_dir, interval=1):
+    \"\"\"Process all videos in a directory and extract frames.\"\"\"
+    video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.wmv', '.flv', '.webm'}
+    results = []
+    
+    for video_file in sorted(Path(video_dir).iterdir()):
+        if video_file.suffix.lower() in video_extensions:
+            video_output_dir = os.path.join(
+                output_base_dir, 
+                video_file.stem
+            )
+            result = extract_frames_to_json(
+                str(video_file), 
+                video_output_dir, 
+                interval=interval
+            )
+            results.append(result)
+            print(f"Processed: {video_file.name} -> {result['frames_extracted']} frames")
+    
+    return results
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 289-315" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Batch Processing Multiple Videos" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import os
+import json
+from pathlib import Path
+
+def extract_frames_to_json(video_path, output_dir, interval=1, 
+                           start_frame=0, end_frame=None, output_format="jpg"):
+    \"\"\"Extract frames and return results as JSON.\"\"\"
+    video_name = os.path.basename(video_path)
+    warnings = []
+    output_files = []
+    
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        cap = cv2.VideoCapture(video_path)
+        
+        if not cap.isOpened():
+            raise ValueError(f"Cannot open video: {video_path}")
+        
+        # Get video metadata
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        duration = total_frames / fps if fps > 0 else 0
+        
+        # Set end frame if not specified
+        if end_frame is None:
+            end_frame = total_frames
+        
+        # Seek to start frame
+        if start_frame > 0:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
+        
+        frame_index = start_frame
+        saved_count = 0
+        
+        while frame_index < end_frame:
+            ret, frame = cap.read()
+            if not ret:
+                if frame_index < end_frame:
+                    warnings.append(f"Video ended early at frame {frame_index}")
+                break
+            
+            if (frame_index - start_frame) % interval == 0:
+                filename = f"frame_{saved_count:06d}.{output_format}"
+                filepath = os.path.join(output_dir, filename)
+                cv2.imwrite(filepath, frame)
+                output_files.append(filename)
+                saved_count += 1
+            
+            frame_index += 1
+        
+        cap.release()
+        
+        result = {
+            "success": True,
+            "source_video": video_name,
+            "output_directory": str(output_dir),
+            "frames_extracted": saved_count,
+            "extraction_params": {
+                "interval": interval,
+                "start_frame": start_frame,
+                "end_frame": end_frame,
+                "output_format": output_format
+            },
+            "video_metadata": {
+                "total_frames": total_frames,
+                "fps": fps,
+                "duration_seconds": round(duration, 2),
+                "resolution": [width, height]
+            },
+            "output_files": output_files,
+            "warnings": warnings
+        }
+        
+    except Exception as e:
+        result = {
+            "success": False,
+            "source_video": video_name,
+            "output_directory": str(output_dir),
+            "frames_extracted": 0,
+            "extraction_params": {
+                "interval": interval,
+                "start_frame": start_frame,
+                "end_frame": end_frame,
+                "output_format": output_format
+            },
+            "video_metadata": {
+                "total_frames": 0,
+                "fps": 0,
+                "duration_seconds": 0,
+                "resolution": [0, 0]
+            },
+            "output_files": [],
+            "warnings": [f"Extraction failed: {str(e)}"]
+        }
+    
+    return result
+
+# Usage
+result = extract_frames_to_json("video.mp4", "./frames", interval=10)
+print(json.dumps(result, indent=2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 145-249" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Full Extraction with JSON Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import os
+
+def extract_frames_by_seconds(video_path, output_dir, seconds_interval=1.0):
+    \"\"\"Extract frames at specific time intervals (in seconds).\"\"\"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    cap = cv2.VideoCapture(video_path)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_interval = int(fps * seconds_interval)
+    
+    if frame_interval < 1:
+        frame_interval = 1
+    
+    frame_index = 0
+    saved_count = 0
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        if frame_index % frame_interval == 0:
+            filename = os.path.join(output_dir, f"frame_{saved_count:06d}.jpg")
+            cv2.imwrite(filename, frame)
+            saved_count += 1
+        
+        frame_index += 1
+    
+    cap.release()
+    return saved_count
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 253-285" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Time-Based Frame Extraction" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Code Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Disk space**: Ensure sufficient space for extracted frames (uncompressed images)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Output directory**: Write permissions on destination folder" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**File access**: Read permissions on source video" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**File formats**: MP4, AVI, MOV, MKV, WMV, FLV, WEBM" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Video codec**: Must be readable by OpenCV (most common codecs supported)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Input Requirements" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Video Frame Extraction Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract frames from a video file with structured JSON output" ;
+            oc:hasStep _:ref_009db500c22751b5,
+                _:ref_154711904d8ff458,
+                _:ref_19d9e9709709d340,
+                _:ref_2960203615f61abd,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Validate JSON output: required fields present, frame count consistent, valid JSON" ;
+                    oc:expectedOutcome "Result JSON validated and returned" ;
+                    oc:stepDependsOn _:ref_aa44ed4e34ccddc9 ;
+                    oc:stepId "validate-output" ],
+                _:ref_aa44ed4e34ccddc9,
+                _:ref_da21760658760cdc ;
+            oc:workflowId "video-frame-extraction-standard" ;
+            oc:workflowName "Standard Frame Extraction" ] ;
+    oc:impartsKnowledge oc:kn_18bc7ca3,
+        oc:kn_1dfc7428,
+        oc:kn_1faf8014,
+        oc:kn_22089aa4,
+        oc:kn_264bb625,
+        oc:kn_4a6f3d5b,
+        oc:kn_55d7a86d,
+        oc:kn_6b0ad26c,
+        oc:kn_da197d11,
+        oc:kn_e875aff6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "batch extract frames from multiple videos",
+        "convert video to image sequence",
+        "extract frames from video",
+        "extract specific frames by index",
+        "generate video thumbnails",
+        "get video metadata",
+        "sample video frames at intervals" ;
+    oc:yieldsState oc:FramesExtracted,
+        oc:ImagesSaved .
+
+oc:kn_18bc7ca3 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing MKV, WMV, or less common container formats" ;
+    oc:directiveContent "OpenCV may not support all video codecs; if FPS reads as 0, the codec is likely unsupported" ;
+    oc:hasRationale "Codec incompatibility is the most common failure mode and manifests as zero metadata values" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1dfc7428 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Whenever using cv2.VideoCapture" ;
+    oc:directiveContent "Always call cap.release() after video processing to free resources, even on error paths" ;
+    oc:hasRationale "Failing to release the capture object leaks file handles and may lock the video file" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_1faf8014 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When extracting specific frames by index or seeking to a position" ;
+    oc:directiveContent "Seeking (cap.set cv2.CAP_PROP_POS_FRAMES) in variable frame rate videos may be inaccurate; prefer sequential reads when frame accuracy matters" ;
+    oc:hasRationale "VFR videos have non-uniform frame timing, making index-based seeking unreliable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_22089aa4 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Always, when extracting frames" ;
+    oc:directiveContent "Extraction creates one image file per sampled frame in the output directory; a full extraction of a 5-min 30fps video creates 9000 files" ;
+    oc:hasRationale "Massive file counts can overwhelm filesystems, file browsers, and downstream processing" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_264bb625 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When opening any video file" ;
+    oc:directiveContent "Check cap.isOpened() immediately after creating VideoCapture and raise/return error if False" ;
+    oc:hasRationale "Attempting to read frames from an unopened capture silently fails and can cause infinite loops" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4a6f3d5b a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running extraction to the same output directory" ;
+    oc:directiveContent "Frame extraction with os.makedirs(exist_ok=True) is idempotent if output directory is clean; re-running overwrites existing frames with same names" ;
+    oc:hasRationale "Repeated runs produce consistent results but partial overlaps from previous runs may leave stale frames" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_55d7a86d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing long or high-frame-rate videos for analysis or ML training" ;
+    oc:directiveContent "Use interval-based extraction (e.g., every 10th or 30th frame) rather than extracting all frames unless every frame is specifically needed" ;
+    oc:hasRationale "Reduces disk usage, processing time, and redundancy in near-identical consecutive frames" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_6b0ad26c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before extracting frames from large videos or extracting all frames" ;
+    oc:directiveContent "Verify sufficient disk space before extraction: a 10-min 1080p 30fps video yields ~18K uncompressed frames (~500MB+ as JPEG)" ;
+    oc:hasRationale "Disk exhaustion mid-extraction produces partial results and wasted I/O" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_da197d11 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing any frame extraction operation" ;
+    oc:directiveContent "After extraction, validate: output is valid JSON, required fields present, frame count matches expected based on interval, filenames use consistent zero-padded numbering" ;
+    oc:hasRationale "Silent partial failures (corrupted frames, codec errors) can produce misleading results without validation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e875aff6 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Always, for every extraction result" ;
+    oc:directiveContent "Return JSON with: success (bool), source_video, output_directory, frames_extracted (int), extraction_params (interval, start_frame, end_frame, output_format), video_metadata (total_frames, fps, duration_seconds, resolution), output_files (list), warnings (list)" ;
+    oc:hasRationale "Structured JSON output enables programmatic consumption and debugging" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_18ea67a0 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Video codecs supported by OpenCV" .
+
+oc:req_4eb6a902 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.x" .
+
+oc:req_6c111fb3 a oc:RequirementHardware ;
+    oc:isOptional false ;
+    oc:requirementValue "Sufficient disk space for uncompressed frame images" .
+
+oc:req_9c58f39c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "opencv-python (cv2)" .
+
+_:ref_009db500c22751b5 a oc:WorkflowStep ;
+    dcterms:description "Open video with cv2.VideoCapture and verify cap.isOpened() returns True" ;
+    oc:expectedOutcome "Video capture object opened successfully" ;
+    oc:stepDependsOn _:ref_2960203615f61abd ;
+    oc:stepId "open-video" .
+
+_:ref_154711904d8ff458 a oc:WorkflowStep ;
+    dcterms:description "Verify video file exists and is a supported format (MP4, AVI, MOV, MKV, WMV, FLV, WEBM)" ;
+    oc:expectedOutcome "Input video confirmed accessible and compatible" ;
+    oc:stepId "validate-input" .
+
+_:ref_19d9e9709709d340 a oc:WorkflowStep ;
+    dcterms:description "Read frames sequentially, apply interval/start/end filtering, save as images with zero-padded filenames" ;
+    oc:expectedOutcome "Frames saved to output directory" ;
+    oc:stepDependsOn _:ref_da21760658760cdc ;
+    oc:stepId "extract-frames" .
+
+_:ref_2960203615f61abd a oc:WorkflowStep ;
+    dcterms:description "Verify sufficient disk space in output directory for extracted frames" ;
+    oc:expectedOutcome "Disk space confirmed adequate" ;
+    oc:stepDependsOn _:ref_154711904d8ff458 ;
+    oc:stepId "check-disk-space" .
+
+_:ref_aa44ed4e34ccddc9 a oc:WorkflowStep ;
+    dcterms:description "Call cap.release() to free the video capture object" ;
+    oc:expectedOutcome "File handle released" ;
+    oc:stepDependsOn _:ref_19d9e9709709d340 ;
+    oc:stepId "release-resources" .
+
+_:ref_da21760658760cdc a oc:WorkflowStep ;
+    dcterms:description "Retrieve video metadata: total_frames, fps, width, height, duration" ;
+    oc:expectedOutcome "Video metadata captured for result JSON" ;
+    oc:stepDependsOn _:ref_009db500c22751b5 ;
+    oc:stepId "extract-metadata" .
+

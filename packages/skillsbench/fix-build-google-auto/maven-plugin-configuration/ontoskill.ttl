@@ -1,0 +1,1115 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_google_auto_maven_plugin_configuration a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "maven-plugin-configuration" ;
+    skos:broader "Configuration framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-google-auto/maven-plugin-configuration" ;
+    oc:contentHash "a641b030d09384faf8a308d0e58a46a983bc60dd52671681c436ef269b0a0d64" ;
+    oc:differentia "defines Maven plugin setup patterns including compiler, testing, quality, packaging, and Spring Boot plugins with XML configuration templates" ;
+    oc:extends oc:skill_ontoskills_maven_build_lifecycle ;
+    oc:handlesFailure oc:BuildPhaseError,
+        oc:InvalidPluginConfiguration,
+        oc:PluginResolutionFailed ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when configuring Maven plugins, setting up common plugins like compiler, surefire, jar, or creating custom plugin executions." ;
+    oc:hasName "maven-plugin-configuration" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Master Maven plugin configuration including core plugins, build plugins, reporting plugins, and custom plugin development." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-war-plugin</artifactId>
+    <version>3.4.0</version>
+    <configuration>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <packagingExcludes>WEB-INF/classes/logback-test.xml</packagingExcludes>
+        <webResources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.html</include>
+                </includes>
+            </resource>
+        </webResources>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 504-523" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "WAR Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.5.1</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <transformers>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <mainClass>com.example.Main</mainClass>
+                    </transformer>
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                </transformers>
+                <filters>
+                    <filter>
+                        <artifact>*:*</artifact>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>
+                <relocations>
+                    <relocation>
+                        <pattern>com.google</pattern>
+                        <shadedPattern>shaded.com.google</shadedPattern>
+                    </relocation>
+                </relocations>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 462-500" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Shade Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>3.6.0</version>
+    <configuration>
+        <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <archive>
+            <manifest>
+                <mainClass>com.example.Main</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+    <executions>
+        <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+                <goal>single</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 433-458" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Assembly Plugin" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Packaging Plugins" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_302bc5739b5abf80 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Maven plugins provide the actual functionality for building projects. Understanding how to configure plugins effectively is essential for customizing builds, optimizing performance, and ensuring code quality." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.3</version>
+    <configuration>
+        <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/Test*.java</include>
+        </includes>
+        <excludes>
+            <exclude>**/*IT.java</exclude>
+            <exclude>**/*IntegrationTest.java</exclude>
+        </excludes>
+        <argLine>-Xmx1024m -XX:+UseG1GC</argLine>
+        <parallel>methods</parallel>
+        <threadCount>4</threadCount>
+        <forkCount>1C</forkCount>
+        <reuseForks>true</reuseForks>
+        <systemPropertyVariables>
+            <spring.profiles.active>test</spring.profiles.active>
+        </systemPropertyVariables>
+        <environmentVariables>
+            <TEST_ENV>true</TEST_ENV>
+        </environmentVariables>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 201-229" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Surefire Plugin (Unit Tests)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-failsafe-plugin</artifactId>
+    <version>3.2.3</version>
+    <configuration>
+        <includes>
+            <include>**/*IT.java</include>
+            <include>**/*IntegrationTest.java</include>
+        </includes>
+        <skipAfterFailureCount>3</skipAfterFailureCount>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 233-254" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Failsafe Plugin (Integration Tests)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>0.8.11</version>
+    <executions>
+        <execution>
+            <id>prepare-agent</id>
+            <goals>
+                <goal>prepare-agent</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+                <goal>report</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>check</id>
+            <goals>
+                <goal>check</goal>
+            </goals>
+            <configuration>
+                <rules>
+                    <rule>
+                        <element>BUNDLE</element>
+                        <limits>
+                            <limit>
+                                <counter>LINE</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.80</minimum>
+                            </limit>
+                            <limit>
+                                <counter>BRANCH</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.70</minimum>
+                            </limit>
+                        </limits>
+                    </rule>
+                </rules>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 258-304" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "JaCoCo Plugin (Code Coverage)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Testing Plugins" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Configuring code quality checks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Configuring build compilation settings" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Setting up CI/CD builds" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Optimizing build performance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Generating source code" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Creating executable JARs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Setting up test frameworks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Managing releases and versions" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>versions-maven-plugin</artifactId>
+    <version>2.16.2</version>
+    <configuration>
+        <rulesUri>file:///${project.basedir}/version-rules.xml</rulesUri>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 562-571" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check for updates
+mvn versions:display-dependency-updates
+mvn versions:display-plugin-updates
+mvn versions:display-property-updates
+
+# Update versions
+mvn versions:update-properties
+mvn versions:use-latest-releases
+mvn versions:update-parent
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 573-583" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Versions Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-release-plugin</artifactId>
+    <version>3.0.1</version>
+    <configuration>
+        <tagNameFormat>v@{project.version}</tagNameFormat>
+        <autoVersionSubmodules>true</autoVersionSubmodules>
+        <releaseProfiles>release</releaseProfiles>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 587-598" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Release Plugin" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Version Management Plugins" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_76a636aa6a06744d ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <version>3.5.0</version>
+    <executions>
+        <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>add-source</goal>
+            </goals>
+            <configuration>
+                <sources>
+                    <source>${project.build.directory}/generated-sources</source>
+                </sources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 604-624" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Build Helper Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>3.1.1</version>
+    <executions>
+        <execution>
+            <id>run-script</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>exec</goal>
+            </goals>
+            <configuration>
+                <executable>bash</executable>
+                <arguments>
+                    <argument>${project.basedir}/scripts/generate.sh</argument>
+                </arguments>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 628-649" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Exec Plugin" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Code Generation Plugins" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-source-plugin</artifactId>
+    <version>3.3.0</version>
+    <executions>
+        <execution>
+            <id>attach-sources</id>
+            <goals>
+                <goal>jar-no-fork</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 155-169" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Source Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>3.6.3</version>
+    <configuration>
+        <doclint>none</doclint>
+        <source>17</source>
+        <quiet>true</quiet>
+        <links>
+            <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
+        </links>
+    </configuration>
+    <executions>
+        <execution>
+            <id>attach-javadocs</id>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 173-195" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Javadoc Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.12.1</version>
+    <configuration>
+        <release>17</release>
+        <encoding>UTF-8</encoding>
+        <showWarnings>true</showWarnings>
+        <showDeprecation>true</showDeprecation>
+        <compilerArgs>
+            <arg>-Xlint:all</arg>
+            <arg>-parameters</arg>
+        </compilerArgs>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.30</version>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 73-96" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Compiler Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>3.3.0</version>
+    <configuration>
+        <archive>
+            <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>com.example.Main</mainClass>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+            <manifestEntries>
+                <Build-Time>${maven.build.timestamp}</Build-Time>
+                <Built-By>${user.name}</Built-By>
+            </manifestEntries>
+        </archive>
+        <excludes>
+            <exclude>**/logback-test.xml</exclude>
+        </excludes>
+    </configuration>
+    <executions>
+        <execution>
+            <id>test-jar</id>
+            <goals>
+                <goal>test-jar</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 120-151" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "JAR Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>3.3.1</version>
+    <configuration>
+        <encoding>UTF-8</encoding>
+        <propertiesEncoding>UTF-8</propertiesEncoding>
+        <nonFilteredFileExtensions>
+            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+            <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+            <nonFilteredFileExtension>png</nonFilteredFileExtension>
+            <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+        </nonFilteredFileExtensions>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 100-116" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Resources Plugin" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Core Build Plugins" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <version>3.2.0</version>
+    <configuration>
+        <mainClass>com.example.Application</mainClass>
+        <excludes>
+            <exclude>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </exclude>
+        </excludes>
+        <layers>
+            <enabled>true</enabled>
+        </layers>
+        <image>
+            <name>${project.artifactId}:${project.version}</name>
+            <builder>paketobuildpacks/builder:base</builder>
+        </image>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>repackage</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                            oc:codeLanguage "xml" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 527-556" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Spring Boot Plugin" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-pmd-plugin</artifactId>
+    <version>3.21.2</version>
+    <configuration>
+        <rulesets>
+            <ruleset>/category/java/bestpractices.xml</ruleset>
+            <ruleset>/category/java/errorprone.xml</ruleset>
+        </rulesets>
+        <failOnViolation>true</failOnViolation>
+        <printFailingErrors>true</printFailingErrors>
+        <includeTests>true</includeTests>
+        <targetJdk>17</targetJdk>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>check</goal>
+                <goal>cpd-check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 403-427" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "PMD Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>com.github.spotbugs</groupId>
+    <artifactId>spotbugs-maven-plugin</artifactId>
+    <version>4.8.3.0</version>
+    <configuration>
+        <effort>Max</effort>
+        <threshold>Low</threshold>
+        <xmlOutput>true</xmlOutput>
+        <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 380-399" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "SpotBugs Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-enforcer-plugin</artifactId>
+    <version>3.4.1</version>
+    <executions>
+        <execution>
+            <id>enforce</id>
+            <goals>
+                <goal>enforce</goal>
+            </goals>
+            <configuration>
+                <rules>
+                    <requireMavenVersion>
+                        <version>[3.8.0,)</version>
+                    </requireMavenVersion>
+                    <requireJavaVersion>
+                        <version>[17,)</version>
+                    </requireJavaVersion>
+                    <dependencyConvergence/>
+                    <requireUpperBoundDeps/>
+                    <banDuplicatePomDependencyVersions/>
+                    <bannedDependencies>
+                        <excludes>
+                            <exclude>commons-logging:commons-logging</exclude>
+                            <exclude>log4j:log4j</exclude>
+                        </excludes>
+                    </bannedDependencies>
+                </rules>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 310-343" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Enforcer Plugin" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version>3.3.1</version>
+    <configuration>
+        <configLocation>checkstyle.xml</configLocation>
+        <consoleOutput>true</consoleOutput>
+        <failsOnError>true</failsOnError>
+        <violationSeverity>warning</violationSeverity>
+        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+    </configuration>
+    <executions>
+        <execution>
+            <id>checkstyle</id>
+            <phase>validate</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.12.6</version>
+        </dependency>
+    </dependencies>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 347-376" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Checkstyle Plugin" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Quality Plugins" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <pluginManagement>
+        <plugins>
+            <!-- Define versions and shared config -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+    <plugins>
+        <!-- Actually use plugin (inherits config) -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+        </plugin>
+    </plugins>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 44-67" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Plugin Management" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.12.1</version>
+            <configuration>
+                <!-- Plugin-specific configuration -->
+            </configuration>
+            <executions>
+                <execution>
+                    <id>compile-java</id>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 18-40" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Plugin Structure" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Plugin Basics" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Maven Plugin Configuration" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: maven-plugin-configuration
+description: Use when configuring Maven plugins, setting up common plugins like compiler, surefire, jar, or creating custom plugin executions.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_302bc5739b5abf80,
+        _:ref_76a636aa6a06744d ;
+    oc:impartsKnowledge oc:kn_01eeac60,
+        oc:kn_1541fae0,
+        oc:kn_159c1a93,
+        oc:kn_29779e1d,
+        oc:kn_3d6567d2,
+        oc:kn_47b55006,
+        oc:kn_52abbabb,
+        oc:kn_a4a5eef9,
+        oc:kn_d3b10c7c,
+        oc:kn_d59365f3,
+        oc:kn_fbc81324 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:PomFileExists ;
+    oc:resolvesIntent "add code quality plugins like checkstyle spotbugs PMD",
+        "configure maven plugins",
+        "configure spring-boot-maven-plugin",
+        "configure surefire and failsafe test plugins",
+        "create executable JAR with shade or assembly",
+        "define custom plugin executions and phase bindings",
+        "manage plugin versions and releases",
+        "set up compiler plugin",
+        "set up jacoco code coverage" ;
+    oc:yieldsState oc:BuildCustomized,
+        oc:PluginsConfigured .
+
+oc:kn_01eeac60 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "CI/CD pipeline configuration" ;
+    oc:directiveContent "Avoid skipping tests in CI via skip flags — tests accidentally skipped undermine code quality gates." ;
+    oc:hasRationale "Skipped tests hide regressions and defects that quality plugins are meant to catch." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1541fae0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining custom plugin executions" ;
+    oc:directiveContent "Use meaningful execution IDs and bind to appropriate lifecycle phases; ensure sufficient heap memory for plugins like surefire and shade." ;
+    oc:hasRationale "Ambiguous execution IDs make debugging difficult; insufficient memory causes OOM failures during build." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_159c1a93 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When troubleshooting Maven plugin issues" ;
+    oc:directiveContent "1. Check for missing plugin versions. 2. Verify correct phase binding. 3. Eliminate duplicate executions. 4. Ensure sufficient JVM heap. 5. Resolve plugin execution ordering conflicts. 6. Review unintended plugin inheritance. 7. Clarify fork behavior. 8. Confirm skip flags are not accidentally set in CI." ;
+    oc:stepOrder 2 .
+
+oc:kn_29779e1d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring any Maven plugin with custom execution" ;
+    oc:codeLanguage "xml" ;
+    oc:directiveContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-{PLUGIN_NAME}-plugin</artifactId>
+    <version>{VERSION}</version>
+    <configuration>
+        <!-- plugin-specific config -->
+    </configuration>
+    <executions>
+        <execution>
+            <id>{execution-id}</id>
+            <phase>{PHASE}</phase>
+            <goals><goal>{GOAL}</goal></goals>
+        </execution>
+    </executions>
+</plugin>""" .
+
+oc:kn_3d6567d2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining plugin executions" ;
+    oc:directiveContent "Do not bind plugins to wrong lifecycle phases or create duplicate executions of the same goal." ;
+    oc:hasRationale "Wrong phase binding causes unexpected execution order; duplicate executions waste time and can produce conflicting outputs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_47b55006 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When setting up Maven plugin configuration" ;
+    oc:directiveContent "1. Pin plugin versions in pluginManagement. 2. Use defaults where possible. 3. Add meaningful execution IDs. 4. Bind to correct lifecycle phases. 5. Provide skip properties. 6. Comment complex configs. 7. Use pluginManagement for multi-module inheritance. 8. Keep plugins updated. 9. Separate CI/release plugins into profiles. 10. Document non-obvious configuration decisions." ;
+    oc:severityLevel "HIGH" ;
+    oc:stepOrder 1 .
+
+oc:kn_52abbabb a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Multi-module Maven projects" ;
+    oc:directiveContent "Centralize plugin versions and shared configuration in pluginManagement in the parent POM, then reference plugins without version in child modules." ;
+    oc:hasRationale "Centralization ensures consistency across modules and simplifies version upgrades across the project." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a4a5eef9 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When declaring any Maven plugin" ;
+    oc:directiveContent "Always specify explicit plugin versions in pluginManagement or the plugin declaration; never rely on Maven's default plugin versions." ;
+    oc:hasRationale "Default plugin versions can change between Maven releases, causing unpredictable builds and reproducibility failures." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d3b10c7c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a packaging plugin" ;
+    oc:directiveContent "Use maven-shade-plugin for fat JARs with dependency relocation, maven-assembly-plugin for custom archive layouts, and spring-boot-maven-plugin for Spring Boot applications." ;
+    oc:hasRationale "Each packaging plugin has different strengths — shade handles class relocation, assembly handles custom descriptors, Spring Boot handles layered JARs." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d59365f3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing plugin configuration strategy" ;
+    oc:directiveContent "Use minimal configuration — rely on sensible defaults where possible, provide skip properties for flexibility, and separate CI/release plugins into profiles." ;
+    oc:hasRationale "Minimal configuration reduces maintenance burden and makes POMs readable; profiles prevent unnecessary plugin execution in dev builds." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fbc81324 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring any Maven plugin" ;
+    oc:directiveContent "Do not rely on default plugin versions or omit version tags — this leads to non-reproducible builds." ;
+    oc:hasRationale "Missing versions cause builds to vary across environments and Maven versions, breaking CI/CD reliability." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_0b90566dd216c91a a oc:WorkflowStep ;
+    dcterms:description "**Inheritance** - Unintended plugin inheritance" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_0e71ad2d1d302876 a oc:WorkflowStep ;
+    dcterms:description "**Fork Confusion** - Misunderstanding fork behavior" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_2a875cc259966bcd a oc:WorkflowStep ;
+    dcterms:description "**Duplicate Executions** - Same goal running multiple times" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_35ed89c85c370f08 a oc:WorkflowStep ;
+    dcterms:description "**Phase Binding** - Bind to appropriate phases" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_3d35f35886323163 a oc:WorkflowStep ;
+    dcterms:description "**Skip Flags** - Tests accidentally skipped in CI" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_50384824fa0fe2c0 a oc:WorkflowStep ;
+    dcterms:description "**Version Pinning** - Always specify plugin versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_5ed92db60bf4aa49 a oc:WorkflowStep ;
+    dcterms:description "**Skip Properties** - Provide skip properties for flexibility" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_687ab47a8fcbbfd2 a oc:WorkflowStep ;
+    dcterms:description "**Profile Separation** - Separate CI/release plugins into profiles" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_78ed1933aec18f15 a oc:WorkflowStep ;
+    dcterms:description "**Updates** - Keep plugins current" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_829a57c493966bf8 a oc:WorkflowStep ;
+    dcterms:description "**Wrong Phase** - Plugin bound to wrong lifecycle phase" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a71ee217587b39ba a oc:WorkflowStep ;
+    dcterms:description "**Ordering** - Plugin execution order conflicts" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_c4b50a930af98a10 a oc:WorkflowStep ;
+    dcterms:description "**Execution IDs** - Use meaningful execution IDs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_c950c16faf84efdb a oc:WorkflowStep ;
+    dcterms:description "**Plugin Management** - Centralize in parent POM" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d09164bed74d7073 a oc:WorkflowStep ;
+    dcterms:description "**Missing Versions** - Relying on default versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e65703725a3030b8 a oc:WorkflowStep ;
+    dcterms:description "**Minimal Configuration** - Use defaults where possible" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_e82aa5a0f0279910 a oc:WorkflowStep ;
+    dcterms:description "**Memory Issues** - Insufficient heap for plugins" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f7b45013f1f45cfe a oc:WorkflowStep ;
+    dcterms:description "**Inheritance** - Use pluginManagement for multi-module" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_fdf5eecaba16bcfb a oc:WorkflowStep ;
+    dcterms:description "**Documentation** - Comment complex configurations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_302bc5739b5abf80 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0b90566dd216c91a,
+        _:ref_0e71ad2d1d302876,
+        _:ref_2a875cc259966bcd,
+        _:ref_3d35f35886323163,
+        _:ref_829a57c493966bf8,
+        _:ref_a71ee217587b39ba,
+        _:ref_d09164bed74d7073,
+        _:ref_e82aa5a0f0279910 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_76a636aa6a06744d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_35ed89c85c370f08,
+        _:ref_50384824fa0fe2c0,
+        _:ref_5ed92db60bf4aa49,
+        _:ref_687ab47a8fcbbfd2,
+        _:ref_78ed1933aec18f15,
+        _:ref_c4b50a930af98a10,
+        _:ref_c950c16faf84efdb,
+        _:ref_e65703725a3030b8,
+        _:ref_f7b45013f1f45cfe,
+        _:ref_fdf5eecaba16bcfb ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

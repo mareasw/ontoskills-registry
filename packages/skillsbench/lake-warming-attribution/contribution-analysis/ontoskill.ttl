@@ -1,0 +1,279 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_lake_warming_attribution_contribution_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "contribution-analysis" ;
+    skos:broader "Statistical analysis method" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/lake-warming-attribution/contribution-analysis" ;
+    oc:contentHash "b0cd1935f65b96b2e10990da37da9174dd0aaba8bf15896479498646e01bf4f9" ;
+    oc:dependsOnSkill oc:skill_ontoskills_pca_decomposition ;
+    oc:differentia "Quantifies the relative contribution of each factor to a response variable's variance using R² decomposition with factor analysis" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:MulticollinearityDetected ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Calculate the relative contribution of different factors to a response variable using R² decomposition. Use when you need to quantify how much each factor explains the variance of an outcome." ;
+    oc:hasName "contribution-analysis" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_746aacc9,
+        oc:req_8d8568d4,
+        oc:req_c1ea9da0,
+        oc:req_fc29ca60 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When you have multiple correlated variables that belong to different categories:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from factor_analyzer import FactorAnalyzer
+
+# Step 1: Combine ALL variables into one matrix
+pca_vars = ['Var1', 'Var2', 'Var3', 'Var4', 'Var5', 'Var6', 'Var7', 'Var8']
+X = df[pca_vars].values
+y = df['ResponseVariable'].values
+
+# Step 2: Standardize
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 3: Run ONE global PCA on all variables together
+fa = FactorAnalyzer(n_factors=4, rotation='varimax')
+fa.fit(X_scaled)
+scores = fa.transform(X_scaled)
+
+# Step 4: R² decomposition on factor scores
+def calc_r2(X, y):
+    model = LinearRegression()
+    model.fit(X, y)
+    y_pred = model.predict(X)
+    ss_res = np.sum((y - y_pred) ** 2)
+    ss_tot = np.sum((y - np.mean(y)) ** 2)
+    return 1 - (ss_res / ss_tot)
+
+full_r2 = calc_r2(scores, y)
+
+# Step 5: Calculate contribution of each factor
+contrib_0 = full_r2 - calc_r2(scores[:, [1, 2, 3]], y)
+contrib_1 = full_r2 - calc_r2(scores[:, [0, 2, 3]], y)
+contrib_2 = full_r2 - calc_r2(scores[:, [0, 1, 3]], y)
+contrib_3 = full_r2 - calc_r2(scores[:, [0, 1, 2]], y)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-53" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Complete Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Map factors to category names based on loadings interpretation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use factor_analyzer with varimax rotation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Report contribution as percentage" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Identify the dominant (largest) factor" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Run ONE global PCA on all variables together, not separate PCA per category" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| Negative contribution | Suppressor effect | Check for multicollinearity |
+| Contributions don't sum to R² | Normal behavior | R² decomposition is approximate |
+| Very small contributions | Factor not important | May be negligible driver |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Contribution analysis quantifies how much each factor contributes to explaining the variance of a response variable. This skill focuses on R² decomposition method." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """contributions = {
+    'Category1': contrib_0 * 100,
+    'Category2': contrib_1 * 100,
+    'Category3': contrib_2 * 100,
+    'Category4': contrib_3 * 100
+}
+
+dominant = max(contributions, key=contributions.get)
+dominant_pct = round(contributions[dominant])
+
+with open('output.csv', 'w') as f:
+    f.write('variable,contribution\\n')
+    f.write(f'{dominant},{dominant_pct}\\n')
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 63-77" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Output Format" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The contribution of each factor is calculated by comparing the full model R² with the R² when that factor is removed:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Contribution_i = R²_full - R²_without_i
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 58-60" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "R² Decomposition Method" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Contribution Analysis Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: contribution-analysis
+description: Calculate the relative contribution of different factors to a response variable using R² decomposition. Use when you need to quantify how much each factor explains the variance of an outcome.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow to calculate relative contributions of factors to a response variable's variance" ;
+            oc:hasStep _:ref_120fafa40eaec621,
+                _:ref_3a6964afa47d3cfd,
+                _:ref_43e565321d20d793,
+                _:ref_c151fadbcbade3e0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Map factors to category names, convert to percentages, identify dominant factor, write to CSV" ;
+                    oc:expectedOutcome "CSV file with variable-contribution pairs and dominant factor identified" ;
+                    oc:stepDependsOn _:ref_3a6964afa47d3cfd ;
+                    oc:stepId "report-results" ] ;
+            oc:workflowId "contribution-analysis-main" ;
+            oc:workflowName "R² Decomposition Contribution Analysis" ] ;
+    oc:impartsKnowledge oc:kn_133aa661,
+        oc:kn_29575765,
+        oc:kn_564e5fa3,
+        oc:kn_5e298791,
+        oc:kn_b18c3ec4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "calculate factor contributions to variance",
+        "decompose R² by factor importance",
+        "identify the dominant driver of a response variable",
+        "quantify how much each factor explains an outcome" ;
+    oc:yieldsState oc:ContributionAnalysisComplete .
+
+oc:kn_133aa661 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running factor analysis" ;
+    oc:directiveContent "Use varimax rotation with factor_analyzer to produce interpretable, orthogonal factors before computing contributions." ;
+    oc:hasRationale "Varimax rotation maximizes variance of squared loadings, making factors more interpretable and category-mappable." .
+
+oc:kn_29575765 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating contribution results" ;
+    oc:directiveContent "Contributions that do not sum to the total R² are normal — R² decomposition is approximate, not exact." ;
+    oc:hasRationale "Leave-one-out R² decomposition captures marginal contributions which may overlap across factors." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_564e5fa3 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing data for R² decomposition" ;
+    oc:directiveContent "Never run separate PCA/factor analysis per variable category; always run ONE global factor analysis on all variables together." ;
+    oc:hasRationale "Separate analyses per category produce incomparable factor spaces, making contribution decomposition invalid." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_5e298791 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When contribution values are negative" ;
+    oc:directiveContent "Negative contribution values indicate a suppressor effect — check for multicollinearity among predictors." ;
+    oc:hasRationale "Suppressor variables can artificially enhance other predictors' contributions, producing negative values when removed." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b18c3ec4 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before fitting FactorAnalyzer" ;
+    oc:directiveContent "Standardize all variables using StandardScaler before factor analysis." ;
+    oc:hasRationale "Variables on different scales would dominate factor extraction based on magnitude rather than covariance structure." .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_8d8568d4 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "factor_analyzer" .
+
+oc:req_c1ea9da0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scikit-learn" .
+
+oc:req_fc29ca60 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "R² decomposition methodology" .
+
+_:ref_120fafa40eaec621 a oc:WorkflowStep ;
+    dcterms:description "Combine all predictor variables into one matrix X and extract response variable y" ;
+    oc:expectedOutcome "X and y arrays ready for standardization" ;
+    oc:stepId "combine-variables" .
+
+_:ref_3a6964afa47d3cfd a oc:WorkflowStep ;
+    dcterms:description "Calculate full model R², then compute each factor's contribution using leave-one-out method" ;
+    oc:stepDependsOn _:ref_43e565321d20d793 ;
+    oc:stepId "r2-decomposition" .
+
+_:ref_43e565321d20d793 a oc:WorkflowStep ;
+    dcterms:description "Run ONE global factor analysis with varimax rotation on all standardized variables" ;
+    oc:expectedOutcome "Factor scores matrix with n_factors columns" ;
+    oc:stepDependsOn _:ref_c151fadbcbade3e0 ;
+    oc:stepId "factor-analysis" .
+
+_:ref_c151fadbcbade3e0 a oc:WorkflowStep ;
+    dcterms:description "Standardize X using StandardScaler" ;
+    oc:expectedOutcome "Standardized X_scaled matrix with zero mean and unit variance" ;
+    oc:stepDependsOn _:ref_120fafa40eaec621 ;
+    oc:stepId "standardize" .
+

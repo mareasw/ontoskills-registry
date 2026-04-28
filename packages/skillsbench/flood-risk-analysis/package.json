@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/flood-risk-analysis",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "flood-detection/ontoskill.ttl",
+    "nws-flood-thresholds/ontoskill.ttl",
+    "usgs-data-download/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "flood-detection/intents.json",
+    "nws-flood-thresholds/intents.json",
+    "usgs-data-download/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/jpg-ocr-stat",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "image-ocr/ontoskill.ttl",
+    "openai-vision/ontoskill.ttl",
+    "pdf/ontoskill.ttl",
+    "video-frame-extraction/ontoskill.ttl",
+    "xlsx/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "image-ocr/intents.json",
+    "openai-vision/intents.json",
+    "pdf/intents.json",
+    "video-frame-extraction/intents.json",
+    "xlsx/intents.json"
+  ],
+  "skills": []
+}

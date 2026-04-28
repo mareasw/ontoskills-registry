@@ -1,0 +1,223 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_adaptive_cruise_control_simulation_metrics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "simulation-metrics" ;
+    skos:broader "Metric calculator" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-adaptive-cruise-control/simulation-metrics" ;
+    oc:contentHash "a2daddc45bcf28ce5f3e0745f824542377c2c9c02bb0499336188664e404653d" ;
+    oc:dependsOnSkill oc:skill_ontoskills_csv_processing ;
+    oc:differentia "Computes control system performance metrics (rise time, overshoot, steady-state error, settling time) from time-series simulation data" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use this skill when calculating control system performance metrics such as rise time, overshoot percentage, steady-state error, or settling time for evaluating simulation results." ;
+    oc:hasName "simulation-metrics" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def settling_time(times, values, target, tolerance=0.02):
+    \"\"\"Time to settle within tolerance of target.\"\"\"
+    band = target * tolerance
+    lower, upper = target - band, target + band
+
+    settled_at = None
+    for t, v in zip(times, values):
+        if v < lower or v > upper:
+            settled_at = None
+        elif settled_at is None:
+            settled_at = t
+
+    return settled_at
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 59-73" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Time to stay within tolerance band of target." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Settling Time" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """times = [row['time'] for row in results]
+values = [row['value'] for row in results]
+target = 30.0
+
+print(f"Rise time: {rise_time(times, values, target)}")
+print(f"Overshoot: {overshoot_percent(values, target)}%")
+print(f"SS Error: {steady_state_error(values, target)}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 77-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Difference between target and final settled value." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def steady_state_error(values, target, final_fraction=0.1):
+    \"\"\"Calculate steady-state error using final portion of data.\"\"\"
+    n = len(values)
+    start = int(n * (1 - final_fraction))
+    final_avg = sum(values[start:]) / len(values[start:])
+    return abs(target - final_avg)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 46-53" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Steady-State Error" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def overshoot_percent(values, target):
+    \"\"\"Calculate overshoot percentage.\"\"\"
+    max_val = max(values)
+    if max_val <= target:
+        return 0.0
+    return ((max_val - target) / target) * 100
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 33-40" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "How much response exceeds target, as percentage." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overshoot" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Time for system to go from 10% to 90% of target value." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def rise_time(times, values, target):
+    \"\"\"Calculate rise time (10% to 90% of target).\"\"\"
+    t10 = t90 = None
+
+    for t, v in zip(times, values):
+        if t10 is None and v >= 0.1 * target:
+            t10 = t
+        if t90 is None and v >= 0.9 * target:
+            t90 = t
+            break
+
+    if t10 is not None and t90 is not None:
+        return t90 - t10
+    return None
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 12-27" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Rise Time" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Control System Performance Metrics" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: simulation-metrics
+description: Use this skill when calculating control system performance metrics such as rise time, overshoot percentage, steady-state error, or settling time for evaluating simulation results.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Calculate all four standard control system performance metrics from simulation time-series data." ;
+            oc:hasStep _:ref_3a0652ccb71e271e,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate rise time using rise_time(times, values, target)." ;
+                    oc:expectedOutcome "Numeric rise time or None if target never reached" ;
+                    oc:stepDependsOn _:ref_3a0652ccb71e271e ;
+                    oc:stepId "compute-rise-time" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate settling time using settling_time(times, values, target)." ;
+                    oc:expectedOutcome "Time at which response stays within tolerance band, or None" ;
+                    oc:stepDependsOn _:ref_3a0652ccb71e271e ;
+                    oc:stepId "compute-settling-time" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate overshoot percentage using overshoot_percent(values, target)." ;
+                    oc:expectedOutcome "Percentage value (0.0 if no overshoot)" ;
+                    oc:stepDependsOn _:ref_3a0652ccb71e271e ;
+                    oc:stepId "compute-overshoot" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Calculate steady-state error using steady_state_error(values, target)." ;
+                    oc:expectedOutcome "Absolute error between target and settled average" ;
+                    oc:stepDependsOn _:ref_3a0652ccb71e271e ;
+                    oc:stepId "compute-ss-error" ] ;
+            oc:workflowId "simulation-metrics-compute" ;
+            oc:workflowName "Compute Performance Metrics" ] ;
+    oc:impartsKnowledge oc:kn_1fce09a1,
+        oc:kn_5f30fd97,
+        oc:kn_62cef038,
+        oc:kn_8ee3a57f,
+        oc:kn_9da92289 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SimulationDataAvailable ;
+    oc:resolvesIntent "analyze simulation results",
+        "calculate overshoot percentage",
+        "calculate rise time from simulation data",
+        "calculate settling time",
+        "calculate steady-state error",
+        "evaluate control system performance metrics" ;
+    oc:yieldsState oc:PerformanceMetricsCalculated .
+
+oc:kn_1fce09a1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating settling time" ;
+    oc:directiveContent "Default settling tolerance band is ±2% of target; adjust the tolerance parameter for stricter or looser criteria." ;
+    oc:hasRationale "The 2% band is a standard engineering convention, but different systems may require tighter (1%) or looser (5%) bands." .
+
+oc:kn_5f30fd97 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating steady-state error" ;
+    oc:directiveContent "Steady-state error uses the final 10% of data points (default final_fraction=0.1) to average the settled value." ;
+    oc:hasRationale "Averaging over the tail portion filters out transient oscillations and gives a representative steady-state value." .
+
+oc:kn_62cef038 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When calculating rise time" ;
+    oc:directiveContent "Rise time is measured from 10% to 90% of the target value, not from 0% to 100%." ;
+    oc:hasRationale "The 10-90% convention avoids noise near the baseline and target, providing a robust and widely-accepted measure of system responsiveness." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8ee3a57f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using rise_time() or settling_time()" ;
+    oc:directiveContent "Rise time and settling time require monotonically increasing time arrays paired with corresponding value arrays." ;
+    oc:hasRationale "These functions iterate through time-value pairs sequentially; unordered or non-sequential data produces incorrect results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9da92289 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When interpreting metric results" ;
+    oc:directiveContent "If the system never reaches 90% of target, rise_time() returns None; if it never settles, settling_time() returns None." ;
+    oc:hasRationale "Unstable or underpowered systems may fail to reach targets — None returns signal this condition rather than producing misleading numeric values." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_3a0652ccb71e271e a oc:WorkflowStep ;
+    dcterms:description "Extract time and value arrays from simulation results." ;
+    oc:expectedOutcome "Two parallel arrays: times (monotonically increasing) and values (corresponding measurements)" ;
+    oc:stepId "extract-data" .
+

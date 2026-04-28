@@ -1,0 +1,629 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_python_scala_translation_python_scala_idioms a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "python-scala-idioms" ;
+    skos:broader "Translation guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/python-scala-translation/python-scala-idioms" ;
+    oc:contentHash "7a81f13422fe4612220fe17870aa76ae803acd15c08236c5ca6664dd7adb123d" ;
+    oc:differentia "that teaches idiomatic Scala patterns when translating from Python, emphasizing immutability, expression-based style, sealed hierarchies, and Scala conventions" ;
+    oc:extends oc:skill_ontoskills_python_scala_syntax_mapping ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "Python code or pattern to translate idiomatically to Scala" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Guide for writing idiomatic Scala when translating from Python. Use when the goal is not just syntactic translation but producing clean, idiomatic Scala code. Covers immutability, expression-based style, sealed hierarchies, and common Scala conventions." ;
+    oc:hasName "python-scala-idioms" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 13 ;
+                            oc:tableCaption "## Cheat Sheet: Common Transformations" ;
+                            oc:tableMarkdown """| Python Pattern | Idiomatic Scala |
+|---------------|-----------------|
+| `if x is None` | `x.isEmpty` or pattern match |
+| `if x is not None` | `x.isDefined` or `x.nonEmpty` |
+| `x if x else default` | `x.getOrElse(default)` |
+| `[x for x in xs if p(x)]` | `xs.filter(p)` |
+| `[f(x) for x in xs]` | `xs.map(f)` |
+| `any(p(x) for x in xs)` | `xs.exists(p)` |
+| `all(p(x) for x in xs)` | `xs.forall(p)` |
+| `next(x for x in xs if p(x), None)` | `xs.find(p)` |
+| `dict(zip(keys, values))` | `keys.zip(values).toMap` |
+| `isinstance(x, Type)` | `x.isInstanceOf[Type]` or pattern match |
+| `try: ... except: ...` | `Try { ... }` or pattern match |
+| Mutable accumulator loop | `foldLeft` / `foldRight` |
+| `for i, x in enumerate(xs)` | `xs.zipWithIndex` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Cheat Sheet: Common Transformations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// DON'T: Use null
+val name: String = null  // Bad!
+
+// DO: Use Option
+val name: Option[String] = None
+
+// DON'T: Use Any or type casts
+val data: Any = getData()
+val name = data.asInstanceOf[String]
+
+// DO: Use proper types and pattern matching
+sealed trait Data
+case class UserData(name: String) extends Data
+val data: Data = getData()
+data match {
+  case UserData(name) => // use name
+}
+
+// DON'T: Nested if-else chains
+if (x == 1) ... else if (x == 2) ... else if (x == 3) ...
+
+// DO: Pattern matching
+x match {
+  case 1 => ...
+  case 2 => ...
+  case 3 => ...
+}
+
+// DON'T: var with mutation
+var total = 0
+for (x <- items) total += x
+
+// DO: fold
+val total = items.sum
+// or
+val total = items.foldLeft(0)(_ + _)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 302-339" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Anti-Patterns to Avoid" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - separate side effects
+val items = (0 until 10).map(_ * 2).toList
+items.foreach(x => println(s"Value: $x"))
+
+// Or use tap for debugging
+val items = (0 until 10)
+  .map(_ * 2)
+  .tapEach(x => println(s"Value: $x"))
+  .toList
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 156-166" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+items = []
+for x in range(10):
+    items.append(x * 2)
+    print(f"Added {x * 2}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 148-154" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Avoid Side Effects in Expressions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - immutable approach
+case class Counter(count: Int = 0) {
+  def increment: Counter = copy(count = count + 1)
+}
+
+// Usage
+val c1 = Counter()
+val c2 = c1.increment  // Counter(1)
+val c3 = c2.increment  // Counter(2)
+// c1 is still Counter(0)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 31-42" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - mutable by default
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+    def increment(self):
+        self.count += 1
+        return self.count
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-29" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Immutability First" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+result = []
+for item in items:
+    if item.active:
+        result.append(item.value * 2)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 131-137" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - use collection methods
+val result = items
+  .filter(_.active)
+  .map(_.value * 2)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 139-144" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Prefer Methods on Collections" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - named parameters work the same
+def createUser(
+  name: String,
+  email: String,
+  admin: Boolean = false,
+  active: Boolean = true
+): User = ???
+
+val user = createUser("Alice", "alice@example.com", admin = true)
+
+// Case class with defaults is often better
+case class User(
+  name: String,
+  email: String,
+  admin: Boolean = false,
+  active: Boolean = true
+)
+
+val user = User("Alice", "alice@example.com", admin = true)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 178-198" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def create_user(name, email, admin=False, active=True):
+    pass
+
+user = create_user("Alice", "alice@example.com", admin=True)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 170-176" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Use Named Parameters for Clarity" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - expression-based
+def getStatus(code: Int): String = code match {
+  case 200 => "OK"
+  case 404 => "Not Found"
+  case _ => "Unknown"
+}
+
+// No intermediate variable, match is an expression
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 58-67" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - statement-based
+def get_status(code):
+    if code == 200:
+        status = "OK"
+    elif code == 404:
+        status = "Not Found"
+    else:
+        status = "Unknown"
+    return status
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 46-56" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Expression-Based Style" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - consider returning useful information
+def saveUser(user: User): Either[Error, UserId] = {
+  db.save(user) match {
+    case Right(id) => Right(id)
+    case Left(err) => Left(err)
+  }
+}
+
+// Or at minimum, use Try
+def saveUser(user: User): Try[Unit] = Try {
+  db.save(user)
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 240-253" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - None return is common
+def save_user(user):
+    db.save(user)
+    # implicit None return
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 233-238" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Avoid Returning Unit" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def find_user(id):
+    user = db.get(id)
+    if user is None:
+        return None
+    profile = user.get("profile")
+    if profile is None:
+        return None
+    return profile.get("email")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 102-112" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - Option chaining
+def findUser(id: Int): Option[String] = for {
+  user <- db.get(id)
+  profile <- user.profile
+  email <- profile.email
+} yield email
+
+// Or with flatMap
+def findUser(id: Int): Option[String] =
+  db.get(id)
+    .flatMap(_.profile)
+    .flatMap(_.email)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 114-127" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Replace Null Checks with Option" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python - loose typing
+def process_payment(method: str, amount: float):
+    if method == "credit":
+        # process credit
+        pass
+    elif method == "debit":
+        # process debit
+        pass
+    elif method == "crypto":
+        # process crypto
+        pass
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 71-83" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - sealed trait for exhaustive matching
+sealed trait PaymentMethod
+case class CreditCard(number: String, expiry: String) extends PaymentMethod
+case class DebitCard(number: String) extends PaymentMethod
+case class Crypto(walletAddress: String) extends PaymentMethod
+
+def processPayment(method: PaymentMethod, amount: Double): Unit = method match {
+  case CreditCard(num, exp) => // process credit
+  case DebitCard(num) => // process debit
+  case Crypto(addr) => // process crypto
+}
+// Compiler warns if you miss a case!
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 85-98" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Sealed Hierarchies for Domain Modeling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+class Parser:
+    def __init__(self, config):
+        self.config = config
+
+    @classmethod
+    def default(cls):
+        return cls(Config())
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 257-266" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - companion object with apply
+class Parser(config: Config)
+
+object Parser {
+  def apply(config: Config): Parser = new Parser(config)
+  def apply(): Parser = new Parser(Config())
+}
+
+// Usage
+val parser = Parser()  // Calls apply()
+val parser = Parser(customConfig)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 268-280" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Use Apply for Factory Methods" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+MAX_RETRY_COUNT = 3
+def calculate_total_price(items):
+    pass
+
+class ShoppingCart:
+    def __init__(self):
+        self._items = []
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 210-219" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Scala Naming Conventions" ;
+                            oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `snake_case` (variables, functions) | `camelCase` |
+| `SCREAMING_SNAKE` (constants) | `CamelCase` or `PascalCase` |
+| `PascalCase` (classes) | `PascalCase` |
+| `_private` | `private` keyword |
+| `__very_private` | `private[this]` |
+""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala
+val MaxRetryCount = 3  // or final val MAX_RETRY_COUNT
+def calculateTotalPrice(items: List[Item]): Double = ???
+
+class ShoppingCart {
+  private var items: List[Item] = Nil
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 221-229" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Scala Naming Conventions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When translating Python to Scala, aim for idiomatic Scala, not literal translation:" ],
+                        _:ref_ea14f0b53749129c ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Core Principles" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python to Idiomatic Scala Translation" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: python-scala-idioms
+description: Guide for writing idiomatic Scala when translating from Python. Use when the goal is not just syntactic translation but producing clean, idiomatic Scala code. Covers immutability, expression-based style, sealed hierarchies, and common Scala conventions.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_ea14f0b53749129c ;
+    oc:impartsKnowledge oc:kn_1affda2b,
+        oc:kn_3faeb7af,
+        oc:kn_407964b3,
+        oc:kn_48f99611,
+        oc:kn_8270b137,
+        oc:kn_854e90cc,
+        oc:kn_9dfd7b97,
+        oc:kn_aac52803,
+        oc:kn_abebe144,
+        oc:kn_c2bc8e82,
+        oc:kn_c5822b12,
+        oc:kn_e76e5d05 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "avoid unidiomatic Scala when converting Python",
+        "learn Scala conventions and best practices for Python developers",
+        "translate Python code to idiomatic Scala",
+        "write idiomatic Scala from Python patterns" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1affda2b a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When presenting Python-to-Scala translation guidance" ;
+    oc:directiveContent """## Core Principle
+- {principle_name}: {description}
+
+```python
+# Python pattern
+{python_code}
+```
+
+```scala
+// Idiomatic Scala
+{scala_code}
+```""" ;
+    oc:templateVariables "description",
+        "principle_name",
+        "python_code",
+        "scala_code" .
+
+oc:kn_3faeb7af a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python None-check chains to Scala Option" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """def findUser(id: Int): Option[String] = for {
+  user <- db.get(id)
+  profile <- user.profile
+  email <- profile.email
+} yield email""" .
+
+oc:kn_407964b3 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python duck typing or isinstance checks" ;
+    oc:directiveContent "Never use Any or asInstanceOf casts. Use sealed trait hierarchies and pattern matching for domain types." ;
+    oc:hasRationale "Type safety eliminates an entire class of runtime errors and enables compiler-verified exhaustive matching." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_48f99611 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python control flow to Scala" ;
+    oc:directiveContent "Use expression-based style: everything should return a value. Replace statement-based if-elif-else chains with pattern match expressions." ;
+    oc:hasRationale "Scala treats most constructs as expressions, enabling more concise and composable code." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8270b137 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating any Python mutable pattern to Scala" ;
+    oc:directiveContent "Prefer immutability: use val over var, immutable collections, and case class copy methods instead of mutation." ;
+    oc:hasRationale "Immutable code is easier to reason about, thread-safe, and aligns with Scala's functional paradigm." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_854e90cc a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python string-based type dispatch to Scala" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """sealed trait PaymentMethod
+case class CreditCard(number: String, expiry: String) extends PaymentMethod
+case class DebitCard(number: String) extends PaymentMethod
+
+def process(method: PaymentMethod): Unit = method match {
+  case CreditCard(num, exp) => // ...
+  case DebitCard(num) => // ...
+}""" .
+
+oc:kn_9dfd7b97 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Identify Python pattern (mutation, None checks, loops, string dispatch) 2. Map to idiomatic Scala equivalent (case class copy, Option, collection methods, sealed trait) 3. Apply Scala naming conventions (camelCase) 4. Ensure expression-based style (no unnecessary statements) 5. Verify type safety (no Any, no null, no asInstanceOf)" ;
+    oc:stepOrder 1 .
+
+oc:kn_aac52803 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python None checks or exception handling" ;
+    oc:directiveContent "Never use null in Scala. Use Option, Either, or Try to represent absence or failure." ;
+    oc:hasRationale "Null references are a major source of runtime errors. Option/Either/Try make absence explicit and force handling at compile time." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_abebe144 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python for-loops that accumulate results" ;
+    oc:directiveContent "Do not use mutable accumulators with var in loops. Use foldLeft, foldRight, or collection methods like sum, map, filter." ;
+    oc:hasRationale "Functional transformations are more composable, testable, and avoid shared mutable state." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c2bc8e82 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When naming any Scala identifier translated from Python" ;
+    oc:directiveContent "Convert snake_case Python names to camelCase for Scala methods/variables. Constants can use CamelCase or PascalCase in Scala." ;
+    oc:hasRationale "Following Scala naming conventions ensures code is readable and consistent with the ecosystem." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c5822b12 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python functions that implicitly return None after performing side effects" ;
+    oc:directiveContent "Avoid returning Unit from methods. Return Either[Error, Result], Try, or at minimum useful diagnostic information." ;
+    oc:hasRationale "Returning meaningful types enables callers to handle results functionally and improves error propagation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e76e5d05 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python code that uses string comparisons or isinstance for branching on types" ;
+    oc:directiveContent "Use sealed traits for domain modeling instead of string-based dispatch. The compiler will warn on non-exhaustive matches." ;
+    oc:hasRationale "Sealed hierarchies provide compile-time guarantees that all cases are handled." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_0073bf7f1c2ffa76 a oc:WorkflowStep ;
+    dcterms:description "**Prefer immutability** - Use `val` over `var`, immutable collections" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_05f4692034262d00 a oc:WorkflowStep ;
+    dcterms:description "**Type safety** - Leverage Scala's type system, avoid `Any`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_6ae82d6cda53b54c a oc:WorkflowStep ;
+    dcterms:description "**Expression-based** - Everything returns a value, minimize statements" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_aa6d75fa15c194a6 a oc:WorkflowStep ;
+    dcterms:description "**Pattern matching** - Use instead of if-else chains" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d6b8e0b19b6db342 a oc:WorkflowStep ;
+    dcterms:description "**Avoid null** - Use `Option`, `Either`, `Try`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_ea14f0b53749129c a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0073bf7f1c2ffa76,
+        _:ref_05f4692034262d00,
+        _:ref_6ae82d6cda53b54c,
+        _:ref_aa6d75fa15c194a6,
+        _:ref_d6b8e0b19b6db342 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+

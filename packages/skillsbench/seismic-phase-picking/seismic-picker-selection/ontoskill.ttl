@@ -1,0 +1,315 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_seismic_phase_picking_seismic_picker_selection a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "seismic-picker-selection" ;
+    skos:broader "Decision framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/seismic-phase-picking/seismic-picker-selection" ;
+    oc:contentHash "78139a1e621c770fdf54d3edadd007fee9c107245f58ece17bfc73cc12f7867a" ;
+    oc:differentia "that compares seismic event detection and phase picking methods (STA/LTA, Template Matching, Deep Learning, Manual) across generalizability, sensitivity, speed, and false positive tradeoffs to guide method selection" ;
+    oc:handlesFailure oc:InsufficientContext ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "This is a summary the advantages and disadvantages of earthquake event detection and phase picking methods, shared by leading seismology researchers at the 2025 Earthquake Catalog Workshop. Use it when you have a seismic phase picking task at hand." ;
+    oc:hasName "seismic-picker-selection" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: seismic-picker-selection
+description: This is a summary the advantages and disadvantages of earthquake event detection and phase picking methods, shared by leading seismology researchers at the 2025 Earthquake Catalog Workshop. Use it when you have a seismic phase picking task at hand.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Requires manual review and refinement of picks for a quality catalog" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Automatic picks not as precise" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "High rate of false detections during active sequences" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Limitations" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Amplitude-based detector: Reliably detects large earthquake signals" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Runs very fast: Automatically operates in real-time" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "No prior knowledge needed: Does not require information about earthquake sources or waveforms" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Easy to understand & implement: Can optimize for different window lengths and ratios" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Advantages" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "STA/LTA (Short-Term Average / Long-Term Average)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Best on broadband stations, but also produces usable picks on accelerometers, nodals, and Raspberry Shakes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Automatically and rapidly create more complete catalog during active sequences" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Use case**: Temporary deployment of broadband or nodal stations where you want an automatically generated local earthquake catalog" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Adds most value when existing seismic networks are sparse or nonexistent" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Requires continuous seismic data" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "When to Use" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "No prior knowledge needed about earthquake sources or waveforms" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Relatively easy to set up and run: Reasonable runtime with parallel processing. SeisBench provides easy-to-use model APIs and pretrained models." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Finds lots of small local earthquakes (lower magnitude of completeness, Mc) with fewer false detections than STA/LTA" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Advantages" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Cannot pick phases completely buried in noise - Not quite as sensitive as template-matching" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Out-of-distribution data issues: For datasets not represented in training data, expect larger automated pick errors (0.1-0.5 s) and missed picks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText """Sometimes misses picks from larger earthquakes that are obvious to humans, for unexplained
+reason""" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Limitations" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Deep Learning Pickers" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Requires prior knowledge about earthquake sources: Need **template waveforms** with good picks from a preexisting catalog" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Setup effort required: Must extract template waveforms and configure processing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Computationally intensive" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Does not improve spatial resolution: Unknown earthquake sources that are not similar enough to templates cannot be found" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Limitations" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Optimally sensitive detector (more sensitive than deep-learning): Can find smallest earthquakes buried in noise, if similar enough to template waveform" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "False detections are not as concerning when using high detection threshold" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Excellent for improving temporal resolution of earthquake sequences" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Advantages" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Template Matching" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "This skill is a derivative of Beauce, Eric and Tepp, Gabrielle and Yoon, Clara and Yu, Ellen and Zhu, Weiqiang. _Building a High Resolution Earthquake Catalog from Raw Waveforms: A Step-by-Step Guide_ Seismological Society of America (SSA) Annual Meeting, 2025. https://ai4eps.github.io/Earthquake_Catalog_Workshop/" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Perol et al. (2018) - Deep learning for seismic detection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Huang & Beroza (2015) - Template matching methods" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Allen (1978) - STA/LTA method" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Yoon and Shelly (2024), TSR - Deep learning vs template matching comparison" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When choosing an event detection and phase picking method, consider these key tradeoffs:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Generalizability**: Ability to find arbitrary earthquake signals" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Sensitivity**: Ability to find small earthquakes" ] ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "When choosing an event detection and phase picking method, consider these key tradeoffs" ;
+                            oc:tableMarkdown """| Method | Generalizability | Sensitivity | Speed, Ease-of-Use | False Positives |
+|--------|------------------|-------------|-------------------|-----------------|
+| STA/LTA | High | Low | Fast, Easy | Many |
+| Manual | High | High | Slow, Difficult | Few |
+| Deep Learning | High | High | Fast, Easy | Medium |
+| Template Matching | Low | High | Slow, Difficult | Few |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Key insight:** Each method has strengths and weaknesses. Purpose and resources should guide your choice." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview: Method Tradeoffs" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Seismic Event Detection & Phase Picking Method Selection Guide" ] ;
+    oc:impartsKnowledge oc:kn_174b2b59,
+        oc:kn_7209c301,
+        oc:kn_95e150ab,
+        oc:kn_9a8ca5dc,
+        oc:kn_ad8d0cc2,
+        oc:kn_e2ab52f4,
+        oc:kn_e4bff8cd ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "choose between STA/LTA template matching and deep learning pickers",
+        "compare earthquake detection methods",
+        "evaluate seismic picker tradeoffs",
+        "select seismic phase picking method" ;
+    oc:yieldsState oc:MethodSelected .
+
+oc:kn_174b2b59 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a phase picking method for a specific task" ;
+    oc:directiveContent "Use STA/LTA for real-time monitoring of large signals when speed and simplicity matter most. Use Deep Learning for sparse networks or automatic catalog generation. Use Template Matching when maximum sensitivity for small earthquakes is needed and templates exist." ;
+    oc:hasRationale "Each method occupies a different niche in the sensitivity-generalizability-speed tradeoff space." .
+
+oc:kn_7209c301 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using STA/LTA for catalog production" ;
+    oc:directiveContent "Do not rely on STA/LTA automatic picks without manual review for a quality catalog. STA/LTA produces high false positive rates during active sequences and imprecise automatic picks." ;
+    oc:hasRationale "The high false positive rate and pick imprecision of STA/LTA degrades catalog quality without human review." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_95e150ab a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When considering Template Matching" ;
+    oc:directiveContent "Template Matching requires preexisting catalog picks as template waveforms and cannot detect earthquakes dissimilar to those templates. It does not improve spatial resolution." ;
+    oc:hasRationale "Template Matching is fundamentally limited to detecting events similar to known sources; novel events will be missed." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9a8ca5dc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting any seismic phase picking method" ;
+    oc:directiveContent "Purpose and resources should guide the choice of picking method — there is no single best method. Each has distinct tradeoffs in generalizability, sensitivity, speed, and false positive rate." ;
+    oc:hasRationale "The optimal picker depends on the specific seismic monitoring task, available data, computational resources, and required catalog quality." .
+
+oc:kn_ad8d0cc2 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When using Deep Learning pickers on unfamiliar seismic datasets" ;
+    oc:directiveContent "Deep Learning pickers produce larger automated pick errors (0.1–0.5 s) and missed picks on out-of-distribution data not represented in training sets. They may also inexplicably miss picks from large earthquakes that are obvious to humans." ;
+    oc:hasRationale "Model generalization is a fundamental limitation of current deep learning approaches in seismology." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e2ab52f4 a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before selecting any method" ;
+    oc:directiveContent "All methods assume access to continuous seismic waveform data. Deep Learning pickers work best on broadband stations but produce usable picks on accelerometers, nodals, and Raspberry Shakes." ;
+    oc:hasRationale "The quality and type of seismic instrumentation affects picker performance and must be factored into method selection." .
+
+oc:kn_e4bff8cd a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to deploy Deep Learning pickers" ;
+    oc:directiveContent "Deep Learning adds most value when existing seismic networks are sparse or nonexistent, and for rapidly creating more complete catalogs during active earthquake sequences." ;
+    oc:hasRationale "Deep learning pickers excel in data-sparse scenarios where traditional methods struggle and during crises requiring rapid catalog updates." .
+

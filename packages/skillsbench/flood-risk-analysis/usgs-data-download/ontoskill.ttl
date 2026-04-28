@@ -1,0 +1,400 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_flood_risk_analysis_usgs_data_download a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "usgs-data-download" ;
+    skos:broader "Data acquisition skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/flood-risk-analysis/usgs-data-download" ;
+    oc:contentHash "bd282888f06e1b940b7dbbefb4d0295f57ad5a963d8ac7d36a448f500a7fee6e" ;
+    oc:differentia "downloads water level and streamflow data from USGS using the dataretrieval Python package" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash",
+        "Python" ;
+    oc:hasArgumentHint "station_id (8-digit USGS station ID, e.g. '04119000'), start_date, end_date" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Download water level data from USGS using the dataretrieval package. Use when accessing real-time or historical streamflow data, downloading gage height or discharge measurements, or working with USGS station IDs." ;
+    oc:hasName "usgs-data-download" ;
+    oc:hasRequirement oc:req_32f1cb96,
+        oc:req_96b7c7a4,
+        oc:req_ccf0414d ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The DataFrame has a datetime index and these columns:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "The DataFrame has a datetime index and these columns" ;
+                            oc:tableMarkdown """| Column | Description |
+|--------|-------------|
+| `site_no` | Station ID |
+| `00065` | Water level value |
+| `00065_cd` | Quality code (can ignore) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Returned DataFrame Structure" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install dataretrieval
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-16" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The NWIS module is reliable and straightforward for accessing gage height data." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from dataretrieval import nwis
+
+# Get instantaneous values (15-min intervals)
+df, meta = nwis.get_iv(
+    sites='<station_id>',
+    start='<start_date>',
+    end='<end_date>',
+    parameterCd='00065'
+)
+
+# Get daily values
+df, meta = nwis.get_dv(
+    sites='<station_id>',
+    start='<start_date>',
+    end='<end_date>',
+    parameterCd='00060'
+)
+
+# Get site information
+info, meta = nwis.get_info(sites='<station_id>')
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 21-42" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "nwis Module (Recommended)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This guide covers downloading water level data from USGS using the `dataretrieval` Python package. USGS maintains thousands of stream gages across the United States that record water levels at 15-minute intervals." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Find the gage height column (excludes quality code column)
+gage_col = [c for c in df.columns if '00065' in str(c) and '_cd' not in str(c)]
+
+if gage_col:
+    water_levels = df[gage_col[0]]
+    print(water_levels.head())
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 95-102" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Extracting the Value Column" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## nwis Module Functions" ;
+                            oc:tableMarkdown """| Function | Description | Data Frequency |
+|----------|-------------|----------------|
+| `nwis.get_iv()` | Instantaneous values | ~15 minutes |
+| `nwis.get_dv()` | Daily values | Daily |
+| `nwis.get_info()` | Site information | N/A |
+| `nwis.get_stats()` | Statistical summaries | N/A |
+| `nwis.get_peaks()` | Annual peak discharge | Annual |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "nwis Module Functions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| Empty DataFrame | Station has no data for date range | Try different dates or use `get_iv()` |
+| `get_dv()` returns empty | No daily gage height data | Use `get_iv()` and aggregate |
+| Connection error | Network issue | Wrap in try/except, retry |
+| Rate limited | Too many requests | Add delays between requests |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 2 ;
+                            oc:tableCaption "## Parameter Codes" ;
+                            oc:tableMarkdown """| Code | Parameter | Unit | Description |
+|------|-----------|------|-------------|
+| `00065` | Gage height | feet | Water level above datum |
+| `00060` | Discharge | cfs | Streamflow volume |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Parameter Codes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from dataretrieval import nwis
+
+station_ids = ['<id_1>', '<id_2>', '<id_3>']
+all_data = {}
+
+for site_id in station_ids:
+    try:
+        df, meta = nwis.get_iv(
+            sites=site_id,
+            start='<start_date>',
+            end='<end_date>',
+            parameterCd='00065'
+        )
+        if len(df) > 0:
+            all_data[site_id] = df
+    except Exception as e:
+        print(f"Failed to download {site_id}: {e}")
+
+print(f"Successfully downloaded: {len(all_data)} stations")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 72-92" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Downloading Multiple Stations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Station IDs are 8-digit strings with leading zeros (e.g., '04119000')" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Always wrap API calls in try/except for failed downloads" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Filter columns to exclude quality code columns (`_cd`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Check `len(df) > 0` before processing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Break up large requests into smaller time periods to avoid timeouts" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Use `get_iv()` for gage height, as daily data is often unavailable" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "USGS Data Download Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: usgs-data-download
+description: Download water level data from USGS using the dataretrieval package. Use when accessing real-time or historical streamflow data, downloading gage height or discharge measurements, or working with USGS station IDs.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Download water level data for multiple USGS stations with error handling" ;
+            oc:hasStep _:ref_151d82e69e1977de,
+                _:ref_6df4375b0654c098,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Report count of successfully downloaded stations and any failures" ;
+                    oc:expectedOutcome "Summary of download results" ;
+                    oc:stepDependsOn _:ref_6df4375b0654c098 ;
+                    oc:stepId "report" ] ;
+            oc:workflowId "usgs-multi-station-download" ;
+            oc:workflowName "Download Data for Multiple Stations" ],
+        [ a oc:Workflow ;
+            dcterms:description "Download water level or discharge data for a single USGS station" ;
+            oc:hasStep _:ref_45486d7c692c7ea9,
+                _:ref_629992f2d9c18fe8,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Filter columns to exclude _cd quality codes and extract the value column" ;
+                    oc:expectedOutcome "Clean Series of water level or discharge values" ;
+                    oc:stepDependsOn _:ref_629992f2d9c18fe8 ;
+                    oc:stepId "extract-column" ],
+                _:ref_8cd2958bc02e24e9 ;
+            oc:workflowId "usgs-single-station-download" ;
+            oc:workflowName "Download Data for Single Station" ] ;
+    oc:impartsKnowledge oc:kn_011d195c,
+        oc:kn_082bd8a1,
+        oc:kn_7dd94330,
+        oc:kn_85ec119c,
+        oc:kn_8f4b5a06,
+        oc:kn_99143641,
+        oc:kn_cfcc6f30,
+        oc:kn_d173cce1,
+        oc:kn_e0053464,
+        oc:kn_e1d3e3bb,
+        oc:kn_e59bdafe ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "download data for multiple stations",
+        "download streamflow discharge data",
+        "download water level data from USGS",
+        "get gage height measurements for a station",
+        "retrieve site information for USGS stations" ;
+    oc:yieldsState oc:DataDownloaded .
+
+oc:kn_011d195c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting the value column from a USGS DataFrame while excluding quality codes" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """gage_col = [c for c in df.columns if '00065' in str(c) and '_cd' not in str(c)]
+if gage_col:
+    water_levels = df[gage_col[0]]""" .
+
+oc:kn_082bd8a1 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When downloading data spanning long time ranges or many stations" ;
+    oc:directiveContent "Break up large requests into smaller time periods to avoid timeouts, and add delays between requests when downloading multiple stations to avoid rate limiting." ;
+    oc:hasRationale "Large single requests to USGS can timeout; rapid sequential requests can trigger rate limiting." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_7dd94330 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any USGS data download" ;
+    oc:directiveContent "dataretrieval Python package must be installed (pip install dataretrieval). Network access to USGS servers is required." .
+
+oc:kn_85ec119c a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When encountering empty results or network failures" ;
+    oc:directiveContent "If get_dv() returns empty for gage height, switch to get_iv() and aggregate manually. For connection errors, add retry logic with delays." ;
+    oc:hasRationale "Daily gage height data is frequently unavailable; instantaneous data provides a reliable fallback that can be aggregated." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8f4b5a06 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When downloading USGS water level data" ;
+    oc:directiveContent "1. Install dataretrieval (pip install dataretrieval) 2. Import nwis module 3. Call nwis.get_iv() or nwis.get_dv() with site ID, date range, and parameterCd 4. Wrap call in try/except 5. Check len(df) > 0 6. Filter out _cd quality columns 7. Extract value column for analysis" ;
+    oc:hasRationale "Provides the standard reliable workflow for acquiring and preparing USGS data." ;
+    oc:stepOrder 1 .
+
+oc:kn_99143641 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying station IDs for any USGS API call" ;
+    oc:directiveContent "USGS station IDs are 8-digit strings with leading zeros (e.g., '04119000'). Always preserve leading zeros." ;
+    oc:hasRationale "Leading zeros are part of the station identifier; dropping them will result in invalid or incorrect station lookups." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cfcc6f30 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When downloading gage height (parameter 00065) data" ;
+    oc:directiveContent "Use get_iv() for gage height data rather than get_dv(), as daily gage height data is often unavailable." ;
+    oc:hasRationale "Many USGS stations do not report daily gage height aggregates; instantaneous values at 15-minute intervals are more reliably available." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d173cce1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When downloading data from any USGS station" ;
+    oc:directiveContent "Never make USGS API calls without wrapping them in try/except blocks." ;
+    oc:hasRationale "Network failures, rate limiting, and missing data will crash the entire pipeline if unhandled." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e0053464 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "After every data download, before processing or analysis" ;
+    oc:directiveContent "Always check len(df) > 0 before processing downloaded data, and filter out quality code columns (ending in _cd)." ;
+    oc:hasRationale "Empty DataFrames indicate no data for the requested range; quality code columns are not needed for analysis and add noise." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e1d3e3bb a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running or retrying downloads" ;
+    oc:directiveContent "USGS data downloads are read-only and idempotent — the same query always returns the same historical data." ;
+    oc:hasRationale "Historical water level data does not change, so re-downloading is safe and produces consistent results." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e59bdafe a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When downloading instantaneous gage height data for a single station" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from dataretrieval import nwis
+
+df, meta = nwis.get_iv(
+    sites='<station_id>',
+    start='<start_date>',
+    end='<end_date>',
+    parameterCd='00065'
+)""" .
+
+oc:req_32f1cb96 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "dataretrieval Python package" .
+
+oc:req_96b7c7a4 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "USGS parameter codes (00065 for gage height, 00060 for discharge)" .
+
+oc:req_ccf0414d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "USGS station IDs are 8-digit strings with leading zeros" .
+
+_:ref_151d82e69e1977de a oc:WorkflowStep ;
+    dcterms:description "Ensure dataretrieval package is installed" ;
+    oc:expectedOutcome "Package available for import" ;
+    oc:stepId "install" .
+
+_:ref_45486d7c692c7ea9 a oc:WorkflowStep ;
+    dcterms:description "Call nwis.get_iv() or nwis.get_dv() with station ID, date range, and parameter code, wrapped in try/except" ;
+    oc:expectedOutcome "DataFrame with datetime index and measurement values" ;
+    oc:stepDependsOn _:ref_8cd2958bc02e24e9 ;
+    oc:stepId "fetch-data" .
+
+_:ref_629992f2d9c18fe8 a oc:WorkflowStep ;
+    dcterms:description "Check len(df) > 0 to confirm data was returned" ;
+    oc:expectedOutcome "Non-empty DataFrame confirmed" ;
+    oc:stepDependsOn _:ref_45486d7c692c7ea9 ;
+    oc:stepId "validate" .
+
+_:ref_6df4375b0654c098 a oc:WorkflowStep ;
+    dcterms:description "Iterate over station IDs, calling nwis.get_iv() for each with try/except, collecting successful results into a dict" ;
+    oc:expectedOutcome "Dictionary mapping station IDs to DataFrames" ;
+    oc:stepDependsOn _:ref_151d82e69e1977de ;
+    oc:stepId "loop-stations" .
+
+_:ref_8cd2958bc02e24e9 a oc:WorkflowStep ;
+    dcterms:description "Ensure dataretrieval package is installed (pip install dataretrieval)" ;
+    oc:expectedOutcome "Package available for import" ;
+    oc:stepId "install" .
+

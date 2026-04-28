@@ -1,0 +1,746 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_manufacturing_equipment_maintenance_reflow_profile_compliance_toolkit a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "reflow-profile-compliance-toolkit" ;
+    skos:broader "Compliance analysis toolkit" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/manufacturing-equipment-maintenance/reflow-profile-compliance-toolkit" ;
+    oc:contentHash "92265ea7ae72e6f21b9063fe1eda46cc5b71042274d2686d3ab79519dafb8644" ;
+    oc:differentia "that deterministically computes reflow soldering profile metrics (ramp, TAL, peak, conveyor feasibility) from thermocouple traces using handbook-defined limits" ;
+    oc:handlesFailure oc:HandbookLimitsNotFound,
+        oc:InvalidTimeSeriesData,
+        oc:MissingThermocoupleData ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "thermocouple CSV data, MES log CSV, and handbook PDF with reflow profile limits" ;
+    oc:hasCategory "manufacturing" ;
+    oc:hasDescription "Deterministic handbook-grounded retrieval and thermocouple computations for reflow profile compliance outputs such as ramp, TAL, peak, feasibility, and selection." ;
+    oc:hasName "reflow-profile-compliance-toolkit" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent _:ref_06b7a38d745ed224,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 18 ;
+                    oc:textContent "Region filtering patterns:" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 15 ;
+                    oc:textContent "Ignore segments where `dt <= 0` (non-monotonic timestamps)." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 36 ;
+                    oc:textContent "If parameters are missing, output:" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 19 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Zone band region: filter by `zone_id in zones`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Time band region: filter by `t_start_s <= time_s <= t_end_s`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Temperature band region: only include segments where **both endpoints** satisfy `tmin <= T <= tmax`." ] ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """def max_slope_in_temp_band(df_tc, tmin, tmax):
+    g = df_tc.sort_values("time_s")
+    t = g["time_s"].to_numpy(dtype=float)
+    y = g["temp_c"].to_numpy(dtype=float)
+    best = None
+    for i in range(1, len(g)):
+        dt = t[i] - t[i-1]
+        if dt <= 0:
+            continue
+        if (tmin <= y[i-1] <= tmax) and (tmin <= y[i] <= tmax):
+            s = (y[i] - y[i-1]) / dt
+            best = s if best is None else max(best, s)
+    return best  # None if no valid segments
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 21 ;
+                    oc:sourceLocation "lines 76-90" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 17 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "`s_i = (T_i - T_{i-1}) / (t_i - t_{i-1})` for `dt > 0`" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "the “max ramp” is `max(s_i)` over the region." ] ],
+                _:ref_30cac7008a0afd73,
+                _:ref_317a56b4f232cf97,
+                _:ref_399a00445ed5668e,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 12 ;
+                    oc:textContent "Deterministic thermocouple computation recipes" ],
+                [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: reflow-profile-compliance-toolkit
+description: Deterministic handbook-grounded retrieval and thermocouple computations for reflow profile compliance outputs such as ramp, TAL, peak, feasibility, and selection.
+""" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 34 ;
+                    oc:textContent "Maximum time-in-oven across length**" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 9 ;
+                    oc:textContent "Goal: extract a compact config object from the handbook and use it for all computations:" ],
+                _:ref_4d565a5e16471bd0,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 26 ;
+                    oc:textContent "Examples:" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """df_tc = df_tc.sort_values(["run_id","tc_id","time_s"], kind="mergesort")
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 14 ;
+                    oc:sourceLocation "lines 60-62" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 35 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "`speed_min_cm_min = (L_eff_cm / t_max_s) * 60`" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Given: `L_eff_cm`, maximum time `t_max_s`" ] ],
+                _:ref_674e428450e58736,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 20 ;
+                    oc:textContent "Robust implementation (temperature-band example):" ],
+                _:ref_7483742c30ddb597,
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """def time_above_threshold_s(df_tc, thr):
+    g = df_tc.sort_values("time_s")
+    t = g["time_s"].to_numpy(dtype=float)
+    y = g["temp_c"].to_numpy(dtype=float)
+    total = 0.0
+    for i in range(1, len(g)):
+        t0, t1 = t[i-1], t[i]
+        y0, y1 = y[i-1], y[i]
+        if t1 <= t0:
+            continue
+
+        # fully above
+        if y0 > thr and y1 > thr:
+            total += (t1 - t0)
+            continue
+
+        # crossing: interpolate crossing time
+        crosses = (y0 <= thr < y1) or (y1 <= thr < y0)
+        if crosses and (y1 != y0):
+            frac = (thr - y0) / (y1 - y0)
+            tcross = t0 + frac * (t1 - t0)
+            if y0 <= thr and y1 > thr:
+                total += (t1 - tcross)
+            else:
+                total += (tcross - t0)
+    return total
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 23 ;
+                    oc:sourceLocation "lines 95-122" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """def r2(x):
+    if x is None:
+        return None
+    if isinstance(x, float) and (math.isnan(x) or math.isinf(x)):
+        return None
+    return float(round(float(x), 2))
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 43 ;
+                    oc:sourceLocation "lines 175-182" ],
+                _:ref_762caa05fe5a3655,
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# max metric
+best = max(items, key=lambda x: (x.value, -lex(x.tc_id)))  # or sort then take first
+# min metric
+best = min(items, key=lambda x: (x.value, x.tc_id))
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 27 ;
+                    oc:sourceLocation "lines 131-136" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 5 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "compute metrics with predictable tie-breaks and interpolation." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "retrieve the right definitions from the handbook, and" ] ],
+                _:ref_85b27f6aff898bff,
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 40 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Dicts keyed by ID: emit in sorted key order." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Lists: sort by primary ID (run_id / board_family) lexicographically." ] ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "When to invoke:" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 29 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText """`peak_tc = max(temp_c)`
+Run-level “coldest” behavior (common handbook guidance):""" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText """`min_peak_run = min(peak_tc)` (tie by tc_id)
+Requirement:""" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "`required_peak = liquidus + peak_margin`" ] ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """cfg = {
+  # temperature region for the ramp calculation:
+  # either {"type":"temp_band", "tmin":..., "tmax":...}
+  # or {"type":"zone_band", "zones":[...]}
+  # or {"type":"time_band", "t_start_s":..., "t_end_s":...}
+  "preheat_region": {...},
+
+  "ramp_limit_c_per_s": ...,
+
+  "tal_threshold_c_source": "solder_liquidus_c",   # if MES provides it
+  "tal_min_s": ...,
+  "tal_max_s": ...,
+
+  "peak_margin_c": ...,
+
+  # conveyor feasibility can be many forms; represent as a rule object
+  "conveyor_rule": {...},
+}
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 10 ;
+                    oc:sourceLocation "lines 31-50" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 8 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Ramp rate guidance: “ramp”, “slope”, “°C/s”, “C/s”." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Peak temperature guidance: “peak”, “minimum peak”, “margin above liquidus”." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Thermal profile overview: defines “preheat”, “soak”, “reflow”, “cooling”." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "Conveyor / dwell feasibility: “conveyor speed”, “dwell time”, “heated length”, “zone length”, “time-in-oven”." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Liquidus & wetting time: “liquidus”, “time above liquidus”, “TAL”, “wetting”." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 6 ;
+                            oc:itemText "Thermocouple placement: “cold spot”, “worst case”, “representative sensor”." ] ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 42 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Never emit NaN/Inf; use `null`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Round floats to 2 decimals." ] ],
+                _:ref_a470e5b0f4e83404,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 7 ;
+                    oc:textContent "Search the handbook for these common sections/tables:" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 31 ;
+                    oc:textContent "Common patterns:" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 25 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "If selecting maximum metric (e.g., ramp): choose `(max_value, smallest_tc_id)`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "If selecting minimum metric (e.g., “coldest” TAL or peak): choose `(min_value, smallest_tc_id)`." ] ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 6 ;
+                    oc:textContent "Handbook “where to look” checklist" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 37 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "`meets = false`" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "`required_min_speed_cm_min = null`" ] ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 11 ;
+                    oc:textContent "If the handbook provides multiple applicable constraints, implement all and use the stricter constraint (document the choice in code comments)." ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 33 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Given: effective heated length `L_eff_cm`, minimum dwell `t_min_s`" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "`speed_min_cm_min = (L_eff_cm / t_min_s) * 60`" ] ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 32 ;
+                    oc:textContent "Minimum dwell time across effective heated length**" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 38 ;
+                    oc:textContent "Output construction guardrails" ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 4 ;
+                    oc:textContent "This skill is designed to make the agent:" ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Sanity checks before writing outputs" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "ID fields are strings." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Arrays sorted lexicographically." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "No NaN/Inf in JSON." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Any “time above threshold” uses interpolation (not naive threshold counting)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Sensor selection uses deterministic tie-breaks." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Floats rounded to 2 decimals." ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import os, json, math
+import pandas as pd
+
+DATA_DIR = "/app/data"
+OUT_DIR  = "/app/output"
+
+runs = pd.read_csv(os.path.join(DATA_DIR, "mes_log.csv"))
+tc   = pd.read_csv(os.path.join(DATA_DIR, "thermocouples.csv"))
+
+runs["run_id"] = runs["run_id"].astype(str)
+tc["run_id"]   = tc["run_id"].astype(str)
+tc["tc_id"]    = tc["tc_id"].astype(str)
+
+runs = runs.sort_values(["run_id"], kind="mergesort")
+tc   = tc.sort_values(["run_id","tc_id","time_s"], kind="mergesort")
+
+# 1) Retrieve cfg from handbook (via RAG): regions, limits, windows, margins, feasibility rules
+cfg = {...}
+
+# 2) Compute per-run metrics deterministically with stable tie-breaks and interpolation
+# 3) Build JSON objects with sorted IDs and 2dp rounding
+# 4) Write outputs into /app/output
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 190-213" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Minimal end-to-end scaffold" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_06b7a38d745ed224,
+        _:ref_30cac7008a0afd73,
+        _:ref_317a56b4f232cf97,
+        _:ref_399a00445ed5668e,
+        _:ref_4d565a5e16471bd0,
+        _:ref_674e428450e58736,
+        _:ref_7483742c30ddb597,
+        _:ref_762caa05fe5a3655,
+        _:ref_85b27f6aff898bff,
+        _:ref_a470e5b0f4e83404 ;
+    oc:impartsKnowledge oc:kn_0a21f3a9,
+        oc:kn_0faab06c,
+        oc:kn_102a99c5,
+        oc:kn_26b63258,
+        oc:kn_2b4e0f36,
+        oc:kn_2df1dfca,
+        oc:kn_4d395cf4,
+        oc:kn_73231d69,
+        oc:kn_8850ebd2,
+        oc:kn_89f2ddb1,
+        oc:kn_a5424414,
+        oc:kn_afaf97f0,
+        oc:kn_be6cffc4,
+        oc:kn_e1fda612,
+        oc:kn_e4d9881a ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:HandbookDocumentAvailable,
+        oc:ThermocoupleDataAvailable ;
+    oc:resolvesIntent "assess conveyor speed feasibility for reflow oven settings",
+        "calculate time above liquidus (TAL) for reflow profiles",
+        "compute reflow profile ramp rate from thermocouple data",
+        "determine peak temperature compliance against handbook limits",
+        "extract reflow profile limits and rules from handbook documents",
+        "generate deterministic compliance reports from thermocouple traces" ;
+    oc:yieldsState oc:ComplianceReportGenerated,
+        oc:ReflowProfileComputed .
+
+oc:kn_0a21f3a9 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Requires pandas and math libraries; expects thermocouples.csv and mes_log.csv in /app/data and handbook PDF accessible for limit extraction." .
+
+oc:kn_0faab06c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When rounding output values for JSON serialization" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def r2(x):
+    if x is None: return None
+    if isinstance(x, float) and (math.isnan(x) or math.isinf(x)): return None
+    return float(round(float(x), 2))""" .
+
+oc:kn_102a99c5 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing TAL or wetting time with linear interpolation" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def time_above_threshold_s(df_tc, thr):
+    g = df_tc.sort_values("time_s")
+    t = g["time_s"].to_numpy(dtype=float)
+    y = g["temp_c"].to_numpy(dtype=float)
+    total = 0.0
+    for i in range(1, len(g)):
+        t0, t1 = t[i-1], t[i]
+        y0, y1 = y[i-1], y[i]
+        if t1 <= t0: continue
+        if y0 > thr and y1 > thr:
+            total += (t1 - t0); continue
+        crosses = (y0 <= thr < y1) or (y1 <= thr < y0)
+        if crosses and (y1 != y0):
+            frac = (thr - y0) / (y1 - y0)
+            tcross = t0 + frac * (t1 - t0)
+            if y0 <= thr and y1 > thr: total += (t1 - tcross)
+            else: total += (tcross - t0)
+    return total""" .
+
+oc:kn_26b63258 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Per-run compliance output object" ;
+    oc:directiveContent "{run_id: {ramp_c_per_s: float|null, tal_s: float|null, peak_c: float|null, required_peak_c: float|null, meets_peak: bool|null, required_min_speed_cm_min: float|null, meets_conveyor: bool|null, ...}}" ;
+    oc:templateVariables "meets_conveyor",
+        "meets_peak",
+        "peak_c",
+        "ramp_c_per_s",
+        "required_min_speed_cm_min",
+        "required_peak_c",
+        "run_id",
+        "tal_s" .
+
+oc:kn_2b4e0f36 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When extracting limits from the handbook" ;
+    oc:directiveContent "If the handbook provides multiple applicable constraints for the same metric, implement all and use the stricter constraint, documenting the choice in code comments." ;
+    oc:hasRationale "Multiple overlapping constraints from different handbook sections must be reconciled; stricter compliance ensures no violation is missed." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2df1dfca a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "End-to-end reflow profile compliance computation" ;
+    oc:directiveContent "1. Load MES log and thermocouple CSVs; cast run_id/tc_id to string 2. Sort both DataFrames with mergesort 3. Extract compact cfg object from handbook (regions, limits, windows, margins, feasibility rules) 4. Compute per-run metrics: max ramp via finite-difference slope, TAL via interpolated time-above-threshold, peak with coldest-sensor tie-break, conveyor feasibility 5. Build JSON outputs with sorted IDs and 2dp rounding 6. Run sanity checks 7. Write to /app/output" ;
+    oc:stepOrder 1 .
+
+oc:kn_4d395cf4 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before writing final compliance output files" ;
+    oc:directiveContent "Verify before output: ID fields are strings, arrays sorted lexicographically, floats rounded to 2 decimals, no NaN/Inf in JSON, sensor selection uses deterministic tie-breaks, TAL uses interpolation." ;
+    oc:hasRationale "Catches data type and ordering errors that would silently corrupt compliance reports." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_73231d69 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When encountering missing thermocouple data for a run" ;
+    oc:directiveContent "If a run has no TC records or no valid segments for a metric, set numeric outputs to null and avoid claiming 'pass' unless explicitly allowed by handbook rules." ;
+    oc:hasRationale "Missing data must not be interpreted as compliance; null signals the consumer that the metric could not be evaluated." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8850ebd2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any thermocouple computation" ;
+    oc:directiveContent "Always sort thermocouple samples by (run_id, tc_id, time_s) using mergesort before any computation; ignore segments where dt <= 0 (non-monotonic timestamps)." ;
+    oc:hasRationale "Ensures deterministic results regardless of input data ordering and prevents division-by-zero or backward slope artifacts." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_89f2ddb1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When constructing any output JSON" ;
+    oc:directiveContent "Round all floats to 2 decimals; never emit NaN or Inf — use null instead. Sort all lists lexicographically by primary ID and emit dict keys in sorted order." ;
+    oc:hasRationale "Guarantees stable, diffable JSON output that can be deterministically validated and compared across executions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a5424414 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing TAL or wetting time metrics" ;
+    oc:directiveContent "Never use naive threshold counting for time-above-liquidus; always use linear interpolation to find crossing points between samples." ;
+    oc:hasRationale "Naive threshold counting introduces systematic error proportional to sample rate; interpolation yields accurate sub-sample timing." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_afaf97f0 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring handbook-derived configuration" ;
+    oc:directiveContent "Represent all handbook parameters as a compact cfg object with typed region definitions (temp_band, zone_band, time_band) and structured rule objects for conveyor feasibility, enabling single-source-of-truth parameterization." ;
+    oc:hasRationale "Decouples handbook knowledge from computation logic, making it easy to swap or update limits without changing algorithms." .
+
+oc:kn_be6cffc4 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing ramp rate in a temperature-band region" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def max_slope_in_temp_band(df_tc, tmin, tmax):
+    g = df_tc.sort_values("time_s")
+    t = g["time_s"].to_numpy(dtype=float)
+    y = g["temp_c"].to_numpy(dtype=float)
+    best = None
+    for i in range(1, len(g)):
+        dt = t[i] - t[i-1]
+        if dt <= 0: continue
+        if (tmin <= y[i-1] <= tmax) and (tmin <= y[i] <= tmax):
+            s = (y[i] - y[i-1]) / dt
+            best = s if best is None else max(best, s)
+    return best""" .
+
+oc:kn_e1fda612 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting representative sensor results for a run" ;
+    oc:directiveContent "When reducing multiple thermocouples to one run-level result, use deterministic tie-breaks: for max metrics choose (max_value, smallest_tc_id); for min metrics choose (min_value, smallest_tc_id)." ;
+    oc:hasRationale "Prevents non-deterministic output when multiple sensors report identical values, ensuring reproducible compliance reports across runs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e4d9881a a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "On repeated execution with same input data" ;
+    oc:directiveContent "All computations are deterministic: same inputs produce identical outputs thanks to mergesort ordering, fixed tie-breaks, and 2-decimal rounding." ;
+    oc:hasRationale "Reproducibility is essential for manufacturing audit trails and regulatory compliance verification." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_34fa5e0191b28546 a oc:WorkflowStep ;
+    dcterms:description "Sorting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_36966330af36ef14 a oc:WorkflowStep ;
+    dcterms:description """Peak and margin
+Per TC:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3d650d5c46f1628d a oc:WorkflowStep ;
+    dcterms:description """Segment slope (ramp rate)
+Finite-difference slope on consecutive samples:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_585e29215680bf41 a oc:WorkflowStep ;
+    dcterms:description "Rounding and NaNs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_6c7edb0e82df34f4 a oc:WorkflowStep ;
+    dcterms:description """Deterministic sensor selection (tie-breaks)
+When reducing multiple thermocouples to one run-level result, use these stable rules:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_73e52df46c0cf1d1 a oc:WorkflowStep ;
+    dcterms:description """Missing thermocouple data
+If a run has no TC records (or no valid segments for a metric), set numeric outputs to `null`, and avoid claiming “pass” unless explicitly allowed.""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_75dbe30805d804cd a oc:WorkflowStep ;
+    dcterms:description "Extract numeric limits / temperature regions / timing windows / margins / feasibility rules from handbook.pdf." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_7c7fe1b3c7ee530c a oc:WorkflowStep ;
+    dcterms:description """Time above threshold with linear interpolation
+For wetting/TAL-type metrics, compute time above a threshold `thr` using segment interpolation:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8cae6b4ca8555600 a oc:WorkflowStep ;
+    dcterms:description """Sorting and de-dup rules
+Always sort samples by time before any computation:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d7b9542a5e784234 a oc:WorkflowStep ;
+    dcterms:description """Conveyor feasibility (rule object approach)
+Handbooks vary. Represent the rule as a structured object and compute `required_min_speed_cm_min` if possible.""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d92346d105ceadaa a oc:WorkflowStep ;
+    dcterms:description "Compute run-level metrics from time–temperature thermocouple traces in a deterministic way." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_dc949bca6ef901b3 a oc:WorkflowStep ;
+    dcterms:description "Whenever the task involves reflow related questions from thermocouple data, MES data or defect data and handbook-defined regions/windows/limits." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_06b7a38d745ed224 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 13 ;
+    oc:hasStep _:ref_8cae6b4ca8555600 ;
+    oc:workflowId "procedure_13" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_30cac7008a0afd73 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 28 ;
+    oc:hasStep _:ref_36966330af36ef14 ;
+    oc:workflowId "procedure_28" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_317a56b4f232cf97 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 30 ;
+    oc:hasStep _:ref_d7b9542a5e784234 ;
+    oc:workflowId "procedure_30" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_399a00445ed5668e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 16 ;
+    oc:hasStep _:ref_3d650d5c46f1628d ;
+    oc:workflowId "procedure_16" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4d565a5e16471bd0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 39 ;
+    oc:hasStep _:ref_34fa5e0191b28546 ;
+    oc:workflowId "procedure_39" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_674e428450e58736 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 24 ;
+    oc:hasStep _:ref_6c7edb0e82df34f4 ;
+    oc:workflowId "procedure_24" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7483742c30ddb597 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 41 ;
+    oc:hasStep _:ref_585e29215680bf41 ;
+    oc:workflowId "procedure_41" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_762caa05fe5a3655 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 22 ;
+    oc:hasStep _:ref_7c7fe1b3c7ee530c ;
+    oc:workflowId "procedure_22" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_85b27f6aff898bff a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 44 ;
+    oc:hasStep _:ref_73e52df46c0cf1d1 ;
+    oc:workflowId "procedure_44" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_a470e5b0f4e83404 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_75dbe30805d804cd,
+        _:ref_d92346d105ceadaa,
+        _:ref_dc949bca6ef901b3 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+

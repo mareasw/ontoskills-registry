@@ -1,0 +1,361 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_syzkaller_ppdev_syzlang_syzlang_ioctl_basics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "syzlang-ioctl-basics" ;
+    skos:broader "Syntax reference" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/syzkaller-ppdev-syzlang/syzlang-ioctl-basics" ;
+    oc:contentHash "96386b7dd09bcc2ab702667f476dbcf4402c850cdc1cd1110cec6438460ee38a" ;
+    oc:differentia "describes syzkaller syzlang grammar for ioctl syscall fuzzing descriptions" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Syzkaller syzlang syntax basics for describing ioctl syscalls" ;
+    oc:hasName "syzlang-ioctl-basics" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: syzlang-ioctl-basics
+description: Syzkaller syzlang syntax basics for describing ioctl syscalls
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent """Syzkaller's description language (syzlang) describes syscalls for fuzzing.
+Description files are located at `/opt/syzkaller/sys/linux/*.txt`.""" ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """read$suffix(fd fd_type, buf ptr[out, buffer_type], count len[buf])
+write$suffix(fd fd_type, buf ptr[in, buffer_type], count len[buf])
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 87-90" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For specialized read/write:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Read/Write Syscalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """ioctl$CMD(fd fd_type, cmd const[CMD], arg intptr[0:1])
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 6 ;
+                            oc:sourceLocation "lines 49-51" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """ioctl$CMD(fd fd_type, cmd const[CMD], arg ptr[in, struct_type])
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 44-46" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """ioctl$CMD(fd fd_type, cmd const[CMD], arg ptr[in, ifreq_t[flags[flag_set, int16]]])
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 8 ;
+                            oc:sourceLocation "lines 54-56" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For ioctls with output:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """ioctl$CMD(fd fd_type, cmd const[CMD], arg ptr[out, int32])
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 39-41" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "For ioctls with input:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "For ioctls using ifreq structure (from socket.txt):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "For simple value ioctls:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Ioctl Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Then use with `flags[flag_set_name, int16]`." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """flag_set_name = FLAG1, FLAG2, FLAG3
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 71-73" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Define reusable flag sets:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Flag Sets" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Structs must have typed fields:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """struct_name {
+    field1    type1
+    field2    type2
+}
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 61-66" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Struct Definitions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Specialized syscalls use `$` suffix:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """syscall_name(arg1 type1, arg2 type2, ...) return_type
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 14-16" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Basic form:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """syscall$VARIANT(args...) return_type
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 19-21" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Syscall Syntax" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_67ec06f97ced4549 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "File descriptor resources:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """resource resource_name[fd]
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 80-82" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 8 ;
+                            oc:tableCaption "## Common Type Patterns" ;
+                            oc:tableMarkdown """| Pattern | Meaning |
+|---------|---------|
+| `const[VALUE]` | Fixed constant value |
+| `flags[flag_set, type]` | Bitfield from flag set |
+| `ptr[direction, type]` | Pointer (in, out, inout) |
+| `intptr[min:max]` | Integer pointer with range |
+| `int8`, `int16`, `int32` | Fixed-size integers |
+| `int16be`, `int32be` | Big-endian integers |
+| `array[type]` | Variable-length array |
+| `array[type, count]` | Fixed-length array |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Common Type Patterns" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Syzlang Ioctl Basics" ] ;
+    oc:hasWorkflow _:ref_67ec06f97ced4549,
+        [ a oc:Workflow ;
+            dcterms:description "Workflow for creating a new ioctl syscall description in syzlang" ;
+            oc:hasStep _:ref_0346112ae91a3b83,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run 'make descriptions' to validate syntax and check for errors" ;
+                    oc:expectedOutcome "No syntax errors; description compiles successfully" ;
+                    oc:stepDependsOn _:ref_e7dd00cfd16594e6 ;
+                    oc:stepId "validate" ],
+                _:ref_8dd0995e98973f87,
+                _:ref_9633295c3cb6a18f,
+                _:ref_9c4ac1bbac7e32a5,
+                _:ref_e7dd00cfd16594e6 ;
+            oc:workflowId "syzlang-ioctl-description" ;
+            oc:workflowName "Write Ioctl Description" ] ;
+    oc:impartsKnowledge oc:kn_0e3d8f1d,
+        oc:kn_18f7001d,
+        oc:kn_1ea0b02f,
+        oc:kn_24ed3fc0,
+        oc:kn_47f8b79d,
+        oc:kn_a5b32323,
+        oc:kn_e0c465d8,
+        oc:kn_e19576ea,
+        oc:kn_f78a2706 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "create syzlang type patterns for kernel ioctl interfaces",
+        "define ioctl structs and flag sets for fuzzing",
+        "describe ioctl syscalls in syzlang",
+        "write syzkaller syscall descriptions" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0e3d8f1d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When describing ioctl with simple integer value" ;
+    oc:codeLanguage "syzlang" ;
+    oc:directiveContent "ioctl$CMD(fd fd_type, cmd const[CMD], arg intptr[0:1])" .
+
+oc:kn_18f7001d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When describing ioctl with input struct parameter" ;
+    oc:codeLanguage "syzlang" ;
+    oc:directiveContent "ioctl$CMD(fd fd_type, cmd const[CMD], arg ptr[in, struct_type])" .
+
+oc:kn_1ea0b02f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing pointer direction for ioctl arguments" ;
+    oc:directiveContent "Use ptr[in, ...] for input to kernel, ptr[out, ...] for output from kernel, ptr[inout, ...] for bidirectional data" ;
+    oc:hasRationale "Correct direction annotation ensures the fuzzer generates valid inputs and captures outputs properly" .
+
+oc:kn_24ed3fc0 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "General syzlang syscall declaration pattern" ;
+    oc:directiveContent "syscall$VARIANT(arg1 type1, arg2 type2, ...) return_type" ;
+    oc:templateVariables "VARIANT",
+        "arg1",
+        "return_type",
+        "type1" .
+
+oc:kn_47f8b79d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining struct types for ioctl arguments" ;
+    oc:codeLanguage "syzlang" ;
+    oc:directiveContent """struct_name {
+    field1    type1
+    field2    type2
+}""" .
+
+oc:kn_a5b32323 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining ioctl commands and constants" ;
+    oc:directiveContent "Some constants only exist on certain architectures; run `make descriptions` after edits to validate syntax" ;
+    oc:hasRationale "Architecture-specific constants will cause build failures on other architectures" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e0c465d8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before writing any new ioctl description" ;
+    oc:directiveContent "Check existing description files (e.g., sys/linux/socket.txt) for patterns before writing new descriptions" ;
+    oc:hasRationale "Existing files demonstrate established conventions and reusable type definitions" .
+
+oc:kn_e19576ea a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When writing new ioctl descriptions in syzlang" ;
+    oc:directiveContent "1. Study existing descriptions in sys/linux/*.txt for patterns 2. Define resources (fd types) 3. Define flag sets 4. Define structs with typed fields 5. Write ioctl$CMD descriptions with correct ptr direction 6. Run `make descriptions` to validate syntax" ;
+    oc:stepOrder 1 .
+
+oc:kn_f78a2706 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When describing ioctl with output parameter" ;
+    oc:codeLanguage "syzlang" ;
+    oc:directiveContent "ioctl$CMD(fd fd_type, cmd const[CMD], arg ptr[out, int32])" .
+
+_:ref_063187bd9554a577 a oc:WorkflowStep ;
+    dcterms:description "Use `ptr[in, ...]` for input, `ptr[out, ...]` for output" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_44ee12edde2ec9d0 a oc:WorkflowStep ;
+    dcterms:description "Run `make descriptions` after edits to validate syntax" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4d121eee0058bd75 a oc:WorkflowStep ;
+    dcterms:description "Check existing files for patterns (e.g., `sys/linux/socket.txt`)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8c89f20fff7550ca a oc:WorkflowStep ;
+    dcterms:description "Some constants only exist on certain architectures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_67ec06f97ced4549 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_063187bd9554a577,
+        _:ref_44ee12edde2ec9d0,
+        _:ref_4d121eee0058bd75,
+        _:ref_8c89f20fff7550ca ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8dd0995e98973f87 a oc:WorkflowStep ;
+    dcterms:description "Define struct types with typed fields for complex ioctl arguments" ;
+    oc:expectedOutcome "Struct types available for ptr[in, struct_type] usage" ;
+    oc:stepDependsOn _:ref_9c4ac1bbac7e32a5 ;
+    oc:stepId "define-structs" .
+
+_:ref_9633295c3cb6a18f a oc:WorkflowStep ;
+    dcterms:description "Define file descriptor resources with 'resource resource_name[fd]'" ;
+    oc:expectedOutcome "Typed fd resources available for ioctl descriptions" ;
+    oc:stepDependsOn _:ref_0346112ae91a3b83 ;
+    oc:stepId "define-resources" .
+
+_:ref_9c4ac1bbac7e32a5 a oc:WorkflowStep ;
+    dcterms:description "Define flag sets with 'flag_set_name = FLAG1, FLAG2, FLAG3'" ;
+    oc:expectedOutcome "Reusable flag sets defined for use in structs and ioctl args" ;
+    oc:stepDependsOn _:ref_0346112ae91a3b83 ;
+    oc:stepId "define-flags" .
+
+_:ref_e7dd00cfd16594e6 a oc:WorkflowStep ;
+    dcterms:description "Write ioctl$CMD description using correct ptr direction and type patterns" ;
+    oc:expectedOutcome "Complete ioctl syscall description in syzlang" ;
+    oc:stepDependsOn _:ref_8dd0995e98973f87,
+        _:ref_9633295c3cb6a18f ;
+    oc:stepId "write-ioctl" .
+
+_:ref_0346112ae91a3b83 a oc:WorkflowStep ;
+    dcterms:description "Study existing description files in sys/linux/*.txt for relevant patterns and type definitions" ;
+    oc:expectedOutcome "Identify reusable resources, flag sets, and struct patterns" ;
+    oc:stepId "study-existing" .
+

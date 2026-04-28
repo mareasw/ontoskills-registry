@@ -1,0 +1,316 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_adaptive_cruise_control_pid_controller a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pid-controller" ;
+    skos:broader "Feedback control algorithm" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-adaptive-cruise-control/pid-controller" ;
+    oc:contentHash "5fd68b642eae58567ba0624307deb211779f884cd5ffed6f216fbe38b38248a5" ;
+    oc:dependsOnSkill oc:skill_ontoskills_vehicle_dynamics ;
+    oc:differentia "combines proportional, integral, and derivative terms to continuously compute corrective output from error signals" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use this skill when implementing PID control loops for adaptive cruise control, vehicle speed regulation, throttle/brake management, or any feedback control system requiring proportional-integral-derivative control." ;
+    oc:hasName "pid-controller" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pid-controller
+description: Use this skill when implementing PID control loops for adaptive cruise control, vehicle speed regulation, throttle/brake management, or any feedback control system requiring proportional-integral-derivative control.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Where:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`Kd` = derivative gain (reacts to rate of change)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`Kp` = proportional gain (reacts to current error)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`error` = setpoint - measured_value" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`Ki` = integral gain (reacts to accumulated error)" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """output = Kp * error + Ki * integral(error) + Kd * derivative(error)
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-16" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Control Law" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A PID (Proportional-Integral-Derivative) controller is a feedback control mechanism used in industrial control systems. It continuously calculates an error value and applies a correction based on proportional, integral, and derivative terms." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Higher Kd -> reduces overshoot, sensitive to noise" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Higher Ki -> eliminates steady-state error, can cause oscillation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Higher Kp -> faster response, more overshoot" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Effect of Each Gain:**" ],
+                        _:ref_602919e83a344a13,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Manual Tuning:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Tuning Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Integral windup occurs when output saturates but integral keeps accumulating. Solutions:" ],
+                        _:ref_798d308d0f7d7503 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Anti-Windup" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """class PIDController:
+    def __init__(self, kp, ki, kd, output_min=None, output_max=None):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.output_min = output_min
+        self.output_max = output_max
+        self.integral = 0.0
+        self.prev_error = 0.0
+
+    def reset(self):
+        \"\"\"Clear controller state.\"\"\"
+        self.integral = 0.0
+        self.prev_error = 0.0
+
+    def compute(self, error, dt):
+        \"\"\"Compute control output given error and timestep.\"\"\"
+        # Proportional term
+        p_term = self.kp * error
+
+        # Integral term
+        self.integral += error * dt
+        i_term = self.ki * self.integral
+
+        # Derivative term
+        derivative = (error - self.prev_error) / dt if dt > 0 else 0.0
+        d_term = self.kd * derivative
+        self.prev_error = error
+
+        # Total output
+        output = p_term + i_term + d_term
+
+        # Output clamping (optional)
+        if self.output_min is not None:
+            output = max(output, self.output_min)
+        if self.output_max is not None:
+            output = min(output, self.output_max)
+
+        return output
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 26-66" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Discrete-Time Implementation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PID Controller Implementation" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Sequential procedure for manually tuning proportional, integral, and derivative gains." ;
+            oc:hasStep _:ref_05454a46e511cd7c,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Add Kd to reduce overshoot and dampen oscillations" ;
+                    oc:expectedOutcome "Overshoot reduced, settling time improved" ;
+                    oc:stepDependsOn _:ref_05454a46e511cd7c ;
+                    oc:stepId "tune-kd" ],
+                _:ref_daba376b6c4dcf29 ;
+            oc:workflowId "manual-pid-tuning" ;
+            oc:workflowName "Manual PID Gain Tuning" ],
+        [ a oc:Workflow ;
+            dcterms:description "Steps to add integral windup prevention to a PID controller." ;
+            oc:hasStep _:ref_75c63c920b856898,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Reduce integral value by the amount the output exceeded clamping bounds" ;
+                    oc:expectedOutcome "Integral is dynamically adjusted to compensate for saturation" ;
+                    oc:stepDependsOn _:ref_f5a3c8a22d69da8c ;
+                    oc:stepId "back-calculation" ],
+                _:ref_f5a3c8a22d69da8c ;
+            oc:workflowId "anti-windup-implementation" ;
+            oc:workflowName "Implement Anti-Windup Protection" ],
+        _:ref_602919e83a344a13,
+        _:ref_798d308d0f7d7503 ;
+    oc:impartsKnowledge oc:kn_194ec272,
+        oc:kn_3ed415cc,
+        oc:kn_6aa14ba2,
+        oc:kn_9391f38e,
+        oc:kn_b7fad653 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "implement PID control loop",
+        "prevent integral windup in control systems",
+        "regulate vehicle speed with feedback control",
+        "tune PID gains for adaptive cruise control" ;
+    oc:yieldsState oc:ControlLoopInitialized .
+
+oc:kn_194ec272 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing output limits on a PID controller" ;
+    oc:directiveContent "Output clamping should be applied to the total PID output, not to individual terms, to preserve the correct balance between P, I, and D contributions." ;
+    oc:hasRationale "Clamping individual terms breaks the control law's mathematical integrity and can cause unpredictable behavior." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3ed415cc a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When tuning the derivative gain in noisy environments" ;
+    oc:directiveContent "Higher Kd amplifies measurement noise because derivative of noise is large. Use filtering or keep Kd low when sensor signals are noisy." ;
+    oc:hasRationale "The derivative term amplifies high-frequency noise, potentially causing actuator jitter and system instability." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6aa14ba2 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When manually tuning PID controller gains" ;
+    oc:directiveContent "Tune PID gains in order: first Kp alone (Ki=Kd=0), then add Ki to eliminate steady-state error, finally add Kd to reduce overshoot." ;
+    oc:hasRationale "Sequential tuning isolates the effect of each term, making it easier to find stable gains without trial-and-error chaos." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9391f38e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing PID controllers with output limits" ;
+    oc:directiveContent "Never allow the integral term to accumulate unchecked when output is saturated — this causes integral windup and massive overshoot." ;
+    oc:hasRationale "Windup causes the controller to overshoot dramatically and take a long time to recover, destabilizing the system." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b7fad653 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing the derivative term in discrete-time PID" ;
+    oc:directiveContent "The derivative term requires dt > 0; division by zero must be guarded against. When dt = 0, derivative contribution should be zero." ;
+    oc:hasRationale "Zero timestep is physically meaningless and causes division-by-zero errors at runtime." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_06a69e5ff7ee9d5a a oc:WorkflowStep ;
+    dcterms:description "**Back-calculation**: Reduce integral when output is clamped" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_12b16fd9dc380cb2 a oc:WorkflowStep ;
+    dcterms:description "Set Ki = Kd = 0" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_38c7884f3b6509aa a oc:WorkflowStep ;
+    dcterms:description "**Clamping**: Limit integral term magnitude" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4e67598c45c5eae1 a oc:WorkflowStep ;
+    dcterms:description "Add Ki to eliminate steady-state error" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_74c610380e850bf1 a oc:WorkflowStep ;
+    dcterms:description "**Conditional Integration**: Only integrate when not saturated" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_95a5200d3dd9d16e a oc:WorkflowStep ;
+    dcterms:description "Increase Kp until acceptable response speed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c09809230bbe8c96 a oc:WorkflowStep ;
+    dcterms:description "Add Kd to reduce overshoot" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_05454a46e511cd7c a oc:WorkflowStep ;
+    dcterms:description "Add Ki to eliminate steady-state error" ;
+    oc:expectedOutcome "Steady-state error converges to zero" ;
+    oc:stepDependsOn _:ref_daba376b6c4dcf29 ;
+    oc:stepId "tune-ki" .
+
+_:ref_602919e83a344a13 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_12b16fd9dc380cb2,
+        _:ref_4e67598c45c5eae1,
+        _:ref_95a5200d3dd9d16e,
+        _:ref_c09809230bbe8c96 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_75c63c920b856898 a oc:WorkflowStep ;
+    dcterms:description "Limit the integral term magnitude to a fixed bound" ;
+    oc:expectedOutcome "Integral cannot grow beyond acceptable range" ;
+    oc:stepId "clamp-integral" .
+
+_:ref_798d308d0f7d7503 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_06a69e5ff7ee9d5a,
+        _:ref_38c7884f3b6509aa,
+        _:ref_74c610380e850bf1 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_daba376b6c4dcf29 a oc:WorkflowStep ;
+    dcterms:description "Set Ki = Kd = 0, increase Kp until response speed is acceptable" ;
+    oc:expectedOutcome "System responds to errors with acceptable speed but may have steady-state error" ;
+    oc:stepId "tune-kp" .
+
+_:ref_f5a3c8a22d69da8c a oc:WorkflowStep ;
+    dcterms:description "Only accumulate integral when output is not saturated" ;
+    oc:expectedOutcome "Integral stops growing when output hits limits" ;
+    oc:stepDependsOn _:ref_75c63c920b856898 ;
+    oc:stepId "conditional-integration" .
+

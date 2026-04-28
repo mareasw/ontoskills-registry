@@ -1,0 +1,678 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_spring_boot_jakarta_migration_hibernate_upgrade a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "hibernate-upgrade" ;
+    skos:broader "Migration guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/spring-boot-jakarta-migration/hibernate-upgrade" ;
+    oc:contentHash "35270b4869e27612d4fb4fce9730c4201267206724fdf3cad5a46267c65d4f45" ;
+    oc:dependsOnSkill oc:skill_ontoskills_jakarta_namespace,
+        oc:skill_ontoskills_spring_boot_migration ;
+    oc:differentia "Covers Hibernate 5 to 6 upgrade with Spring Boot 3 including breaking changes in HQL/JPQL parsing, removed Criteria API, ID generation strategies, type mappings, and performance monitoring" ;
+    oc:handlesFailure oc:PerformanceRegressionDetected,
+        oc:QuerySyntaxError,
+        oc:TypeMappingFailure,
+        oc:UnknownEntityMapping ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Migrate Hibernate 5 to Hibernate 6 with Spring Boot 3. Use when fixing HQL/JPQL query parsing issues, removing deprecated Criteria API, updating ID generation strategies, or diagnosing N+1 query behavior changes. Covers breaking changes, type mappings, and performance monitoring." ;
+    oc:hasName "hibernate-upgrade" ;
+    oc:hasRequirement oc:req_5dd53ab8,
+        oc:req_be6a6673,
+        oc:req_d6a7796f ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_81b691cf94e43e77 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Common Errors" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After migration, monitor for performance regressions:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Enable Hibernate statistics
+spring.jpa.properties.hibernate.generate_statistics=true
+
+# Log slow queries (Hibernate 6.2+)
+spring.jpa.properties.hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS=100
+""" ;
+                            oc:codeLanguage "properties" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 256-262" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Performance Monitoring" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_43975be549ca7484 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Testing Considerations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Thorben Janssen - Migrating to Hibernate 6](https://thorben-janssen.com/migrating-to-hibernate-6/)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Hibernate 6.0 Migration Guide](https://docs.jboss.org/hibernate/orm/6.0/migration-guide/migration-guide.html)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[Quarkus Hibernate 5 to 6 Migration](https://github.com/quarkusio/quarkus/wiki/Migration-Guide-3.0:-Hibernate-ORM-5-to-6-migration)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Sources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Common properties that remain the same
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+
+# Properties that may need review
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+
+# New in Hibernate 6
+spring.jpa.properties.hibernate.timezone.default_storage=NORMALIZE
+""" ;
+                            oc:codeLanguage "properties" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 149-160" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Some Hibernate properties changed:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Configuration Properties" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Remove "from" keyword in update queries
+find . -name "*.java" -type f -exec sed -i 's/update from /update /g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 247-250" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Fix Common Issues" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check for old Criteria API usage
+grep -r "session.createCriteria\\|org.hibernate.Criteria" --include="*.java" .
+
+# Check for deprecated @Type usage
+grep -r "@Type(type\\s*=" --include="*.java" .
+
+# Check for @TypeDef
+grep -r "@TypeDef" --include="*.java" .
+
+# Check for "update from" pattern in queries
+grep -r "update from" --include="*.java" .
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 231-243" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Check for Hibernate 5 Patterns" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Migration Commands" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """// Before (Hibernate 5)
+@Query(value = "SELECT * FROM users WHERE active = 1", nativeQuery = true)
+List<User> findActiveUsersNative();
+
+// After (Hibernate 6) - works the same, but be careful with projections
+@Query(value = "SELECT * FROM users WHERE active = true", nativeQuery = true)
+List<User> findActiveUsersNative();
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 2 ;
+                                            oc:sourceLocation "lines 86-94" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "Native query result mapping changed:" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Native Queries" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "Some JPQL syntax has stricter validation:" ],
+                                        [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """// Be explicit about entity aliases
+@Query("SELECT u FROM User u WHERE u.active = true")
+List<User> findActiveUsers();
+
+// Avoid implicit joins - be explicit
+@Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
+List<User> findByRoleName(@Param("roleName") String roleName);
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 2 ;
+                                            oc:sourceLocation "lines 72-80" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "JPQL Changes" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Query Changes" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Before (often required in Hibernate 5)
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# After (Hibernate 6) - often can be removed
+# Hibernate auto-detects based on JDBC URL
+# Only specify if you need specific behavior
+""" ;
+                                    oc:codeLanguage "properties" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 49-56" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "If you must specify:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Hibernate 6 can auto-detect dialects in most cases:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Hibernate 6 dialects (some renamed)
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+""" ;
+                                    oc:codeLanguage "properties" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 59-64" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Dialect Configuration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Hibernate 6 uses Jakarta Persistence:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before (Hibernate 5)
+import javax.persistence.*;
+import org.hibernate.annotations.*;
+
+// After (Hibernate 6)
+import jakarta.persistence.*;
+import org.hibernate.annotations.*;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 18-26" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Package Namespace" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "department_id")
+private Department department;
+
+@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+private List<Order> orders;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 115-122" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Default fetch behavior remains similar, but be explicit:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "6. Fetch Strategies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Enum mapping - explicit is better
+@Enumerated(EnumType.STRING)
+@Column(nullable = false)
+private Role role;
+
+// Date/Time - use java.time classes
+@Column(name = "created_at")
+private LocalDateTime createdAt;  // Preferred over java.util.Date
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 100-109" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Some type mappings changed:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Type Mappings" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Recommended approach for cross-database compatibility
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+
+// Or using sequences (preferred for some databases)
+@Id
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
+private Long id;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 32-43" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Hibernate 6 changed the default ID generation strategy:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. ID Generation Strategies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key Changes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Spring Boot 3 uses Hibernate 6, which includes significant changes from Hibernate 5. This skill covers the key migration considerations." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Add this to application.properties to monitor queries
+spring.jpa.properties.hibernate.generate_statistics=true
+logging.level.org.hibernate.stat=debug
+logging.level.org.hibernate.SQL=debug
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 220-225" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Hibernate 6 may generate different SQL for lazy-loaded collections. Monitor your queries:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. N+1 Query Behavior Changes" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE (Hibernate 5) - needed distinct to avoid duplicates
+@Query("select distinct u from User u join fetch u.roles")
+
+// AFTER (Hibernate 6) - duplicates are automatically filtered
+@Query("select u from User u join fetch u.roles")
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 190-196" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Distinct is No Longer Needed for Collections" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE (Hibernate 5) - this worked but was non-standard
+@Query("update from User u set u.active = false where u.id = :id")
+
+// AFTER (Hibernate 6) - remove the optional "from" keyword
+@Query("update User u set u.active = false where u.id = :id")
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 180-186" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. HQL/JPQL Query Parsing is Stricter" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The deprecated `org.hibernate.Criteria` API is completely removed. You must use JPA Criteria API:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE (Hibernate 5 - old Criteria)
+Criteria criteria = session.createCriteria(User.class);
+criteria.add(Restrictions.eq("active", true));
+List<User> users = criteria.list();
+
+// AFTER (Hibernate 6 - JPA Criteria)
+CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+CriteriaQuery<User> cq = cb.createQuery(User.class);
+Root<User> root = cq.from(User.class);
+cq.where(cb.equal(root.get("active"), true));
+List<User> users = entityManager.createQuery(cq).getResultList();
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 202-214" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Legacy Criteria API Removed" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Critical Breaking Changes" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before (Hibernate 5 with custom type)
+@TypeDef(name = "json", typeClass = JsonType.class)
+@Type(type = "json")
+private JsonNode metadata;
+
+// After (Hibernate 6)
+@JdbcTypeCode(SqlTypes.JSON)
+private JsonNode metadata;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 134-143" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Example Migration" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_f2dd60aefb9509e8 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Removed in Hibernate 6" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Deprecation Removals" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Hibernate 5 to 6 Upgrade Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: hibernate-upgrade
+description: Migrate Hibernate 5 to Hibernate 6 with Spring Boot 3. Use when fixing HQL/JPQL query parsing issues, removing deprecated Criteria API, updating ID generation strategies, or diagnosing N+1 query behavior changes. Covers breaking changes, type mappings, and performance monitoring.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_43975be549ca7484,
+        _:ref_81b691cf94e43e77,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for migrating a Spring Boot application from Hibernate 5 to Hibernate 6" ;
+            oc:hasStep _:ref_0055e76155908419,
+                _:ref_12e096d90b84795b,
+                _:ref_32067df06a6387e4,
+                _:ref_a186a403726dd542,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run tests, enable Hibernate statistics, monitor for N+1 regressions and query plan differences" ;
+                    oc:expectedOutcome "All tests pass with no unexpected query behavior or performance regressions" ;
+                    oc:stepDependsOn _:ref_0055e76155908419,
+                        _:ref_a186a403726dd542,
+                        _:ref_c2ed7f6e4ea72a30,
+                        _:ref_deec56f1de6bff2a,
+                        _:ref_f188b489e770aaa1 ;
+                    oc:stepId "test-and-monitor" ],
+                _:ref_c2ed7f6e4ea72a30,
+                _:ref_deec56f1de6bff2a,
+                _:ref_f188b489e770aaa1 ;
+            oc:workflowId "hibernate6-migration" ;
+            oc:workflowName "Hibernate 5 to 6 Migration" ],
+        _:ref_f2dd60aefb9509e8 ;
+    oc:impartsKnowledge oc:kn_0da1ef20,
+        oc:kn_2cde41ff,
+        oc:kn_5c0f3954,
+        oc:kn_6bc805bf,
+        oc:kn_7b7afc88,
+        oc:kn_96f541cf,
+        oc:kn_cb878c59,
+        oc:kn_ddb6de10,
+        oc:kn_f6711212 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:JakartaNamespaceMigrated,
+        oc:SpringBoot3DependenciesConfigured ;
+    oc:resolvesIntent "diagnose n+1 query behavior changes after migration",
+        "fix hql jpql query parsing errors after upgrade",
+        "migrate hibernate 5 to hibernate 6",
+        "remove deprecated criteria api usage",
+        "update id generation strategies for hibernate 6",
+        "update type mappings and annotations for hibernate 6" ;
+    oc:yieldsState oc:Hibernate6Migrated,
+        oc:PerformanceBaselineEstablished,
+        oc:QueriesValidatedForHibernate6 .
+
+oc:kn_0da1ef20 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining or migrating entity mappings" ;
+    oc:directiveContent "Be explicit about fetch strategies (FetchType.LAZY), entity aliases in JPQL, enum mappings (EnumType.STRING), and date/time types (java.time over java.util.Date)." ;
+    oc:hasRationale "Hibernate 6 is stricter about entity mappings and implicit behavior; explicitness reduces ambiguity and migration issues." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2cde41ff a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating any Criteria-based queries from Hibernate 5" ;
+    oc:directiveContent "Do not use the deprecated org.hibernate.Criteria API — it is completely removed in Hibernate 6. Use JPA Criteria API (CriteriaBuilder/CriteriaQuery) instead." ;
+    oc:hasRationale "The legacy Criteria API was deprecated in Hibernate 5 and fully removed in Hibernate 6 with no backwards compatibility." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_5c0f3954 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating HQL/JPQL update queries from Hibernate 5" ;
+    oc:directiveContent "Never use 'update from' syntax in HQL/JPQL queries with Hibernate 6 — remove the optional 'from' keyword from update statements." ;
+    oc:hasRationale "Hibernate 6 has stricter query parsing and the 'update from' pattern is non-standard and will cause syntax errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6bc805bf a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting Hibernate 5 to 6 migration" ;
+    oc:directiveContent "Before migrating, scan codebase for: session.createCriteria, @TypeDef, @Type(type=), 'update from' in queries, and javax.persistence imports." ;
+    oc:hasRationale "Identifying all affected patterns upfront prevents runtime failures after migration." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7b7afc88 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating custom type mappings (e.g., JSON columns) from Hibernate 5" ;
+    oc:directiveContent "Do not use @TypeDef or @Type(type=...) annotations — replace with @JdbcTypeCode(SqlTypes.JSON) or custom type definitions." ;
+    oc:hasRationale "@TypeDef and the old @Type annotation were removed in Hibernate 6, replaced by the new @JdbcTypeCode mechanism." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_96f541cf a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing Hibernate 6 migration" ;
+    oc:directiveContent "After migration, enable hibernate.generate_statistics=true and log SQL queries to validate query plans and detect N+1 regressions." ;
+    oc:hasRationale "Silent performance regressions are the most common post-migration issue and require active monitoring to detect." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cb878c59 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reviewing JPA configuration properties" ;
+    oc:directiveContent "Remove explicit dialect configuration (spring.jpa.database-platform) unless you need specific database behavior — Hibernate 6 auto-detects dialects from JDBC URLs." ;
+    oc:hasRationale "Hardcoded dialect configuration can cause issues when switching environments and is often unnecessary with Hibernate 6." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_ddb6de10 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "After completing Hibernate 6 migration during testing phase" ;
+    oc:directiveContent "Hibernate 6 may generate different SQL for lazy-loaded collections, potentially causing N+1 query behavior changes. Enable statistics and monitor query counts after migration." ;
+    oc:hasRationale "Changes in Hibernate 6's SQL generation can silently introduce performance regressions in production." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f6711212 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating JPQL queries with join fetch that use 'select distinct'" ;
+    oc:directiveContent "The 'distinct' keyword is no longer needed for collection join-fetch queries in Hibernate 6 — duplicates are automatically filtered." ;
+    oc:hasRationale "Hibernate 6 changed its duplicate handling semantics; using distinct unnecessarily may cause unexpected query behavior." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_5dd53ab8 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Hibernate ORM concepts (entities, sessions, queries, fetching)" .
+
+oc:req_be6a6673 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "JPA annotations and JPQL syntax" .
+
+oc:req_d6a7796f a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Spring Boot JPA configuration properties" .
+
+_:ref_1ff8cd1e8adead2f a oc:WorkflowStep ;
+    dcterms:description "**Entity validation** - Hibernate 6 is stricter about entity mappings" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_46a3df093dbae3ae a oc:WorkflowStep ;
+    dcterms:description "**\"Unknown entity\"** - Ensure entity scanning is configured correctly" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4b19a551749a3732 a oc:WorkflowStep ;
+    dcterms:description "**`@Type` annotation** - replaced with `@JdbcTypeCode` or custom type definitions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_76802e590e2f9a61 a oc:WorkflowStep ;
+    dcterms:description "**\"Could not determine type\"** - Check type mappings and annotations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_814b02e6bb404b83 a oc:WorkflowStep ;
+    dcterms:description "**Performance** - Test performance as query execution plans may differ" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_91b942f0ed95f682 a oc:WorkflowStep ;
+    dcterms:description "**Query parsing** - Some queries that worked in H5 may fail in H6" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ce45aa48e0a23d39 a oc:WorkflowStep ;
+    dcterms:description "**`@TypeDef`** - removed, use `@Type` with explicit class" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_f9564cfa44c60c51 a oc:WorkflowStep ;
+    dcterms:description "**Legacy ID generators** - use standard JPA generation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_fabb0f0fdcf15907 a oc:WorkflowStep ;
+    dcterms:description "**\"Query syntax error\"** - Review JPQL for stricter H6 parsing rules" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_0055e76155908419 a oc:WorkflowStep ;
+    dcterms:description "Review and explicitly set ID generation strategies (IDENTITY or SEQUENCE) for all entities" ;
+    oc:expectedOutcome "All entities have explicit, compatible ID generation" ;
+    oc:stepDependsOn _:ref_12e096d90b84795b ;
+    oc:stepId "review-id-generation" .
+
+_:ref_43975be549ca7484 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1ff8cd1e8adead2f,
+        _:ref_814b02e6bb404b83,
+        _:ref_91b942f0ed95f682 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_81b691cf94e43e77 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_46a3df093dbae3ae,
+        _:ref_76802e590e2f9a61,
+        _:ref_fabb0f0fdcf15907 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_a186a403726dd542 a oc:WorkflowStep ;
+    dcterms:description "Review and update Hibernate configuration properties; remove explicit dialect if possible; add timezone.default_storage" ;
+    oc:expectedOutcome "Configuration properties are Hibernate 6 compatible" ;
+    oc:stepDependsOn _:ref_12e096d90b84795b ;
+    oc:stepId "review-configuration" .
+
+_:ref_c2ed7f6e4ea72a30 a oc:WorkflowStep ;
+    dcterms:description "Fix HQL/JPQL query syntax: remove 'from' in update queries, remove unnecessary 'distinct' in join-fetch queries" ;
+    oc:expectedOutcome "All queries parse correctly under Hibernate 6 stricter rules" ;
+    oc:stepDependsOn _:ref_32067df06a6387e4 ;
+    oc:stepId "fix-query-syntax" .
+
+_:ref_deec56f1de6bff2a a oc:WorkflowStep ;
+    dcterms:description "Replace @TypeDef/@Type with @JdbcTypeCode or custom type definitions" ;
+    oc:expectedOutcome "All custom type mappings use Hibernate 6 mechanisms" ;
+    oc:stepDependsOn _:ref_32067df06a6387e4 ;
+    oc:stepId "migrate-type-annotations" .
+
+_:ref_f188b489e770aaa1 a oc:WorkflowStep ;
+    dcterms:description "Replace all legacy org.hibernate.Criteria usage with JPA Criteria API (CriteriaBuilder/CriteriaQuery)" ;
+    oc:expectedOutcome "No deprecated Criteria API usage remains" ;
+    oc:stepDependsOn _:ref_32067df06a6387e4 ;
+    oc:stepId "migrate-criteria-api" .
+
+_:ref_f2dd60aefb9509e8 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_4b19a551749a3732,
+        _:ref_ce45aa48e0a23d39,
+        _:ref_f9564cfa44c60c51 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_12e096d90b84795b a oc:WorkflowStep ;
+    dcterms:description "Replace javax.persistence.* imports with jakarta.persistence.* imports in all entity classes" ;
+    oc:expectedOutcome "All entity classes use jakarta namespace" ;
+    oc:stepDependsOn _:ref_32067df06a6387e4 ;
+    oc:stepId "migrate-imports" .
+
+_:ref_32067df06a6387e4 a oc:WorkflowStep ;
+    dcterms:description "Scan codebase for deprecated Hibernate 5 patterns: session.createCriteria, @TypeDef, @Type(type=), 'update from' in queries, javax.persistence imports" ;
+    oc:expectedOutcome "Complete list of files requiring changes" ;
+    oc:stepId "audit-codebase" .
+

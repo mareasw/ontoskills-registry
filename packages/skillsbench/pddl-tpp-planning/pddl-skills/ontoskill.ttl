@@ -1,0 +1,506 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_pddl_tpp_planning_pddl_skills a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pddl-skills" ;
+    skos:broader "Automated planning utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/pddl-tpp-planning/pddl-skills" ;
+    oc:contentHash "2a23ee14d7eb5a24f89d492249eb98adfe8fba8898d4a3059eac40921765a884" ;
+    oc:differentia "loads PDDL domains/problems, generates classical plans, validates plan correctness, and saves plan outputs using the unified_planning library" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "domain_path, problem_path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Automated Planning utilities for loading PDDL domains and problems, generating plans using classical planners, validating plans, and saving plan outputs. Supports standard PDDL parsing, plan synthesis, and correctness verification." ;
+    oc:hasName "pddl-skills" ;
+    oc:hasRequirement oc:req_1cfb0831,
+        oc:req_59ecb2ac,
+        oc:req_d6fdc5d9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "If no plan exists, return an empty plan or explicit failure flag." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Validation must confirm goal satisfaction." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Planning must terminate within timeout." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Planner Behavior" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Domain files must follow PDDL standard syntax." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Plans must be sequential classical plans." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Problem files must reference the correct domain." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "PDDL Files" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "General Guidelines" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Requirements for Outputs" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**:
+Writes a plan object to disk in standard PDDL plan format.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Parameters**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`output_path` (str): Output file path." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`plan_object`: A unified planning plan." ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """save_plan(plan, "solution.plan")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 88-90" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 7 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Uses `unified_planning.io.PDDLWriter`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Output is a text plan file." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Example**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`save-plan(plan_object, output_path)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "3. Plan Saving" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Parameters**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`plan_object`: A sequential plan." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Example**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**:
+Generates a plan for the given planning problem using a classical planner.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`problem_object`: A unified planning problem instance." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Returns**:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """plan = generate_plan(problem)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 65-67" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 9 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Default planner: `pyperplan`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "If no plan exists, returns None." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Uses `unified_planning.shortcuts.OneshotPlanner`." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`generate-plan(problem_object)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "2. Plan Generation" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Returns**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 9 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Uses `unified_planning.shortcuts.SequentialPlanValidator`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Ensures goal satisfaction and action correctness." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "bool: True if the plan is valid, False otherwise." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`plan_object`: The generated plan." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`problem_object`: The planning problem." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Example**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Parameters**:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ok = validate(problem, plan)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 113-115" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**:
+Validates that a plan correctly solves the given PDDL problem.""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`validate(problem_object, plan_object)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "4. Plan Validation" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Returns**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**:  
+Loads a PDDL domain file and problem file into a unified planning problem object.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Example**:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """problem = load_problem("domain.pddl", "task01.pddl")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 40-42" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Parameters**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`problem_path` (str): Path to PDDL problem file." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`domain_path` (str): Path to PDDL domain file." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 9 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Raises an error if parsing fails." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Uses unified_planning.io.PDDLReader." ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`problem_object`: A `unified_planning.model.Problem` instance." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent "**Notes**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`load-problem(domain_path, problem_path)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "1. Load Domain and Problem" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "PDDL Skills" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pddl-skills
+description: "Automated Planning utilities for loading PDDL domains and problems, generating plans using classical planners, validating plans, and saving plan outputs. Supports standard PDDL parsing, plan synthesis, and correctness verification."
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# Load
+problem = load_problem("domain.pddl", "task01.pddl")
+
+# Generate plan
+plan = generate_plan(problem)
+
+# Validate plan
+if not validate(problem, plan):
+    raise ValueError("Generated plan is invalid")
+
+# Save plan
+save_plan(plan, "task01.plan")
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 123-136" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 3 ;
+            oc:sectionTitle "Example Workflow" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "This skill set enables reproducible planning pipelines." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Ensures oracle solutions are fully verifiable." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Designed for PDDL benchmarks and automated plan synthesis tasks." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 4 ;
+            oc:sectionTitle "Notes" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Standard pipeline for loading PDDL files, generating a plan, validating it, and saving the output." ;
+            oc:hasStep _:ref_083e8dfd522e4c42,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Save the validated plan using save_plan(plan_object, output_path)" ;
+                    oc:expectedOutcome "A text plan file is written to disk at the specified path" ;
+                    oc:stepDependsOn _:ref_083e8dfd522e4c42 ;
+                    oc:stepId "save" ],
+                _:ref_e60778b022b6e8db,
+                _:ref_fa49e2d2dbb15457 ;
+            oc:workflowId "pddl-pipeline" ;
+            oc:workflowName "PDDL Planning Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_03ccf84a,
+        oc:kn_077b0068,
+        oc:kn_2bc76d99,
+        oc:kn_2d963c9b,
+        oc:kn_58d3a860,
+        oc:kn_94bf159b,
+        oc:kn_a6a987fd,
+        oc:kn_e43c5dd6,
+        oc:kn_f76cd6b3,
+        oc:kn_fcce7c6a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "generate plan from PDDL domain and problem",
+        "load and parse PDDL files",
+        "run automated planning pipeline",
+        "save plan to disk",
+        "validate PDDL plan correctness" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_03ccf84a a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When saving plans" ;
+    oc:directiveContent "save-plan writes a text plan file to disk at the specified output_path, creating or overwriting the file." ;
+    oc:hasRationale "Overwriting existing files can destroy prior work if paths are reused carelessly" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_077b0068 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating plans with OneshotPlanner" ;
+    oc:directiveContent "Planning must terminate within timeout. If no plan exists, return an empty plan or explicit failure flag (None)." ;
+    oc:hasRationale "Unbounded planning can hang indefinitely; explicit failure handling prevents silent errors" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2bc76d99 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "After plan generation, before saving" ;
+    oc:directiveContent "Always validate generated plans using SequentialPlanValidator to confirm goal satisfaction and action correctness before saving." ;
+    oc:hasRationale "Validation ensures the plan actually solves the given problem; unvalidated plans may be incorrect" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2d963c9b a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Complete end-to-end planning pipeline" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """problem = load_problem("domain.pddl", "task01.pddl")
+plan = generate_plan(problem)
+if not validate(problem, plan):
+    raise ValueError("Generated plan is invalid")
+save_plan(plan, "task01.plan")""" .
+
+oc:kn_58d3a860 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Standard planning pipeline execution" ;
+    oc:directiveContent "1. Load domain and problem via load_problem(domain_path, problem_path) → 2. Generate plan via generate_plan(problem_object) → 3. Validate plan via validate(problem_object, plan_object) → 4. If valid, save via save_plan(plan_object, output_path)" ;
+    oc:hasRationale "This sequence ensures every generated plan is validated before being persisted, guaranteeing correctness" ;
+    oc:stepOrder 1 .
+
+oc:kn_94bf159b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When loading or generating PDDL files" ;
+    oc:directiveContent "Domain files must follow PDDL standard syntax and problem files must reference the correct domain. Plans must be sequential classical plans." ;
+    oc:hasRationale "Non-conforming PDDL files will cause parsing failures or incorrect plan synthesis" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a6a987fd a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After save-plan execution" ;
+    oc:directiveContent "After saving a plan, confirm the output file exists and is non-empty. Validate that plan correctness was confirmed before save." ;
+    oc:hasRationale "Ensures the persisted artifact is usable and was verified correct" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e43c5dd6 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running the pipeline" ;
+    oc:directiveContent "load-problem is idempotent given same inputs. save-plan overwrites the output file. generate-plan may return different plans across runs depending on planner internals." ;
+    oc:hasRationale "Understanding idempotency characteristics helps avoid stale file or non-deterministic plan issues" .
+
+oc:kn_f76cd6b3 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "On parsing failure or unsolvable problems" ;
+    oc:directiveContent "load-problem raises an error if PDDL parsing fails. generate-plan returns None if no plan exists." ;
+    oc:hasRationale "Callers must handle both exception-based and None-return failure modes to avoid crashes" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fcce7c6a a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any PDDL skill execution" ;
+    oc:directiveContent "unified_planning library must be installed. pyperplan is the default planner backend." ;
+    oc:hasRationale "The entire skill set depends on the unified_planning framework for parsing, planning, and validation" .
+
+oc:req_1cfb0831 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "PDDL syntax and planning concepts" .
+
+oc:req_59ecb2ac a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "unified_planning" .
+
+oc:req_d6fdc5d9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pyperplan" .
+
+_:ref_083e8dfd522e4c42 a oc:WorkflowStep ;
+    dcterms:description "Validate the plan using validate(problem_object, plan_object)" ;
+    oc:expectedOutcome "Returns True if the plan correctly satisfies all goals" ;
+    oc:stepDependsOn _:ref_e60778b022b6e8db ;
+    oc:stepId "validate" .
+
+_:ref_e60778b022b6e8db a oc:WorkflowStep ;
+    dcterms:description "Generate a sequential plan using generate_plan(problem_object)" ;
+    oc:expectedOutcome "A sequential plan object is returned (or None if unsolvable)" ;
+    oc:stepDependsOn _:ref_fa49e2d2dbb15457 ;
+    oc:stepId "generate" .
+
+_:ref_fa49e2d2dbb15457 a oc:WorkflowStep ;
+    dcterms:description "Load PDDL domain and problem files using load_problem(domain_path, problem_path)" ;
+    oc:expectedOutcome "A unified_planning.model.Problem instance is returned" ;
+    oc:stepId "load" .
+

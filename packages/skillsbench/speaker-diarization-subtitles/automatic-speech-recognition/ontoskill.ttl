@@ -1,0 +1,467 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_speaker_diarization_subtitles_automatic_speech_recognition_asr a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "automatic-speech-recognition-asr" ;
+    skos:broader "Speech processing utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/speaker-diarization-subtitles/automatic-speech-recognition" ;
+    oc:contentHash "5294480d67eb77641bdd926ece67af806adeb8bc2e732fadc4ea2b6cfd6d45d2" ;
+    oc:dependsOnSkill oc:skill_ontoskills_voice_activity_detection_vad ;
+    oc:differentia "transcribes audio segments to text using Whisper models and aligns timestamps with speaker diarization segments" ;
+    oc:handlesFailure oc:TimestampMisalignment,
+        oc:TranscriptionFailed ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "audio-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Transcribe audio segments to text using Whisper models. Use larger models (small, base, medium, large-v3) for better accuracy, or faster-whisper for optimized performance. Always align transcription timestamps with diarization segments for accurate speaker-labeled subtitles." ;
+    oc:hasName "automatic-speech-recognition-asr" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: Automatic Speech Recognition (ASR)
+description: Transcribe audio segments to text using Whisper models. Use larger models (small, base, medium, large-v3) for better accuracy, or faster-whisper for optimized performance. Always align transcription timestamps with diarization segments for accurate speaker-labeled subtitles.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# If no transcription found for a segment
+if not overlapping_text:
+    transcripts[i] = '[INAUDIBLE]'
+    
+# Or skip very short segments
+if turn['duration'] < 0.3:
+    transcripts[i] = '[INAUDIBLE]'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 110-118" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Handling Empty or Inaudible Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After speaker diarization, you need to transcribe each speech segment to text. Whisper is the current state-of-the-art for ASR, with multiple model sizes offering different trade-offs between accuracy and speed." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**For balanced performance:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import whisper
+
+model = whisper.load_model("small")  # Good balance
+result = model.transcribe(audio_path)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 42-47" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import whisper
+
+model = whisper.load_model("large-v3")  # Best accuracy
+result = model.transcribe(audio_path)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 34-39" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**For best accuracy (recommended for this task):**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Recommended: Use `small` or `large-v3`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 5 ;
+                                    oc:tableCaption "### Model Size Comparison" ;
+                                    oc:tableMarkdown """| Model | Size | Speed | Accuracy | Best For |
+|-------|------|-------|----------|----------|
+| tiny | 39M | Fastest | Lowest | Quick testing, low accuracy needs |
+| base | 74M | Fast | Low | Fast processing with moderate accuracy |
+| small | 244M | Medium | Good | **Recommended balance** |
+| medium | 769M | Slow | Very Good | High accuracy needs |
+| large-v3 | 1550M | Slowest | **Best** | **Maximum accuracy** |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Model Size Comparison" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Whisper Model Selection" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Auto-detect (recommended)
+result = model.transcribe(audio_path)
+
+# Or specify language for better accuracy
+result = model.transcribe(audio_path, language="en")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 124-130" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Whisper can auto-detect language, but you can also specify:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Language Detection" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_06a1c5eb48564290 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def generate_subtitles_ass(turns, transcripts, output_path):
+    # ... header code ...
+    
+    for i, turn in enumerate(turns):
+        start_time = format_time(turn['start'])
+        end_time = format_time(turn['start'] + turn['duration'])
+        speaker = turn['speaker']
+        text = transcripts.get(i, "[INAUDIBLE]")
+        
+        # Format: SPEAKER_XX: text
+        f.write(f"Dialogue: 0,{start_time},{end_time},Default,,0,0,0,,{speaker}: {text}\\n")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 151-163" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After transcription, combine with speaker labels for subtitles:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Integration with Subtitle Generation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After diarization, you need to map Whisper transcriptions to speaker segments:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# After diarization, you have turns with speaker labels
+turns = [
+    {'start': 0.8, 'duration': 0.86, 'speaker': 'SPEAKER_01'},
+    {'start': 5.34, 'duration': 0.21, 'speaker': 'SPEAKER_01'},
+    # ...
+]
+
+# Run Whisper transcription
+model = whisper.load_model("large-v3")
+result = model.transcribe(audio_path)
+
+# Map transcriptions to turns
+transcripts = {}
+for i, turn in enumerate(turns):
+    turn_start = turn['start']
+    turn_end = turn['start'] + turn['duration']
+    
+    # Find overlapping Whisper segments
+    overlapping_text = []
+    for seg in result['segments']:
+        seg_start = seg['start']
+        seg_end = seg['end']
+        
+        # Check if Whisper segment overlaps with diarization turn
+        if seg_start < turn_end and seg_end > turn_start:
+            overlapping_text.append(seg['text'].strip())
+    
+    # Combine overlapping segments
+    transcripts[i] = ' '.join(overlapping_text) if overlapping_text else '[INAUDIBLE]'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 76-106" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Aligning Transcriptions with Diarization Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "After speaker diarization is complete" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Need to generate speaker-labeled transcripts" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Creating subtitles from audio segments" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Converting speech segments to text" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For faster processing with similar accuracy, use `faster-whisper`:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Similar accuracy to standard Whisper" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Lower memory usage with quantization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Faster than standard Whisper" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from faster_whisper import WhisperModel
+
+# Use small model with CPU int8 quantization
+model = WhisperModel("small", device="cpu", compute_type="int8")
+
+# Transcribe
+segments, info = model.transcribe(audio_path, beam_size=5)
+
+# Process segments
+for segment in segments:
+    print(f"[{segment.start:.2f}s -> {segment.end:.2f}s] {segment.text}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 53-65" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Advantages:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Faster-Whisper (Optimized Alternative)" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_4ea8ff79acc67092 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Performance Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_cb5fcaf5da9cd770 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Automatic Speech Recognition (ASR)" ] ;
+    oc:hasWorkflow _:ref_06a1c5eb48564290,
+        [ a oc:Workflow ;
+            dcterms:description "Complete pipeline for transcribing audio and aligning with diarization segments" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Map Whisper segments to diarization turns using overlap detection (seg_start < turn_end AND seg_end > turn_start)" ;
+                    oc:stepId "align-segments" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Select appropriate Whisper model (small for balance, large-v3 for accuracy, faster-whisper for speed)" ;
+                    oc:expectedOutcome "WhisperModel or whisper model loaded and ready" ;
+                    oc:stepId "select-model" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run transcription on the full audio file to get segments with timestamps" ;
+                    oc:expectedOutcome "Transcription result with segments containing start, end, and text fields" ;
+                    oc:stepId "transcribe-audio" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Mark segments shorter than 0.3s or with no overlapping text as [INAUDIBLE]" ;
+                    oc:expectedOutcome "All turns have either transcribed text or [INAUDIBLE] marker" ;
+                    oc:stepId "handle-edge-cases" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Combine speaker labels with transcriptions into desired output format (ASS subtitles, SRT, or plain text)" ;
+                    oc:expectedOutcome "Speaker-labeled subtitle or transcript file" ;
+                    oc:stepId "generate-output" ] ;
+            oc:workflowId "asr-transcription-pipeline" ;
+            oc:workflowName "ASR Transcription Pipeline" ],
+        _:ref_4ea8ff79acc67092,
+        _:ref_cb5fcaf5da9cd770 ;
+    oc:impartsKnowledge oc:kn_32443a9b,
+        oc:kn_55e16b92,
+        oc:kn_74d8e3cf,
+        oc:kn_c354aaca,
+        oc:kn_cfe67e31 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:AudioSegmentsDetected ;
+    oc:resolvesIntent "align transcriptions with diarization segments",
+        "create subtitles from audio",
+        "generate speaker-labeled transcripts",
+        "transcribe audio to text" ;
+    oc:yieldsState oc:AudioTranscribed,
+        oc:TimestampsAligned .
+
+oc:kn_32443a9b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing diarization turns with no matching transcription" ;
+    oc:directiveContent "Mark segments shorter than 0.3 seconds or with no overlapping transcription as '[INAUDIBLE]' rather than leaving them empty." ;
+    oc:hasRationale "Empty segments break subtitle timing and continuity; explicit inaudible markers maintain segment integrity" .
+
+oc:kn_55e16b92 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When mapping transcriptions to speaker turns" ;
+    oc:directiveContent "Never skip timestamp alignment between Whisper segments and diarization turns — multiple Whisper segments can overlap one diarization turn." ;
+    oc:hasRationale "Misaligned timestamps produce speaker-labeled subtitles where text is attributed to the wrong speaker" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_74d8e3cf a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting a Whisper model for transcription" ;
+    oc:directiveContent "Use 'small' as minimum Whisper model size; use 'large-v3' for maximum accuracy. Avoid tiny/base for production subtitles." ;
+    oc:hasRationale "Smaller models sacrifice accuracy significantly, producing unreliable subtitles" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c354aaca a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When aligning Whisper output with diarization segments" ;
+    oc:directiveContent "Whisper segments may not align 1:1 with diarization turns — always use overlap detection (seg_start < turn_end AND seg_end > turn_start) rather than direct matching." ;
+    oc:hasRationale "Whisper segments audio differently than diarization tools, creating boundary mismatches that simple index matching cannot resolve" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cfe67e31 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When processing long audio files or batch processing" ;
+    oc:directiveContent "Use faster-whisper with int8 quantization for 2-4x speed improvement with similar accuracy to standard Whisper. Use CPU+int8 for memory-constrained environments." ;
+    oc:hasRationale "Standard Whisper large-v3 requires significant GPU memory; faster-whisper with quantization reduces memory footprint dramatically" .
+
+_:ref_35713bd6cb1114fb a oc:WorkflowStep ;
+    dcterms:description "**Use larger models for better accuracy**: `small` minimum, `large-v3` for best results" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_56be67a8e3830aec a oc:WorkflowStep ;
+    dcterms:description "**Handle gaps**: Some diarization turns may have no corresponding transcription" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_586dcf04ea2bd5d6 a oc:WorkflowStep ;
+    dcterms:description "**Handle overlaps**: Multiple Whisper segments may overlap with one diarization turn" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_647ec56302b399f6 a oc:WorkflowStep ;
+    dcterms:description "**For memory**: Use `faster-whisper` with `int8` quantization" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_8706279d7f5c51cc a oc:WorkflowStep ;
+    dcterms:description "**Post-process text**: Clean up punctuation, capitalization if needed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_8d9b0c8a8205fb5d a oc:WorkflowStep ;
+    dcterms:description "**For speed**: Use `faster-whisper` with `small` model" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a5360dd3fe3d4841 a oc:WorkflowStep ;
+    dcterms:description "**Missing transcriptions**: Check for very short segments or silence" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_bba43a10e756c67b a oc:WorkflowStep ;
+    dcterms:description "**Low transcription accuracy**: Use larger model (small → medium → large-v3)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c221d100e7d1b435 a oc:WorkflowStep ;
+    dcterms:description "**Misaligned timestamps**: Check time alignment between diarization and transcription" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_cc427086d9a6cd38 a oc:WorkflowStep ;
+    dcterms:description "**Batch processing**: Process multiple segments together if possible" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d67fc8bba3039ed5 a oc:WorkflowStep ;
+    dcterms:description "**Slow processing**: Use faster-whisper or smaller model" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_df3bb245c21729f0 a oc:WorkflowStep ;
+    dcterms:description "**Align timestamps carefully**: Match Whisper segments with diarization turns" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e9d0efe70b75fc97 a oc:WorkflowStep ;
+    dcterms:description "**For accuracy**: Use `large-v3` model" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_06a1c5eb48564290 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_a5360dd3fe3d4841,
+        _:ref_bba43a10e756c67b,
+        _:ref_c221d100e7d1b435,
+        _:ref_d67fc8bba3039ed5 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4ea8ff79acc67092 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_647ec56302b399f6,
+        _:ref_8d9b0c8a8205fb5d,
+        _:ref_cc427086d9a6cd38,
+        _:ref_e9d0efe70b75fc97 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_cb5fcaf5da9cd770 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_35713bd6cb1114fb,
+        _:ref_56be67a8e3830aec,
+        _:ref_586dcf04ea2bd5d6,
+        _:ref_8706279d7f5c51cc,
+        _:ref_df3bb245c21729f0 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

@@ -1,0 +1,506 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_offer_letter_generator_docx a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "docx" ;
+    skos:broader "Document manipulation skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/offer-letter-generator/docx" ;
+    oc:contentHash "43a42dcf6f8bdbcd1718c038bc0ddc71aa88f5503dcbeb8c7719d54d521e0e65" ;
+    oc:differentia "handles Word template placeholder replacement with robust split-run handling, headers/footers, nested tables, and conditional sections using python-docx" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "template_path, data, output_path" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Word document manipulation with python-docx - handling split placeholders, headers/footers, nested tables" ;
+    oc:hasName "docx" ;
+    oc:hasRequirement oc:req_09aefb63,
+        oc:req_6caa6449,
+        oc:req_871944b8 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: docx
+description: Word document manipulation with python-docx - handling split placeholders, headers/footers, nested tables
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For `{{IF_CONDITION}}...{{END_IF_CONDITION}}` patterns:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def handle_conditional(doc, condition_key, should_include, data):
+    \"\"\"Remove or keep conditional sections.\"\"\"
+    start_marker = '{{IF_' + condition_key + '}}'
+    end_marker = '{{END_IF_' + condition_key + '}}'
+
+    for para in doc.paragraphs:
+        text = para.text
+        if start_marker in text and end_marker in text:
+            if should_include:
+                # Remove just the markers
+                new_text = text.replace(start_marker, '').replace(end_marker, '')
+                # Also replace any placeholders inside
+                for key, val in data.items():
+                    new_text = new_text.replace('{{' + key + '}}', str(val))
+            else:
+                # Remove entire content between markers
+                new_text = ''
+
+            # Apply to first run
+            if para.runs:
+                para.runs[0].text = new_text
+                for run in para.runs[1:]:
+                    run.text = ''
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 177-201" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Conditional Sections" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**The #1 issue with Word templates**: Word often splits placeholder text across multiple XML runs. For example, `{{CANDIDATE_NAME}}` might be stored as:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Run 2: `DATE_NAME}}`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Run 1: `{{CANDI`" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "This happens due to spell-check, formatting changes, or Word's internal XML structure." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import re
+
+def replace_placeholder_robust(paragraph, placeholder, value):
+    \"\"\"Replace placeholder that may be split across runs.\"\"\"
+    full_text = paragraph.text
+    if placeholder not in full_text:
+        return False
+
+    # Find all runs and their positions
+    runs = paragraph.runs
+    if not runs:
+        return False
+
+    # Build mapping of character positions to runs
+    char_to_run = []
+    for run in runs:
+        for char in run.text:
+            char_to_run.append(run)
+
+    # Find placeholder position
+    start_idx = full_text.find(placeholder)
+    end_idx = start_idx + len(placeholder)
+
+    # Get runs that contain the placeholder
+    if start_idx >= len(char_to_run):
+        return False
+
+    start_run = char_to_run[start_idx]
+
+    # Clear all runs and rebuild with replacement
+    new_text = full_text.replace(placeholder, str(value))
+
+    # Preserve first run's formatting, clear others
+    for i, run in enumerate(runs):
+        if i == 0:
+            run.text = new_text
+        else:
+            run.text = ''
+
+    return True
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 28-69" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Correct Approach: Paragraph-Level Search and Rebuild" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# DON'T DO THIS - won't find split placeholders
+for para in doc.paragraphs:
+    for run in para.runs:
+        if '{{NAME}}' in run.text:  # Won't match if split!
+            run.text = run.text.replace('{{NAME}}', value)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 18-24" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Naive Approach (FAILS on split placeholders)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import re
+from docx import Document
+
+def replace_all_placeholders(doc, data):
+    \"\"\"Replace all {{KEY}} placeholders with values from data dict.\"\"\"
+
+    def replace_in_paragraph(para):
+        \"\"\"Replace placeholders in a single paragraph.\"\"\"
+        text = para.text
+        # Find all placeholders
+        pattern = r'\\{\\{([A-Z_]+)\\}\\}'
+        matches = re.findall(pattern, text)
+
+        if not matches:
+            return
+
+        # Build new text with replacements
+        new_text = text
+        for key in matches:
+            placeholder = '{{' + key + '}}'
+            if key in data:
+                new_text = new_text.replace(placeholder, str(data[key]))
+
+        # If text changed, rebuild paragraph
+        if new_text != text:
+            # Clear all runs, put new text in first run
+            runs = para.runs
+            if runs:
+                runs[0].text = new_text
+                for run in runs[1:]:
+                    run.text = ''
+
+    # Process all paragraphs
+    for para in doc.paragraphs:
+        replace_in_paragraph(para)
+
+    # Process tables (including nested)
+    for table in doc.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for para in cell.paragraphs:
+                    replace_in_paragraph(para)
+                # Handle nested tables
+                for nested_table in cell.tables:
+                    for nested_row in nested_table.rows:
+                        for nested_cell in nested_row.cells:
+                            for para in nested_cell.paragraphs:
+                                replace_in_paragraph(para)
+
+    # Process headers and footers
+    for section in doc.sections:
+        for para in section.header.paragraphs:
+            replace_in_paragraph(para)
+        for para in section.footer.paragraphs:
+            replace_in_paragraph(para)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 73-129" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Best Practice: Regex-Based Full Replacement" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Critical: Split Placeholder Problem" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def process_table(table, data):
+    \"\"\"Process table including nested tables.\"\"\"
+    for row in table.rows:
+        for cell in row.cells:
+            # Process paragraphs in cell
+            for para in cell.paragraphs:
+                replace_in_paragraph(para, data)
+
+            # Recurse into nested tables
+            for nested_table in cell.tables:
+                process_table(nested_table, data)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 159-171" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Tables can contain other tables. Must recurse:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Nested Tables" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_5cadf0d01ea2f6be ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from docx import Document
+
+doc = Document('template.docx')
+
+# Access headers/footers through sections
+for section in doc.sections:
+    # Header
+    header = section.header
+    for para in header.paragraphs:
+        # Process paragraphs
+        pass
+
+    # Footer
+    footer = section.footer
+    for para in footer.paragraphs:
+        # Process paragraphs
+        pass
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 135-153" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Headers/footers are separate from main document body:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Headers and Footers" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from docx import Document
+import json
+import re
+
+def fill_template(template_path, data_path, output_path):
+    \"\"\"Fill Word template handling all edge cases.\"\"\"
+
+    # Load data
+    with open(data_path) as f:
+        data = json.load(f)
+
+    # Load template
+    doc = Document(template_path)
+
+    def replace_in_para(para):
+        text = para.text
+        pattern = r'\\{\\{([A-Z_]+)\\}\\}'
+        if not re.search(pattern, text):
+            return
+
+        new_text = text
+        for match in re.finditer(pattern, text):
+            key = match.group(1)
+            placeholder = match.group(0)
+            if key in data:
+                new_text = new_text.replace(placeholder, str(data[key]))
+
+        if new_text != text and para.runs:
+            para.runs[0].text = new_text
+            for run in para.runs[1:]:
+                run.text = ''
+
+    # Main document
+    for para in doc.paragraphs:
+        replace_in_para(para)
+
+    # Tables (with nesting)
+    def process_table(table):
+        for row in table.rows:
+            for cell in row.cells:
+                for para in cell.paragraphs:
+                    replace_in_para(para)
+                for nested in cell.tables:
+                    process_table(nested)
+
+    for table in doc.tables:
+        process_table(table)
+
+    # Headers/Footers
+    for section in doc.sections:
+        for para in section.header.paragraphs:
+            replace_in_para(para)
+        for para in section.footer.paragraphs:
+            replace_in_para(para)
+
+    doc.save(output_path)
+
+# Usage
+fill_template('template.docx', 'data.json', 'output.docx')
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 205-265" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Complete Solution Pattern" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Word Document Manipulation with python-docx" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for filling a Word template with data, handling all edge cases" ;
+            oc:hasStep _:ref_167b1a1d89ff089b,
+                _:ref_31a6aadf6a02fc9a,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Save the modified document to output path" ;
+                    oc:expectedOutcome "Output .docx file with all placeholders replaced" ;
+                    oc:stepDependsOn _:ref_31a6aadf6a02fc9a,
+                        _:ref_96bfc2fd91a3397f,
+                        _:ref_fab04764d0a15d61 ;
+                    oc:stepId "save" ],
+                _:ref_96bfc2fd91a3397f,
+                _:ref_fab04764d0a15d61 ;
+            oc:workflowId "docx-fill-template" ;
+            oc:workflowName "Fill Word Template" ],
+        _:ref_5cadf0d01ea2f6be ;
+    oc:impartsKnowledge oc:kn_03d7dc74,
+        oc:kn_12e8623e,
+        oc:kn_4cf3267e,
+        oc:kn_72abf962,
+        oc:kn_ae230759,
+        oc:kn_be3721e0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "fill word template with data",
+        "handle split placeholders in docx templates",
+        "manipulate word document programmatically",
+        "replace placeholders in docx" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_03d7dc74 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When replacing any placeholder in a Word document" ;
+    oc:directiveContent "Never search for placeholders at the run level — Word splits placeholder text across multiple XML runs due to spell-check, formatting changes, or internal XML structure. Always operate at the paragraph level using paragraph.text." ;
+    oc:hasRationale "Run-level matching silently fails when a placeholder like {{CANDIDATE_NAME}} is split into runs such as '{{CANDI' and 'DATE_NAME}}', producing unreplaced placeholders in the output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_12e8623e a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When handling conditional sections in templates" ;
+    oc:directiveContent "After processing conditional sections ({{IF_...}}...{{END_IF_...}}), always strip the markers themselves regardless of whether the section was kept or removed. If removed, set the entire paragraph text to empty." ;
+    oc:hasRationale "Leaving conditional markers behind corrupts the document output and confuses downstream processing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4cf3267e a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When deciding whether to re-process a document" ;
+    oc:directiveContent "Placeholder replacement is non-idempotent in the sense that repeated runs on an already-replaced document will not find placeholders to replace, effectively making it safe to re-run. However, the operation is NOT reversible — original placeholders are lost after save." ;
+    oc:hasRationale "Understanding idempotency helps prevent double-replacement bugs and informs whether to keep template copies." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_72abf962 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When replacing placeholders that span multiple runs" ;
+    oc:directiveContent "When rebuilding a paragraph after replacement, put the full new text into the first run and clear all subsequent runs' text. This preserves the first run's formatting while ensuring correct text content." ;
+    oc:hasRationale "Clearing all runs and setting text on the first run avoids duplicating text and preserves formatting from the dominant run." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ae230759 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing table content in a Word document" ;
+    oc:directiveContent "Tables can be nested — a cell may contain sub-tables via cell.tables. Must recurse into nested tables to ensure all placeholders are replaced." ;
+    oc:hasRationale "Missing nested tables leaves placeholders unreplaced in deeply nested structures." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_be3721e0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing all document content for placeholder replacement" ;
+    oc:directiveContent "Headers and footers are NOT included in doc.paragraphs — they must be accessed separately through doc.sections iterating over section.header.paragraphs and section.footer.paragraphs." ;
+    oc:hasRationale "Forgetting headers/footers is a common pitfall that leaves placeholders unreplaced in those sections." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_09aefb63 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Python programming" .
+
+oc:req_6caa6449 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python-docx" .
+
+oc:req_871944b8 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Word XML run structure" .
+
+_:ref_1127569e9bc80a6c a oc:WorkflowStep ;
+    dcterms:description "**Conditional markers left behind** - Remove `{{IF_...}}` markers after processing" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_86bb210125c15b3a a oc:WorkflowStep ;
+    dcterms:description "**Missing nested tables** - Must recurse into `cell.tables`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_8a14cffb33a6507c a oc:WorkflowStep ;
+    dcterms:description "**Forgetting headers/footers** - They're not in `doc.paragraphs`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c532aaca83522446 a oc:WorkflowStep ;
+    dcterms:description "**Split placeholders** - Always work at paragraph level, not run level" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_cfe40d44933d1411 a oc:WorkflowStep ;
+    dcterms:description "**Losing formatting** - Keep first run's formatting when rebuilding" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_31a6aadf6a02fc9a a oc:WorkflowStep ;
+    dcterms:description "Replace placeholders in main document paragraphs using regex pattern r'\\{\\{([A-Z_]+)\\}\\}'" ;
+    oc:expectedOutcome "All placeholders in main body replaced with data values" ;
+    oc:stepDependsOn _:ref_167b1a1d89ff089b ;
+    oc:stepId "replace-body" .
+
+_:ref_5cadf0d01ea2f6be a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1127569e9bc80a6c,
+        _:ref_86bb210125c15b3a,
+        _:ref_8a14cffb33a6507c,
+        _:ref_c532aaca83522446,
+        _:ref_cfe40d44933d1411 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_96bfc2fd91a3397f a oc:WorkflowStep ;
+    dcterms:description "Process headers and footers through doc.sections" ;
+    oc:expectedOutcome "All placeholders in headers and footers replaced" ;
+    oc:stepDependsOn _:ref_167b1a1d89ff089b ;
+    oc:stepId "replace-headers-footers" .
+
+_:ref_fab04764d0a15d61 a oc:WorkflowStep ;
+    dcterms:description "Recursively process all tables including nested tables via cell.tables" ;
+    oc:expectedOutcome "All placeholders in table cells (including nested) replaced" ;
+    oc:stepDependsOn _:ref_167b1a1d89ff089b ;
+    oc:stepId "replace-tables" .
+
+_:ref_167b1a1d89ff089b a oc:WorkflowStep ;
+    dcterms:description "Load template document and data source (JSON dict)" ;
+    oc:expectedOutcome "Document and data objects ready for processing" ;
+    oc:stepId "load" .
+

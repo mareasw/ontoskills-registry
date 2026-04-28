@@ -1,0 +1,359 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_filler_word_remover_filler_word_processing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "filler-word-processing" ;
+    skos:broader "Data transformation pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-filler-word-remover/filler-word-processing" ;
+    oc:contentHash "2ac30f5c2060c6b852e56a00952534eeeeb2f713564b37c9a6f4cdfb9464f8cb" ;
+    oc:dependsOnSkill oc:skill_ontoskills_whisper_transcription ;
+    oc:differentia "converts filler word timestamp annotations into merged video cut segments with word-specific durations and overlap merging" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "annotations_file (path to JSON with word/timestamp entries)" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Process filler word annotations to generate video edit lists. Use when working with timestamp annotations for removing speech disfluencies (um, uh, like, you know) from audio/video content." ;
+    oc:hasName "filler-word-processing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Test with a few samples before processing full video." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Too aggressive**: Cuts into adjacent words, sounds choppy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Too conservative**: Filler words partially audible" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Sweet spot**: Clean cuts with natural-sounding result" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Quality Considerations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def merge_overlapping_segments(segments, min_gap=0.1):
+    \"\"\"
+    Merge segments that overlap or are very close together.
+
+    Args:
+        segments: List of (start, end) tuples
+        min_gap: Minimum gap to keep segments separate
+
+    Returns:
+        Merged list of segments
+    \"\"\"
+    if not segments:
+        return []
+
+    # Sort by start time
+    sorted_segs = sorted(segments)
+    merged = [sorted_segs[0]]
+
+    for start, end in sorted_segs[1:]:
+        prev_start, prev_end = merged[-1]
+
+        # If this segment overlaps or is very close to previous
+        if start <= prev_end + min_gap:
+            # Extend the previous segment
+            merged[-1] = (prev_start, max(prev_end, end))
+        else:
+            merged.append((start, end))
+
+    return merged
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 79-109" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When filler words are close together, merge their cut segments:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Merging Overlapping Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import json
+
+# Word-specific durations (in seconds)
+WORD_DURATIONS = {
+    "uh": 0.3,
+    "um": 0.4,
+    "hum": 0.6,
+    "hmm": 0.6,
+    "mhm": 0.55,
+    "like": 0.3,
+    "yeah": 0.35,
+    "so": 0.25,
+    "well": 0.35,
+    "okay": 0.4,
+    "basically": 0.55,
+    "you know": 0.55,
+    "i mean": 0.5,
+    "kind of": 0.5,
+    "i guess": 0.5,
+}
+DEFAULT_DURATION = 0.4
+
+def annotations_to_segments(annotations_file, buffer=0.05):
+    \"\"\"
+    Convert filler word annotations to (start, end) cut segments.
+
+    Args:
+        annotations_file: Path to JSON annotations
+        buffer: Small buffer before the word (seconds)
+
+    Returns:
+        List of (start, end) tuples representing segments to remove
+    \"\"\"
+    with open(annotations_file) as f:
+        annotations = json.load(f)
+
+    segments = []
+    for ann in annotations:
+        word = ann.get('word', '').lower().strip()
+        timestamp = ann['timestamp']
+        # Use word-specific duration, fall back to default
+        word_duration = WORD_DURATIONS.get(word, DEFAULT_DURATION)
+        # Cut starts slightly before the word
+        start = max(0, timestamp - buffer)
+        # Cut ends after word duration
+        end = timestamp + word_duration
+        segments.append((start, end))
+
+    return segments
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 23-73" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Each filler word annotation marks when the word starts. To remove it, use word-specific durations since different fillers have different lengths:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Converting Annotations to Cut Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """[
+  {"word": "um", "timestamp": 12.5},
+  {"word": "like", "timestamp": 25.3},
+  {"word": "you know", "timestamp": 45.8}
+]
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 11-17" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Typical annotation JSON structure:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Annotation Format" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Tuning Parameters" ;
+                            oc:tableMarkdown """| Parameter | Typical Value | Notes |
+|-----------|---------------|-------|
+| word_duration | varies | Short fillers (um, uh) ~0.25-0.3s, single words (like, yeah) ~0.3-0.4s, phrases (you know, i mean) ~0.5-0.6s |
+| buffer | 0.05s | Small buffer captures word onset |
+| min_gap | 0.1s | Prevents micro-segments between close fillers |
+""" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 5 ;
+                                    oc:tableCaption "### Word Duration Guidelines" ;
+                                    oc:tableMarkdown """| Category | Words | Duration |
+|----------|-------|----------|
+| Quick hesitations | uh, um | 0.3-0.4s |
+| Sustained hums (drawn out while thinking) | hum, hmm, mhm | 0.55-0.6s |
+| Quick single words | like, yeah, so, well | 0.25-0.35s |
+| Longer single words | okay, basically | 0.4-0.55s |
+| Multi-word phrases | you know, i mean, kind of, i guess | 0.5-0.55s |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Word Duration Guidelines" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Tuning Parameters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def process_filler_annotations(annotations_file, word_duration=0.4):
+    \"\"\"Full pipeline: load annotations -> create segments -> merge overlaps\"\"\"
+
+    # Load and create initial segments
+    segments = annotations_to_segments(annotations_file, word_duration)
+
+    # Merge overlapping cuts
+    merged = merge_overlapping_segments(segments)
+
+    return merged
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 113-124" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Complete Processing Pipeline" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Filler Word Processing" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: filler-word-processing
+description: "Process filler word annotations to generate video edit lists. Use when working with timestamp annotations for removing speech disfluencies (um, uh, like, you know) from audio/video content."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Convert raw filler word annotations into merged cut segments ready for video editing" ;
+            oc:hasStep _:ref_441133700ea03829,
+                _:ref_615b6557fb825614,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Return merged segments for use by video editing step" ;
+                    oc:expectedOutcome "Final list of (start, end) tuples ready for ffmpeg processing" ;
+                    oc:stepDependsOn _:ref_615b6557fb825614 ;
+                    oc:stepId "output-segments" ],
+                _:ref_f1a7ef3ecfd4fa8c ;
+            oc:workflowId "filler-processing-pipeline" ;
+            oc:workflowName "Filler Word Processing Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_12b6d203,
+        oc:kn_43f5aa97,
+        oc:kn_478fcffb,
+        oc:kn_47c3ab36,
+        oc:kn_53258ae8,
+        oc:kn_53e13c5e,
+        oc:kn_80d536a8,
+        oc:kn_810f2c10,
+        oc:kn_a7e01b66,
+        oc:kn_cdedf4bf,
+        oc:kn_ce584862 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:TranscriptionComplete ;
+    oc:resolvesIntent "convert filler word annotations to cut segments",
+        "merge overlapping filler word segments",
+        "process speech disfluency timestamps for video editing" ;
+    oc:yieldsState oc:CutSegmentsGenerated .
+
+oc:kn_12b6d203 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning word durations and buffer parameters" ;
+    oc:directiveContent "Do not use overly aggressive durations that cut into adjacent words, nor overly conservative durations that leave filler words partially audible. Test with a few samples before processing full video." ;
+    oc:hasRationale "Too aggressive cuts sound choppy; too conservative cuts leave disfluencies audible. The sweet spot is clean cuts with natural-sounding result" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_43f5aa97 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing cut segment start times" ;
+    oc:directiveContent "Apply a 0.05s buffer before each filler word start time (start = max(0, timestamp - buffer)) to capture the word onset cleanly." ;
+    oc:hasRationale "Timestamps may slightly precede the audible word; the buffer ensures the full filler is captured for removal" .
+
+oc:kn_478fcffb a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Final output of the filler word processing pipeline" ;
+    oc:directiveContent "[(start_seconds, end_seconds), ...]" ;
+    oc:hasRationale "List of (start, end) tuples representing time segments to remove, suitable for consumption by video editing tools like ffmpeg" .
+
+oc:kn_47c3ab36 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When merging overlapping or adjacent filler word segments" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def merge_overlapping_segments(segments, min_gap=0.1):
+    sorted_segs = sorted(segments)
+    merged = [sorted_segs[0]]
+    for start, end in sorted_segs[1:]:
+        prev_start, prev_end = merged[-1]
+        if start <= prev_end + min_gap:
+            merged[-1] = (prev_start, max(prev_end, end))
+        else:
+            merged.append((start, end))
+    return merged""" .
+
+oc:kn_53258ae8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filler words are close together in time" ;
+    oc:directiveContent "Merge segments that overlap or are within 0.1s (min_gap) of each other to avoid micro-segments between close fillers." ;
+    oc:hasRationale "Micro-cuts between adjacent fillers create unnatural audio artifacts; merging produces smoother results" .
+
+oc:kn_53e13c5e a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running the pipeline on the same annotations" ;
+    oc:directiveContent "The annotation-to-segment conversion is deterministic: same input annotations with same parameters always produce the same segments." ;
+    oc:hasRationale "Deterministic processing enables safe re-processing and testing without side effects" .
+
+oc:kn_80d536a8 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running this skill" ;
+    oc:directiveContent "Requires a JSON annotations file with entries containing 'word' (string) and 'timestamp' (float, seconds) fields, typically produced by speech-to-text transcription." .
+
+oc:kn_810f2c10 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Always, when processing filler word annotations" ;
+    oc:directiveContent "1. Load JSON annotations with word/timestamp pairs. 2. For each annotation, compute cut segment: start = max(0, timestamp - buffer), end = timestamp + word_duration (lookup from WORD_DURATIONS dict, fallback 0.4s). 3. Sort segments by start time. 4. Merge overlapping/adjacent segments (gap < min_gap). 5. Return merged segment list." ;
+    oc:stepOrder 1 .
+
+oc:kn_a7e01b66 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When looking up word-specific filler durations" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """WORD_DURATIONS = {"uh": 0.3, "um": 0.4, "hum": 0.6, "hmm": 0.6, "mhm": 0.55, "like": 0.3, "yeah": 0.35, "so": 0.25, "well": 0.35, "okay": 0.4, "basically": 0.55, "you know": 0.55, "i mean": 0.5, "kind of": 0.5, "i guess": 0.5}
+DEFAULT_DURATION = 0.4""" .
+
+oc:kn_cdedf4bf a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting annotations to cut segments" ;
+    oc:directiveContent "Each filler word requires a word-specific duration: short fillers (uh, um) ~0.3-0.4s, sustained hums (hum, hmm, mhm) ~0.55-0.6s, quick single words (like, yeah, so, well) ~0.25-0.35s, longer words (okay, basically) ~0.4-0.55s, multi-word phrases (you know, i mean, kind of, i guess) ~0.5-0.55s. Default fallback is 0.4s." ;
+    oc:hasRationale "Different filler words have different spoken lengths; using a uniform duration would either cut into adjacent words (too long) or leave audible remnants (too short)" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ce584862 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running the processing pipeline" ;
+    oc:directiveContent "Verify that the annotations JSON file exists and contains valid entries with 'word' and 'timestamp' fields before processing." ;
+    oc:hasRationale "Malformed or missing annotation data will cause silent failures or incorrect cut segments" .
+
+_:ref_441133700ea03829 a oc:WorkflowStep ;
+    dcterms:description "Load JSON annotations file containing filler word timestamps" ;
+    oc:expectedOutcome "List of annotation objects with 'word' and 'timestamp' fields" ;
+    oc:stepId "load-annotations" .
+
+_:ref_615b6557fb825614 a oc:WorkflowStep ;
+    dcterms:description "Merge overlapping or very close segments to avoid micro-cuts" ;
+    oc:expectedOutcome "Consolidated list of non-overlapping cut segments" ;
+    oc:stepDependsOn _:ref_f1a7ef3ecfd4fa8c ;
+    oc:stepId "merge-overlaps" .
+
+_:ref_f1a7ef3ecfd4fa8c a oc:WorkflowStep ;
+    dcterms:description "Convert each annotation to a (start, end) cut segment using word-specific durations and buffer" ;
+    oc:expectedOutcome "List of (start, end) tuples representing segments to remove" ;
+    oc:stepDependsOn _:ref_441133700ea03829 ;
+    oc:stepId "create-segments" .
+

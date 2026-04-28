@@ -1,0 +1,359 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_exoplanet_detection_period_lomb_scargle_periodogram a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "lomb-scargle-periodogram" ;
+    skos:broader "periodogram technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/exoplanet-detection-period/lomb-scargle-periodogram" ;
+    oc:contentHash "04e8c4ffd4d9b2c391dd8348a2b529c31433a30ed45514fc1451a66948b79193" ;
+    oc:dependsOnSkill oc:skill_ontoskills_light_curve_preprocessing ;
+    oc:differentia "detects periodic signals in unevenly sampled astronomical time series using the Lomb-Scargle method via lightkurve" ;
+    oc:handlesFailure oc:InsufficientData,
+        oc:NoSignificantPeriodFound ;
+    oc:hasArgumentHint "time-series light curve data (time, flux, flux_err) with optional period range constraints" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Lomb-Scargle periodogram for finding periodic signals in unevenly sampled time series data. Use when analyzing light curves, radial velocity data, or any astronomical time series to detect periodic variations. Works for stellar rotation, pulsation, eclipsing binaries, and general periodic phenomena. Based on lightkurve library." ;
+    oc:hasName "lomb-scargle-periodogram" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_345f7505,
+        oc:req_4084ac39,
+        oc:req_fe6b6a53 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: lomb-scargle-periodogram
+description: Lomb-Scargle periodogram for finding periodic signals in unevenly sampled time series data. Use when analyzing light curves, radial velocity data, or any astronomical time series to detect periodic variations. Works for stellar rotation, pulsation, eclipsing binaries, and general periodic phenomena. Based on lightkurve library.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "The Lomb-Scargle periodogram is the standard tool for finding periods in unevenly sampled astronomical time series data. It's particularly useful for detecting periodic signals in light curves from space missions like Kepler, K2, and TESS." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The Lomb-Scargle periodogram extends the classical periodogram to handle unevenly sampled data, which is common in astronomy due to observing constraints, data gaps, and variable cadences." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Once you find a period, you can fit a model:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get the frequency at maximum power
+frequency = pg.frequency_at_max_power
+
+# Create a model light curve
+model = pg.model(time=lc.time, frequency=frequency)
+
+# Plot data and model
+import matplotlib.pyplot as plt
+lc.plot(label='Data')
+model.plot(label='Model')
+plt.legend()
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 80-93" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Model Fitting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Lightkurve Tutorials](https://lightkurve.github.io/lightkurve/tutorials/index.html)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Lightkurve Periodogram Documentation](https://docs.lightkurve.org/)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install lightkurve numpy matplotlib
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 97-99" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Multiple peaks**: Could indicate harmonics (period/2, period*2)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**High power**: Likely real periodic signal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Aliasing**: Very short periods may be aliases of longer periods" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Higher power indicates stronger periodic signal, but be cautious:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Power Significance" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_ef2b45a2dedd703a ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Common Patterns" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Interpreting Results" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Lomb-Scargle**: General periodic signals (rotation, pulsation, eclipsing binaries)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Transit Least Squares (TLS)**: Specifically for exoplanet transits (more sensitive)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Box Least Squares (BLS)**: Alternative transit detection method" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "For exoplanet detection, consider using TLS after Lomb-Scargle for initial period search." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "When to Use This vs. Other Methods" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Eclipsing binaries**: 0.1 - 100 days" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Stellar rotation**: 0.1 - 100 days" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Exoplanet transits**: 0.5 - 50 days (most common)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Stellar pulsations**: 0.001 - 1 day" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Choose appropriate period ranges based on your science case:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Search specific period range
+pg = lc.to_periodogram(minimum_period=2.0, maximum_period=7.0)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 56-59" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Period Range Selection" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import lightkurve as lk
+import numpy as np
+
+# Create a light curve object
+lc = lk.LightCurve(time=time, flux=flux, flux_err=error)
+
+# Create periodogram (specify maximum period to search)
+pg = lc.to_periodogram(maximum_period=15)  # Search up to 15 days
+
+# Find strongest period
+strongest_period = pg.period_at_max_power
+max_power = pg.max_power
+
+print(f"Strongest period: {strongest_period:.5f} days")
+print(f"Power: {max_power:.5f}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 16-32" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Basic Usage with Lightkurve" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import matplotlib.pyplot as plt
+
+pg.plot(view='period')  # View vs period (not frequency)
+plt.xlabel('Period [days]')
+plt.ylabel('Power')
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 36-43" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Important**: Use `view='period'` to see periods directly, not frequencies. The default `view='frequency'` shows frequency (1/period)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Plotting Periodograms" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Lomb-Scargle Periodogram" ] ;
+    oc:hasWorkflow _:ref_ef2b45a2dedd703a ;
+    oc:impartsKnowledge oc:kn_1fe46afb,
+        oc:kn_3841505b,
+        oc:kn_557a90fb,
+        oc:kn_58eecbce,
+        oc:kn_9e098aa9,
+        oc:kn_b17fe4b0,
+        oc:kn_d5eef509,
+        oc:kn_e972168d ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:LightCurveLoaded ;
+    oc:resolvesIntent "analyze radial velocity data for periodic variations",
+        "detect stellar pulsation periods",
+        "detect stellar rotation periods",
+        "find periodic signals in light curves",
+        "identify eclipsing binary periods",
+        "search for exoplanet orbital periods" ;
+    oc:yieldsState oc:PeriodDetected,
+        oc:PeriodogramComputed .
+
+oc:kn_1fe46afb a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running any Lomb-Scargle analysis" ;
+    oc:directiveContent "Python packages lightkurve, numpy, and matplotlib must be installed (pip install lightkurve numpy matplotlib)" ;
+    oc:hasRationale "The skill depends entirely on the lightkurve library for periodogram computation." .
+
+oc:kn_3841505b a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fitting a sinusoidal model to validate a detected period" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """frequency = pg.frequency_at_max_power
+model = pg.model(time=lc.time, frequency=frequency)""" ;
+    oc:hasRationale "Model fitting provides visual validation that the detected period actually fits the data." .
+
+oc:kn_557a90fb a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating a periodogram" ;
+    oc:directiveContent "Always specify minimum_period and maximum_period based on the science case: stellar rotation (0.1-100d), exoplanet transits (0.5-50d), eclipsing binaries (0.1-100d), pulsations (0.001-1d)." ;
+    oc:hasRationale "Narrowing the period range reduces computational cost and false positives from irrelevant period ranges." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_58eecbce a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting any Lomb-Scargle periodogram result" ;
+    oc:directiveContent "Do not trust a single high-power peak without checking for harmonics at period/2 and period*2, and aliases at integer multiples." ;
+    oc:hasRationale "The strongest peak may be a harmonic or alias of the true fundamental period, leading to incorrect period identification." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9e098aa9 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Core pattern for creating a periodogram and extracting the dominant period" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """lc = lk.LightCurve(time=time, flux=flux, flux_err=error)
+pg = lc.to_periodogram(maximum_period=15)
+strongest_period = pg.period_at_max_power""" ;
+    oc:hasRationale "This is the minimal working pattern for Lomb-Scargle analysis with lightkurve." .
+
+oc:kn_b17fe4b0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When plotting periodogram results" ;
+    oc:directiveContent "Use view='period' when plotting periodograms to interpret results in period space rather than frequency space." ;
+    oc:hasRationale "The default view='frequency' shows 1/period, which is less intuitive for astronomical period analysis." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d5eef509 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Standard Lomb-Scargle analysis workflow" ;
+    oc:directiveContent "1. Load/create LightCurve from time, flux, flux_err → 2. Call to_periodogram(minimum_period=..., maximum_period=...) → 3. Extract period_at_max_power and max_power → 4. Check for harmonics/aliases → 5. Optionally fit model with pg.model(time, frequency) → 6. Plot data and model for validation" ;
+    oc:hasRationale "Following this sequence ensures systematic period detection and validation." ;
+    oc:stepOrder 1 .
+
+oc:kn_e972168d a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When searching specifically for exoplanet transits" ;
+    oc:directiveContent "For exoplanet detection, use Lomb-Scargle for initial period search, then follow up with Transit Least Squares (TLS) for higher sensitivity." ;
+    oc:hasRationale "TLS is more sensitive than Lomb-Scargle for transit-shaped signals, but Lomb-Scargle provides a good initial survey." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_345f7505 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "lightkurve" .
+
+oc:req_4084ac39 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Understanding of periodogram interpretation (harmonics, aliases)" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "matplotlib" .
+
+_:ref_1b374b5d6cc34742 a oc:WorkflowStep ;
+    dcterms:description "**Single strong peak**: Likely the true period" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_db7c07d253d506b0 a oc:WorkflowStep ;
+    dcterms:description "**Aliases**: Check if period*2 or period/2 also show signals" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ef281b2f2dac696b a oc:WorkflowStep ;
+    dcterms:description "**Harmonics**: Peaks at period/2, period*2 suggest the fundamental period" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ef2b45a2dedd703a a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1b374b5d6cc34742,
+        _:ref_db7c07d253d506b0,
+        _:ref_ef281b2f2dac696b ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

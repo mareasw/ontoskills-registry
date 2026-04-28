@@ -1,0 +1,543 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_gh_repo_analytics_gh_cli a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "gh-cli" ;
+    skos:broader "CLI tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/gh-repo-analytics/gh-cli" ;
+    oc:contentHash "087949e0bc1f5104ff01294defd6b795f58d5901db26e46f6101e3d3aa5dfa39" ;
+    oc:differentia "that interfaces with GitHub repositories, issues, pull requests, and workflows via command line" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "command subcommand [flags] (e.g., 'pr list', 'issue create --label bug', 'repo clone OWNER/REPO')" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "The gh CLI is GitHub's official command line tool for interacting with GitHub repositories, issues, pull requests, and more. When needs to interact with GitHub repositories, issues, pull requests, and more, use this skill." ;
+    oc:hasName "gh-cli" ;
+    oc:hasRequirement oc:req_333cda1a,
+        oc:req_eed035d0 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: gh-cli
+description: "The gh CLI is GitHub's official command line tool for interacting with GitHub repositories, issues, pull requests, and more. When needs to interact with GitHub repositories, issues, pull requests, and more, use this skill."
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Work seamlessly with GitHub from the command line." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Work with GitHub issues." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """USAGE
+  gh issue <command> [flags]
+
+CORE COMMANDS
+  close:      Close issue
+  comment:    Create a new issue comment
+  create:     Create a new issue
+  delete:     Delete issue
+  edit:       Edit an issue
+  list:       List and filter issues in this repository
+  reopen:     Reopen issue
+  status:     Show status of relevant issues
+  transfer:   Transfer issue to another repository
+  view:       View an issue
+
+FLAGS
+  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format
+
+INHERITED FLAGS
+  --help   Show help for command
+
+ARGUMENTS
+  An issue can be supplied as argument in any of the following formats:
+  - by number, e.g. "123"; or
+  - by URL, e.g. "https://github.com/OWNER/REPO/issues/123".
+
+EXAMPLES
+  $ gh issue list
+  $ gh issue create --label bug
+  $ gh issue view --web
+
+LEARN MORE
+  Use 'gh <command> <subcommand> --help' for more information about a command.
+  Read the manual at https://cli.github.com/manual
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 83-118" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "gh issue" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use `gh <command> --help` for more information about a command." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """  issue:      Manage issues
+  pr:         Manage pull requests
+  repo:       Create, clone, fork, and view repositories
+  api:        Make an authenticated GitHub API request
+  run:        View details about workflow runs
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 19-25" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Core Commands" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The `--search` flag uses GitHub search syntax. Full documentation: https://docs.github.com/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use quotation marks for multi-word values:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`label:\"bug fix\"` — label with space" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`cats NOT \"hello world\"` — exclude phrase" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Queries with Whitespace" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 2 ;
+                                    oc:rowCount 7 ;
+                                    oc:tableCaption "Date format: `YYYY-MM-DD` (ISO8601). Optional time: `YYYY-MM-DDTHH:MM:SS+00:00`" ;
+                                    oc:tableMarkdown """| Query | Example |
+|-------|---------|
+| `>YYYY-MM-DD` | `created:>2024-04-29` — after April 29, 2024 |
+| `>=YYYY-MM-DD` | `created:>=2024-04-01` — on or after April 1, 2024 |
+| `<YYYY-MM-DD` | `pushed:<2024-07-05` — before July 5, 2024 |
+| `<=YYYY-MM-DD` | `created:<=2024-07-04` — on or before July 4, 2024 |
+| `YYYY-MM-DD..YYYY-MM-DD` | `created:2024-04-30..2024-07-04` — date range |
+| `YYYY-MM-DD..*` | `created:2024-04-30..*` — on or after date |
+| `*..YYYY-MM-DD` | `created:*..2024-07-04` — on or before date |
+""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Date format: `YYYY-MM-DD` (ISO8601). Optional time: `YYYY-MM-DDTHH:MM:SS+00:00`" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Date Queries" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "### Usernames" ;
+                                    oc:tableMarkdown """| Query | Description |
+|-------|-------------|
+| `author:USERNAME` | Filter by specific user |
+| `author:@me` | Filter by current user |
+| `assignee:@me` | Assigned to current user |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Usernames" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 4 ;
+                                    oc:tableCaption "### Comparison Operators" ;
+                                    oc:tableMarkdown """| Query | Description | Example |
+|-------|-------------|---------|
+| `>n` | Greater than | `stars:>1000` |
+| `>=n` | Greater than or equal | `topics:>=5` |
+| `<n` | Less than | `size:<10000` |
+| `<=n` | Less than or equal | `stars:<=50` |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Comparison Operators" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Prefix qualifier with `-` to exclude:" ],
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 2 ;
+                                    oc:rowCount 2 ;
+                                    oc:tableCaption "Prefix qualifier with `-` to exclude" ;
+                                    oc:tableMarkdown """| Query | Example |
+|-------|---------|
+| `-QUALIFIER` | `stars:>10 -language:javascript` — exclude JavaScript repos |
+| `NOT` | `hello NOT world` — has "hello" but not "world" |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Exclude Results" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "### Range Queries" ;
+                                    oc:tableMarkdown """| Query | Description | Example |
+|-------|-------------|---------|
+| `n..n` | Between range | `stars:10..50` |
+| `n..*` | Greater than or equal | `stars:10..*` (same as `>=10`) |
+| `*..n` | Less than or equal | `stars:*..10` (same as `<=10`) |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Range Queries" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Search Query Syntax" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Issue**:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Common fields for `--json`:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """close
+  comment
+  create
+  delete
+  edit
+  list
+  reopen
+  status
+  transfer
+  view
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 266-277" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """additions
+assignees
+author
+baseRefName
+body
+changedFiles
+closed
+closedAt
+comments
+commits
+createdAt
+deletions
+files
+headRefName
+headRepository
+headRepositoryOwner
+id
+isCrossRepository
+isDraft
+labels
+maintainerCanModify
+mergeCommit
+mergeStateStatus
+mergeable
+mergedAt
+mergedBy
+milestone
+number
+potentialMergeCommit
+projectCards
+reactionGroups
+reviewDecision
+reviewRequests
+reviews
+state
+statusCheckRollup
+title
+updatedAt
+url
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 222-262" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**PR**:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "JSON Output" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """USAGE
+  gh repo <command> [flags]
+
+CORE COMMANDS
+  archive:    Archive a repository
+  clone:      Clone a repository locally
+  create:     Create a new repository
+  delete:     Delete a repository
+  edit:       Edit repository settings
+  fork:       Create a fork of a repository
+  list:       List repositories owned by user or organization
+  rename:     Rename a repository
+  sync:       Sync a repository
+  view:       View a repository
+
+INHERITED FLAGS
+  --help   Show help for command
+
+ARGUMENTS
+  A repository can be supplied as an argument in any of the following formats:
+  - "OWNER/REPO"
+  - by URL, e.g. "https://github.com/OWNER/REPO"
+
+EXAMPLES
+  $ gh repo create
+  $ gh repo clone cli/cli
+  $ gh repo view --web
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 126-154" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Work with GitHub repositories." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "gh repo" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """gh <command> <subcommand> [flags]
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 13-15" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Work with GitHub pull requests." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """USAGE
+  gh pr <command> [flags]
+
+CORE COMMANDS
+  checkout:   Check out a pull request in git
+  checks:     Show CI status for a single pull request
+  close:      Close a pull request
+  comment:    Create a new pr comment
+  create:     Create a pull request
+  diff:       View changes in a pull request
+  edit:       Edit a pull request
+  list:       List and filter pull requests in this repository
+  merge:      Merge a pull request
+  ready:      Mark a pull request as ready for review
+  reopen:     Reopen a pull request
+  review:     Add a review to a pull request
+  status:     Show status of relevant pull requests
+  view:       View a pull request
+
+FLAGS
+  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format
+
+INHERITED FLAGS
+  --help   Show help for command
+
+ARGUMENTS
+  A pull request can be supplied as argument in any of the following formats:
+  - by number, e.g. "123";
+  - by URL, e.g. "https://github.com/OWNER/REPO/pull/123"; or
+  - by the name of its head branch, e.g. "patch-1" or "OWNER:patch-1".
+
+EXAMPLES
+  $ gh pr checkout 353
+  $ gh pr create --fill
+  $ gh pr view --web
+
+LEARN MORE
+  Use 'gh <command> <subcommand> --help' for more information about a command.
+  Read the manual at https://cli.github.com/manual
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 35-75" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "gh pr" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "GitHub CLI (gh)" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Create, review, and merge a pull request using gh CLI" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Merge the PR with gh pr merge" ;
+                    oc:expectedOutcome "PR is merged and branch can be deleted" ;
+                    oc:stepDependsOn _:ref_4d10ea5ad54e2d35,
+                        _:ref_e3d2f33deb56a069 ;
+                    oc:stepId "merge-pr" ],
+                _:ref_4d10ea5ad54e2d35,
+                _:ref_e3d2f33deb56a069,
+                _:ref_e6f58911f8838a6f ;
+            oc:workflowId "gh-pr-lifecycle" ;
+            oc:workflowName "Pull Request Lifecycle" ],
+        [ a oc:Workflow ;
+            dcterms:description "Create, triage, and manage GitHub issues" ;
+            oc:hasStep _:ref_1b923a5900896afb,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Close issue with gh issue close NUMBER" ;
+                    oc:expectedOutcome "Issue is marked as closed" ;
+                    oc:stepDependsOn _:ref_1b923a5900896afb ;
+                    oc:stepId "close-issue" ],
+                _:ref_c1b21fc30438f4ed,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "List issues with gh issue list --label bug --search 'state:open'" ;
+                    oc:expectedOutcome "Filtered list of open issues matching criteria" ;
+                    oc:stepId "list-issues" ] ;
+            oc:workflowId "gh-issue-manage" ;
+            oc:workflowName "Issue Management" ] ;
+    oc:impartsKnowledge oc:kn_1228efd8,
+        oc:kn_1e9e63cc,
+        oc:kn_4ceafd40,
+        oc:kn_666156a7,
+        oc:kn_922db0ec,
+        oc:kn_c5baf096,
+        oc:kn_eaa00ed4,
+        oc:kn_f8da1280 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:SystemAuthenticated,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "create and review pull requests",
+        "interact with GitHub API",
+        "list and filter issues",
+        "manage issues",
+        "manage pull requests",
+        "manage repositories",
+        "query GitHub search",
+        "view workflow runs" ;
+    oc:yieldsState oc:GitHubIssueCreated,
+        oc:GitHubPRCreated,
+        oc:GitHubRepoAccessed .
+
+oc:kn_1228efd8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when operating on a repo different from the current directory" ;
+    oc:directiveContent "Use -R, --repo [HOST/]OWNER/REPO flag to target a repository other than the current working directory's repo" ;
+    oc:hasRationale "Without -R flag, gh operates on the repo detected from the current directory's git remote" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1e9e63cc a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when querying PRs with structured output" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "gh pr list --search \"state:open author:@me\" --json number,title,updatedAt" ;
+    oc:hasRationale "Combining --search with --json enables precise, machine-readable filtering of GitHub resources" .
+
+oc:kn_4ceafd40 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when listing issues or PRs with filters" ;
+    oc:directiveContent "Use --search flag with GitHub search syntax (qualifiers like author:@me, created:>=YYYY-MM-DD, label:\"bug fix\") to filter issues and PRs efficiently" ;
+    oc:hasRationale "Server-side filtering via --search is faster and more accurate than post-processing client-side results" .
+
+oc:kn_666156a7 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "before execution" ;
+    oc:directiveContent "gh CLI must be installed and authenticated via 'gh auth login' before any commands can be used" ;
+    oc:hasRationale "Unauthenticated or missing gh CLI will fail on all GitHub operations" .
+
+oc:kn_922db0ec a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "when performing any gh operation" ;
+    oc:directiveContent "1. Identify target resource (PR, issue, repo) by number, URL, or branch name 2. Use appropriate gh subcommand 3. Add --json for machine-readable output 4. Use -R for cross-repo operations" ;
+    oc:stepOrder 1 .
+
+oc:kn_c5baf096 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when specifying GitHub resources as arguments" ;
+    oc:directiveContent "PRs can be referenced by number (123), URL (https://github.com/OWNER/REPO/pull/123), or head branch name (patch-1); issues by number or URL; repos as OWNER/REPO or URL" ;
+    oc:hasRationale "Flexible argument formats reduce friction when working across different contexts (terminal, browser, documentation)" .
+
+oc:kn_eaa00ed4 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when scripting or automating gh commands" ;
+    oc:directiveContent "Do not parse human-readable gh output; always use --json flag and --jq for scripting" ;
+    oc:hasRationale "Human-readable output format may change between versions; JSON output is stable and parseable" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f8da1280 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when checking out a pull request branch locally" ;
+    oc:directiveContent "gh pr checkout PR_NUMBER" ;
+    oc:hasRationale "Shortcut for fetching and switching to a PR's head branch" .
+
+oc:req_333cda1a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "gh CLI (GitHub CLI)" .
+
+oc:req_eed035d0 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "GitHub repository structure and terminology" .
+
+_:ref_1b923a5900896afb a oc:WorkflowStep ;
+    dcterms:description "Comment on issue with gh issue comment NUMBER" ;
+    oc:expectedOutcome "Comment is added to the issue" ;
+    oc:stepDependsOn _:ref_c1b21fc30438f4ed ;
+    oc:stepId "comment-issue" .
+
+_:ref_4d10ea5ad54e2d35 a oc:WorkflowStep ;
+    dcterms:description "Check CI status with gh pr checks" ;
+    oc:expectedOutcome "CI checks status is displayed (passing/failing)" ;
+    oc:stepDependsOn _:ref_e6f58911f8838a6f ;
+    oc:stepId "check-pr-status" .
+
+_:ref_c1b21fc30438f4ed a oc:WorkflowStep ;
+    dcterms:description "Create an issue with gh issue create --label bug" ;
+    oc:expectedOutcome "New issue is created with assigned label" ;
+    oc:stepId "create-issue" .
+
+_:ref_e3d2f33deb56a069 a oc:WorkflowStep ;
+    dcterms:description "Add review with gh pr review" ;
+    oc:expectedOutcome "Review comment or approval is submitted" ;
+    oc:stepDependsOn _:ref_e6f58911f8838a6f ;
+    oc:stepId "review-pr" .
+
+_:ref_e6f58911f8838a6f a oc:WorkflowStep ;
+    dcterms:description "Create a PR with gh pr create --fill (or with explicit flags)" ;
+    oc:expectedOutcome "PR is created on GitHub with a number assigned" ;
+    oc:stepId "create-pr" .
+

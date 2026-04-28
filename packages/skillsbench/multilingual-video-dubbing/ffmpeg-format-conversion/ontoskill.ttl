@@ -1,0 +1,515 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_ffmpeg_format_conversion a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-format-conversion" ;
+    skos:broader "FFmpeg command builder" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/ffmpeg-format-conversion" ;
+    oc:contentHash "03c68e1863d13b79c7656ab99482981526a49724afafe0e37c8b1e5373d6e6ee" ;
+    oc:dependsOnSkill oc:skill_ontoskills_ffmpeg_media_info ;
+    oc:differentia "converts media files between container formats, audio formats, and video/audio codecs with quality control" ;
+    oc:handlesFailure oc:DiskFull,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "input-file output-format [codec] [quality]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Convert media files between formats - video containers, audio formats, and codec transcoding" ;
+    oc:hasName "ffmpeg-format-conversion" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: FFmpeg Format Conversion
+description: Convert media files between formats - video containers, audio formats, and codec transcoding
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Convert media files between different formats and containers." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Convert all MKV to MP4
+for f in *.mkv; do
+  ffmpeg -i "$f" -c copy "${f%.mkv}.mp4"
+done
+
+# Convert with re-encoding
+for f in *.avi; do
+  ffmpeg -i "$f" -c:v libx264 -c:a aac "${f%.avi}.mp4"
+done
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 89-99" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Batch Conversion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Convert container format (re-encode)
+ffmpeg -i input.avi output.mp4
+
+# Copy streams without re-encoding (fast, no quality loss)
+ffmpeg -i input.mp4 -c copy output.mkv
+
+# Convert with specific codec
+ffmpeg -i input.mp4 -c:v libx264 -c:a aac output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 19-28" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Basic Conversion" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**AV1** (libaom-av1) - Modern codec" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**H.264** (libx264) - Universal compatibility" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**H.265** (libx265) - Better compression" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**VP9** (libvpx-vp9) - Open standard" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Video" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**AAC** (aac) - Universal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Opus** (libopus) - Best quality/bitrate" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**FLAC** (flac) - Lossless" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**MP3** (libmp3lame) - Legacy" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Audio" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Codecs" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# CRF (Constant Rate Factor) - lower is better quality
+ffmpeg -i input.mp4 -c:v libx264 -crf 23 output.mp4
+
+# Bitrate
+ffmpeg -i input.mp4 -b:v 2M -b:a 192k output.mp4
+
+# Two-pass encoding (best quality)
+ffmpeg -i input.mp4 -c:v libx264 -b:v 2M -pass 1 -f null /dev/null
+ffmpeg -i input.mp4 -c:v libx264 -b:v 2M -pass 2 output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 64-74" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Quality Settings" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Preset affects encoding speed vs file size tradeoff" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "CRF 18-23 is good quality range for H.264" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Re-encoding is slower but allows codec/quality changes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-c copy` when possible for speed (no re-encoding)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# H.264
+ffmpeg -i input.mp4 -c:v libx264 output.mp4
+
+# H.265 (better compression)
+ffmpeg -i input.mp4 -c:v libx265 output.mp4
+
+# VP9 (web optimized)
+ffmpeg -i input.mp4 -c:v libvpx-vp9 output.webm
+
+# AV1 (modern codec)
+ffmpeg -i input.mp4 -c:v libaom-av1 output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 32-44" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Video Codec Conversion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Encoding speed presets (faster = larger file)
+ffmpeg -i input.mp4 -c:v libx264 -preset fast output.mp4
+# Options: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow
+
+# Quality presets
+ffmpeg -i input.mp4 -c:v libx264 -preset slow -crf 18 output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 78-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Presets" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Copy streams without re-encoding (fast)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Convert video containers (MP4, MKV, AVI, etc.)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Convert audio formats (MP3, AAC, WAV, etc.)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Transcode to different codecs" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# MP3
+ffmpeg -i input.wav -acodec libmp3lame -q:a 2 output.mp3
+
+# AAC
+ffmpeg -i input.wav -c:a aac -b:a 192k output.m4a
+
+# Opus (best quality/bitrate)
+ffmpeg -i input.wav -c:a libopus -b:a 128k output.opus
+
+# FLAC (lossless)
+ffmpeg -i input.wav -c:a flac output.flac
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 48-60" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Audio Format Conversion" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Format Conversion Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Optimize encoding quality for specific use cases" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg with quality and preset parameters" ;
+                    oc:expectedOutcome "High quality output file meeting target specifications" ;
+                    oc:stepDependsOn _:ref_bdb038c9886ddbe6 ;
+                    oc:stepId "step-encode-quality" ],
+                _:ref_5fa9b6f5100f5ecc,
+                _:ref_bdb038c9886ddbe6 ;
+            oc:workflowId "quality-optimization" ;
+            oc:workflowName "Quality Optimization" ],
+        [ a oc:Workflow ;
+            dcterms:description "Choose and apply the right encoding preset for the use case" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg with selected preset and quality settings" ;
+                    oc:expectedOutcome "Encoded file with balanced speed and compression" ;
+                    oc:stepDependsOn _:ref_d28c088892d95737 ;
+                    oc:stepId "step-apply-preset" ],
+                _:ref_d28c088892d95737 ;
+            oc:workflowId "encoding-preset-selection" ;
+            oc:workflowName "Encoding Preset Selection" ],
+        [ a oc:Workflow ;
+            dcterms:description "Encode video with two-pass method for optimal quality at a target bitrate" ;
+            oc:hasStep _:ref_a6fab8fe2efb001b,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Remove temporary pass 1 log files" ;
+                    oc:expectedOutcome "Clean working directory" ;
+                    oc:stepDependsOn _:ref_a6fab8fe2efb001b ;
+                    oc:stepId "step-cleanup" ],
+                _:ref_e1f520a0cd1759ee ;
+            oc:workflowId "two-pass-encoding" ;
+            oc:workflowName "Two-Pass Encoding" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert multiple media files of the same type to a target format" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Spot-check a few output files to confirm successful conversion" ;
+                    oc:expectedOutcome "Confirmed batch conversion success" ;
+                    oc:stepDependsOn _:ref_6eb18ab826f2b9bd ;
+                    oc:stepId "step-verify-batch" ],
+                _:ref_3a4fb68654102b80,
+                _:ref_6eb18ab826f2b9bd ;
+            oc:workflowId "batch-format-conversion" ;
+            oc:workflowName "Batch Format Conversion" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert a single media file to a different format" ;
+            oc:hasStep _:ref_6e412dad04465f8d,
+                _:ref_7417818311fb3ce9,
+                _:ref_941b6fa31fea317f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify output file plays correctly and has expected properties (duration, streams, codec)" ;
+                    oc:expectedOutcome "Confirmed successful conversion" ;
+                    oc:stepDependsOn _:ref_941b6fa31fea317f ;
+                    oc:stepId "step-verify" ] ;
+            oc:workflowId "format-conversion-basic" ;
+            oc:workflowName "Basic Format Conversion" ],
+        [ a oc:Workflow ;
+            dcterms:description "Apply encoding presets for speed/quality tradeoff" ;
+            oc:hasStep _:ref_bda1c0e7a18a56ec,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg with -preset flag and chosen preset value" ;
+                    oc:expectedOutcome "Output file encoded with chosen preset" ;
+                    oc:stepDependsOn _:ref_bda1c0e7a18a56ec ;
+                    oc:stepId "step-execute-preset" ] ;
+            oc:workflowId "preset-application" ;
+            oc:workflowName "Preset Application" ],
+        [ a oc:Workflow ;
+            dcterms:description "Change container format without re-encoding for speed and lossless quality" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg -c copy to remux streams into new container" ;
+                    oc:expectedOutcome "New container file with identical streams" ;
+                    oc:stepDependsOn _:ref_b7968b4b8d49b4f3 ;
+                    oc:stepId "step-copy-streams" ],
+                _:ref_b7968b4b8d49b4f3 ;
+            oc:workflowId "container-swap" ;
+            oc:workflowName "Container Swap (No Re-encode)" ],
+        [ a oc:Workflow ;
+            dcterms:description "Transcode media to a specific codec with quality control" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Execute ffmpeg with selected codec and quality settings" ;
+                    oc:expectedOutcome "Transcoded output file" ;
+                    oc:stepDependsOn _:ref_fe3249a47687807e ;
+                    oc:stepId "step-transcode" ],
+                _:ref_61cc54d93f5b56b3,
+                _:ref_fe3249a47687807e ;
+            oc:workflowId "codec-transcoding" ;
+            oc:workflowName "Codec Transcoding" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert multiple files at once using shell loops" ;
+            oc:hasStep _:ref_6455f3b63fa7ec0b,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify output files exist and have correct format" ;
+                    oc:expectedOutcome "All conversions confirmed successful" ;
+                    oc:stepDependsOn _:ref_6455f3b63fa7ec0b ;
+                    oc:stepId "step-verify-outputs" ],
+                _:ref_9fd238866d63d46b ;
+            oc:workflowId "batch-conversion" ;
+            oc:workflowName "Batch File Conversion" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert audio files between formats with appropriate quality settings" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg with appropriate audio codec and bitrate/quality settings for the chosen format" ;
+                    oc:expectedOutcome "Audio file converted to target format" ;
+                    oc:stepDependsOn _:ref_d4b6f7f434529d42 ;
+                    oc:stepId "step-convert-audio" ],
+                _:ref_d4b6f7f434529d42 ;
+            oc:workflowId "audio-conversion" ;
+            oc:workflowName "Audio Format Conversion" ] ;
+    oc:impartsKnowledge oc:kn_1456dae9,
+        oc:kn_6ca78022,
+        oc:kn_82104c14,
+        oc:kn_91b7d647,
+        oc:kn_9b86042c,
+        oc:kn_a2fedff1,
+        oc:kn_b32452ab ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "batch convert media files",
+        "change media container without re-encoding",
+        "convert audio format",
+        "convert video format",
+        "transcode media to different codec" ;
+    oc:yieldsState oc:FileCreated .
+
+oc:kn_1456dae9 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running conversion multiple times" ;
+    oc:directiveContent "Re-encoding the same file with the same settings should produce identical output, but CRF encoding is not perfectly deterministic across versions. Stream copy (-c copy) is deterministic." ;
+    oc:hasRationale "CRF uses rate control that may vary slightly; stream copy is a byte-for-byte copy." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_6ca78022 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When encoding H.264 video with libx264" ;
+    oc:directiveContent "CRF 18-23 is the recommended quality range for H.264 encoding. Lower values = better quality but larger files. 23 is the default." ;
+    oc:hasRationale "This range provides a good balance of visual quality and file size for most use cases." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_82104c14 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting to a container with codec incompatibilities" ;
+    oc:directiveContent "Do not use -c copy when the target container does not support the source codec (e.g., copying H.265 into AVI). This will fail or produce a broken file." ;
+    oc:hasRationale "Container formats have specific codec support; mismatched streams cause errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_91b7d647 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When file size constraints require precise bitrate targeting" ;
+    oc:directiveContent "For best quality at a target bitrate, use two-pass encoding: pass 1 analyzes the video, pass 2 optimizes bit allocation." ;
+    oc:hasRationale "Single-pass CRF is simpler but two-pass gives more predictable file sizes with optimal quality distribution." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9b86042c a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When choosing encoding speed presets for libx264/libx265" ;
+    oc:directiveContent "Preset controls encoding speed vs compression efficiency: ultrafast = fast encode, large file; veryslow = slow encode, small file. 'fast' or 'medium' are good defaults." ;
+    oc:hasRationale "Presets trade compute time for compression efficiency, not quality (CRF controls quality)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a2fedff1 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When converting to AV1 codec" ;
+    oc:directiveContent "AV1 encoding (libaom-av1) is extremely slow compared to H.264/H.265. Expect 10-100x longer encode times." ;
+    oc:hasRationale "AV1's complexity gives better compression but at very high computational cost." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b32452ab a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting between formats that support the same codecs" ;
+    oc:directiveContent "Use -c copy when only changing the container format (e.g., MP4→MKV). This avoids re-encoding, preserves quality, and is near-instant." ;
+    oc:hasRationale "Re-encoding degrades quality and takes significant time; stream copying is lossless and fast." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_3a4fb68654102b80 a oc:WorkflowStep ;
+    dcterms:description "Identify all source files matching the pattern to convert" ;
+    oc:expectedOutcome "List of files to convert" ;
+    oc:stepId "step-identify-files" .
+
+_:ref_5fa9b6f5100f5ecc a oc:WorkflowStep ;
+    dcterms:description "Define quality target: CRF value, bitrate, or visual quality level" ;
+    oc:expectedOutcome "Quality target parameters set" ;
+    oc:stepId "step-define-target" .
+
+_:ref_61cc54d93f5b56b3 a oc:WorkflowStep ;
+    dcterms:description "Choose target video codec (libx264 for compatibility, libx265 for compression, libvpx-vp9 for web, libaom-av1 for modern)" ;
+    oc:expectedOutcome "Target codec selected based on use case" ;
+    oc:stepId "step-select-codec" .
+
+_:ref_6455f3b63fa7ec0b a oc:WorkflowStep ;
+    dcterms:description "Execute shell loop running ffmpeg on each matching file" ;
+    oc:expectedOutcome "All files converted successfully" ;
+    oc:stepDependsOn _:ref_9fd238866d63d46b ;
+    oc:stepId "step-loop-convert" .
+
+_:ref_6e412dad04465f8d a oc:WorkflowStep ;
+    dcterms:description "Decide: use -c copy if codecs are compatible with target container, otherwise plan re-encoding with appropriate codecs" ;
+    oc:expectedOutcome "Conversion method selected (copy or re-encode)" ;
+    oc:stepDependsOn _:ref_7417818311fb3ce9 ;
+    oc:stepId "step-decide-method" .
+
+_:ref_6eb18ab826f2b9bd a oc:WorkflowStep ;
+    dcterms:description "Loop through files and run ffmpeg conversion for each, using consistent codec and quality settings" ;
+    oc:expectedOutcome "All files converted to target format" ;
+    oc:stepDependsOn _:ref_3a4fb68654102b80 ;
+    oc:stepId "step-batch-convert" .
+
+_:ref_7417818311fb3ce9 a oc:WorkflowStep ;
+    dcterms:description "Inspect source file properties (codecs, streams) using ffprobe to determine if stream copy is possible" ;
+    oc:expectedOutcome "Known source codecs and compatible target container" ;
+    oc:stepId "step-inspect" .
+
+_:ref_941b6fa31fea317f a oc:WorkflowStep ;
+    dcterms:description "Run ffmpeg with chosen parameters (codecs, quality settings, preset)" ;
+    oc:expectedOutcome "Output file created in target format" ;
+    oc:stepDependsOn _:ref_6e412dad04465f8d ;
+    oc:stepId "step-execute-conversion" .
+
+_:ref_9fd238866d63d46b a oc:WorkflowStep ;
+    dcterms:description "Identify source file pattern and target format" ;
+    oc:expectedOutcome "Clear source-target mapping defined" ;
+    oc:stepId "step-identify-pattern" .
+
+_:ref_a6fab8fe2efb001b a oc:WorkflowStep ;
+    dcterms:description "Run ffmpeg pass 2 using the statistics to optimize bit allocation" ;
+    oc:expectedOutcome "Optimally encoded output file at target bitrate" ;
+    oc:stepDependsOn _:ref_e1f520a0cd1759ee ;
+    oc:stepId "step-pass2" .
+
+_:ref_b7968b4b8d49b4f3 a oc:WorkflowStep ;
+    dcterms:description "Verify source codecs are compatible with target container" ;
+    oc:expectedOutcome "Compatibility confirmed or re-encode flagged as needed" ;
+    oc:stepId "step-check-compat" .
+
+_:ref_bda1c0e7a18a56ec a oc:WorkflowStep ;
+    dcterms:description "Choose preset from: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow" ;
+    oc:expectedOutcome "Preset selected based on time/size constraints" ;
+    oc:stepId "step-select-preset" .
+
+_:ref_bdb038c9886ddbe6 a oc:WorkflowStep ;
+    dcterms:description "Choose encoding preset balancing speed vs compression (fast for quick jobs, slow for archival)" ;
+    oc:expectedOutcome "Preset selected based on time constraints" ;
+    oc:stepDependsOn _:ref_5fa9b6f5100f5ecc ;
+    oc:stepId "step-choose-preset" .
+
+_:ref_d28c088892d95737 a oc:WorkflowStep ;
+    dcterms:description "Assess tradeoff needs: fast encode (larger file) vs slow encode (smaller file)" ;
+    oc:expectedOutcome "Preset speed category chosen" ;
+    oc:stepId "step-assess-needs" .
+
+_:ref_d4b6f7f434529d42 a oc:WorkflowStep ;
+    dcterms:description "Choose target format: AAC (universal), MP3 (legacy), Opus (best quality/bitrate), FLAC (lossless)" ;
+    oc:expectedOutcome "Target audio format selected" ;
+    oc:stepId "step-choose-audio-format" .
+
+_:ref_e1f520a0cd1759ee a oc:WorkflowStep ;
+    dcterms:description "Run ffmpeg pass 1 to analyze the video and generate statistics file" ;
+    oc:expectedOutcome "Pass 1 log file created (ffmpeg2pass-0.log)" ;
+    oc:stepId "step-pass1" .
+
+_:ref_fe3249a47687807e a oc:WorkflowStep ;
+    dcterms:description "Set quality parameters: CRF (18-23 for H.264), bitrate, or target preset" ;
+    oc:stepDependsOn _:ref_61cc54d93f5b56b3 ;
+    oc:stepId "step-set-quality" .
+

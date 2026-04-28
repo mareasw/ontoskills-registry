@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/glm-lake-mendota",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "glm-basics/ontoskill.ttl",
+    "glm-calibration/ontoskill.ttl",
+    "glm-output/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "glm-basics/intents.json",
+    "glm-calibration/intents.json",
+    "glm-output/intents.json"
+  ],
+  "skills": []
+}

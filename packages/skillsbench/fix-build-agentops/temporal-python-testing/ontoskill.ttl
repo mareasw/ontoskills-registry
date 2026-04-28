@@ -1,0 +1,530 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_agentops_temporal_python_testing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "temporal-python-testing" ;
+    skos:broader "Testing framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-agentops/temporal-python-testing" ;
+    oc:contentHash "e874bc3947d1d95e7808c14b3ab57aed8a2b0cbc5c3f2c37791b6b1f75b7b8f2" ;
+    oc:dependsOnSkill oc:skill_ontoskills_testing_python ;
+    oc:differentia "provides pytest-based strategies for testing Temporal Python workflows with time-skipping, mocking, replay validation, and coverage targets" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:TestFailure ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "testing scenario (unit, integration, replay, local-setup) or specific question about Temporal testing" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Test Temporal workflows with pytest, time-skipping, and mocking strategies. Covers unit testing, integration testing, replay testing, and local development setup. Use when implementing Temporal workflow tests or debugging test failures." ;
+    oc:hasName "temporal-python-testing" ;
+    oc:hasRequirement oc:req_0227054b,
+        oc:req_18e3b2a6,
+        oc:req_1a21bd91,
+        oc:req_6ed88621,
+        oc:req_ef7084d3 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Comprehensive testing approaches for Temporal workflows using pytest, progressive disclosure resources for specific testing scenarios." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill provides detailed guidance through progressive disclosure. Load specific resources based on your testing needs:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Error injection patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Activity mocking strategies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Coverage strategies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Signal and query testing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Multi-activity workflow testing" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**File**: `resources/integration-testing.md`
+**When to load**: Testing workflows with mocked external dependencies
+**Contains**:""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Integration Testing Resources" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**File**: `resources/unit-testing.md`
+**When to load**: Testing individual workflows or activities in isolation
+**Contains**:""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "ActivityEnvironment for activity testing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "WorkflowEnvironment with time-skipping" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "pytest fixtures and patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Manual time advancement patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Fast execution of long-running workflows" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Unit Testing Resources" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Determinism validation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Version compatibility testing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Production history replay" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "CI/CD integration patterns" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**File**: `resources/replay-testing.md`
+**When to load**: Validating determinism or deploying workflow changes
+**Contains**:""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Replay Testing Resources" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Docker Compose configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Development workflow" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "pytest setup and configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Coverage tool integration" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**File**: `resources/local-setup.md`
+**When to load**: Setting up development environment
+**Contains**:""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Local Development Resources" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Available Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Python Samples: github.com/temporalio/samples-python" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Python SDK Testing: docs.temporal.io/develop/python/testing-suite" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Testing Patterns: github.com/temporalio/temporal/blob/main/docs/development/testing.md" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Additional References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Local development** - Set up Temporal server and pytest" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Replay testing** - Validate determinism against production histories" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Integration testing** - Workflows with mocked activities" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**CI/CD integration** - Automated testing pipelines" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Unit testing workflows** - Fast tests with time-skipping" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Coverage strategies** - Achieve ≥80% test coverage" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from temporalio.testing import ActivityEnvironment
+
+async def test_activity():
+    env = ActivityEnvironment()
+    result = await env.run(your_activity, "test-input")
+    assert result == expected_output
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 109-116" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Basic Activity Test" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytest
+from temporalio.testing import WorkflowEnvironment
+from temporalio.worker import Worker
+
+@pytest.fixture
+async def workflow_env():
+    env = await WorkflowEnvironment.start_time_skipping()
+    yield env
+    await env.shutdown()
+
+@pytest.mark.asyncio
+async def test_workflow(workflow_env):
+    async with Worker(
+        workflow_env.client,
+        task_queue="test-queue",
+        workflows=[YourWorkflow],
+        activities=[your_activity],
+    ):
+        result = await workflow_env.client.execute_workflow(
+            YourWorkflow.run,
+            args,
+            id="test-wf-id",
+            task_queue="test-queue",
+        )
+        assert result == expected
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 79-105" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Workflow Test" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Quick Start Guide" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Recommended Coverage** (Source: docs.temporal.io best practices):" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Integration**: Critical paths with mocked activities" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Workflows**: ≥80% logic coverage" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Replay**: All workflow versions before deployment" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Activities**: ≥80% logic coverage" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Coverage Targets" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_b8290a56929e9a89 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Key Testing Principles" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Load specific resource when needed**:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "\"Show me unit testing patterns\" → Load `resources/unit-testing.md`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "\"Setup local Temporal server\" → Load `resources/local-setup.md`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "\"How do I mock activities?\" → Load `resources/integration-testing.md`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "\"Validate determinism\" → Load `resources/replay-testing.md`" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "How to Use Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Recommended Approach** (Source: docs.temporal.io/develop/python/testing-suite):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Three Test Types**:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Mock activities to isolate workflow logic" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Write majority as integration tests" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use pytest with async fixtures" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Time-skipping enables fast feedback (month-long workflows → seconds)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Validate determinism with replay testing" ] ],
+                        _:ref_c16a0eccf9bc79b5 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Testing Philosophy" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Temporal Python Testing Strategies" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: temporal-python-testing
+description: Test Temporal workflows with pytest, time-skipping, and mocking strategies. Covers unit testing, integration testing, replay testing, and local development setup. Use when implementing Temporal workflow tests or debugging test failures.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_b8290a56929e9a89,
+        _:ref_c16a0eccf9bc79b5 ;
+    oc:impartsKnowledge oc:kn_01ed7e13,
+        oc:kn_259bf9ee,
+        oc:kn_45e3dbaf,
+        oc:kn_a80addef,
+        oc:kn_daf176f5,
+        oc:kn_ed6143b8 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "debug temporal workflow test failures",
+        "integration test with mocked activities",
+        "replay test for determinism validation",
+        "set up local temporal development environment",
+        "test temporal workflows",
+        "unit test workflows with time-skipping" ;
+    oc:yieldsState oc:TestsPassing .
+
+oc:kn_01ed7e13 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any Temporal workflow test" ;
+    oc:directiveContent "Do not test workflows without mocking activities or without using time-skipping. Never skip replay testing when deploying workflow changes to production." ;
+    oc:hasRationale "Without mocking, tests become non-deterministic and slow. Without replay testing, workflow changes may break in production due to non-deterministic execution" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_259bf9ee a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When writing Temporal workflow tests from scratch" ;
+    oc:directiveContent "1. Identify testing scenario (unit/integration/replay/local-setup) 2. Load corresponding resource file 3. Create async pytest fixture with WorkflowEnvironment.start_time_skipping() 4. Write test using Worker and client.execute_workflow 5. Assert results against expected values 6. Run with pytest-asyncio and verify ≥80% coverage" ;
+    oc:stepOrder 1 .
+
+oc:kn_45e3dbaf a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning test strategy for Temporal workflows" ;
+    oc:directiveContent "Write the majority of Temporal tests as integration tests with mocked activities, not end-to-end tests. Use unit tests with time-skipping for fast feedback, and reserve end-to-end tests sparingly." ;
+    oc:hasRationale "Integration tests balance confidence and speed; end-to-end tests are slow and flaky, while pure unit tests may miss interaction bugs" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a80addef a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When testing long-running workflows or individual activities" ;
+    oc:directiveContent "Use WorkflowEnvironment.start_time_skipping() to compress month-long workflow executions into seconds. Use ActivityEnvironment for isolated activity unit tests." ;
+    oc:hasRationale "Time-skipping is Temporal's key testing advantage — it enables testing complex time-dependent logic without real waits" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_daf176f5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When measuring test coverage for production Temporal workflows" ;
+    oc:directiveContent "Target ≥80% logic coverage for both workflows and activities. All workflow versions must pass replay testing before deployment." ;
+    oc:hasRationale "Temporal workflows are long-running distributed computations where bugs are costly; high coverage and determinism validation prevent production failures" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ed6143b8 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When the agent encounters a specific Temporal testing need" ;
+    oc:directiveContent "Load progressive disclosure resources based on testing scenario: unit-testing.md for isolated tests, integration-testing.md for mocked dependencies, replay-testing.md for determinism, local-setup.md for environment setup." ;
+    oc:hasRationale "Temporal testing is broad; progressive disclosure prevents information overload while ensuring depth when needed" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_0227054b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pytest" .
+
+oc:req_18e3b2a6 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "temporalio Python SDK testing module" .
+
+oc:req_1a21bd91 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Docker" .
+
+oc:req_6ed88621 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pytest-asyncio" .
+
+oc:req_ef7084d3 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "async/await patterns in Python" .
+
+_:ref_058778b33907450a a oc:WorkflowStep ;
+    dcterms:description "**Mock Activities** - Isolate workflow logic from external dependencies" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_3bc96f59236cbe20 a oc:WorkflowStep ;
+    dcterms:description "**High Coverage** - ≥80% target for production workflows" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_45e3b7dd689b070f a oc:WorkflowStep ;
+    dcterms:description "**Integration**: Workers with mocked activities" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_7489520b94f66922 a oc:WorkflowStep ;
+    dcterms:description "**Time-Skipping** - Month-long workflows test in seconds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_9f6d9bd2de6c79d5 a oc:WorkflowStep ;
+    dcterms:description "**Replay Testing** - Validate determinism before deployment" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_acc01d4ea5a0a2ee a oc:WorkflowStep ;
+    dcterms:description "**End-to-end**: Full Temporal server with real activities (use sparingly)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_bbeb3e635878d3d9 a oc:WorkflowStep ;
+    dcterms:description "**Unit**: Workflows with time-skipping, activities with ActivityEnvironment" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d3817d6a5e0b595f a oc:WorkflowStep ;
+    dcterms:description "**Fast Feedback** - Unit tests run in milliseconds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_b8290a56929e9a89 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_058778b33907450a,
+        _:ref_3bc96f59236cbe20,
+        _:ref_7489520b94f66922,
+        _:ref_9f6d9bd2de6c79d5,
+        _:ref_d3817d6a5e0b595f ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c16a0eccf9bc79b5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_45e3b7dd689b070f,
+        _:ref_acc01d4ea5a0a2ee,
+        _:ref_bbeb3e635878d3d9 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+

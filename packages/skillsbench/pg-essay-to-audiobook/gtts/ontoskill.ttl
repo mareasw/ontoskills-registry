@@ -1,0 +1,352 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_pg_essay_to_audiobook_gtts a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "gtts" ;
+    skos:broader "Text-to-Speech converter" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/pg-essay-to-audiobook/gtts" ;
+    oc:contentHash "24c767094bba06351807e7fdf63716e623fad4a8d5d809e87db46beb222ee224" ;
+    oc:differentia "uses Google's free TTS API with sentence-boundary chunking for long documents" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "text or file path to convert to audio" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Google Text-to-Speech (gTTS) for converting text to audio. Use when creating audiobooks, podcasts, or speech synthesis from text. Handles long text by chunking at sentence boundaries and concatenating audio segments with pydub." ;
+    oc:hasName "gtts" ;
+    oc:hasRequirement oc:req_87089d00,
+        oc:req_89933d75,
+        oc:req_9a082b4f,
+        oc:req_c598e86d ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: gtts
+description: "Google Text-to-Speech (gTTS) for converting text to audio. Use when creating audiobooks, podcasts, or speech synthesis from text. Handles long text by chunking at sentence boundaries and concatenating audio segments with pydub."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "gTTS is a Python library that converts text to speech using Google's Text-to-Speech API. It's free to use and doesn't require an API key." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from gtts import gTTS
+
+# Create speech
+tts = gTTS(text="Hello, world!", lang='en')
+
+# Save to file
+tts.save("output.mp3")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-28" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Basic Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from gtts import gTTS
+from pydub import AudioSegment
+import tempfile
+import os
+import re
+
+def chunk_text(text, max_chars=4500):
+    \"\"\"Split text into chunks at sentence boundaries.\"\"\"
+    sentences = re.split(r'(?<=[.!?])\\s+', text)
+    chunks = []
+    current_chunk = ""
+
+    for sentence in sentences:
+        if len(current_chunk) + len(sentence) < max_chars:
+            current_chunk += sentence + " "
+        else:
+            if current_chunk:
+                chunks.append(current_chunk.strip())
+            current_chunk = sentence + " "
+
+    if current_chunk:
+        chunks.append(current_chunk.strip())
+
+    return chunks
+
+
+def text_to_audiobook(text, output_path):
+    \"\"\"Convert long text to a single audio file.\"\"\"
+    chunks = chunk_text(text)
+    audio_segments = []
+
+    for i, chunk in enumerate(chunks):
+        # Create temp file for this chunk
+        with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as tmp:
+            tmp_path = tmp.name
+
+        # Generate speech
+        tts = gTTS(text=chunk, lang='en', slow=False)
+        tts.save(tmp_path)
+
+        # Load and append
+        segment = AudioSegment.from_mp3(tmp_path)
+        audio_segments.append(segment)
+
+        # Cleanup
+        os.unlink(tmp_path)
+
+    # Concatenate all segments
+    combined = audio_segments[0]
+    for segment in audio_segments[1:]:
+        combined += segment
+
+    # Export
+    combined.export(output_path, format="mp3")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 45-100" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Python Example for Long Text" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If you prefer ffmpeg over pydub:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Create file list
+echo "file 'chunk1.mp3'" > files.txt
+echo "file 'chunk2.mp3'" >> files.txt
+
+# Concatenate
+ffmpeg -f concat -safe 0 -i files.txt -c copy output.mp3
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 114-121" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Alternative: Using ffmpeg for Concatenation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "pydub is useful for manipulating and concatenating audio files." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install gtts pydub
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "gTTS has a character limit per request (~5000 chars). For long documents:" ],
+                        _:ref_7e4e8800b1406bde ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Handling Large Documents" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Split at sentence boundaries to avoid cutting words mid-sentence" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use `slow=False` for natural speech speed" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Handle network errors gracefully (gTTS requires internet)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Consider adding brief pauses between chapters/sections" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# US English (default)
+tts = gTTS(text="Hello", lang='en')
+
+# British English
+tts = gTTS(text="Hello", lang='en', tld='co.uk')
+
+# Slow speech
+tts = gTTS(text="Hello", lang='en', slow=True)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 32-41" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Language Options" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Voice quality is good but not as natural as paid services" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "May have rate limits for very heavy usage" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Requires internet connection (uses Google's servers)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Limited voice customization options" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Limitations" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Google Text-to-Speech (gTTS)" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Split long text into chunks, generate audio for each, and concatenate into a single file" ;
+            oc:hasStep _:ref_50e88feab2b15968,
+                _:ref_bc8db8a1d484e24e,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Concatenate all audio segments using pydub or ffmpeg and export as single MP3" ;
+                    oc:expectedOutcome "Single combined MP3 audio file at the specified output path" ;
+                    oc:stepDependsOn _:ref_50e88feab2b15968 ;
+                    oc:stepId "concatenate-export" ] ;
+            oc:workflowId "gtts-long-text-to-audio" ;
+            oc:workflowName "Convert Long Text to Audio" ],
+        _:ref_7e4e8800b1406bde ;
+    oc:impartsKnowledge oc:kn_2386685d,
+        oc:kn_981bd058,
+        oc:kn_a339f1d4,
+        oc:kn_b9c18b43,
+        oc:kn_dae0b8bd,
+        oc:kn_e8d098a3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "convert text to speech",
+        "create audiobook from text",
+        "generate audio from text",
+        "synthesize speech from long documents" ;
+    oc:yieldsState oc:AudioFileCreated .
+
+oc:kn_2386685d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting long documents to audio" ;
+    oc:directiveContent "gTTS has a character limit of approximately 5000 characters per API request. Long text must be split into chunks at sentence boundaries." ;
+    oc:hasRationale "Exceeding the character limit causes API errors; sentence-boundary splitting preserves natural speech flow" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_981bd058 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When chunking text for TTS processing" ;
+    oc:directiveContent "Never split text at arbitrary character boundaries. Always split at sentence boundaries using regex like (?<=[.!?])\\s+ to avoid cutting words mid-sentence." ;
+    oc:hasRationale "Splitting mid-sentence produces unnatural pauses and broken speech output" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a339f1d4 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When executing TTS conversion" ;
+    oc:directiveContent "gTTS requires an active internet connection and may have rate limits for heavy usage. Handle network errors gracefully." ;
+    oc:hasRationale "Since gTTS uses Google's servers, network failures will halt processing mid-conversion" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b9c18b43 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When generating speech output" ;
+    oc:directiveContent "Use slow=False for natural speech speed. Add brief pauses between chapters or sections for better listening experience." ;
+    oc:hasRationale "Default slow speed sounds unnatural; pauses improve comprehension in long-form audio" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_dae0b8bd a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When processing long text with chunking" ;
+    oc:directiveContent "Creates temporary MP3 files during chunk processing that must be cleaned up after concatenation." ;
+    oc:hasRationale "Temp files consume disk space and can accumulate if not properly deleted" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e8d098a3 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before first use" ;
+    oc:directiveContent "Install gtts and pydub via: pip install gtts pydub. pydub is needed for audio segment concatenation." ;
+    oc:hasRationale "gtts handles TTS generation; pydub handles audio file manipulation and concatenation" .
+
+oc:req_87089d00 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pydub Python package" .
+
+oc:req_89933d75 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "gtts Python package" .
+
+oc:req_9a082b4f a oc:RequirementHardware ;
+    oc:isOptional false ;
+    oc:requirementValue "Internet connection" .
+
+oc:req_c598e86d a oc:RequirementEnvVar ;
+    oc:isOptional true ;
+    oc:requirementValue "No API key required" .
+
+_:ref_4fda9611b4f28ad9 a oc:WorkflowStep ;
+    dcterms:description "Use pydub to concatenate the chunks" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_87faa8839cfb07aa a oc:WorkflowStep ;
+    dcterms:description "Generate audio for each chunk using gTTS" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_91f4cdae267168e6 a oc:WorkflowStep ;
+    dcterms:description "Split text into chunks at sentence boundaries" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_50e88feab2b15968 a oc:WorkflowStep ;
+    dcterms:description "Generate MP3 audio for each text chunk using gTTS, saving to temporary files" ;
+    oc:expectedOutcome "One temporary MP3 file per text chunk" ;
+    oc:stepDependsOn _:ref_bc8db8a1d484e24e ;
+    oc:stepId "generate-audio" .
+
+_:ref_7e4e8800b1406bde a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_4fda9611b4f28ad9,
+        _:ref_87faa8839cfb07aa,
+        _:ref_91f4cdae267168e6 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_bc8db8a1d484e24e a oc:WorkflowStep ;
+    dcterms:description "Split input text into chunks at sentence boundaries (max ~4500 chars per chunk)" ;
+    oc:expectedOutcome "Array of text chunks, each under the character limit and ending at sentence boundaries" ;
+    oc:stepId "split-text" .
+

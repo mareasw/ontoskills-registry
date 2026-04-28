@@ -1,0 +1,1865 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_exceltable_in_ppt_pptx a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pptx" ;
+    skos:broader "Presentation processor" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/exceltable-in-ppt/pptx" ;
+    oc:contentHash "deaa6067eed4e92b73227689427658acbce491acf717b05bda5733bf7dc4a144" ;
+    oc:differentia "Creates, edits, and analyzes PowerPoint (.pptx) files using three distinct workflows: html2pptx for new presentations, OOXML editing for existing ones, and template-based creation with slide rearrangement" ;
+    oc:extends oc:skill_ontoskills_xlsx ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "file-path (to .pptx file) or content description for new presentations" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Presentation creation, editing, and analysis. When Claude needs to work with presentations (.pptx files) for: (1) Creating new presentations, (2) Modifying or editing content, (3) Working with layouts, (4) Adding comments or speaker notes, or any other presentation tasks" ;
+    oc:hasName "pptx" ;
+    oc:hasRequirement oc:req_04f6c4d2,
+        oc:req_45edde3b,
+        oc:req_8bbd66ec,
+        oc:req_bbe19efc,
+        oc:req_c294af12,
+        oc:req_c9c65978,
+        oc:req_ca29e505 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pptx
+description: "Presentation creation, editing, and analysis. When Claude needs to work with presentations (.pptx files) for: (1) Creating new presentations, (2) Modifying or editing content, (3) Working with layouts, (4) Adding comments or speaker notes, or any other presentation tasks"
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When creating a new PowerPoint presentation from scratch, use the **html2pptx** workflow to convert HTML slides to PowerPoint with accurate positioning." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_056edda93d270ff4,
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "✅ Use web-safe fonts only: Arial, Helvetica, Times New Roman, Georgia, Courier New, Verdana, Tahoma, Trebuchet MS, Impact" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "✅ Ensure readability: strong contrast, appropriately sized text, clean alignment" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "✅ Create clear visual hierarchy through size, weight, and color" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "✅ State your content-informed design approach BEFORE writing code" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "✅ Be consistent: repeat patterns, spacing, and visual language across slides" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**CRITICAL**: Before creating any presentation, analyze the content and choose appropriate design elements:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Requirements**:" ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 2 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "**Be adventurous**: Try unexpected combinations - a healthcare presentation doesn't have to be green, finance doesn't have to be navy" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "**Build your palette**: Pick 3-5 colors that work together (dominant colors + supporting tones + accent)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "**Consider multiple angles**: Topic, industry, mood, energy level, target audience, brand identity (if mentioned)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "**Ensure contrast**: Text must be clearly readable on backgrounds" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "**Think beyond defaults**: What colors genuinely match this specific topic? Avoid autopilot choices." ] ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "**Choosing colors creatively**:" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 3 ;
+                                            oc:textContent "**Example color palettes** (use these to spark creativity - choose one, adapt it, or create your own):" ],
+                                        _:ref_9519210cccf42bba ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Color Palette Selection" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 9 ;
+                                            oc:textContent "**Layout Innovations**:" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "**Geometric Patterns**:" ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 12 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Negative space as a design element" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Edge-to-edge color bands" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Gradient fills (vertical or diagonal only)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Solid color blocks occupying 40-60% of slide" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Split backgrounds (two colors, diagonal or vertical)" ] ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 4 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Underline accents beneath headers (3-5pt thick)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Corner brackets instead of full frames" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "L-shaped borders (top+left or bottom+right)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Double-line borders with contrasting colors" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Thick single-color borders (10-20pt) on one side only" ] ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 6 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Condensed fonts (Arial Narrow) for dense information" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "All-caps headers with wide letter spacing" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Monospace (Courier New) for data/stats/technical content" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Numbered sections in oversized display type" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Extreme size contrast (72pt headlines vs 11pt body)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "Outlined text for emphasis" ] ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 7 ;
+                                            oc:textContent "**Chart & Data Styling**:" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 3 ;
+                                            oc:textContent "**Border & Frame Treatments**:" ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 8 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Horizontal bar charts instead of vertical" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Monochrome charts with single accent color for key data" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Dot plots instead of bar charts" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "Oversized numbers for key metrics" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Data labels directly on elements (no legends)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Minimal gridlines or none at all" ] ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 10 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "Magazine-style multi-column layouts" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Full-bleed images with text overlays" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Sidebar column (20-30% width) for navigation/context" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Modular grid systems (3×3, 4×4 blocks)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Floating text boxes over colored shapes" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Z-pattern or F-pattern content flow" ] ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 5 ;
+                                            oc:textContent "**Typography Treatments**:" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 11 ;
+                                            oc:textContent "**Background Treatments**:" ],
+                                        [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 2 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Circular/hexagonal frames for images" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Triangular accent shapes in corners" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "Overlapping shapes for depth" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Rotated text headers at 90° or 270°" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Asymmetric column widths (30/70, 40/60, 25/75)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Diagonal section dividers instead of horizontal" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Visual Details Options" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Design Principles" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**NEVER vertically stack**: Do not place charts/tables below text in a single column - this causes poor readability and layout issues" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Two-column layout (PREFERRED)**: Use a header spanning the full width, then two columns below - text/bullets in one column and the featured content in the other. This provides better balance and makes charts/tables more readable. Use flexbox with unequal column widths (e.g., 40%/60% split) to optimize space for each content type." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Full-slide layout**: Let the featured content (chart/table) take up the entire slide for maximum impact and readability" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**When creating slides with charts or tables:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Layout Tips" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_77d82d8e37cab152 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Creating a new PowerPoint presentation **without a template**" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A user may ask you to create, edit, or analyze the contents of a .pptx file. A .pptx file is essentially a ZIP archive containing XML files and other resources that you can read or edit. You have different tools and workflows available for different tasks." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**IMPORTANT**: When generating code for PPTX operations:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Avoid verbose variable names and redundant operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Avoid unnecessary print statements" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Write concise code" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Code Style Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "You need raw XML access for: comments, speaker notes, slide layouts, animations, design elements, and complex formatting. For any of these features, you'll need to unpack a presentation and read its raw XML contents." ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "`ppt/slideLayouts/` - Layout templates for slides" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "`ppt/presentation.xml` - Main presentation metadata and slide references" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "`ppt/comments/modernComment_*.xml` - Comments for specific slides" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 7 ;
+                                                    oc:itemText "`ppt/theme/` - Theme and styling information" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "`ppt/slides/slide{N}.xml` - Individual slide contents (slide1.xml, slide2.xml, etc.)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "`ppt/slideMasters/` - Master slide templates" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 8 ;
+                                                    oc:itemText "`ppt/media/` - Images and other media files" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "`ppt/notesSlides/notesSlide{N}.xml` - Speaker notes for each slide" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Key file structures" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "**When given an example design to emulate**: Always analyze the presentation's typography and colors first using the methods below:" ],
+                                        _:ref_f27ff6819e4a1227 ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "Typography and color extraction" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 2 ;
+                                            oc:textContent "**Note**: The unpack.py script is located at `skills/pptx/ooxml/scripts/unpack.py` relative to the project root. If the script doesn't exist at this path, use `find . -name \"unpack.py\"` to locate it." ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "`python ooxml/scripts/unpack.py <office_file> <output_dir>`" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Unpacking a file" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Raw XML access" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If you just need to read the text contents of a presentation, you should convert the document to markdown:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Convert document to markdown
+python -m markitdown path-to-file.pptx
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 18-21" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Text extraction" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Reading and analyzing content" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Required dependencies (should already be installed):" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**pptxgenjs**: `npm install -g pptxgenjs` (for creating presentations via html2pptx)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "**defusedxml**: `pip install defusedxml` (for secure XML parsing)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "**Poppler**: `sudo apt-get install poppler-utils` (for pdftoppm to convert PDF to images)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**react-icons**: `npm install -g react-icons react react-dom` (for icons)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**sharp**: `npm install -g sharp` (for SVG rasterization and image processing)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**markitdown**: `pip install \"markitdown[pptx]\"` (for text extraction from presentations)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**LibreOffice**: `sudo apt-get install libreoffice` (for PDF conversion)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**playwright**: `npm install -g playwright` (for HTML rendering in html2pptx)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_05c4ec0e65cf16d6,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To visually analyze PowerPoint slides, convert them to images using a two-step process:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Options:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pdftoppm -jpeg -r 150 -f 2 -l 5 template.pdf slide  # Converts only pages 2-5
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 6 ;
+                            oc:sourceLocation "lines 463-465" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-jpeg`: Output JPEG format (use `-png` for PNG if preferred)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-f N`: First page to convert (e.g., `-f 2` starts from page 2)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "`slide`: Prefix for output files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`-r 150`: Sets resolution to 150 DPI (adjust for quality/size balance)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`-l N`: Last page to convert (e.g., `-l 5` stops at page 5)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Example for specific range:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Converting Slides to Images" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When you need to create a presentation that follows an existing template's design, you'll need to duplicate and re-arrange template slides before then replacing placeholder context." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_bd1464d074fcad0d ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Creating a new PowerPoint presentation **using a template**" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To create visual thumbnail grids of PowerPoint slides for quick analysis and reference:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Use cases**:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Navigation reference: Find specific slides by their visual appearance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Quality check: Verify all slides are properly formatted" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Template analysis: Quickly understand slide layouts and design patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Content review: Visual overview of entire presentation" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "**Examples**:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Basic usage
+python scripts/thumbnail.py presentation.pptx
+
+# Combine options: custom name, columns
+python scripts/thumbnail.py template.pptx analysis --cols 4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 8 ;
+                            oc:sourceLocation "lines 432-438" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Default: 5 columns, max 30 slides per grid (5×6)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Grid limits: 3 cols = 12 slides/grid, 4 cols = 20, 5 cols = 30, 6 cols = 42" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Note: The output prefix should include the path if you want output in a specific directory (e.g., `workspace/my-grid`)" ] ] ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Custom prefix: `python scripts/thumbnail.py template.pptx my-grid`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Adjust columns: `--cols 4` (range: 3-6, affects slides per grid)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Slides are zero-indexed (Slide 0, Slide 1, etc.)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Creates: `thumbnails.jpg` (or `thumbnails-1.jpg`, `thumbnails-2.jpg`, etc. for large decks)" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python scripts/thumbnail.py template.pptx [output_prefix]
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 412-414" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Features**:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Creating Thumbnail Grids" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When edit slides in an existing PowerPoint presentation, you need to work with the raw Office Open XML (OOXML) format. This involves unpacking the .pptx file, editing the XML content, and repacking it." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_0d6271a4c61ede89 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Editing an existing PowerPoint presentation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PPTX creation, editing, and analysis" ] ;
+    oc:hasWorkflow _:ref_056edda93d270ff4,
+        _:ref_05c4ec0e65cf16d6,
+        _:ref_0d6271a4c61ede89,
+        _:ref_77d82d8e37cab152,
+        _:ref_9519210cccf42bba,
+        _:ref_bd1464d074fcad0d,
+        _:ref_f27ff6819e4a1227 ;
+    oc:impartsKnowledge oc:kn_21e6e83f,
+        oc:kn_4b9be7a0,
+        oc:kn_51f5c526,
+        oc:kn_5dbf9c3d,
+        oc:kn_73100800,
+        oc:kn_8421c6f0,
+        oc:kn_8f4eba34,
+        oc:kn_8faf6aba,
+        oc:kn_b164e147,
+        oc:kn_d6b03a71,
+        oc:kn_dac7e2ba,
+        oc:kn_e8d47181,
+        oc:kn_f0985f6f ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze presentation content",
+        "convert slides to images",
+        "create presentation from scratch",
+        "create presentation from template",
+        "edit existing presentation",
+        "extract text from pptx",
+        "generate thumbnail grids of slides",
+        "read speaker notes and comments" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:DocumentModified .
+
+oc:kn_21e6e83f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating new presentations via html2pptx" ;
+    oc:directiveContent "Use web-safe fonts only: Arial, Helvetica, Times New Roman, Georgia, Courier New, Verdana, Tahoma, Trebuchet MS, Impact. No custom or system-specific fonts." ;
+    oc:hasRationale "Custom fonts cannot be embedded reliably in the html2pptx workflow and will cause rendering inconsistencies" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4b9be7a0 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any pptx creation or editing workflow" ;
+    oc:directiveContent "Always read reference documentation files (html2pptx.md, ooxml.md) completely without range limits before starting any presentation task." ;
+    oc:hasRationale "These reference files contain critical syntax rules and formatting constraints that are essential for correct output" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_51f5c526 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting template slides for content" ;
+    oc:directiveContent "Match layout structure to actual content count: single-column for unified narrative, two-column ONLY for exactly 2 items, three-column ONLY for exactly 3 items. Never use layouts with more placeholders than you have content." ;
+    oc:hasRationale "Empty placeholders look unprofessional and break the visual coherence of the presentation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5dbf9c3d a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying text replacements via replace.py" ;
+    oc:directiveContent "The replace.py script clears ALL text shapes from inventory unless paragraphs are provided. Shapes not listed in replacement JSON are automatically cleared." ;
+    oc:hasRationale "Automatic clearing prevents stale placeholder text from appearing in the final presentation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_73100800 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating slides containing charts or tables" ;
+    oc:directiveContent "Never vertically stack charts/tables below text in a single column. Use two-column layout (text in one, chart/table in the other) or full-slide layout for featured content." ;
+    oc:hasRationale "Vertical stacking causes poor readability and layout issues; two-column layouts provide better visual balance" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8421c6f0 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After generating any new presentation" ;
+    oc:directiveContent "After creating a presentation, generate thumbnails using thumbnail.py and visually inspect for text cutoff, overlap, positioning issues, and contrast problems. Fix and regenerate until all slides are correct." ;
+    oc:hasRationale "HTML-to-PPTX conversion can produce subtle layout issues only visible through visual inspection" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8f4eba34 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Creating a new presentation using a template" ;
+    oc:directiveContent "1. Extract text + create thumbnails of template 2. Analyze and save template-inventory.md 3. Create outline.md with template mapping (0-based indices) 4. Rearrange: python scripts/rearrange.py template.pptx working.pptx 0,34,34,50 5. Extract inventory: python scripts/inventory.py working.pptx text-inventory.json 6. Generate replacement-text.json with properly formatted paragraphs 7. Apply: python scripts/replace.py working.pptx replacement-text.json output.pptx" ;
+    oc:hasRationale "Template-based creation preserves design fidelity by reusing existing slide layouts and only replacing text content" ;
+    oc:stepOrder 3 .
+
+oc:kn_8faf6aba a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When generating replacement text JSON for template-based presentations" ;
+    oc:directiveContent "When bullet: true in replacement text, do NOT include bullet symbols (•, -, *) in text — they are added automatically. Do not set alignment property when bullet is true (auto left-aligned)." ;
+    oc:hasRationale "Including bullet symbols causes double-bullet rendering; setting alignment on bullets causes formatting conflicts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b164e147 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before creating any new presentation from scratch" ;
+    oc:directiveContent "State your content-informed design approach BEFORE writing code. Analyze subject matter, tone, industry, and choose colors/fonts that genuinely match the specific topic — avoid autopilot choices." ;
+    oc:hasRationale "Ensures presentations are visually coherent and contextually appropriate rather than generic" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d6b03a71 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Creating a new presentation without a template" ;
+    oc:directiveContent "1. Read html2pptx.md completely (no range limits) 2. Create HTML files per slide (720pt × 405pt for 16:9) 3. Rasterize gradients/icons as PNG via Sharp before referencing in HTML 4. Run JS file using html2pptx.js to convert 5. Generate thumbnails and validate visually 6. Fix issues and regenerate until correct" ;
+    oc:hasRationale "The html2pptx workflow ensures accurate positioning and visual quality through iterative validation" ;
+    oc:stepOrder 1 .
+
+oc:kn_dac7e2ba a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When editing raw XML in presentations" ;
+    oc:directiveContent "Use defusedxml for XML parsing when working with OOXML files to prevent XML-based attacks." ;
+    oc:hasRationale "PPTX files are ZIP archives containing XML; maliciously crafted XML could exploit vulnerabilities in standard parsers" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e8d47181 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Editing an existing PowerPoint presentation" ;
+    oc:directiveContent "1. Read ooxml.md completely (no range limits) 2. Unpack: python ooxml/scripts/unpack.py <file> <dir> 3. Edit XML files (ppt/slides/slide{N}.xml etc.) 4. Validate after EACH edit: python ooxml/scripts/validate.py <dir> --original <file> 5. Pack: python ooxml/scripts/pack.py <dir> <output>" ;
+    oc:hasRationale "Direct XML editing is required for comments, speaker notes, layouts, animations, and complex formatting changes" ;
+    oc:stepOrder 2 .
+
+oc:kn_f0985f6f a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When the unpack script path doesn't exist at the expected location" ;
+    oc:directiveContent "If unpack.py is not found at skills/pptx/ooxml/scripts/unpack.py, use 'find . -name unpack.py' to locate it." ;
+    oc:hasRationale "Project directory structures may vary; the find command ensures the script is always locatable" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_04f6c4d2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pptxgenjs (npm install -g pptxgenjs)" .
+
+oc:req_45edde3b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "playwright (npm install -g playwright)" .
+
+oc:req_8bbd66ec a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "LibreOffice (soffice)" .
+
+oc:req_bbe19efc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "markitdown (pip install markitdown[pptx])" .
+
+oc:req_c294af12 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "defusedxml (pip install defusedxml)" .
+
+oc:req_c9c65978 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "sharp (npm install -g sharp)" .
+
+oc:req_ca29e505 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Poppler (pdftoppm)" .
+
+_:ref_019a9f8f5dd5c824 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """soffice --headless --convert-to pdf template.pptx
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 445-447" .
+
+_:ref_028ced2f730cfcc2 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Create thumbnail grid: `python scripts/thumbnail.py output.pptx workspace/thumbnails --cols 4`" .
+
+_:ref_02a5dd45d90de4fb a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """  {
+    "slide-0": {
+      "shape-0": {
+        "placeholder_type": "TITLE",  // or null for non-placeholders
+        "left": 1.5,                  // position in inches
+        "top": 2.0,
+        "width": 7.5,
+        "height": 1.2,
+        "paragraphs": [
+          {
+            "text": "Paragraph text",
+            // Optional properties (only included when non-default):
+            "bullet": true,           // explicit bullet detected
+            "level": 0,               // only included when bullet is true
+            "alignment": "CENTER",    // CENTER, RIGHT (not LEFT)
+            "space_before": 10.0,     // space before paragraph in points
+            "space_after": 6.0,       // space after paragraph in points
+            "line_spacing": 22.4,     // line spacing in points
+            "font_name": "Arial",     // from first run
+            "font_size": 14.0,        // in points
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "color": "FF0000"         // RGB color
+          }
+        ]
+      }
+    }
+  }
+""" ;
+            oc:codeLanguage "json" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 262-292" ] ;
+    oc:itemOrder 3 ;
+    oc:itemText "The inventory JSON structure:" .
+
+_:ref_091a82541c862e3b a oc:WorkflowStep ;
+    dcterms:description "**MANDATORY - READ ENTIRE FILE**: Read [`html2pptx.md`](html2pptx.md) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with presentation creation." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_09d392e16a91ae1a a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "List items should have `\"bullet\": true, \"level\": 0` (level is required when bullet is true)" .
+
+_:ref_0abe1e17f061a959 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """python scripts/inventory.py working.pptx text-inventory.json
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 256-258" .
+
+_:ref_0c57a5c43a1304dd a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 8 ;
+    oc:itemText "**Colors**: `color` for RGB (e.g., \"FF0000\"), `theme_color` for theme colors (e.g., \"DARK_1\")" .
+
+_:ref_11d290b07a7c32d7 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Extract text: `python -m markitdown template.pptx > template-content.md`" .
+
+_:ref_1204ab601e899c17 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 6 ;
+    oc:textContent "**Common formatting patterns for presentations**:" .
+
+_:ref_1219bfaaa1819cd8 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 8 ;
+    oc:itemText "Generate appropriate replacement content for placeholder text" .
+
+_:ref_13294ce5eb05e4bc a oc:WorkflowStep ;
+    dcterms:description "**Teal & Coral**: Teal (#5EA8A7), deep teal (#277884), coral (#FE4447), white (#FFFFFF)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_17d9ad8b95d04cdd a oc:WorkflowStep ;
+    dcterms:description "**Analyze template and save inventory to a file**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "This inventory file is REQUIRED for selecting appropriate templates in the next step" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "**Visual Analysis**: Review thumbnail grid(s) to understand slide layouts, design patterns, and visual structure" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Template Inventory Analysis
+**Total Slides: [count]**
+**IMPORTANT: Slides are 0-indexed (first slide = 0, last slide = count-1)**
+
+## [Category Name]
+- Slide 0: [Layout code if available] - Description/purpose
+- Slide 1: [Layout code] - Description/purpose
+- Slide 2: [Layout code] - Description/purpose
+[... EVERY slide must be listed individually with its index ...]
+""" ;
+                            oc:codeLanguage "markdown" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 196-206" ] ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Create and save a template inventory file at `template-inventory.md` containing:" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Image placeholder locations and counts" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Visual hierarchy and structure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Layout patterns (title slides, content layouts, section dividers)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Design consistency across slide groups" ] ] ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "**Using the thumbnail grid**: Reference the visual thumbnails to identify:" ] ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1abb7b8397fb7a96 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "If you reference a non-existent slide, you'll get an error indicating the slide doesn't exist" .
+
+_:ref_1beafd0cbb089b33 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "**Slide numbers are filtered**: Shapes with SLIDE_NUMBER placeholder type are automatically excluded from inventory" .
+
+_:ref_1bf5fbf7508c38a9 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "**Positioning issues**: Content too close to slide boundaries or other elements" .
+
+_:ref_1de05ef7853e6085 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 6 ;
+    oc:itemText "Verify each placeholder in the chosen layout will be filled with meaningful content" .
+
+_:ref_1f0c5b4d826d8dd6 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 7 ;
+    oc:itemText "Paragraphs with bullets will be automatically left aligned. Don't set the `alignment` property on when `\"bullet\": true`" .
+
+_:ref_1f154d186da9da22 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "The same slide index can appear multiple times to duplicate that slide" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "The script handles duplicating repeated slides, deleting unused slides, and reordering automatically" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """python scripts/rearrange.py template.pptx working.pptx 0,34,34,50,52
+""" ;
+                    oc:codeLanguage "bash" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 247-249" ] ;
+            oc:itemOrder 1 ;
+            oc:itemText "Use the `scripts/rearrange.py` script to create a new presentation with slides in the desired order:" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Slide indices are 0-based (first slide is 0, second is 1, etc.)" ] .
+
+_:ref_21d08122168aae92 a oc:WorkflowStep ;
+    dcterms:description "**Black & Gold**: Gold (#BF9A4A), black (#000000), cream (#F4F6F6)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_23c42753d6e662a4 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 11 ;
+    oc:itemText "**IMPORTANT**: When bullet: true, do NOT include bullet symbols (•, -, *) in text - they're added automatically" .
+
+_:ref_25c065808fadca5d a oc:WorkflowStep ;
+    dcterms:description "**Apply replacements using the `replace.py` script**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """ERROR: Invalid shapes in replacement JSON:
+  - Shape 'shape-99' not found on 'slide-0'. Available shapes: shape-0, shape-1, shape-4
+  - Slide 'slide-999' not found in inventory
+""" ;
+            oc:codeLanguage "" ;
+            oc:contentOrder 5 ;
+            oc:sourceLocation "lines 397-401" ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """ERROR: Replacement text made overflow worse in these shapes:
+  - slide-0/shape-2: overflow worsened by 1.25" (was 0.00", now 1.25")
+""" ;
+            oc:codeLanguage "" ;
+            oc:contentOrder 6 ;
+            oc:sourceLocation "lines 403-406" ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """python scripts/replace.py working.pptx replacement-text.json output.pptx
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 383-385" ],
+        [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 3 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Validate that all shapes in the replacement JSON exist in the inventory" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 6 ;
+                    oc:itemText "Handle bullets, alignment, font properties, and colors automatically" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "First extract the inventory of ALL text shapes using functions from inventory.py" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 5 ;
+                    oc:itemText "Preserve formatting by applying paragraph properties from the JSON" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "Apply new text only to shapes with \"paragraphs\" defined in the replacement JSON" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Clear text from ALL shapes identified in the inventory" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 7 ;
+                    oc:itemText "Save the updated presentation" ] ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 4 ;
+            oc:textContent "Example validation errors:" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 2 ;
+            oc:textContent "The script will:" ] ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_2964967ef5626ed6 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_028ced2f730cfcc2,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Repeat until all slides are visually correct" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "If issues found, adjust HTML margins/spacing/colors and regenerate the presentation" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem _:ref_1bf5fbf7508c38a9,
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "**Contrast issues**: Insufficient contrast between text and backgrounds" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "**Text cutoff**: Text being cut off by header bars, shapes, or slide edges" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "**Text overlap**: Text overlapping with other text or shapes" ] ] ;
+            oc:itemOrder 2 ;
+            oc:itemText "Read and carefully examine the thumbnail image for:" ] .
+
+_:ref_2a8a0682025ce6db a oc:WorkflowStep ;
+    dcterms:description "**Retro Rainbow**: Purple (#722880), pink (#D72D51), orange (#EB5C18), amber (#F08800), gold (#DEB600)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_15" ;
+    oc:stepOrder 15 .
+
+_:ref_2d670e7e35f19fc7 a oc:WorkflowStep ;
+    dcterms:description "**Lime & Plum**: Lime (#C5DE82), plum (#7C3A5F), coral (#FD8C6E), blue-gray (#98ACB5)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_2dd021b1ddc65934 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Use `class=\"placeholder\"` for areas where charts/tables will be added (render with gray background for visibility)" .
+
+_:ref_2e541ed2d9923a7c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "**IMPORTANT**: The replace.py script uses inventory.py internally to identify ALL text shapes" .
+
+_:ref_2eaba94a16007d12 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 6 ;
+    oc:itemText "Never use layouts with more placeholders than you have content" .
+
+_:ref_2ffa9dd761bcfc76 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Single-column layouts: Use for unified narrative or single topic" .
+
+_:ref_308ce62b001ab2b5 a oc:WorkflowStep ;
+    dcterms:description "Edit the XML files (primarily `ppt/slides/slide{N}.xml` and related files)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_322b86e16fe196ec a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Read `template-content.md`: Read the entire file to understand the contents of the template presentation. **NEVER set any range limits when reading this file.**" .
+
+_:ref_32a3b4eda83493de a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 8 ;
+    oc:itemText "Save `outline.md` with content AND template mapping that leverages available designs" .
+
+_:ref_32e277b01978bb70 a oc:WorkflowStep ;
+    dcterms:description "**Duplicate, reorder, and delete slides using `rearrange.py`**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_1f154d186da9da22 ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_32fbd1ca91bc94ec a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 14 ;
+    oc:itemText "**WARNING**: Different template layouts have different shape counts - always check the actual inventory before creating replacements" .
+
+_:ref_35802603af30c0d8 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Body text: Usually no special properties needed" .
+
+_:ref_36b00d6b49773063 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 13 ;
+    oc:itemText "Save the updated inventory with replacements to `replacement-text.json`" .
+
+_:ref_36fcb3e146bc6d7d a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """pdftoppm -jpeg -r 150 template.pdf slide
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 450-452" .
+
+_:ref_3b224e5989978e8e a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 9 ;
+    oc:itemText "Use shape size to determine appropriate content length" .
+
+_:ref_3b292738206895a6 a oc:WorkflowStep ;
+    dcterms:description "**Pink & Purple**: Pink (#F8275B), coral (#FF574A), rose (#FF737D), purple (#3D2F68)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_3c2f9b7567d1a5a5 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_1219bfaaa1819cd8,
+        _:ref_1f0c5b4d826d8dd6,
+        _:ref_23c42753d6e662a4,
+        _:ref_2e541ed2d9923a7c,
+        _:ref_32fbd1ca91bc94ec,
+        _:ref_36b00d6b49773063,
+        _:ref_3b224e5989978e8e,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "**AUTOMATIC CLEARING**: ALL text shapes from the inventory will be cleared unless you provide \"paragraphs\" for them" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem _:ref_1abb7b8397fb7a96,
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "All validation errors are shown at once before the script exits" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "If you reference a non-existent shape, you'll get an error showing available shapes" ] ] ;
+            oc:itemOrder 2 ;
+            oc:itemText "**VALIDATION**: The replace.py script will validate that all shapes in your replacement JSON exist in the inventory" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "Add a \"paragraphs\" field to shapes that need content (not \"replacement_paragraphs\")" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem _:ref_09d392e16a91ae1a,
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "Colors: Use `\"color\": \"FF0000\"` for RGB or `\"theme_color\": \"DARK_1\"` for theme colors" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 6 ;
+                            oc:itemText "The replacement script expects **properly formatted paragraphs**, not just text strings" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Include font properties when different from default (e.g., `\"font_size\": 14.0`, `\"font_name\": \"Lora\"`)" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Preserve any alignment properties (e.g., `\"alignment\": \"CENTER\"` for centered text)" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Headers/titles should typically have `\"bold\": true`" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 7 ;
+                            oc:itemText "**Overlapping shapes**: Prefer shapes with larger default_font_size or more appropriate placeholder_type" ] ] ;
+            oc:itemOrder 12 ;
+            oc:itemText "**ESSENTIAL FORMATTING RULES**:" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 6 ;
+            oc:itemText "Shapes without \"paragraphs\" in the replacement JSON will have their text cleared automatically" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "**CRITICAL**: First verify which shapes exist in the inventory - only reference shapes that are actually present" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 10 ;
+            oc:itemText "**CRITICAL**: Include paragraph properties from the original inventory - don't just provide text" ] .
+
+_:ref_3c68b994425a5437 a oc:WorkflowStep ;
+    dcterms:description "**Convert PDF pages to JPEG images**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_36fcb3e146bc6d7d,
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 2 ;
+            oc:textContent "This creates files like `slide-1.jpg`, `slide-2.jpg`, etc." ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_3e3db0fb6a465e44 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_2dd021b1ddc65934,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "**CRITICAL**: Rasterize gradients and icons as PNG images FIRST using Sharp, then reference in HTML" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "**LAYOUT**: For slides with charts/tables/images, use either full-slide layout or two-column layout for better readability" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Use `<p>`, `<h1>`-`<h6>`, `<ul>`, `<ol>` for all text content" ] .
+
+_:ref_430fc61c16e2fdae a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_1de05ef7853e6085,
+        _:ref_32a3b4eda83493de,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """# Template slides to use (0-based indexing)
+# WARNING: Verify indices are within range! Template with 73 slides has indices 0-72
+# Mapping: slide numbers from outline -> template slide indices
+template_mapping = [
+    0,   # Use slide 0 (Title/Cover)
+    34,  # Use slide 34 (B1: Title and body)
+    34,  # Use slide 34 again (duplicate for second B1)
+    50,  # Use slide 50 (E1: Quote)
+    54,  # Use slide 54 (F2: Closing + Text)
+]
+""" ;
+                    oc:codeLanguage "" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 232-243" ] ;
+            oc:itemOrder 9 ;
+            oc:itemText "Example template mapping:" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Choose an intro or title template for the first slide. This should be one of the first templates." ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 7 ;
+            oc:itemText "Select one option representing the **best** layout for each content section." ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Choose safe, text-based layouts for the other slides." ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Review available templates from step 2." ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem _:ref_2eaba94a16007d12,
+                        _:ref_2ffa9dd761bcfc76,
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 8 ;
+                            oc:itemText "If you have 4+ items, consider breaking into multiple slides or using a list format" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 7 ;
+                            oc:itemText "If you have 2 items, don't force them into a 3-column layout" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "Quote layouts: Use ONLY for actual quotes from people (with attribution), never for emphasis" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Three-column layouts: Use ONLY when you have exactly 3 distinct items/concepts" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Two-column layouts: Use ONLY when you have exactly 2 distinct items/concepts" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Image + text layouts: Use ONLY when you have actual images to insert" ] ] ;
+            oc:itemOrder 4 ;
+            oc:itemText "**CRITICAL: Match layout structure to actual content**:" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "Count your actual content pieces BEFORE selecting the layout" ] .
+
+_:ref_433921116cd980d5 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild _:ref_0abe1e17f061a959 ;
+    oc:itemOrder 1 ;
+    oc:itemText "**Run inventory extraction**:" .
+
+_:ref_47be70c69c46dc13 a oc:WorkflowStep ;
+    dcterms:description "**Deep Purple & Emerald**: Purple (#B165FB), dark blue (#181B24), emerald (#40695B), white (#FFFFFF)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_49b16f44aae72bac a oc:WorkflowStep ;
+    dcterms:description "**Consider the subject matter**: What is this presentation about? What tone, industry, or mood does it suggest?" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4aba4c604de15c6d a oc:WorkflowStep ;
+    dcterms:description "Create and run a JavaScript file using the [`html2pptx.js`](scripts/html2pptx.js) library to convert HTML slides to PowerPoint and save the presentation" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Use the `html2pptx()` function to process each HTML file" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Save the presentation using `pptx.writeFile()`" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Add charts and tables to placeholder areas using PptxGenJS API" ] ] ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_4d20964d59c02546 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 4 ;
+    oc:textContent "**Shapes not listed in the replacement JSON are automatically cleared**:" .
+
+_:ref_55a3376f1b45edcd a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 9 ;
+    oc:itemText "**Properties**: Only non-default values are included in the output" .
+
+_:ref_55c844d456fb700f a oc:WorkflowStep ;
+    dcterms:description "**Forest Green**: Black (#191A19), green (#4E9F3D), dark green (#1E5128), white (#FFFFFF)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_14" ;
+    oc:stepOrder 14 .
+
+_:ref_5965c97e3b25f118 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 7 ;
+    oc:itemText "**Spacing**: `space_before`, `space_after`, and `line_spacing` in points (only included when set)" .
+
+_:ref_5d9f409fe92255e8 a oc:WorkflowStep ;
+    dcterms:description "Unpack the presentation: `python ooxml/scripts/unpack.py <office_file> <output_dir>`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_690c4711cff074af a oc:WorkflowStep ;
+    dcterms:description "**Bold Red**: Red (#C0392B), bright red (#E74C3C), orange (#F39C12), yellow (#F1C40F), green (#2ECC71)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_6f5304f4530cede6 a oc:WorkflowStep ;
+    dcterms:description "**Extract ALL text using the `inventory.py` script**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_02a5dd45d90de4fb,
+                _:ref_433921116cd980d5,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "**Read text-inventory.json**: Read the entire text-inventory.json file to understand all shapes and their properties. **NEVER set any range limits when reading this file.**" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:hasChild [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem _:ref_0c57a5c43a1304dd,
+                                _:ref_1beafd0cbb089b33,
+                                _:ref_55a3376f1b45edcd,
+                                _:ref_5965c97e3b25f118,
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Bullets**: When `bullet: true`, `level` is always included (even if 0)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Shapes**: Ordered by visual position (top-to-bottom, left-to-right) as \"shape-0\", \"shape-1\", etc." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Placeholder types**: TITLE, CENTER_TITLE, SUBTITLE, BODY, OBJECT, or null" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Slides**: Named as \"slide-0\", \"slide-1\", etc." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Default font size**: `default_font_size` in points extracted from layout placeholders (when available)" ] ] ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "Key features:" ] ] ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_73adb77452eaa17f a oc:WorkflowStep ;
+    dcterms:description "**Burgundy Luxury**: Burgundy (#5D1D2E), crimson (#951233), rust (#C15937), gold (#997929)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_75b36d2979fc922a a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Title slides: Bold text, sometimes centered" .
+
+_:ref_77a93a207ce3b0e5 a oc:WorkflowStep ;
+    dcterms:description """**Generate replacement text and save the data to a JSON file**
+Based on the text inventory from the previous step:""" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_1204ab601e899c17,
+        _:ref_3c2f9b7567d1a5a5,
+        _:ref_4d20964d59c02546,
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """{
+  "slide-0": {
+    "shape-0": {
+      "paragraphs": [...] // This shape gets new text
+    }
+    // shape-1 and shape-2 from inventory will be cleared automatically
+  }
+}
+""" ;
+            oc:codeLanguage "json" ;
+            oc:contentOrder 5 ;
+            oc:sourceLocation "lines 364-373" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 2 ;
+            oc:textContent "Example paragraphs field showing proper formatting:" ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """"paragraphs": [
+  {
+    "text": "New presentation title text",
+    "alignment": "CENTER",
+    "bold": true
+  },
+  {
+    "text": "Section Header",
+    "bold": true
+  },
+  {
+    "text": "First bullet point without bullet symbol",
+    "bullet": true,
+    "level": 0
+  },
+  {
+    "text": "Red colored text",
+    "color": "FF0000"
+  },
+  {
+    "text": "Theme colored text",
+    "theme_color": "DARK_1"
+  },
+  {
+    "text": "Regular paragraph text without special formatting"
+  }
+]
+""" ;
+            oc:codeLanguage "json" ;
+            oc:contentOrder 3 ;
+            oc:sourceLocation "lines 333-361" ],
+        [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 7 ;
+            oc:hasItem _:ref_35802603af30c0d8,
+                _:ref_75b36d2979fc922a,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Section headers within slides: Bold text" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 5 ;
+                    oc:itemText "Quotes: May have special alignment or font properties" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Bullet lists: Each item needs `\"bullet\": true, \"level\": 0`" ] ] ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_7b3b2f796a75b423 a oc:WorkflowStep ;
+    dcterms:description "**Match palette to content**: Select colors that reflect the subject" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_7c42843d67096d32 a oc:WorkflowStep ;
+    dcterms:description "**State your approach**: Explain your design choices before writing code" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_7d0ad05a457bb803 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_11d290b07a7c32d7,
+        _:ref_322b86e16fe196ec,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Create thumbnail grids: `python scripts/thumbnail.py template.pptx`" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "See [Creating Thumbnail Grids](#creating-thumbnail-grids) section for more details" ] .
+
+_:ref_8511ba6c807a771d a oc:WorkflowStep ;
+    dcterms:description "**MANDATORY - READ ENTIRE FILE**: Read [`ooxml.md`](ooxml.md) (~500 lines) completely from start to finish.  **NEVER set any range limits when reading this file.**  Read the full file content for detailed guidance on OOXML structure and editing workflows before any presentation editing." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_85739e65f48f7d4a a oc:WorkflowStep ;
+    dcterms:description "**Charcoal & Red**: Charcoal (#292929), red (#E33737), light gray (#CCCBCB)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_12" ;
+    oc:stepOrder 12 .
+
+_:ref_940afe32228e6bad a oc:WorkflowStep ;
+    dcterms:description "Create an HTML file for each slide with proper dimensions (e.g., 720pt × 405pt for 16:9)" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_3e3db0fb6a465e44 ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_9c1d066ad3f38d91 a oc:WorkflowStep ;
+    dcterms:description "**CRITICAL**: Validate immediately after each edit and fix any validation errors before proceeding: `python ooxml/scripts/validate.py <dir> --original <file>`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_9fe30349c395088f a oc:WorkflowStep ;
+    dcterms:description "**Sage & Terracotta**: Sage (#87A96B), terracotta (#E07A5F), cream (#F4F1DE), charcoal (#2C2C2C)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_11" ;
+    oc:stepOrder 11 .
+
+_:ref_a10419dabbf801df a oc:WorkflowStep ;
+    dcterms:description "**Convert PPTX to PDF**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_019a9f8f5dd5c824 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_a11644577a54ae02 a oc:WorkflowStep ;
+    dcterms:description "**Check for branding**: If the user mentions a company/organization, consider their brand colors and identity" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a68b15d5cc339b4c a oc:WorkflowStep ;
+    dcterms:description "**Search for patterns**: Use grep to find color (`<a:solidFill>`, `<a:srgbClr>`) and font references across all XML files" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ae30fe9f898650e9 a oc:WorkflowStep ;
+    dcterms:description "**Sample slide content**: Examine `ppt/slides/slide1.xml` for actual font usage (`<a:rPr>`) and colors" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_b117211f7c349852 a oc:WorkflowStep ;
+    dcterms:description "**Vibrant Orange**: Orange (#F96D00), light gray (#F2F2F2), charcoal (#222831)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_13" ;
+    oc:stepOrder 13 .
+
+_:ref_b4b36b2bd9d343b9 a oc:WorkflowStep ;
+    dcterms:description "**Visual validation**: Generate thumbnails and inspect for layout issues" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_2964967ef5626ed6 ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_bcc3f313470f37f4 a oc:WorkflowStep ;
+    dcterms:description "**Extract template text AND create visual thumbnail grid**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_7d0ad05a457bb803 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c2f4465782e4faae a oc:WorkflowStep ;
+    dcterms:description "**Create presentation outline based on template inventory**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_430fc61c16e2fdae ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c4489fdb05ea9ff8 a oc:WorkflowStep ;
+    dcterms:description "**Read theme file**: Check `ppt/theme/theme1.xml` for colors (`<a:clrScheme>`) and fonts (`<a:fontScheme>`)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c4c1e2d8f52c88f8 a oc:WorkflowStep ;
+    dcterms:description "**Orange & Turquoise**: Light orange (#FC993E), grayish turquoise (#667C6F), white (#FCFCFC)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_18" ;
+    oc:stepOrder 18 .
+
+_:ref_ca9bdf029c3b5ae0 a oc:WorkflowStep ;
+    dcterms:description "**Classic Blue**: Deep navy (#1C2833), slate gray (#2E4053), silver (#AAB7B8), off-white (#F4F6F6)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_cfe4ed02d9c69ccd a oc:WorkflowStep ;
+    dcterms:description "**Vintage Earthy**: Mustard (#E3B448), sage (#CBD18F), forest green (#3A6B35), cream (#F4F1DE)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_16" ;
+    oc:stepOrder 16 .
+
+_:ref_d2c7f5b569200acc a oc:WorkflowStep ;
+    dcterms:description "**Warm Blush**: Mauve (#A49393), blush (#EED6D3), rose (#E8B4B8), cream (#FAF7F2)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d35d5e8ddefe2f92 a oc:WorkflowStep ;
+    dcterms:description "Pack the final presentation: `python ooxml/scripts/pack.py <input_directory> <office_file>`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_e4fe7ce6ca9ded10 a oc:WorkflowStep ;
+    dcterms:description "**Coastal Rose**: Old rose (#AD7670), beaver (#B49886), eggshell (#F3ECDC), ash gray (#BFD5BE)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_17" ;
+    oc:stepOrder 17 .
+
+_:ref_ec21d293fc3e9950 a oc:WorkflowStep ;
+    dcterms:description "**Cream & Forest Green**: Cream (#FFE1C7), forest green (#40695B), white (#FCFCFC)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_056edda93d270ff4 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_49b16f44aae72bac,
+        _:ref_7b3b2f796a75b423,
+        _:ref_7c42843d67096d32,
+        _:ref_a11644577a54ae02 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_05c4ec0e65cf16d6 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_3c68b994425a5437,
+        _:ref_a10419dabbf801df ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_0d6271a4c61ede89 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_308ce62b001ab2b5,
+        _:ref_5d9f409fe92255e8,
+        _:ref_8511ba6c807a771d,
+        _:ref_9c1d066ad3f38d91,
+        _:ref_d35d5e8ddefe2f92 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_77d82d8e37cab152 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_091a82541c862e3b,
+        _:ref_4aba4c604de15c6d,
+        _:ref_940afe32228e6bad,
+        _:ref_b4b36b2bd9d343b9 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_9519210cccf42bba a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_13294ce5eb05e4bc,
+        _:ref_21d08122168aae92,
+        _:ref_2a8a0682025ce6db,
+        _:ref_2d670e7e35f19fc7,
+        _:ref_3b292738206895a6,
+        _:ref_47be70c69c46dc13,
+        _:ref_55c844d456fb700f,
+        _:ref_690c4711cff074af,
+        _:ref_73adb77452eaa17f,
+        _:ref_85739e65f48f7d4a,
+        _:ref_9fe30349c395088f,
+        _:ref_b117211f7c349852,
+        _:ref_c4c1e2d8f52c88f8,
+        _:ref_ca9bdf029c3b5ae0,
+        _:ref_cfe4ed02d9c69ccd,
+        _:ref_d2c7f5b569200acc,
+        _:ref_e4fe7ce6ca9ded10,
+        _:ref_ec21d293fc3e9950 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_bd1464d074fcad0d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_17d9ad8b95d04cdd,
+        _:ref_25c065808fadca5d,
+        _:ref_32e277b01978bb70,
+        _:ref_6f5304f4530cede6,
+        _:ref_77a93a207ce3b0e5,
+        _:ref_bcc3f313470f37f4,
+        _:ref_c2f4465782e4faae ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f27ff6819e4a1227 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_a68b15d5cc339b4c,
+        _:ref_ae30fe9f898650e9,
+        _:ref_c4489fdb05ea9ff8 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+

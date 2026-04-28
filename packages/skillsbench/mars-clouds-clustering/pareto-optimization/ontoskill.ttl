@@ -1,0 +1,322 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mars_clouds_clustering_pareto_optimization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pareto-optimization" ;
+    skos:broader "Optimization technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mars-clouds-clustering/pareto-optimization" ;
+    oc:contentHash "c8bd427537e4c9332e0eef8125350ec3f0ccf849c0db43d28babedf874807209" ;
+    oc:differentia "finds Pareto-optimal trade-off solutions across multiple conflicting objectives" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Multi-objective optimization with Pareto frontiers. Use when optimizing multiple conflicting objectives simultaneously, finding trade-off solutions, or computing Pareto-optimal points." ;
+    oc:hasName "pareto-optimization" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_233ed394,
+        oc:req_746aacc9,
+        oc:req_fe6b6a53 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Pareto optimization deals with multi-objective optimization where you want to optimize multiple conflicting objectives simultaneously." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import numpy as np
+
+def is_dominated(point, other_points, maximize_indices, minimize_indices):
+    \"\"\"Check if point is dominated by any point in other_points.\"\"\"
+    for other in other_points:
+        dominated = True
+        strictly_worse = False
+
+        for i in maximize_indices:
+            if point[i] > other[i]:
+                dominated = False
+                break
+            if point[i] < other[i]:
+                strictly_worse = True
+
+        if dominated:
+            for i in minimize_indices:
+                if point[i] < other[i]:
+                    dominated = False
+                    break
+                if point[i] > other[i]:
+                    strictly_worse = True
+
+        if dominated and strictly_worse:
+            return True
+
+    return False
+
+def compute_pareto_frontier(points, maximize_indices=[0], minimize_indices=[1]):
+    \"\"\"Compute Pareto frontier from array of points.\"\"\"
+    pareto = []
+    points_list = list(points)
+
+    for i, point in enumerate(points_list):
+        others = points_list[:i] + points_list[i+1:]
+        if not is_dominated(point, others, maximize_indices, minimize_indices):
+            pareto.append(point)
+
+    return np.array(pareto)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 49-89" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Manual Implementation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from paretoset import paretoset
+import pandas as pd
+
+# Data with two objectives (e.g., model accuracy vs inference time)
+df = pd.DataFrame({
+    'accuracy': [0.95, 0.92, 0.88, 0.85, 0.80],
+    'latency_ms': [120, 95, 75, 60, 45],
+    'model_size': [100, 80, 60, 40, 20],
+    'learning_rate': [0.001, 0.005, 0.01, 0.05, 0.1]
+})
+
+# Compute Pareto mask
+# sense: "max" for objectives to maximize, "min" for objectives to minimize
+objectives = df[['accuracy', 'latency_ms']]
+pareto_mask = paretoset(objectives, sense=["max", "min"])
+
+# Get Pareto-optimal points
+pareto_points = df[pareto_mask]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 26-45" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Using the paretoset Library" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Computing the Pareto Frontier" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+from paretoset import paretoset
+
+# Results from model training experiments
+results = pd.DataFrame({
+    'accuracy': [0.95, 0.92, 0.90, 0.88, 0.85],
+    'inference_time': [150, 120, 100, 80, 60],
+    'batch_size': [32, 64, 128, 256, 512],
+    'hidden_units': [512, 256, 128, 64, 32]
+})
+
+# Filter by minimum accuracy threshold
+results = results[results['accuracy'] >= 0.85]
+
+# Compute Pareto frontier (maximize accuracy, minimize inference time)
+mask = paretoset(results[['accuracy', 'inference_time']], sense=["max", "min"])
+pareto_frontier = results[mask].sort_values('accuracy', ascending=False)
+
+# Save to CSV
+pareto_frontier.to_csv('pareto_models.csv', index=False)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 93-114" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Example: Model Selection" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Point A **dominates** point B if:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "A is strictly better than B in at least one objective" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "A is at least as good as B in all objectives" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pareto Dominance" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The set of all non-dominated points. These represent optimal trade-offs where improving one objective requires sacrificing another." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pareto Frontier (Pareto Front)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Key Concepts" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_5fce2b0451af78db ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Properties of Pareto Frontiers" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import matplotlib.pyplot as plt
+
+# Plot all points
+plt.scatter(results['inference_time'], results['accuracy'],
+            alpha=0.5, label='All models')
+
+# Highlight Pareto frontier
+plt.scatter(pareto_frontier['inference_time'], pareto_frontier['accuracy'],
+            color='red', s=100, marker='s', label='Pareto frontier')
+
+plt.xlabel('Inference Time (ms) - minimize')
+plt.ylabel('Accuracy - maximize')
+plt.legend()
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 118-133" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Visualization" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Pareto Optimization" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pareto-optimization
+description: Multi-objective optimization with Pareto frontiers. Use when optimizing multiple conflicting objectives simultaneously, finding trade-off solutions, or computing Pareto-optimal points.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_5fce2b0451af78db,
+        [ a oc:Workflow ;
+            dcterms:description "Compute Pareto-optimal solutions from multi-objective data" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Apply mask to DataFrame, sort results, and optionally save or visualize" ;
+                    oc:expectedOutcome "Sorted Pareto-optimal solutions ready for decision-making" ;
+                    oc:stepDependsOn _:ref_6d9154cd708823c0 ;
+                    oc:stepId "extract-results" ],
+                _:ref_211cd192e48bf849,
+                _:ref_6d9154cd708823c0,
+                _:ref_d139335533196e8c ;
+            oc:workflowId "pareto-workflow" ;
+            oc:workflowName "Pareto Frontier Computation" ] ;
+    oc:impartsKnowledge oc:kn_1b01c72d,
+        oc:kn_a79240c8,
+        oc:kn_c37a88d3,
+        oc:kn_fa7b7e38 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "compute Pareto frontier from multi-objective data",
+        "find optimal trade-off solutions",
+        "optimize multiple conflicting objectives simultaneously",
+        "select best models balancing accuracy and performance" ;
+    oc:yieldsState oc:ParetoFrontierComputed .
+
+oc:kn_1b01c72d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between paretoset library and manual implementation" ;
+    oc:directiveContent "Use the paretoset library for production code over manual implementations; manual dominance checks are O(n²) and error-prone." ;
+    oc:hasRationale "The library handles edge cases, is optimized, and reduces bugs" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a79240c8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing or verifying Pareto dominance checks" ;
+    oc:directiveContent "Pareto dominance requires that point A is at least as good as B in ALL objectives AND strictly better in at least ONE objective; both conditions must hold." ;
+    oc:hasRationale "Incorrect dominance logic yields wrong Pareto frontiers and bad optimization decisions" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c37a88d3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting or acting on Pareto-optimal results" ;
+    oc:directiveContent "There is no single best solution on the Pareto frontier — all Pareto-optimal points represent equally valid trade-offs; final selection requires stakeholder preference." ;
+    oc:hasRationale "Assuming a single best point defeats the purpose of multi-objective optimization" .
+
+oc:kn_fa7b7e38 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When computing Pareto frontier from experimental results" ;
+    oc:directiveContent "1. Prepare data as DataFrame with objective columns → 2. Filter by minimum thresholds if needed → 3. Call paretoset with sense=['max'/'min' per objective] → 4. Use boolean mask to filter Pareto-optimal rows → 5. Sort and visualize results" ;
+    oc:stepOrder 1 .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "numpy" .
+
+oc:req_233ed394 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "paretoset" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "matplotlib" .
+
+_:ref_015196a756c80fe2 a oc:WorkflowStep ;
+    dcterms:description "**Trade-off curve**: Moving along the frontier improves one objective while worsening another" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_878c46b6a7805ad1 a oc:WorkflowStep ;
+    dcterms:description "**Decision making**: Final choice depends on preference between objectives" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c9888d21d09de3b6 a oc:WorkflowStep ;
+    dcterms:description "**No single best**: All Pareto-optimal solutions are equally \"good\" in a multi-objective sense" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_211cd192e48bf849 a oc:WorkflowStep ;
+    dcterms:description "Prepare data as a pandas DataFrame with columns for each objective" ;
+    oc:expectedOutcome "DataFrame with numeric objective columns ready for Pareto analysis" ;
+    oc:stepId "prepare-data" .
+
+_:ref_5fce2b0451af78db a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_015196a756c80fe2,
+        _:ref_878c46b6a7805ad1,
+        _:ref_c9888d21d09de3b6 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_6d9154cd708823c0 a oc:WorkflowStep ;
+    dcterms:description "Call paretoset with objective columns and sense parameter (max/min per objective)" ;
+    oc:expectedOutcome "Boolean mask identifying Pareto-optimal rows" ;
+    oc:stepDependsOn _:ref_d139335533196e8c ;
+    oc:stepId "compute-pareto" .
+
+_:ref_d139335533196e8c a oc:WorkflowStep ;
+    dcterms:description "Apply minimum/maximum thresholds to filter unacceptable solutions" ;
+    oc:expectedOutcome "Filtered DataFrame excluding solutions below quality thresholds" ;
+    oc:stepDependsOn _:ref_211cd192e48bf849 ;
+    oc:stepId "filter-thresholds" .
+

@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/manufacturing-equipment-maintenance",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "reflow-profile-compliance-toolkit/ontoskill.ttl",
+    "reflow_machine_maintenance_guidance/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "reflow-profile-compliance-toolkit/intents.json",
+    "reflow_machine_maintenance_guidance/intents.json"
+  ],
+  "skills": []
+}

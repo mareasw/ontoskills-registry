@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/pg-essay-to-audiobook",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "audiobook/ontoskill.ttl",
+    "elevenlabs-tts/ontoskill.ttl",
+    "gtts/ontoskill.ttl",
+    "openai-tts/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "audiobook/intents.json",
+    "elevenlabs-tts/intents.json",
+    "gtts/intents.json",
+    "openai-tts/intents.json"
+  ],
+  "skills": []
+}

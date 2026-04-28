@@ -1,0 +1,237 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_glm_lake_mendota_glm_basics a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "glm-basics" ;
+    skos:broader "Simulation runner" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/glm-lake-mendota/glm-basics" ;
+    oc:contentHash "5acb93c72d0b7b2ec088eadaaadabef8a66f7158934b682cad3c503aef153ea9" ;
+    oc:differentia "Operates the General Lake Model (GLM) for 1D hydrodynamic lake temperature simulation via Fortran namelist configuration" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Basic usage of the General Lake Model (GLM) for lake temperature simulation. Use when you need to run GLM, understand input files, or modify configuration parameters." ;
+    oc:hasName "glm-basics" ;
+    oc:hasPayload oc:payload_5acb93c72d0b7b2e ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: glm-basics
+description: Basic usage of the General Lake Model (GLM) for lake temperature simulation. Use when you need to run GLM, understand input files, or modify configuration parameters.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """&glm_setup
+   sim_name = 'LakeName'
+   max_layers = 500
+/
+&light
+   Kw = 0.3
+/
+&mixing
+   coef_mix_hyp = 0.5
+/
+&meteorology
+   meteo_fl = 'bcs/meteo.csv'
+   wind_factor = 1
+   lw_factor = 1
+   ch = 0.0013
+/
+&inflow
+   inflow_fl = 'bcs/inflow1.csv','bcs/inflow2.csv'
+/
+&outflow
+   outflow_fl = 'bcs/outflow.csv'
+/
+""" ;
+                            oc:codeLanguage "fortran" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 31-54" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "`glm3.nml` uses Fortran namelist format with multiple sections:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Configuration File Format" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| GLM fails to start | Missing input files | Check bcs/ directory |
+| No output generated | Invalid nml syntax | Check namelist format |
+| Simulation crashes | Unrealistic parameters | Use values within valid ranges |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 2 ;
+                            oc:tableCaption "## Input File Structure" ;
+                            oc:tableMarkdown """| File | Description |
+|------|-------------|
+| `glm3.nml` | Main configuration file (Fortran namelist format) |
+| `bcs/*.csv` | Boundary condition files (meteorology, inflows, outflows) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Input File Structure" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Run GLM after each parameter change to verify it works" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Check `output/` directory for results after each run" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Always backup `glm3.nml` before modifying" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import re
+
+def modify_nml(nml_path, params):
+    with open(nml_path, 'r') as f:
+        content = f.read()
+    for param, value in params.items():
+        pattern = rf"({param}\\s*=\\s*)[\\d\\.\\-e]+"
+        replacement = rf"\\g<1>{value}"
+        content = re.sub(pattern, replacement, content)
+    with open(nml_path, 'w') as f:
+        f.write(content)
+
+# Example usage
+modify_nml('glm3.nml', {'Kw': 0.25, 'wind_factor': 0.9})
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 57-72" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Modifying Parameters with Python" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "GLM reads `glm3.nml` in the current directory and produces output in `output/output.nc`." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """cd /root
+glm
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 14-17" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Running GLM" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "GLM (General Lake Model) is a 1D hydrodynamic model that simulates vertical temperature and mixing dynamics in lakes. It reads configuration from a namelist file and produces NetCDF output." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "GLM Basics Guide" ] ;
+    oc:impartsKnowledge oc:kn_013cc10d,
+        oc:kn_66d341ad,
+        oc:kn_98e76e31,
+        oc:kn_c17636ab,
+        oc:kn_c33a0a71,
+        oc:kn_d3ba9abe ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "configure lake temperature model",
+        "modify GLM configuration parameters",
+        "run GLM simulation",
+        "understand GLM input files" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_013cc10d a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Running a GLM simulation from start to finish" ;
+    oc:directiveContent "1. Prepare glm3.nml and bcs/*.csv files in working directory 2. Backup glm3.nml before any modifications 3. Run `glm` from /root 4. Check output/output.nc for results 5. Verify run succeeded after each parameter change" ;
+    oc:stepOrder 1 .
+
+oc:kn_66d341ad a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When GLM fails to start or produces no output" ;
+    oc:directiveContent "Missing bcs/ directory or CSV files causes GLM to fail immediately; invalid namelist syntax prevents output generation; unrealistic parameters cause simulation crashes" ;
+    oc:hasRationale "These are the three most common failure modes and should be checked first when debugging" .
+
+oc:kn_98e76e31 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After running GLM" ;
+    oc:directiveContent "Successful GLM execution produces output/output.nc in the working directory" ;
+    oc:hasRationale "The presence of the NetCDF output file confirms the simulation completed" .
+
+oc:kn_c17636ab a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting or configuring model behavior" ;
+    oc:directiveContent "GLM is a 1D vertical model — it simulates temperature and mixing along the depth axis only, not horizontal dynamics" ;
+    oc:hasRationale "Understanding the 1D limitation is essential for selecting appropriate use cases and interpreting results correctly" .
+
+oc:kn_c33a0a71 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Modifying numeric parameters in glm3.nml programmatically" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import re
+
+def modify_nml(nml_path, params):
+    with open(nml_path, 'r') as f:
+        content = f.read()
+    for param, value in params.items():
+        pattern = rf"({param}\\s*=\\s*)[\\d\\.\\-e]+"
+        replacement = rf"\\g<1>{value}"
+        content = re.sub(pattern, replacement, content)
+    with open(nml_path, 'w') as f:
+        f.write(content)""" .
+
+oc:kn_d3ba9abe a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any parameter modification" ;
+    oc:directiveContent "Always backup glm3.nml before modifying it; the Fortran namelist format is fragile and invalid syntax causes simulation failure" ;
+    oc:hasRationale "Invalid namelist syntax silently breaks the simulation or causes GLM to fail to start" ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_5acb93c72d0b7b2e a oc:ExecutionPayload ;
+    oc:code "cd /root && glm" ;
+    oc:executor "shell" .
+

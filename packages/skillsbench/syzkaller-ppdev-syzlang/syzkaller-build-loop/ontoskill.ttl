@@ -1,0 +1,305 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_syzkaller_ppdev_syzlang_syzkaller_build_loop a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "syzkaller-build-loop" ;
+    skos:broader "Build workflow" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/syzkaller-ppdev-syzlang/syzkaller-build-loop" ;
+    oc:contentHash "d28d020a6c63c27ebb2fc2f1515a61ab63b2892ea57124a6d114eb03b8e89da6" ;
+    oc:dependsOnSkill oc:skill_ontoskills_syz_extract_constants ;
+    oc:differentia "that compiles and integrates new syzkaller syscall descriptions into the full build" ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "description-file-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Full build workflow for adding new syscall descriptions to syzkaller" ;
+    oc:hasName "syzkaller-build-loop" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: syzkaller-build-loop
+description: Full build workflow for adding new syscall descriptions to syzkaller
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Type defined in another file not being found" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Check includes or existing type definitions" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """undefined reference to 'some_type'
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 55-57" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Missing reference" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Type not defined, or defined after first use" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Define all types before using them" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """unknown type foo_bar
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 41-43" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Unknown type" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "The constant isn't in the `.const` file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Add it to `sys/linux/your_file.txt.const` with the correct value" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """SOME_CONST is defined for none of the arches
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 48-50" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Constant not available / defined for none of the arches" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Common Errors" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """grep -r "pattern" /opt/syzkaller/sys/linux/
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 64-66" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Useful searches:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`ioctl\\$` - Ioctl definition patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`struct.*{` - Struct definition patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`resource fd_` - How other fd resources are defined" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`read\\$` / `write\\$` - Read/write specializations" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Find examples of patterns:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Exploring Existing Code" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`sys/linux/sys.txt` - Basic syscall patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`sys/linux/socket.txt` - Network types (ifreq_t, sockaddr, etc.)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`sys/linux/fs.txt` - File operations" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Files to Reference" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """cd /opt/syzkaller
+make descriptions   # Runs syz-sysgen to compile descriptions
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 31-34" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If you only changed descriptions (not constants):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "If you add new constants, update the `.const` file first." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Rebuild (After Minor Edits)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """cd /opt/syzkaller
+
+# 1. Write/edit your .txt file in sys/linux/
+
+# 2. Create a .const file with constant values (see syz-extract-constants skill)
+#    The .const file should be named: sys/linux/your_file.txt.const
+
+# 3. Compile descriptions
+make descriptions
+
+# 4. Build syzkaller
+make all
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 12-25" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When adding new syscall descriptions, follow this workflow:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Full Build Loop for New Descriptions" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Syzkaller Description Workflow" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for adding and building new syscall descriptions in syzkaller" ;
+            oc:hasStep _:ref_21e2c944458d9f62,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run make all to build full syzkaller" ;
+                    oc:expectedOutcome "Syzkaller binaries built successfully" ;
+                    oc:stepDependsOn _:ref_9bc44c0ad8a95985 ;
+                    oc:stepId "build-all" ],
+                _:ref_9bc44c0ad8a95985,
+                _:ref_fc1631c5e4d9dccb ;
+            oc:workflowId "syzkaller-full-build" ;
+            oc:workflowName "Full Build Loop for New Descriptions" ] ;
+    oc:impartsKnowledge oc:kn_1c1a4c4e,
+        oc:kn_40bb7fa7,
+        oc:kn_44ccdda5,
+        oc:kn_58381e37,
+        oc:kn_5b30667f,
+        oc:kn_8612658e,
+        oc:kn_93234e5d,
+        oc:kn_c37f7f7e ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build syzkaller descriptions",
+        "compile syscall descriptions",
+        "debug syzkaller build errors",
+        "rebuild after editing syzlang descriptions" ;
+    oc:yieldsState oc:BuildSucceeded .
+
+oc:kn_1c1a4c4e a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When encountering constant definition errors during build" ;
+    oc:directiveContent "'SOME_CONST is defined for none of the arches' means the constant is missing from the .const file — add it to sys/linux/your_file.txt.const with correct values per architecture" ;
+    oc:hasRationale "Constants must be extracted and available for all target architectures before descriptions can compile" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_40bb7fa7 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any build attempt" ;
+    oc:directiveContent "Syzkaller source must be checked out at /opt/syzkaller with Go toolchain available" .
+
+oc:kn_44ccdda5 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When encountering missing reference errors during build" ;
+    oc:directiveContent "'undefined reference to some_type' indicates a type defined in another file is not being found — check includes or existing type definitions" ;
+    oc:hasRationale "Cross-file type references require proper file structure or the type must already exist in the codebase" .
+
+oc:kn_58381e37 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When exploring existing code for patterns before writing new descriptions" ;
+    oc:directiveContent "Use grep -r to search /opt/syzkaller/sys/linux/ for patterns like 'resource fd_', 'ioctl$', 'read$/write$', 'struct.*{' to find existing examples" ;
+    oc:hasRationale "Existing descriptions provide proven patterns for resource definitions, ioctl calls, and struct layouts" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5b30667f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing syzlang description files" ;
+    oc:directiveContent "Never use a type before it is defined; all custom types must be defined earlier in the file or in an included file" ;
+    oc:hasRationale "Forward references cause 'unknown type' build errors" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8612658e a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Quick rebuild after minor description edits without constant changes" ;
+    oc:directiveContent "1. cd /opt/syzkaller 2. Run `make descriptions` to recompile with syz-sysgen" ;
+    oc:hasRationale "Saves time by skipping full rebuild when only descriptions changed" ;
+    oc:stepOrder 2 .
+
+oc:kn_93234e5d a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When iterating on description files" ;
+    oc:directiveContent "`make descriptions` and `make all` are idempotent — safe to re-run after any edit" ;
+    oc:hasRationale "Build system only recompiles changed files, so repeated builds are safe and efficient" .
+
+oc:kn_c37f7f7e a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When adding new syscall descriptions to syzkaller" ;
+    oc:directiveContent "1. Write/edit .txt description file in sys/linux/ 2. Create .const file named sys/linux/your_file.txt.const with constant values 3. Run `make descriptions` to compile 4. Run `make all` to build syzkaller" ;
+    oc:hasRationale "Full build loop ensures both descriptions and constants are compiled and linked into the fuzzer" ;
+    oc:stepOrder 1 .
+
+_:ref_21e2c944458d9f62 a oc:WorkflowStep ;
+    dcterms:description "Write/edit the .txt description file in sys/linux/" ;
+    oc:expectedOutcome "New or updated syzlang description file exists" ;
+    oc:stepId "write-desc" .
+
+_:ref_9bc44c0ad8a95985 a oc:WorkflowStep ;
+    dcterms:description "Run make descriptions to compile with syz-sysgen" ;
+    oc:expectedOutcome "Descriptions compile without unknown type or undefined reference errors" ;
+    oc:stepDependsOn _:ref_fc1631c5e4d9dccb ;
+    oc:stepId "compile-desc" .
+
+_:ref_fc1631c5e4d9dccb a oc:WorkflowStep ;
+    dcterms:description "Create .const file with constant values at sys/linux/your_file.txt.const" ;
+    oc:expectedOutcome "Constants file exists with correct per-architecture values" ;
+    oc:stepDependsOn _:ref_21e2c944458d9f62 ;
+    oc:stepId "create-const" .
+

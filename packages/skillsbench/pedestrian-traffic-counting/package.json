@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/pedestrian-traffic-counting",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "gemini-count-in-video/ontoskill.ttl",
+    "gpt-multimodal/ontoskill.ttl",
+    "video-frame-extraction/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "gemini-count-in-video/intents.json",
+    "gpt-multimodal/intents.json",
+    "video-frame-extraction/intents.json"
+  ],
+  "skills": []
+}

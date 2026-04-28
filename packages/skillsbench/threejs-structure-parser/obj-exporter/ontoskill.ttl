@@ -1,0 +1,382 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_threejs_structure_parser_obj_exporter a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "obj-exporter" ;
+    skos:broader "Exporter" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/threejs-structure-parser/obj-exporter" ;
+    oc:contentHash "73413a8de78217680378453cf0ce2e4a2d40896c0270310ef31b3b3c5ffc7e67" ;
+    oc:differentia "Converts Three.js 3D geometry to Wavefront OBJ text format for interoperability with external 3D software" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "object3D or scene root to export" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Three.js OBJExporter utility for exporting 3D geometry to Wavefront OBJ format. Use when converting Three.js scenes, meshes, or geometries to OBJ files for use in other 3D software like Blender, Maya, or MeshLab." ;
+    oc:hasName "obj-exporter" ;
+    oc:hasRequirement oc:req_06c12759,
+        oc:req_2a52f6bb,
+        oc:req_439772b0,
+        oc:req_7d80f8ee ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
+
+const exporter = new OBJExporter();
+
+function exportMesh(mesh, filepath) {
+    let geom = mesh.geometry.clone();
+    geom.applyMatrix4(mesh.matrixWorld);
+    if (geom.index) {
+        geom = geom.toNonIndexed();
+    }
+    if (!geom.attributes.normal) {
+        geom.computeVertexNormals();
+    }
+    const tempMesh = new THREE.Mesh(geom);
+    tempMesh.name = mesh.name;
+    const objData = exporter.parse(tempMesh);
+    fs.writeFileSync(filepath, objData);
+}
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 132-151" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Export Individual Meshes (World Transforms)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Write OBJ files to the paths specified by the task instructions or a provided output root variable. Avoid hardcoding fixed directories in the skill itself." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Output Paths" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """function collectComponentMeshes(root) {
+    const componentMap = {};
+    root.traverse(obj => {
+        if (obj instanceof THREE.Group && obj.name) {
+            componentMap[obj.name] = { group: obj, meshes: [] };
+        }
+    });
+
+    root.traverse(obj => {
+        if (obj instanceof THREE.Mesh) {
+            let parent = obj.parent;
+            while (parent && !(parent instanceof THREE.Group && parent.name)) {
+                parent = parent.parent;
+            }
+            if (parent && componentMap[parent.name]) {
+                componentMap[parent.name].meshes.push(obj);
+            }
+        }
+    });
+
+    return Object.fromEntries(
+        Object.entries(componentMap).filter(([_, data]) => data.meshes.length > 0)
+    );
+}
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 103-128" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Treat each **named `THREE.Group`** as a component/part. Preserve hierarchy by using the **nearest named parent group** in the ancestor chain as the owning component for each mesh. Call `root.updateMatrixWorld(true)` before exporting so `matrixWorld` is correct." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Component Definition (Hierarchy-Aware)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+
+function mergeMeshes(meshes) {
+    const geometries = [];
+    for (const mesh of meshes) {
+        let geom = mesh.geometry.clone();
+        geom.applyMatrix4(mesh.matrixWorld);
+        if (geom.index) {
+            geom = geom.toNonIndexed();
+        }
+        if (!geom.attributes.normal) {
+            geom.computeVertexNormals();
+        }
+        geometries.push(geom);
+    }
+    if (geometries.length === 0) return null;
+    return new THREE.Mesh(mergeGeometries(geometries, false));
+}
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 155-174" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Export Merged Component Meshes (Optional)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "OBJ Export for Scene Components" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+
+const geometries = [];
+root.traverse((obj) => {
+  if (obj instanceof THREE.Mesh) {
+    const geom = obj.geometry.clone();
+    geom.applyMatrix4(obj.matrixWorld);
+    geometries.push(geom);
+  }
+});
+
+const merged = mergeGeometries(geometries);
+const mergedMesh = new THREE.Mesh(merged);
+const objData = exporter.parse(mergedMesh);
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 65-80" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Merging Multiple Geometries" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To export geometry in world coordinates:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Update world matrices first
+root.updateMatrixWorld(true);
+
+// Clone and transform geometry
+const worldGeometry = mesh.geometry.clone();
+worldGeometry.applyMatrix4(mesh.matrixWorld);
+
+// Create new mesh for export
+const exportMesh = new THREE.Mesh(worldGeometry);
+const objData = exporter.parse(exportMesh);
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 50-61" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Exporting with World Transforms" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Three.js provides `OBJExporter` in examples:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
+
+const exporter = new OBJExporter();
+const objString = exporter.parse(object3D);
+
+// Write to file (Node.js)
+import fs from 'fs';
+fs.writeFileSync('output.obj', objString);
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 35-44" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Three.js OBJExporter" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// package.json
+{ "type": "module" }
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 86-89" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For running Three.js in Node.js:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// script.js
+import * as THREE from 'three';
+import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 91-95" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Node.js ES Module Setup" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Comment
+v x y z        # Vertex position
+vn x y z       # Vertex normal
+f v1 v2 v3     # Face (triangle)
+f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3  # Face with texture/normal indices
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 12-18" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Example:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "OBJ is a text-based 3D geometry format:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Cube
+v 0 0 0
+v 1 0 0
+v 1 1 0
+v 0 1 0
+f 1 2 3
+f 1 3 4
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 21-29" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Basic Structure" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "OBJExporter Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: obj-exporter
+description: Three.js OBJExporter utility for exporting 3D geometry to Wavefront OBJ format. Use when converting Three.js scenes, meshes, or geometries to OBJ files for use in other 3D software like Blender, Maya, or MeshLab.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_4d852009,
+        oc:kn_4edee1f5,
+        oc:kn_64796b04,
+        oc:kn_88d2e023,
+        oc:kn_ad12e6bc,
+        oc:kn_c1e6f25d,
+        oc:kn_d4ca9a73,
+        oc:kn_d4efc807,
+        oc:kn_eb1f92c3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "convert Three.js scene to OBJ file",
+        "export 3D geometry to OBJ format",
+        "export meshes from Three.js for Blender/Maya/MeshLab",
+        "export scene components with hierarchy awareness to OBJ" ;
+    oc:yieldsState oc:FileCreated .
+
+oc:kn_4d852009 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing geometry for export" ;
+    oc:directiveContent "Never export geometry without cloning first — mesh.geometry.clone() is required before applyMatrix4 to avoid mutating the original scene geometry" ;
+    oc:hasRationale "applyMatrix4 mutates the geometry in-place; without cloning, the live scene geometry would be corrupted" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4edee1f5 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "When running OBJ export in Node.js environment" ;
+    oc:directiveContent "Three.js must be installed (npm install three) and package.json must have 'type': 'module' for ES module imports" .
+
+oc:kn_64796b04 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When exporting a single mesh with correct world transforms and normals" ;
+    oc:codeLanguage "javascript" ;
+    oc:directiveContent """let geom = mesh.geometry.clone();
+geom.applyMatrix4(mesh.matrixWorld);
+if (geom.index) { geom = geom.toNonIndexed(); }
+if (!geom.attributes.normal) { geom.computeVertexNormals(); }
+const tempMesh = new THREE.Mesh(geom);
+const objData = exporter.parse(tempMesh);""" .
+
+oc:kn_88d2e023 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining output file paths" ;
+    oc:directiveContent "Write OBJ files to paths specified by task instructions or a provided output root variable — avoid hardcoding fixed directories" ;
+    oc:hasRationale "Hardcoded paths reduce reusability and may cause conflicts across different execution contexts" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ad12e6bc a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When exporting any Three.js mesh to OBJ" ;
+    oc:directiveContent "1. Import OBJExporter from three/examples/jsm/exporters/OBJExporter.js 2. Call root.updateMatrixWorld(true) to ensure correct transforms 3. Clone geometry and applyMatrix4(mesh.matrixWorld) for world-space export 4. Convert indexed geometry to non-indexed (toNonIndexed) 5. Compute vertex normals if missing (computeVertexNormals) 6. Create temp mesh with processed geometry 7. Call exporter.parse(tempMesh) to get OBJ string 8. Write string to file with fs.writeFileSync" ;
+    oc:hasRationale "Ensures exported geometry is in world coordinates with valid normals for import into external tools" ;
+    oc:stepOrder 1 .
+
+oc:kn_c1e6f25d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When mapping meshes to their owning named parent group for component-based export" ;
+    oc:codeLanguage "javascript" ;
+    oc:directiveContent """root.traverse(obj => {
+    if (obj instanceof THREE.Mesh) {
+        let parent = obj.parent;
+        while (parent && !(parent instanceof THREE.Group && parent.name)) {
+            parent = parent.parent;
+        }
+        if (parent && componentMap[parent.name]) {
+            componentMap[parent.name].meshes.push(obj);
+        }
+    }
+});""" .
+
+oc:kn_d4ca9a73 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When users expect material/texture data in export" ;
+    oc:directiveContent "OBJExporter does not export materials or textures — only geometry (vertices, normals, faces)" ;
+    oc:hasRationale "OBJ format supports materials via MTL files but Three.js OBJExporter only outputs geometry data" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d4efc807 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When exporting scene components with hierarchy awareness" ;
+    oc:directiveContent "1. Traverse root to collect named THREE.Group instances as components 2. For each mesh, walk ancestor chain to find nearest named parent Group 3. Group meshes by their owning component name 4. Filter out components with no meshes 5. Export each component's meshes (individually or merged) to separate OBJ files" ;
+    oc:hasRationale "Preserves logical structure of the scene so that exported files correspond to meaningful parts" ;
+    oc:stepOrder 2 .
+
+oc:kn_eb1f92c3 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before any export operation" ;
+    oc:directiveContent "Always call root.updateMatrixWorld(true) before traversing the scene for export" ;
+    oc:hasRationale "Without updated world matrices, exported vertices will be in local space, producing incorrect geometry in the OBJ file" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_06c12759 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "three" .
+
+oc:req_2a52f6bb a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "three/examples/jsm/exporters/OBJExporter.js" .
+
+oc:req_439772b0 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Node.js with ES module support (package.json type=module)" .
+
+oc:req_7d80f8ee a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "three/examples/jsm/utils/BufferGeometryUtils.js" .
+

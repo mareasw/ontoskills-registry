@@ -1,0 +1,365 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_lake_warming_attribution_meteorology_driver_classification a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "meteorology-driver-classification" ;
+    skos:broader "Classification framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/lake-warming-attribution/meteorology-driver-classification" ;
+    oc:contentHash "bd4464f4b20b6fc4ff8118ca3e95e31a3c77ca04ea06c7d6008e403e1c6153d7" ;
+    oc:differentia "groups environmental and meteorological variables into physically meaningful driver categories for attribution analysis" ;
+    oc:extends oc:skill_ontoskills_contribution_analysis ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Classify environmental and meteorological variables into driver categories for attribution analysis. Use when you need to group multiple variables into meaningful factor categories." ;
+    oc:hasName "meteorology-driver-classification" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: meteorology-driver-classification
+description: Classify environmental and meteorological variables into driver categories for attribution analysis. Use when you need to group multiple variables into meaningful factor categories.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use domain knowledge to define categories" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Keep number of categories manageable (3-5 typically)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Document your classification decisions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Combine related sub-variables before analysis" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_d931ec1882fa1664 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Grouping Strategy" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Runoff" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Inflow" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Precipitation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Evaporation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Outflow" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Groundwater flux" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Streamflow" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Variables related to water movement:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Flow" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Shortwave radiation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Surface temperature" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Longwave radiation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Net radiation (shortwave + longwave)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Cloud cover" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Humidity" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Air temperature" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Variables related to thermal energy and radiation:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Heat" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Variables related to atmospheric circulation:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Wind direction" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Gust speed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Wind speed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Atmospheric pressure" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Wind" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Variables related to anthropogenic activities:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Population density" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Impervious surface" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Industrial output" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Land use change rate" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Developed area" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Agriculture area" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Human" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Common Driver Categories" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When analyzing what drives changes in an environmental system, it is useful to group individual variables into broader categories based on their physical meaning." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After statistical grouping, verify that:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Categories are mutually exclusive" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Groupings make physical sense" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Variables load on expected components" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Validation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Sometimes raw variables need to be combined before analysis:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Combine radiation components into net radiation
+df['NetRadiation'] = df['Longwave'] + df['Shortwave']
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 54-57" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Derived Variables" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Driver Classification Guide" ] ;
+    oc:hasWorkflow _:ref_d931ec1882fa1664,
+        [ a oc:Workflow ;
+            dcterms:description "Classify environmental variables into physically meaningful driver categories for attribution analysis." ;
+            oc:hasStep _:ref_51b2d01f55ddd435,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Validate that variables load on expected components, groupings make physical sense, and categories are mutually exclusive" ;
+                    oc:expectedOutcome "Verified classification ready for attribution analysis" ;
+                    oc:stepDependsOn _:ref_a7edea722cd793b3 ;
+                    oc:stepId "validate-grouping" ],
+                _:ref_a7edea722cd793b3,
+                _:ref_b0a96306baa3c5c8 ;
+            oc:workflowId "driver-classification-workflow" ;
+            oc:workflowName "Driver Variable Classification" ] ;
+    oc:impartsKnowledge oc:kn_2155514a,
+        oc:kn_6ac9f031,
+        oc:kn_c04fce0f,
+        oc:kn_d1ad88d6,
+        oc:kn_d2189a1b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "classify environmental variables into driver categories",
+        "create derived environmental variables",
+        "group meteorological variables by physical meaning",
+        "prepare variables for attribution analysis" ;
+    oc:yieldsState oc:VariablesClassified .
+
+oc:kn_2155514a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining driver categories for any environmental dataset" ;
+    oc:directiveContent "Keep the number of driver categories manageable, typically 3-5. Use domain knowledge to define categories based on physical meaning, not statistical convenience." ;
+    oc:hasRationale "Too many categories dilute attribution signal; too few obscure individual driver effects." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6ac9f031 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After statistical grouping, during validation" ;
+    oc:directiveContent "Categories should be mutually exclusive and each variable should load on the expected component. Groupings must make physical sense." ;
+    oc:hasRationale "Overlap between categories confounds attribution; physical plausibility ensures interpretability." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c04fce0f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When raw variables are correlated components of a single physical quantity" ;
+    oc:directiveContent "Combine related sub-variables (e.g., shortwave + longwave radiation into net radiation) before attribution analysis." ;
+    oc:hasRationale "Collinear variables within a category inflate dimensionality and distort R² decomposition." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d1ad88d6 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Throughout the classification process" ;
+    oc:directiveContent "Always document your classification decisions so the rationale for grouping is transparent and reproducible." ;
+    oc:hasRationale "Classification choices are subjective; documentation enables peer review and reproducibility." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d2189a1b a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When assigning variables to categories" ;
+    oc:directiveContent "Assumes that variables within the same physical category are correlated. If variables do not correlate as expected, reconsider the classification." ;
+    oc:hasRationale "The entire framework depends on within-category correlation and between-category independence." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_0ced78553531015d a oc:WorkflowStep ;
+    dcterms:description "Assign each variable to a category based on physical meaning" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1fbd35bd118833ce a oc:WorkflowStep ;
+    dcterms:description "Identify all available variables in your dataset" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4a8d59d3ba95ffd4 a oc:WorkflowStep ;
+    dcterms:description "Create derived variables if needed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_bdcd62e974ff8068 a oc:WorkflowStep ;
+    dcterms:description "Variables in the same category should be correlated" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_51b2d01f55ddd435 a oc:WorkflowStep ;
+    dcterms:description "Assign each variable to a driver category (Heat, Flow, Wind, Human) based on physical meaning" ;
+    oc:expectedOutcome "Each variable mapped to exactly one category" ;
+    oc:stepDependsOn _:ref_b0a96306baa3c5c8 ;
+    oc:stepId "assign-categories" .
+
+_:ref_a7edea722cd793b3 a oc:WorkflowStep ;
+    dcterms:description "Create derived variables by combining related sub-variables where needed (e.g., net radiation)" ;
+    oc:expectedOutcome "Derived variables added to the appropriate category" ;
+    oc:stepDependsOn _:ref_51b2d01f55ddd435 ;
+    oc:stepId "create-derived" .
+
+_:ref_b0a96306baa3c5c8 a oc:WorkflowStep ;
+    dcterms:description "Identify all available variables in the dataset" ;
+    oc:expectedOutcome "Complete list of candidate environmental variables" ;
+    oc:stepId "identify-variables" .
+
+_:ref_d931ec1882fa1664 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0ced78553531015d,
+        _:ref_1fbd35bd118833ce,
+        _:ref_4a8d59d3ba95ffd4,
+        _:ref_bdcd62e974ff8068 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

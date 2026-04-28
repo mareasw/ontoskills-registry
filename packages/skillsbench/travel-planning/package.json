@@ -1,0 +1,23 @@
+{
+  "package_id": "skillsbench/travel-planning",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "search-accommodations/ontoskill.ttl",
+    "search-attractions/ontoskill.ttl",
+    "search-cities/ontoskill.ttl",
+    "search-driving-distance/ontoskill.ttl",
+    "search-flights/ontoskill.ttl",
+    "search-restaurants/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "search-accommodations/intents.json",
+    "search-attractions/intents.json",
+    "search-cities/intents.json",
+    "search-driving-distance/intents.json",
+    "search-flights/intents.json",
+    "search-restaurants/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/sec-financial-report",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "13f-analyzer/ontoskill.ttl",
+    "fuzzy-name-search/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "13f-analyzer/intents.json",
+    "fuzzy-name-search/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/organize-messy-files",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "docx/ontoskill.ttl",
+    "file-organizer/ontoskill.ttl",
+    "pdf/ontoskill.ttl",
+    "planning-with-files/ontoskill.ttl",
+    "pptx/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "docx/intents.json",
+    "file-organizer/intents.json",
+    "pdf/intents.json",
+    "planning-with-files/intents.json",
+    "pptx/intents.json"
+  ],
+  "skills": []
+}

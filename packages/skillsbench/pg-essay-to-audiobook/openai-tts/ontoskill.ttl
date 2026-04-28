@@ -1,0 +1,391 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_pg_essay_to_audiobook_openai_tts a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "openai-tts" ;
+    skos:broader "Text-to-Speech service" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/pg-essay-to-audiobook/openai-tts" ;
+    oc:contentHash "94595e70a2814fcfc5c088ceb9f7e93738de23ff97cc844fe082f173dfd2c3b9" ;
+    oc:differentia "that uses OpenAI's TTS API for high-quality speech synthesis with customizable voices, tone instructions, and multiple output formats" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "text or file to convert to speech" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "OpenAI Text-to-Speech API for high-quality speech synthesis. Use for generating natural-sounding audio from text with customizable voices and tones." ;
+    oc:hasName "openai-tts" ;
+    oc:hasRequirement oc:req_252d6050,
+        oc:req_87089d00,
+        oc:req_942557af,
+        oc:req_e249f927 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Generate high-quality spoken audio from text using OpenAI's TTS API." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For long documents, split into chunks and concatenate:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from openai import OpenAI
+from pydub import AudioSegment
+import tempfile
+import re
+import os
+
+client = OpenAI()
+
+def chunk_text(text, max_chars=4000):
+    \"\"\"Split text into chunks at sentence boundaries.\"\"\"
+    sentences = re.split(r'(?<=[.!?])\\s+', text)
+    chunks = []
+    current_chunk = ""
+
+    for sentence in sentences:
+        if len(current_chunk) + len(sentence) < max_chars:
+            current_chunk += sentence + " "
+        else:
+            if current_chunk:
+                chunks.append(current_chunk.strip())
+            current_chunk = sentence + " "
+
+    if current_chunk:
+        chunks.append(current_chunk.strip())
+
+    return chunks
+
+def text_to_audiobook(text, output_path):
+    \"\"\"Convert long text to audio file.\"\"\"
+    chunks = chunk_text(text)
+    audio_segments = []
+
+    for chunk in chunks:
+        with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as tmp:
+            tmp_path = tmp.name
+
+        with client.audio.speech.with_streaming_response.create(
+            model="gpt-4o-mini-tts",
+            voice="coral",
+            input=chunk,
+        ) as response:
+            response.stream_to_file(tmp_path)
+
+        segment = AudioSegment.from_mp3(tmp_path)
+        audio_segments.append(segment)
+        os.unlink(tmp_path)
+
+    # Concatenate all segments
+    combined = audio_segments[0]
+    for segment in audio_segments[1:]:
+        combined += segment
+
+    combined.export(output_path, format="mp3")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 62-116" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Handling Long Text" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Add `instructions` parameter to control tone/style (gpt-4o-mini-tts only)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Split text at sentence boundaries for long content" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Use `wav` or `pcm` for lowest latency" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `marin` or `cedar` voices for best quality" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pathlib import Path
+from openai import OpenAI
+
+client = OpenAI()  # Uses OPENAI_API_KEY env var
+
+# Basic usage
+with client.audio.speech.with_streaming_response.create(
+    model="gpt-4o-mini-tts",
+    voice="coral",
+    input="Hello, world!",
+) as response:
+    response.stream_to_file("output.mp3")
+
+# With tone instructions (gpt-4o-mini-tts only)
+with client.audio.speech.with_streaming_response.create(
+    model="gpt-4o-mini-tts",
+    voice="coral",
+    input="Today is a wonderful day!",
+    instructions="Speak in a cheerful and positive tone.",
+) as response:
+    response.stream_to_file("output.mp3")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 34-56" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Python Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """OPENAI_API_KEY
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 13-15" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The API key is available as environment variable:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Authentication" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`tts-1` - Lower latency, lower quality" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`gpt-4o-mini-tts` - Newest, most reliable. Supports tone/style instructions." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`tts-1-hd` - Higher quality, higher latency" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Models" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "`wav` - Uncompressed, low latency" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`mp3` - Default, general use" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`flac` - Lossless compression" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "`pcm` - Raw samples (24kHz, 16-bit)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`aac` - Digital compression (YouTube, iOS)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`opus` - Low latency streaming" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """with client.audio.speech.with_streaming_response.create(
+    model="gpt-4o-mini-tts",
+    voice="coral",
+    input="Hello!",
+    response_format="wav",  # Specify format
+) as response:
+    response.stream_to_file("output.wav")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 127-135" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Output Formats" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`marin`, `cedar` - **Recommended for best quality**" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`nova`, `onyx`, `sage`, `shimmer`, `verse`" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Built-in voices (English optimized):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Note: `tts-1` and `tts-1-hd` only support: alloy, ash, coral, echo, fable, onyx, nova, sage, shimmer." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Voice Options" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "OpenAI Text-to-Speech" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: openai-tts
+description: "OpenAI Text-to-Speech API for high-quality speech synthesis. Use for generating natural-sounding audio from text with customizable voices and tones."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Convert long text (books, essays) to a single audio file by chunking and concatenating" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Export combined audio to final output file" ;
+                    oc:expectedOutcome "Final audiobook audio file saved" ;
+                    oc:stepDependsOn _:ref_ea350215f9448e54 ;
+                    oc:stepId "long-5" ],
+                _:ref_880cc0f3193a5d14,
+                _:ref_8a8a43b4bd7efc03,
+                _:ref_e1d931eef0aa496c,
+                _:ref_ea350215f9448e54 ;
+            oc:workflowId "openai-tts-long" ;
+            oc:workflowName "Long Text to Audiobook" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert a short text string to an audio file" ;
+            oc:hasStep _:ref_12537468e94be147,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Stream response to output file using response.stream_to_file()" ;
+                    oc:expectedOutcome "Audio file saved to disk" ;
+                    oc:stepDependsOn _:ref_12537468e94be147 ;
+                    oc:stepId "simple-3" ],
+                _:ref_e2a9a085ecb4fdf6 ;
+            oc:workflowId "openai-tts-simple" ;
+            oc:workflowName "Simple TTS Generation" ] ;
+    oc:impartsKnowledge oc:kn_471aa603,
+        oc:kn_5fa5f89b,
+        oc:kn_6a92022e,
+        oc:kn_8966f467,
+        oc:kn_bc81402d ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet ;
+    oc:resolvesIntent "control voice tone and style in TTS output",
+        "convert text to audiobook",
+        "generate speech audio from text",
+        "synthesize natural-sounding voice audio" ;
+    oc:yieldsState oc:AudioGenerated .
+
+oc:kn_471aa603 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When retrying or regenerating audio" ;
+    oc:directiveContent "TTS generation is NOT idempotent — repeated calls with same input may produce slightly different audio output." ;
+    oc:hasRationale "Neural TTS models can produce slight variations between calls" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_5fa5f89b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When wanting to control speech tone or style" ;
+    oc:directiveContent "The instructions parameter for tone/style control is only available with the gpt-4o-mini-tts model." ;
+    oc:hasRationale "Older models (tts-1, tts-1-hd) do not support the instructions parameter" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6a92022e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting long text to audio" ;
+    oc:directiveContent "For long documents, split text into chunks at sentence boundaries with a max of ~4000 characters per chunk, then concatenate audio segments using pydub." ;
+    oc:hasRationale "The TTS API has input length limits; sentence-boundary splitting preserves natural speech cadence across chunk boundaries" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8966f467 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting voice and model for TTS generation" ;
+    oc:directiveContent "Use marin or cedar voices for best quality; use gpt-4o-mini-tts model for newest and most reliable results with tone/style support." ;
+    oc:hasRationale "Voice and model selection directly impacts output quality and available features like tone control" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bc81402d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using tts-1 or tts-1-hd models" ;
+    oc:directiveContent "tts-1 and tts-1-hd models only support voices: alloy, ash, coral, echo, fable, onyx, nova, sage, shimmer. They do NOT support marin, cedar, ballad, or verse." ;
+    oc:hasRationale "Using unsupported voices will cause API errors" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_252d6050 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "openai Python package" .
+
+oc:req_87089d00 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pydub Python package" .
+
+oc:req_942557af a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "OPENAI_API_KEY" .
+
+oc:req_e249f927 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "OpenAI TTS API" .
+
+_:ref_12537468e94be147 a oc:WorkflowStep ;
+    dcterms:description "Call client.audio.speech.with_streaming_response.create with model, voice, and input text" ;
+    oc:expectedOutcome "Streaming audio response from OpenAI API" ;
+    oc:stepDependsOn _:ref_e2a9a085ecb4fdf6 ;
+    oc:stepId "simple-2" .
+
+_:ref_880cc0f3193a5d14 a oc:WorkflowStep ;
+    dcterms:description "Split text into chunks at sentence boundaries (~4000 chars max per chunk)" ;
+    oc:expectedOutcome "List of text chunks that fit within API limits" ;
+    oc:stepDependsOn _:ref_8a8a43b4bd7efc03 ;
+    oc:stepId "long-2" .
+
+_:ref_8a8a43b4bd7efc03 a oc:WorkflowStep ;
+    dcterms:description "Verify OPENAI_API_KEY is set and pydub is installed" ;
+    oc:expectedOutcome "Dependencies verified" ;
+    oc:stepId "long-1" .
+
+_:ref_e1d931eef0aa496c a oc:WorkflowStep ;
+    dcterms:description "For each chunk, call TTS API and save to temporary MP3 file" ;
+    oc:expectedOutcome "Individual audio segment files for each chunk" ;
+    oc:stepDependsOn _:ref_880cc0f3193a5d14 ;
+    oc:stepId "long-3" .
+
+_:ref_e2a9a085ecb4fdf6 a oc:WorkflowStep ;
+    dcterms:description "Verify OPENAI_API_KEY environment variable is set" ;
+    oc:expectedOutcome "API key is available for authentication" ;
+    oc:stepId "simple-1" .
+
+_:ref_ea350215f9448e54 a oc:WorkflowStep ;
+    dcterms:description "Load each segment with pydub AudioSegment and concatenate" ;
+    oc:expectedOutcome "Single combined audio segment" ;
+    oc:stepDependsOn _:ref_e1d931eef0aa496c ;
+    oc:stepId "long-4" .
+

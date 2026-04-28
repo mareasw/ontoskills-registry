@@ -1,0 +1,268 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_suricata_custom_exfil_pcap_triage_tshark a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pcap-triage-tshark" ;
+    skos:broader "PCAP inspection workflow" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/suricata-custom-exfil/pcap-triage-tshark" ;
+    oc:contentHash "3c0c6896c12383a8864ee71986d85dd1b38a585997c9760eac3846f5a621a64e" ;
+    oc:differentia "uses tshark CLI filters and TCP stream follow to triage packet captures for protocol-level details" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:ToolInstalled ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "path-to-pcap-file" ;
+    oc:hasCategory "security" ;
+    oc:hasDescription "Fast workflow to inspect PCAPs and extract protocol-level details using tshark" ;
+    oc:hasName "pcap-triage-tshark" ;
+    oc:hasRequirement oc:req_4301b04c,
+        oc:req_a85dcacd ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pcap-triage-tshark
+description: Fast workflow to inspect PCAPs and extract protocol-level details using tshark
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill shows a fast workflow to inspect PCAPs and extract protocol-level details." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tshark -r file.pcap -Y 'http.request.method == "POST"'
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 19-21" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Filter by method or host:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tshark -r file.pcap -Y http
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 13-15" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "List HTTP traffic:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Quick filters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Change the stream index (`0`) if there are multiple streams." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tshark -r file.pcap -z follow,tcp,ascii,0
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 34-36" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To view a request/response conversation:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Follow a TCP stream" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """bash scripts/summarize_http_requests.sh /root/pcaps/train_pos.pcap
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 55-57" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If you want a quick summary across a PCAP (method, uri, and whether the exfil header appears), use:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Helper script" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Print useful HTTP fields:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tshark -r file.pcap -Y http.request \\
+  -T fields -e frame.time -e ip.src -e tcp.srcport -e http.request.method -e http.request.uri
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 26-29" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Inspect requests" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """tshark -r file.pcap -Y http -x
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 43-45" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If you need to examine raw bytes for tricky parsing, use `-x`:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Export payload bytes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Start broad (`-Y http`), then narrow to one flow/stream." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Confirm where strings live (headers vs body vs URL query)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Keep notes about invariant parts vs variable parts." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Practical tips" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PCAP Triage with tshark" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Progressive narrowing workflow from broad HTTP listing to targeted stream analysis" ;
+            oc:hasStep _:ref_23c785ecdeb77ef7,
+                _:ref_8c8cc7e12f3f9b62,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Export raw hex bytes if string parsing is insufficient" ;
+                    oc:expectedOutcome "Hex dump for deep byte-level inspection" ;
+                    oc:stepDependsOn _:ref_b365dac3e675784c ;
+                    oc:stepId "raw-bytes" ],
+                _:ref_b365dac3e675784c,
+                _:ref_cabb7e51534d32e6 ;
+            oc:workflowId "pcap-triage" ;
+            oc:workflowName "PCAP Triage Workflow" ] ;
+    oc:impartsKnowledge oc:kn_292f1034,
+        oc:kn_49c00017,
+        oc:kn_4f869f48,
+        oc:kn_83e7601d,
+        oc:kn_c1046534,
+        oc:kn_e80fdb8e,
+        oc:kn_f1ade660,
+        oc:kn_f6d4d9fa,
+        oc:kn_f6f8a948 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze protocol-level details from packet captures",
+        "extract HTTP traffic from PCAP",
+        "follow TCP streams in PCAP",
+        "inspect PCAP files",
+        "triage network captures" ;
+    oc:yieldsState oc:NetworkDiscovered .
+
+oc:kn_292f1034 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When listing all HTTP traffic in a PCAP" ;
+    oc:directiveContent "tshark -r {pcap_file} -Y http" .
+
+oc:kn_49c00017 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When exporting raw hex payload bytes for deep inspection" ;
+    oc:directiveContent "tshark -r {pcap_file} -Y http -x" .
+
+oc:kn_4f869f48 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing extracted HTTP fields" ;
+    oc:directiveContent "Confirm where strings live: headers vs body vs URL query parameters. Keep notes about invariant parts vs variable parts of requests." ;
+    oc:hasRationale "Distinguishing invariant from variable parts enables pattern recognition and anomaly detection in exfiltration analysis." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_83e7601d a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting structured HTTP request fields" ;
+    oc:directiveContent "tshark -r {pcap_file} -Y http.request -T fields -e frame.time -e ip.src -e tcp.srcport -e http.request.method -e http.request.uri" .
+
+oc:kn_c1046534 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When triaging an unknown PCAP" ;
+    oc:directiveContent "1. List HTTP traffic with broad filter (-Y http) 2. Filter by method/host to find suspicious requests 3. Print useful fields (-T fields -e ...) for structured extraction 4. Follow a specific TCP stream (-z follow,tcp,ascii,N) to view full conversation 5. Export raw bytes (-x) if needed for tricky parsing" ;
+    oc:hasRationale "Progressive narrowing avoids information overload and focuses analysis on relevant traffic." ;
+    oc:stepOrder 1 .
+
+oc:kn_e80fdb8e a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When following a specific TCP stream" ;
+    oc:directiveContent "tshark -r {pcap_file} -z follow,tcp,ascii,{stream_index}" .
+
+oc:kn_f1ade660 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When using -z follow,tcp,ascii" ;
+    oc:directiveContent "When following TCP streams, the default stream index is 0; multiple streams require incrementing the index manually." ;
+    oc:hasRationale "Missing this detail causes agents to only ever see the first stream and potentially miss relevant conversations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f6d4d9fa a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any tshark command" ;
+    oc:directiveContent "tshark must be installed and available in PATH. A valid PCAP file must exist on disk." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f6f8a948 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When beginning PCAP triage" ;
+    oc:directiveContent "Start broad with a display filter (-Y http), then narrow down to a single flow or stream for detailed analysis." ;
+    oc:hasRationale "Broad filters reveal the overall traffic landscape before committing to deep inspection of a single conversation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_4301b04c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "tshark" .
+
+oc:req_a85dcacd a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "PCAP file format and network protocol basics" .
+
+_:ref_23c785ecdeb77ef7 a oc:WorkflowStep ;
+    dcterms:description "List all HTTP traffic with broad filter: tshark -r file.pcap -Y http" ;
+    oc:expectedOutcome "Overview of HTTP traffic present in the PCAP" ;
+    oc:stepId "list-http" .
+
+_:ref_8c8cc7e12f3f9b62 a oc:WorkflowStep ;
+    dcterms:description "Filter by method (POST) or host to identify suspicious requests" ;
+    oc:expectedOutcome "Narrowed set of potentially relevant HTTP requests" ;
+    oc:stepDependsOn _:ref_23c785ecdeb77ef7 ;
+    oc:stepId "filter-method-host" .
+
+_:ref_b365dac3e675784c a oc:WorkflowStep ;
+    dcterms:description "Follow a specific TCP stream to view the full request/response conversation" ;
+    oc:expectedOutcome "Full ASCII conversation for the selected stream" ;
+    oc:stepDependsOn _:ref_cabb7e51534d32e6 ;
+    oc:stepId "follow-stream" .
+
+_:ref_cabb7e51534d32e6 a oc:WorkflowStep ;
+    dcterms:description "Extract structured fields (time, src, port, method, URI) from filtered requests" ;
+    oc:expectedOutcome "Tabular data of request metadata for analysis" ;
+    oc:stepDependsOn _:ref_8c8cc7e12f3f9b62 ;
+    oc:stepId "extract-fields" .
+

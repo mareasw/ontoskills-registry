@@ -1,0 +1,556 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_spring_boot_jakarta_migration_jakarta_namespace a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "jakarta-namespace" ;
+    skos:broader "Namespace migration tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/spring-boot-jakarta-migration/jakarta-namespace" ;
+    oc:contentHash "f8efbaac74dcac0056cad8ab37f3abb4593b07b1d5711c9dcf70a5679fb21927" ;
+    oc:dependsOnSkill oc:skill_ontoskills_spring_boot_migration ;
+    oc:differentia "Replaces Java EE javax.* imports with Jakarta EE jakarta.* equivalents in Spring Boot 3.x upgrade path" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NamespaceMismatch ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Grep" ;
+    oc:hasArgumentHint "project-directory" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Migrate Java EE javax.* imports to Jakarta EE jakarta.* namespace. Use when upgrading to Spring Boot 3.x, migrating javax.persistence, javax.validation, javax.servlet imports, or fixing compilation errors after Jakarta EE transition. Covers package mappings, batch sed commands, and verification steps." ;
+    oc:hasName "jakarta-namespace" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """mvn rewrite:run
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 207-209" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """<!-- Add to pom.xml plugins section -->
+<plugin>
+    <groupId>org.openrewrite.maven</groupId>
+    <artifactId>rewrite-maven-plugin</artifactId>
+    <version>5.42.0</version>
+    <configuration>
+        <activeRecipes>
+            <recipe>org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta</recipe>
+        </activeRecipes>
+    </configuration>
+    <dependencies>
+        <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-migrate-java</artifactId>
+            <version>2.26.0</version>
+        </dependency>
+    </dependencies>
+</plugin>
+""" ;
+                            oc:codeLanguage "xml" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 185-204" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "OpenRewrite can automate the entire namespace migration:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Then run:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Using OpenRewrite for Automated Migration" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Important:** Packages such as `javax.sql.*` and `javax.crypto.*` will NOT change to `jakarta.*` as they are part of the Java 17+ JDK itself, not part of Java EE." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Spring Boot 3.0 has upgraded from Java EE to Jakarta EE APIs for all dependencies. This is one of the most significant breaking changes and requires updating all `javax.*` package imports to `jakarta.*`." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 9 ;
+                            oc:tableCaption "## Required Package Mappings" ;
+                            oc:tableMarkdown """| Before (Java EE) | After (Jakarta EE) |
+|------------------|-------------------|
+| `javax.persistence.*` | `jakarta.persistence.*` |
+| `javax.validation.*` | `jakarta.validation.*` |
+| `javax.servlet.*` | `jakarta.servlet.*` |
+| `javax.annotation.*` | `jakarta.annotation.*` |
+| `javax.transaction.*` | `jakarta.transaction.*` |
+| `javax.ws.rs.*` | `jakarta.ws.rs.*` |
+| `javax.mail.*` | `jakarta.mail.*` |
+| `javax.jms.*` | `jakarta.jms.*` |
+| `javax.xml.bind.*` | `jakarta.xml.bind.*` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Required Package Mappings" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Replace javax.persistence with jakarta.persistence
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.persistence/import jakarta.persistence/g' {} +
+
+# Replace javax.validation with jakarta.validation
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.validation/import jakarta.validation/g' {} +
+
+# Replace javax.servlet with jakarta.servlet
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.servlet/import jakarta.servlet/g' {} +
+
+# Replace javax.annotation (common ones used in Spring)
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.annotation\\.PostConstruct/import jakarta.annotation.PostConstruct/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.annotation\\.PreDestroy/import jakarta.annotation.PreDestroy/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.annotation\\.Resource/import jakarta.annotation.Resource/g' {} +
+
+# Replace javax.transaction with jakarta.transaction
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.transaction/import jakarta.transaction/g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 65-82" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Step 2: Batch Replace All Namespaces" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Replace wildcard imports
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.persistence\\.\\*/import jakarta.persistence.*/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.validation\\.\\*/import jakarta.validation.*/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/import javax\\.servlet\\.\\*/import jakarta.servlet.*/g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 86-91" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Step 3: Handle Wildcard Imports" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# List all files with javax imports that need migration (excludes JDK packages)
+grep -r "import javax\\." --include="*.java" . | grep -v "javax.sql" | grep -v "javax.crypto" | grep -v "javax.net"
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 58-61" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Step 1: Find All javax Imports That Need Migration" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Migration Commands" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Baeldung - Migrate to Spring Boot 3](https://www.baeldung.com/spring-boot-3-migration)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[OpenRewrite Jakarta Migration](https://docs.openrewrite.org/running-recipes/popular-recipe-guides/migrate-to-spring-3)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Spring Boot 3.0 Migration Guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Sources" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_7683cab5322ed84e ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After migration, **every JPA entity class MUST have jakarta.persistence imports**. This is a hard requirement for Spring Boot 3." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+
+// AFTER
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 133-143" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Example Validation Migration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE (Spring Boot 2.x) - WILL NOT COMPILE in Spring Boot 3
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+}
+
+// AFTER (Spring Boot 3.x) - REQUIRED
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 99-129" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Example Entity Migration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+// AFTER
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 147-155" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Example Servlet Migration" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Critical: Entity Classes Must Use jakarta.persistence" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**If the jakarta.persistence grep returns no results but you have JPA entities, the migration is incomplete and will fail.**" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# These commands should return NO results after migration
+grep -r "import javax\\.persistence" --include="*.java" .
+grep -r "import javax\\.validation" --include="*.java" .
+grep -r "import javax\\.servlet" --include="*.java" .
+
+# Combined check for all Java EE packages
+grep -r "import javax\\." --include="*.java" . | grep -E "(persistence|validation|servlet|transaction|annotation\\.(PostConstruct|PreDestroy|Resource))"
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 161-169" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Verify No Old javax Imports Remain" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# These MUST return results showing your migrated classes
+grep -r "import jakarta\\.persistence" --include="*.java" .
+grep -r "import jakarta\\.validation" --include="*.java" .
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 173-177" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Verify jakarta Imports Are Present" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Verification" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`@Past`, `@Future`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`@Positive`, `@Negative`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`@Email`, `@Pattern`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`@Valid`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`@NotNull`, `@NotBlank`, `@NotEmpty`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`@Size`, `@Min`, `@Max`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Validation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`ServletException`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`Filter`, `FilterChain`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`HttpServletRequest`, `HttpServletResponse`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`HttpSession`, `Cookie`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Servlet" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`@Entity`, `@Table`, `@Column`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`@PrePersist`, `@PreUpdate`, `@PostLoad`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`EntityManager`, `EntityManagerFactory`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`@ManyToOne`, `@OneToMany`, `@ManyToMany`, `@OneToOne`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`@JoinColumn`, `@JoinTable`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`@Enumerated`, `@Temporal`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`@Id`, `@GeneratedValue`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "`EntityNotFoundException`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Persistence (JPA)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Affected Annotations and Classes" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Jakarta EE Namespace Migration Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: jakarta-namespace
+description: Migrate Java EE javax.* imports to Jakarta EE jakarta.* namespace. Use when upgrading to Spring Boot 3.x, migrating javax.persistence, javax.validation, javax.servlet imports, or fixing compilation errors after Jakarta EE transition. Covers package mappings, batch sed commands, and verification steps.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for migrating javax.* imports to jakarta.* in a Spring Boot 3.x upgrade" ;
+            oc:hasStep _:ref_20937c63390023ce,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Grep for jakarta.persistence, jakarta.validation, jakarta.servlet to confirm new imports exist" ;
+                    oc:expectedOutcome "New jakarta imports confirmed present in all migrated files" ;
+                    oc:stepDependsOn _:ref_d08b6d0d67ac098c ;
+                    oc:stepId "verify-jakarta-present" ],
+                _:ref_72bdb89a7c119c19,
+                _:ref_d08b6d0d67ac098c,
+                _:ref_e9e0f86c63bcc4a6 ;
+            oc:workflowId "jakarta-namespace-migration" ;
+            oc:workflowName "Jakarta Namespace Migration" ],
+        _:ref_7683cab5322ed84e ;
+    oc:impartsKnowledge oc:kn_7537de76,
+        oc:kn_766bdd3d,
+        oc:kn_7e995b47,
+        oc:kn_88c7902b,
+        oc:kn_a011d541,
+        oc:kn_e6b08536,
+        oc:kn_ee543b08 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "fix compilation errors after Jakarta EE transition",
+        "migrate javax imports to jakarta",
+        "update Java EE namespace to Jakarta EE",
+        "upgrade Spring Boot 2.x to 3.x import statements" ;
+    oc:yieldsState oc:CompilationReady,
+        oc:NamespaceMigrated .
+
+oc:kn_7537de76 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing all sed replacements" ;
+    oc:directiveContent "After migration, grep for remaining javax.(persistence|validation|servlet|transaction|annotation) imports — these must return zero results." ;
+    oc:hasRationale "Any remaining old-namespace imports will cause compilation failures in Spring Boot 3.x." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_766bdd3d a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When migrating a multi-module project" ;
+    oc:directiveContent "All namespaces must be migrated together — mixed javax.* and jakarta.* imports cause runtime errors." ;
+    oc:hasRationale "Partial migration creates classpath conflicts where some classes resolve to old javax and others to new jakarta, causing ClassNotFoundException or MethodNotFoundException at runtime." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7e995b47 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting namespace migration" ;
+    oc:directiveContent "Before running sed replacements, grep for all javax.* imports excluding JDK packages to assess migration scope." ;
+    oc:hasRationale "Understanding the full scope prevents surprises and ensures no Java EE imports are missed." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_88c7902b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When verifying migration completeness" ;
+    oc:directiveContent "Check test files, XML configurations (persistence.xml), and third-party library versions in addition to main source code." ;
+    oc:hasRationale "Test classes also import javax.*, XML configs use javax namespaces, and third-party libs must have Jakarta-compatible versions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a011d541 a oc:FallbackStrategy,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When manual sed-based migration is error-prone or the project is large" ;
+    oc:directiveContent "Use OpenRewrite (org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta) for automated migration instead of manual sed commands." ;
+    oc:hasRationale "OpenRewrite performs AST-aware refactoring, avoiding regex pitfalls and handling edge cases like wildcard imports, XML configs, and deeply nested references." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e6b08536 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When verifying migration completeness for JPA entity classes" ;
+    oc:directiveContent "Every JPA entity class MUST use jakarta.persistence imports after migration. If jakarta.persistence grep returns no results but entities exist, the build will fail." ;
+    oc:hasRationale "Spring Boot 3.x Hibernate 6 requires jakarta.persistence namespace; javax.persistence imports will not compile." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ee543b08 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing batch sed replacements of javax.* namespaces" ;
+    oc:directiveContent "Never change javax.sql.*, javax.crypto.*, or javax.net.* to jakarta.* — these are JDK packages, not Java EE, and must remain unchanged." ;
+    oc:hasRationale "Changing JDK-internal packages breaks compilation and runtime since these are not part of the Jakarta EE migration scope." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_712551dfc441b666 a oc:WorkflowStep ;
+    dcterms:description "**Don't change javax.sql or javax.crypto** - These are JDK packages, not Java EE" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_905fbba0ee242842 a oc:WorkflowStep ;
+    dcterms:description "**Check test files too** - Test classes also need migration" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c914a8db2d429098 a oc:WorkflowStep ;
+    dcterms:description "**Third-party libraries** - Ensure all dependencies have Jakarta EE compatible versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_e1ef37bda0ac1507 a oc:WorkflowStep ;
+    dcterms:description "**Mixed namespaces cause runtime errors** - All must be migrated together" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_fc80f1c22adc4a97 a oc:WorkflowStep ;
+    dcterms:description "**Update XML configurations** - If using persistence.xml, update namespaces there too" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_20937c63390023ce a oc:WorkflowStep ;
+    dcterms:description "Run sed commands to replace specific javax.* imports (persistence, validation, servlet, annotation, transaction) with jakarta.* equivalents" ;
+    oc:expectedOutcome "All specific import statements updated" ;
+    oc:stepDependsOn _:ref_72bdb89a7c119c19 ;
+    oc:stepId "batch-replace-specific" .
+
+_:ref_72bdb89a7c119c19 a oc:WorkflowStep ;
+    dcterms:description "Grep all Java files for javax.* imports excluding JDK packages (javax.sql, javax.crypto, javax.net) to understand migration scope" ;
+    oc:expectedOutcome "Complete list of files and packages needing migration" ;
+    oc:stepId "assess-scope" .
+
+_:ref_7683cab5322ed84e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_712551dfc441b666,
+        _:ref_905fbba0ee242842,
+        _:ref_c914a8db2d429098,
+        _:ref_e1ef37bda0ac1507,
+        _:ref_fc80f1c22adc4a97 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_d08b6d0d67ac098c a oc:WorkflowStep ;
+    dcterms:description "Grep for remaining javax.(persistence|validation|servlet|transaction|annotation) imports — must return zero results" ;
+    oc:expectedOutcome "No old-namespace imports remain" ;
+    oc:stepDependsOn _:ref_e9e0f86c63bcc4a6 ;
+    oc:stepId "verify-no-javax" .
+
+_:ref_e9e0f86c63bcc4a6 a oc:WorkflowStep ;
+    dcterms:description "Run sed commands to replace wildcard javax.*.* imports with jakarta.*.* equivalents" ;
+    oc:expectedOutcome "All wildcard import statements updated" ;
+    oc:stepDependsOn _:ref_20937c63390023ce ;
+    oc:stepId "batch-replace-wildcards" .
+

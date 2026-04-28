@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/mars-clouds-clustering",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "custom-distance-metrics/ontoskill.ttl",
+    "parallel-processing/ontoskill.ttl",
+    "pareto-optimization/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "custom-distance-metrics/intents.json",
+    "parallel-processing/intents.json",
+    "pareto-optimization/intents.json"
+  ],
+  "skills": []
+}

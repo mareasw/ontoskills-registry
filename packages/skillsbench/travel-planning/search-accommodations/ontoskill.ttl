@@ -1,0 +1,137 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_travel_planning_search_accommodations a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "search-accommodations" ;
+    skos:broader "Search utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/travel-planning/search-accommodations" ;
+    oc:contentHash "a1fcd280f3219304cd4bdb43295acd382a7f7a02e61eebfb9eb9572d9fbc4e92" ;
+    oc:differentia "queries a bundled dataset to find accommodations available in a specific city" ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "city name (e.g., \"Seattle\")" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Lookup accommodations by city from the bundled dataset. Use this skill when you need to recommend places to stay in a given city or filter lodging options before building an itinerary." ;
+    oc:hasName "search-accommodations" ;
+    oc:hasRequirement oc:req_746aacc9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: search-accommodations
+description: Lookup accommodations by city from the bundled dataset. Use this skill when you need to recommend places to stay in a given city or filter lodging options before building an itinerary.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Find the accommodations for a specific city. Notice all the" ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from search_accommodations import Accommodations
+
+acc = Accommodations()
+result = acc.run("Seattle")
+print(result)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-24" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pandas
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Installation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Search Accommodations" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Look up available accommodations for a given city from the bundled dataset" ;
+            oc:hasStep _:ref_228f88395d8c533d,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Call acc.run(city_name) with the target city" ;
+                    oc:expectedOutcome "List of accommodations for the specified city returned" ;
+                    oc:stepDependsOn _:ref_6e688718c5abf92c ;
+                    oc:stepId "query-city" ],
+                _:ref_6e688718c5abf92c ;
+            oc:workflowId "search-accommodations-main" ;
+            oc:workflowName "Search Accommodations by City" ] ;
+    oc:impartsKnowledge oc:kn_20f61d08,
+        oc:kn_36dd6f44,
+        oc:kn_7ed613eb,
+        oc:kn_b1e15b5d,
+        oc:kn_e9068681 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "filter lodging options for an itinerary",
+        "find accommodations in a city",
+        "lookup hotels by city",
+        "recommend places to stay" ;
+    oc:yieldsState oc:AccommodationsRetrieved .
+
+oc:kn_20f61d08 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "when searching accommodations" ;
+    oc:directiveContent "1. Install pandas (pip install pandas) 2. Import Accommodations from search_accommodations 3. Instantiate Accommodations() 4. Call acc.run(city_name) with target city 5. Use returned result for recommendations" ;
+    oc:stepOrder 1 .
+
+oc:kn_36dd6f44 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "before execution" ;
+    oc:directiveContent "pandas must be installed (pip install pandas) before using the Accommodations class" ;
+    oc:hasRationale "The search_accommodations module depends on pandas for dataset operations" .
+
+oc:kn_7ed613eb a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when querying accommodations by city" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from search_accommodations import Accommodations
+
+acc = Accommodations()
+result = acc.run("Seattle")""" .
+
+oc:kn_b1e15b5d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when integrating into a larger workflow" ;
+    oc:directiveContent "This skill is intended as a building block within travel itinerary planning, not a standalone booking tool" ;
+    oc:hasRationale "The skill description emphasizes filtering lodging options before building an itinerary" .
+
+oc:kn_e9068681 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when querying accommodations" ;
+    oc:directiveContent "The search accepts a city name as input; only cities present in the bundled dataset will return results" ;
+    oc:hasRationale "The skill queries a static bundled CSV dataset, not a live API, so coverage is limited to included cities" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+_:ref_228f88395d8c533d a oc:WorkflowStep ;
+    dcterms:description "Install pandas dependency (pip install pandas)" ;
+    oc:expectedOutcome "pandas package available in environment" ;
+    oc:stepId "install-deps" .
+
+_:ref_6e688718c5abf92c a oc:WorkflowStep ;
+    dcterms:description "Import and instantiate the Accommodations class" ;
+    oc:expectedOutcome "Accommodations object ready to query" ;
+    oc:stepDependsOn _:ref_228f88395d8c533d ;
+    oc:stepId "instantiate-searcher" .
+

@@ -1,0 +1,909 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_organize_messy_files_docx a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "docx" ;
+    skos:broader "Document toolkit" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/organize-messy-files/docx" ;
+    oc:contentHash "19654cba6901715c32b36d6f3f88b3d2b3d274009f63b06a4aef54edc6f1857b" ;
+    oc:differentia "creates, edits, and analyzes .docx files via OOXML manipulation, tracked changes, and text extraction" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "file-path to .docx file" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. When Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks" ;
+    oc:hasName "docx" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_124e4bd6ed163653,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Options:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Example for specific range:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To visually analyze Word documents, convert them to images using a two-step process:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pdftoppm -jpeg -r 150 -f 2 -l 5 document.pdf page  # Converts only pages 2-5
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 6 ;
+                            oc:sourceLocation "lines 179-181" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`-l N`: Last page to convert (e.g., `-l 5` stops at page 5)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-f N`: First page to convert (e.g., `-f 2` starts from page 2)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "`page`: Prefix for output files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`-r 150`: Sets resolution to 150 DPI (adjust for quality/size balance)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-jpeg`: Output JPEG format (use `-png` for PNG if preferred)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Converting Documents to Images" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Convert document to markdown with tracked changes
+pandoc --track-changes=all path-to-file.docx -o output.md
+# Options: --track-changes=accept/reject/all
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 36-40" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If you just need to read the text contents of a document, you should convert the document to markdown using pandoc. Pandoc provides excellent support for preserving document structure and can show tracked changes:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Text extraction" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "You need raw XML access for: comments, complex formatting, document structure, embedded media, and metadata. For any of these features, you'll need to unpack a document and read its raw XML contents." ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "`python ooxml/scripts/unpack.py <office_file> <output_directory>`" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Unpacking a file" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "`word/media/` - Embedded images and media files" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "`word/comments.xml` - Comments referenced in document.xml" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Tracked changes use `<w:ins>` (insertions) and `<w:del>` (deletions) tags" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "`word/document.xml` - Main document contents" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Key file structures" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Raw XML access" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Reading and analyzing content" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use \"Creating a new Word document\" workflow" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Creating New Document" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText """**Legal, academic, business, or government docs**
+Use **"Redlining workflow"** (required)""" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText """**Your own document + simple changes**
+Use "Basic OOXML editing" workflow""" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText """**Someone else's document**
+Use **"Redlining workflow"** (recommended default)""" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Editing Existing Document" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use \"Text extraction\" or \"Raw XML access\" sections below" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Reading/Analyzing Content" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Workflow Decision Tree" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**pandoc**: `sudo apt-get install pandoc` (for text extraction)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**LibreOffice**: `sudo apt-get install libreoffice` (for PDF conversion)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Poppler**: `sudo apt-get install poppler-utils` (for pdftoppm to convert PDF to images)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**defusedxml**: `pip install defusedxml` (for secure XML parsing)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**docx**: `npm install -g docx` (for creating new documents)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Required dependencies (install if not available):" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Avoid unnecessary print statements" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Avoid verbose variable names and redundant operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Write concise code" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**IMPORTANT**: When generating code for DOCX operations:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Code Style Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A user may ask you to create, edit, or analyze the contents of a .docx file. A .docx file is essentially a ZIP archive containing XML files and other resources that you can read or edit. You have different tools and workflows available for different tasks." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When editing an existing Word document, use the **Document library** (a Python library for OOXML manipulation). The library automatically handles infrastructure setup and provides methods for document manipulation. For complex scenarios, you can access the underlying DOM directly through the library." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_484c124c2150b3ad,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "The Document library provides both high-level methods for common operations and direct DOM access for complex scenarios." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Editing an existing Word document" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Batching Strategy**: Group related changes into batches of 3-10 changes. This makes debugging manageable while maintaining efficiency. Test each batch before moving to the next." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This workflow allows you to plan comprehensive tracked changes using markdown before implementing them in OOXML. **CRITICAL**: For complete tracked changes, you must implement ALL changes systematically." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# BAD - Replaces entire sentence
+'<w:del><w:r><w:delText>The term is 30 days.</w:delText></w:r></w:del><w:ins><w:r><w:t>The term is 60 days.</w:t></w:r></w:ins>'
+
+# GOOD - Only marks what changed, preserves original <w:r> for unchanged text
+'<w:r w:rsidR="00AB12CD"><w:t>The term is </w:t></w:r><w:del><w:r><w:delText>30</w:delText></w:r></w:del><w:ins><w:r><w:t>60</w:t></w:r></w:ins><w:r w:rsidR="00AB12CD"><w:t> days.</w:t></w:r>'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 85-91" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """**Principle: Minimal, Precise Edits**
+When implementing tracked changes, only mark text that actually changes. Repeating unchanged text makes edits harder to review and appears unprofessional. Break replacements into: [unchanged text] + [deletion] + [insertion] + [unchanged text]. Preserve the original run's RSID for unchanged text by extracting the `<w:r>` element from the original and reusing it.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Example - Changing \"30 days\" to \"60 days\" in a sentence:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_b98fca8c81021673 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Tracked changes workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Redlining workflow for document review" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When creating a new Word document from scratch, use **docx-js**, which allows you to create Word documents using JavaScript/TypeScript." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_1c9ccb8953df64b1 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Workflow" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Creating a new Word document" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "DOCX creation, editing, and analysis" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: docx
+description: "Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction. When Claude needs to work with professional documents (.docx files) for: (1) Creating new documents, (2) Modifying or editing content, (3) Working with tracked changes, (4) Adding comments, or any other document tasks"
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Comprehensive tracked changes workflow for reviewing and marking up documents" ;
+            oc:hasStep _:ref_54bb301305856c98,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Convert to markdown and verify all changes applied correctly with grep" ;
+                    oc:expectedOutcome "Confirmation that all changes are present and no unintended changes exist" ;
+                    oc:stepDependsOn _:ref_ba617ab3a5e82338 ;
+                    oc:stepId "verify-final" ],
+                _:ref_a4625de4fa71988a,
+                _:ref_ba617ab3a5e82338,
+                _:ref_daf54b521bb40deb,
+                _:ref_f5aef99a9f83010c ;
+            oc:workflowId "redline-document" ;
+            oc:workflowName "Redlining Workflow for Document Review" ],
+        _:ref_124e4bd6ed163653,
+        _:ref_1c9ccb8953df64b1,
+        _:ref_484c124c2150b3ad,
+        [ a oc:Workflow ;
+            dcterms:description "Edit an existing .docx file using the Document library and OOXML manipulation" ;
+            oc:hasStep _:ref_1009c48955ab871c,
+                _:ref_943a7acbbd987ad6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Pack the edited directory back to .docx using ooxml/scripts/pack.py" ;
+                    oc:expectedOutcome "Modified .docx file is created" ;
+                    oc:stepDependsOn _:ref_d01557b7386235eb ;
+                    oc:stepId "pack-docx" ],
+                _:ref_d01557b7386235eb ;
+            oc:workflowId "edit-existing-docx" ;
+            oc:workflowName "Edit Existing Word Document" ],
+        [ a oc:Workflow ;
+            dcterms:description "Convert a .docx file to JPEG images for visual analysis" ;
+            oc:hasStep _:ref_82b69587031d568f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Convert PDF pages to JPEG images using pdftoppm -jpeg -r 150" ;
+                    oc:expectedOutcome "Page images (page-1.jpg, page-2.jpg, etc.)" ;
+                    oc:stepDependsOn _:ref_82b69587031d568f ;
+                    oc:stepId "convert-to-jpeg" ] ;
+            oc:workflowId "docx-to-images" ;
+            oc:workflowName "Convert Document to Images" ],
+        _:ref_b98fca8c81021673,
+        [ a oc:Workflow ;
+            dcterms:description "Create a new .docx file from scratch using docx-js" ;
+            oc:hasStep _:ref_7e3b9e437036edd9,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run the script to export as .docx using Packer.toBuffer()" ;
+                    oc:expectedOutcome "A valid .docx file is created" ;
+                    oc:stepDependsOn _:ref_e73ab4e6786f04ea ;
+                    oc:stepId "export-docx" ],
+                _:ref_e73ab4e6786f04ea ;
+            oc:workflowId "create-new-docx" ;
+            oc:workflowName "Create New Word Document" ] ;
+    oc:impartsKnowledge oc:kn_0fc9ad2d,
+        oc:kn_12a503c2,
+        oc:kn_1ab55a54,
+        oc:kn_1e1ac9b7,
+        oc:kn_37c52f95,
+        oc:kn_3b270cc6,
+        oc:kn_3d50adc5,
+        oc:kn_40e08815,
+        oc:kn_61216b15,
+        oc:kn_755aafca,
+        oc:kn_7bc191de,
+        oc:kn_b03ab231,
+        oc:kn_e80ec84f,
+        oc:kn_e9e824a0,
+        oc:kn_eb240fb8,
+        oc:kn_fdffca06 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "add tracked changes to document",
+        "analyze word document",
+        "convert docx to images",
+        "create word document",
+        "edit docx file",
+        "extract text from docx",
+        "review and redline documents" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:DocumentModified .
+
+oc:kn_0fc9ad2d a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "pandoc, docx (npm), LibreOffice, poppler-utils, and defusedxml must be installed" .
+
+oc:kn_12a503c2 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Creating a new Word document from scratch" ;
+    oc:directiveContent "1. Read docx-js.md fully 2. Create JS/TS file with Document, Paragraph, TextRun 3. Export via Packer.toBuffer()" ;
+    oc:stepOrder 1 .
+
+oc:kn_1ab55a54 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Converting DOCX to images for visual analysis" ;
+    oc:directiveContent "soffice --headless --convert-to pdf document.docx && pdftoppm -jpeg -r 150 document.pdf page" .
+
+oc:kn_1e1ac9b7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing tracked changes in redlining workflow" ;
+    oc:directiveContent "Never replace entire sentences when only specific words change. Use minimal tracked changes: [unchanged text] + [deletion] + [insertion] + [unchanged text], preserving original RSID for unchanged runs." ;
+    oc:hasRationale "Replacing entire sentences with tracked changes makes edits harder to review and appears unprofessional; precise edits show exactly what changed." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_37c52f95 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing which workflow to apply for a document task" ;
+    oc:directiveContent "Use docx-js (JavaScript) for creating new documents from scratch; use the Document library (Python/OOXML) for editing existing documents; use redlining workflow for reviewing others' documents." ;
+    oc:hasRationale "Each approach is optimized for its use case: docx-js for clean creation, Document library for structural editing, redlining for collaborative review." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3b270cc6 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing all tracked change batches" ;
+    oc:directiveContent "After all tracked changes, convert final document to markdown with pandoc and grep for both original (should NOT find) and replacement phrases (should find) to verify correctness." ;
+    oc:hasRationale "Comprehensive verification catches missed changes, unintended modifications, and ensures document integrity." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3d50adc5 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Editing an existing Word document" ;
+    oc:directiveContent "1. Read ooxml.md fully 2. Unpack docx 3. Create/run Python script using Document library 4. Pack back to docx" ;
+    oc:stepOrder 1 .
+
+oc:kn_40e08815 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Redlining workflow for document review with tracked changes" ;
+    oc:directiveContent "1. Get markdown with pandoc --track-changes=all 2. Identify and group changes into batches of 3-10 3. Read ooxml.md and unpack document 4. Implement changes in batches (grep XML, script, save) 5. Pack document 6. Final verification with pandoc + grep" ;
+    oc:stepOrder 1 .
+
+oc:kn_61216b15 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any document creation or editing operation" ;
+    oc:directiveContent "MANDATORY: Always read the full reference file (docx-js.md for creation, ooxml.md for editing) without range limits before generating any code." ;
+    oc:hasRationale "These reference files contain critical syntax rules, formatting patterns, and API details that are essential for correct document generation." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_755aafca a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When locating changes in tracked changes workflow" ;
+    oc:directiveContent "DO NOT use markdown line numbers to locate text in XML — they do not map to XML structure. Use section numbers, heading identifiers, or grep patterns instead." ;
+    oc:hasRationale "Markdown line numbers are a linear representation that does not correspond to the hierarchical XML structure inside .docx files." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7bc191de a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing an existing .docx file via OOXML" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent """python ooxml/scripts/unpack.py <office_file> <output_directory>
+# Edit XML or use Document library
+python ooxml/scripts/pack.py <input_directory> <office_file>""" .
+
+oc:kn_b03ab231 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing tracked changes on a document" ;
+    oc:directiveContent "Group related tracked changes into batches of 3-10 changes. Organize by section, type, complexity, or proximity. Test each batch before moving to the next." ;
+    oc:hasRationale "Batches of 3-10 changes balance debugging ease with efficiency; too few is slow, too many makes isolating errors difficult." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e80ec84f a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "During batch implementation of tracked changes" ;
+    oc:directiveContent "Always grep word/document.xml immediately before writing a script to get current line numbers and verify text content. Line numbers change after each script run." ;
+    oc:hasRationale "Each script run modifies the XML file, shifting line numbers and potentially splitting text runs differently." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e9e824a0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing documents from regulated or professional domains" ;
+    oc:directiveContent "For legal, academic, business, or government documents, always use the redlining workflow regardless of document ownership." ;
+    oc:hasRationale "These domains require auditable change tracking; direct edits without tracked changes are inappropriate." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_eb240fb8 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting text or analyzing document content with tracked changes" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "pandoc --track-changes=all path-to-file.docx -o output.md" .
+
+oc:kn_fdffca06 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When parsing or manipulating OOXML content" ;
+    oc:directiveContent "Use defusedxml for XML parsing to prevent XML-based attacks when working with .docx files." ;
+    oc:hasRationale "Standard XML parsers are vulnerable to entity expansion and other XML attacks; defusedxml mitigates these risks." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_04f25823bd46d475 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "**DO NOT use markdown line numbers** - they don't map to XML structure" .
+
+_:ref_062d17baa8a407a8 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "**Note the suggested RSID**: The unpack script will suggest an RSID to use for your tracked changes. Copy this RSID for use in step 4b." .
+
+_:ref_06cbdb2b6a849da8 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Makes debugging easier (smaller batch = easier to isolate errors)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Maintains efficiency (batch size of 3-10 changes works well)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Allows incremental progress" ] .
+
+_:ref_08eb523066b2eb47 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 2 ;
+    oc:textContent "**Suggested batch groupings:**" .
+
+_:ref_0d05d92d080e548d a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Check that no unintended changes were introduced" .
+
+_:ref_0df58283e46e7d43 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 7 ;
+    oc:textContent "**Note**: Always grep `word/document.xml` immediately before writing a script to get current line numbers and verify text content. Line numbers change after each script run." .
+
+_:ref_0ead173fd6f398ca a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 4 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "By type: \"Batch 1: Date corrections\", \"Batch 2: Party name changes\"" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "By section: \"Batch 1: Section 2 amendments\", \"Batch 2: Section 5 updates\"" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Sequential: \"Batch 1: Pages 1-3\", \"Batch 2: Pages 4-6\"" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "By complexity: Start with simple text replacements, then tackle complex structural changes" ] .
+
+_:ref_15c0414b593138ca a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Section/heading numbers (e.g., \"Section 3.2\", \"Article IV\")" .
+
+_:ref_1676f2c0bed11ade a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Grep patterns with unique surrounding text" .
+
+_:ref_1af437e29ed15bb6 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """soffice --headless --convert-to pdf document.docx
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 161-163" .
+
+_:ref_21e68d565c72c2af a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "**MANDATORY - READ ENTIRE FILE**: Read [`ooxml.md`](ooxml.md) (~600 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Pay special attention to the \"Document Library\" and \"Tracked Change Patterns\" sections." .
+
+_:ref_22a67b9bfa56fadc a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 2 ;
+    oc:hasItem _:ref_04f25823bd46d475,
+        _:ref_15c0414b593138ca,
+        _:ref_1676f2c0bed11ade,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Paragraph identifiers if numbered" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Document structure (e.g., \"first paragraph\", \"signature block\")" ] .
+
+_:ref_258b3846a30b511e a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """grep "original phrase" verification.md  # Should NOT find it
+grep "replacement phrase" verification.md  # Should find it
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 149-152" .
+
+_:ref_2774de559b0b7970 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """pandoc --track-changes=all reviewed-document.docx -o verification.md
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 145-147" .
+
+_:ref_32d77e13a70f38b3 a oc:WorkflowStep ;
+    dcterms:description "Export as .docx using Packer.toBuffer()" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3a78f4648dd031a8 a oc:WorkflowStep ;
+    dcterms:description "**Identify and group changes**: Review the document and identify ALL changes needed, organizing them into logical batches:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_0ead173fd6f398ca,
+        _:ref_22a67b9bfa56fadc,
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 3 ;
+            oc:textContent "**Batch organization** (group 3-10 related changes per batch):" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 1 ;
+            oc:textContent "**Location methods** (for finding changes in XML):" ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4077cbb794d61924 a oc:WorkflowStep ;
+    dcterms:description "**Convert PDF pages to JPEG images**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 2 ;
+            oc:textContent "This creates files like `page-1.jpg`, `page-2.jpg`, etc." ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """pdftoppm -jpeg -r 150 document.pdf page
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 166-168" ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_484f8d6a1b02fc3a a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "By change type (e.g., \"Date changes\", \"Party name updates\", \"Legal term replacements\")" .
+
+_:ref_528e9e577083407d a oc:WorkflowStep ;
+    dcterms:description "Create and run a Python script using the Document library (see \"Document Library\" section in ooxml.md)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_581253f429a60d94 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 5 ;
+    oc:textContent "**a. Map text to XML**: Grep for text in `word/document.xml` to verify how text is split across `<w:r>` elements." .
+
+_:ref_5ab76f3815772fd5 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild _:ref_2774de559b0b7970 ;
+    oc:itemOrder 1 ;
+    oc:itemText "Convert final document to markdown:" .
+
+_:ref_61494315e684d885 a oc:WorkflowStep ;
+    dcterms:description "**Convert DOCX to PDF**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_1af437e29ed15bb6 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_662e72f7801cce0f a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "**Unpack the document**: `python ooxml/scripts/unpack.py <file.docx> <dir>`" .
+
+_:ref_67790282be3a6786 a oc:WorkflowStep ;
+    dcterms:description "**Read documentation and unpack**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_062d17baa8a407a8,
+                _:ref_21e68d565c72c2af,
+                _:ref_662e72f7801cce0f ] ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_67cb368df2240242 a oc:WorkflowStep ;
+    dcterms:description "Create a JavaScript/TypeScript file using Document, Paragraph, TextRun components (You can assume all dependencies are installed, but if not, refer to the dependencies section below)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_68683f5afa20267c a oc:WorkflowStep ;
+    dcterms:description "**Implement changes in batches**: Group changes logically (by section, by type, or by proximity) and implement them together in a single script. This approach:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_06cbdb2b6a849da8,
+        _:ref_08eb523066b2eb47,
+        _:ref_0df58283e46e7d43,
+        _:ref_581253f429a60d94,
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 6 ;
+            oc:textContent "**b. Create and run script**: Use `get_node` to find nodes, implement changes, then `doc.save()`. See **\"Document Library\"** section in ooxml.md for patterns." ],
+        [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 3 ;
+            oc:hasItem _:ref_484f8d6a1b02fc3a,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "By document section (e.g., \"Section 3 changes\", \"Definitions\", \"Termination clause\")" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "By proximity (e.g., \"Changes on pages 1-3\", \"Changes in first half of document\")" ] ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 4 ;
+            oc:textContent "For each batch of related changes:" ] ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_6aa3b370554deaab a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild _:ref_258b3846a30b511e ;
+    oc:itemOrder 2 ;
+    oc:itemText "Verify ALL changes were applied correctly:" .
+
+_:ref_7061938b345bb728 a oc:WorkflowStep ;
+    dcterms:description "**Get markdown representation**: Convert document to markdown with tracked changes preserved:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """pandoc --track-changes=all path-to-file.docx -o current.md
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 96-98" ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_89ad9dcd8669374b a oc:WorkflowStep ;
+    dcterms:description "**Final verification**: Do a comprehensive check of the complete document:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_0d05d92d080e548d,
+                _:ref_5ab76f3815772fd5,
+                _:ref_6aa3b370554deaab ] ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_8aa351446440d990 a oc:WorkflowStep ;
+    dcterms:description "**Pack the document**: After all batches are complete, convert the unpacked directory back to .docx:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """python ooxml/scripts/pack.py unpacked reviewed-document.docx
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 139-141" ] ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_be30e531c180abb9 a oc:WorkflowStep ;
+    dcterms:description "**MANDATORY - READ ENTIRE FILE**: Read [`docx-js.md`](docx-js.md) (~500 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with document creation." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c4d043d2352f472f a oc:WorkflowStep ;
+    dcterms:description "Unpack the document: `python ooxml/scripts/unpack.py <office_file> <output_directory>`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d2123789d53a942a a oc:WorkflowStep ;
+    dcterms:description "**MANDATORY - READ ENTIRE FILE**: Read [`ooxml.md`](ooxml.md) (~600 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for the Document library API and XML patterns for directly editing document files." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e14e8275d65c9df9 a oc:WorkflowStep ;
+    dcterms:description "Pack the final document: `python ooxml/scripts/pack.py <input_directory> <office_file>`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_1009c48955ab871c a oc:WorkflowStep ;
+    dcterms:description "Read ooxml.md reference file completely without range limits" ;
+    oc:expectedOutcome "Full understanding of Document library API and XML patterns" ;
+    oc:stepId "read-ooxml" .
+
+_:ref_124e4bd6ed163653 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_4077cbb794d61924,
+        _:ref_61494315e684d885 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_1c9ccb8953df64b1 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_32d77e13a70f38b3,
+        _:ref_67cb368df2240242,
+        _:ref_be30e531c180abb9 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_484c124c2150b3ad a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_528e9e577083407d,
+        _:ref_c4d043d2352f472f,
+        _:ref_d2123789d53a942a,
+        _:ref_e14e8275d65c9df9 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_54bb301305856c98 a oc:WorkflowStep ;
+    dcterms:description "Identify ALL changes needed and organize into batches of 3-10" ;
+    oc:expectedOutcome "Grouped change list organized by section, type, or proximity" ;
+    oc:stepDependsOn _:ref_daf54b521bb40deb ;
+    oc:stepId "identify-changes" .
+
+_:ref_7e3b9e437036edd9 a oc:WorkflowStep ;
+    dcterms:description "Read docx-js.md reference file completely without range limits" ;
+    oc:expectedOutcome "Full understanding of Document, Paragraph, TextRun API and formatting rules" ;
+    oc:stepId "read-docx-js" .
+
+_:ref_82b69587031d568f a oc:WorkflowStep ;
+    dcterms:description "Convert DOCX to PDF using soffice --headless --convert-to pdf" ;
+    oc:expectedOutcome "PDF file generated from the document" ;
+    oc:stepId "convert-to-pdf" .
+
+_:ref_943a7acbbd987ad6 a oc:WorkflowStep ;
+    dcterms:description "Unpack the .docx file to a directory using ooxml/scripts/unpack.py" ;
+    oc:expectedOutcome "Directory with XML files ready for editing" ;
+    oc:stepDependsOn _:ref_1009c48955ab871c ;
+    oc:stepId "unpack-docx" .
+
+_:ref_a4625de4fa71988a a oc:WorkflowStep ;
+    dcterms:description "Implement changes in batches: grep XML, create script, save, verify" ;
+    oc:expectedOutcome "All tracked changes implemented in XML" ;
+    oc:stepDependsOn _:ref_f5aef99a9f83010c ;
+    oc:stepId "implement-batches" .
+
+_:ref_b98fca8c81021673 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_3a78f4648dd031a8,
+        _:ref_67790282be3a6786,
+        _:ref_68683f5afa20267c,
+        _:ref_7061938b345bb728,
+        _:ref_89ad9dcd8669374b,
+        _:ref_8aa351446440d990 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ba617ab3a5e82338 a oc:WorkflowStep ;
+    dcterms:description "Pack unpacked directory back to .docx" ;
+    oc:stepDependsOn _:ref_a4625de4fa71988a ;
+    oc:stepId "pack-reviewed" .
+
+_:ref_d01557b7386235eb a oc:WorkflowStep ;
+    dcterms:description "Create and run a Python script using the Document library to make edits" ;
+    oc:expectedOutcome "XML files modified with desired changes" ;
+    oc:stepDependsOn _:ref_943a7acbbd987ad6 ;
+    oc:stepId "run-edit-script" .
+
+_:ref_daf54b521bb40deb a oc:WorkflowStep ;
+    dcterms:description "Convert document to markdown with pandoc --track-changes=all" ;
+    oc:expectedOutcome "Markdown file with tracked changes visible" ;
+    oc:stepId "get-markdown" .
+
+_:ref_e73ab4e6786f04ea a oc:WorkflowStep ;
+    dcterms:description "Create a JavaScript/TypeScript file using Document, Paragraph, TextRun components" ;
+    oc:expectedOutcome "JS/TS source file that defines the document structure" ;
+    oc:stepDependsOn _:ref_7e3b9e437036edd9 ;
+    oc:stepId "write-js-file" .
+
+_:ref_f5aef99a9f83010c a oc:WorkflowStep ;
+    dcterms:description "Read ooxml.md fully and unpack document; note suggested RSID" ;
+    oc:expectedOutcome "Unpacked XML directory with RSID noted" ;
+    oc:stepDependsOn _:ref_54bb301305856c98 ;
+    oc:stepId "read-doc-and-unpack" .
+

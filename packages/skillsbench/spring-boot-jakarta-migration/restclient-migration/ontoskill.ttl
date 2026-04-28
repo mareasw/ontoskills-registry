@@ -1,0 +1,632 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_spring_boot_jakarta_migration_restclient_migration a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "restclient-migration" ;
+    skos:broader "Migration skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/spring-boot-jakarta-migration/restclient-migration" ;
+    oc:contentHash "1bff104659d041a9fb6d1e26e2d123763b3a8a7d0f5aec7cce8d607b10621266" ;
+    oc:dependsOnSkill oc:skill_ontoskills_spring_boot_migration ;
+    oc:differentia "Migrates RestTemplate to RestClient in Spring Boot 3.2+ applications, converting template-method HTTP calls to fluent builder API calls" ;
+    oc:handlesFailure oc:CompilationError,
+        oc:RuntimeError ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Migrate RestTemplate to RestClient in Spring Boot 3.2+. Use when replacing deprecated RestTemplate with modern fluent API, updating HTTP client code, or configuring RestClient beans. Covers GET/POST/DELETE migrations, error handling, and ParameterizedTypeReference usage." ;
+    oc:hasName "restclient-migration" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: restclient-migration
+description: Migrate RestTemplate to RestClient in Spring Boot 3.2+. Use when replacing deprecated RestTemplate with modern fluent API, updating HTTP client code, or configuring RestClient beans. Covers GET/POST/DELETE migrations, error handling, and ParameterizedTypeReference usage.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """@Service
+public class ExternalApiService {
+    private final RestTemplate restTemplate;
+
+    public ExternalApiService() {
+        this.restTemplate = new RestTemplate();
+    }
+
+    public Map<String, Object> getUser(String userId) {
+        String url = "https://api.example.com/users/" + userId;
+        ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+        return response.getBody();
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 27-42" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Before (RestTemplate)" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """@Service
+public class ExternalApiService {
+    private final RestClient restClient;
+
+    public ExternalApiService() {
+        this.restClient = RestClient.create();
+    }
+
+    public Map<String, Object> getUser(String userId) {
+        return restClient.get()
+            .uri("https://api.example.com/users/{id}", userId)
+            .retrieve()
+            .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 46-62" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "After (RestClient)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Basic GET Request" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public void sendNotification(String userId, String message) {
+    Map<String, String> payload = Map.of(
+        "userId", userId,
+        "message", message
+    );
+
+    restClient.post()
+        .uri(baseUrl + "/notifications")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(payload)
+        .retrieve()
+        .toBodilessEntity();
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 88-103" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "After (RestClient)" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public void sendNotification(String userId, String message) {
+    String url = baseUrl + "/notifications";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+    Map<String, String> payload = Map.of(
+        "userId", userId,
+        "message", message
+    );
+
+    HttpEntity<Map<String, String>> request = new HttpEntity<>(payload, headers);
+    restTemplate.postForEntity(url, request, Void.class);
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 68-84" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Before (RestTemplate)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. POST Request with Body" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public Map<String, Object> enrichUserProfile(String userId) {
+    String url = baseUrl + "/users/" + userId + "/profile";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+    HttpEntity<?> request = new HttpEntity<>(headers);
+
+    ResponseEntity<Map> response = restTemplate.exchange(
+        url,
+        HttpMethod.GET,
+        request,
+        Map.class
+    );
+
+    return response.getBody();
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 109-127" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Before (RestTemplate)" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public Map<String, Object> enrichUserProfile(String userId) {
+    return restClient.get()
+        .uri(baseUrl + "/users/{id}/profile", userId)
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 131-139" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "After (RestClient)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Exchange with Custom Headers" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public boolean requestDataDeletion(String userId) {
+    try {
+        String url = baseUrl + "/users/" + userId + "/data";
+        restTemplate.delete(url);
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 145-155" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Before (RestTemplate)" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """public boolean requestDataDeletion(String userId) {
+    try {
+        restClient.delete()
+            .uri(baseUrl + "/users/{id}/data", userId)
+            .retrieve()
+            .toBodilessEntity();
+        return true;
+    } catch (Exception e) {
+        return false;
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 159-171" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "After (RestClient)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. DELETE Request" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Migration Examples" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """public Map<String, Object> getUserWithErrorHandling(String userId) {
+    return restClient.get()
+        .uri("/users/{id}", userId)
+        .retrieve()
+        .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+            throw new UserNotFoundException("User not found: " + userId);
+        })
+        .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+            throw new ExternalServiceException("External service error");
+        })
+        .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 220-233" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "RestClient Status Handlers" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Spring Framework 6.1 (Spring Boot 3.2+) introduces `RestClient`, a modern, fluent API for synchronous HTTP requests that replaces the older `RestTemplate`. While `RestTemplate` still works, `RestClient` is the recommended approach for new code." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// WebClient for reactive/async operations
+WebClient webClient = WebClient.create(baseUrl);
+
+Mono<User> userMono = webClient.get()
+    .uri("/users/{id}", userId)
+    .retrieve()
+    .bodyToMono(User.class);
+""" ;
+                            oc:codeLanguage "java" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 327-335" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "`RestClient` is preferred for synchronous operations in non-reactive applications." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For reactive applications, use `WebClient` instead:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "WebClient Alternative" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// For generic types like Map or List
+Map<String, Object> map = restClient.get()
+    .uri("/data")
+    .retrieve()
+    .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+List<User> users = restClient.get()
+    .uri("/users")
+    .retrieve()
+    .body(new ParameterizedTypeReference<List<User>>() {});
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 239-250" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Using ParameterizedTypeReference" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// For simple types
+User user = restClient.get()
+    .uri("/users/{id}", userId)
+    .retrieve()
+    .body(User.class);
+
+String text = restClient.get()
+    .uri("/text")
+    .retrieve()
+    .body(String.class);
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 254-265" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Direct Class Mapping" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Type-Safe Responses" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Key Differences" ;
+                            oc:tableMarkdown """| Feature | RestTemplate | RestClient |
+|---------|-------------|------------|
+| API Style | Template methods | Fluent builder |
+| Configuration | Constructor injection | Builder pattern |
+| Error handling | ResponseErrorHandler | Status handlers |
+| Type safety | Limited | Better with generics |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key Differences" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Service
+public class ExternalApiService {
+    private final RestClient restClient;
+
+    public ExternalApiService(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    // Methods can now use relative URIs
+    public Map<String, Object> getUser(String userId) {
+        return restClient.get()
+            .uri("/users/{id}", userId)
+            .retrieve()
+            .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 197-214" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Using the Configured RestClient" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Configuration
+public class RestClientConfig {
+
+    @Value("${external.api.base-url}")
+    private String baseUrl;
+
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder()
+            .baseUrl(baseUrl)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 177-193" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Creating a Configured RestClient" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "RestClient Configuration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Service
+public class ExternalApiService {
+    private final RestClient restClient;
+
+    @Value("${external.api.base-url}")
+    private String baseUrl;
+
+    public ExternalApiService() {
+        this.restClient = RestClient.create();
+    }
+
+    public boolean verifyEmail(String email) {
+        try {
+            Map<String, Object> response = restClient.get()
+                .uri(baseUrl + "/verify/email?email={email}", email)
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+            return response != null && Boolean.TRUE.equals(response.get("valid"));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 297-321" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "After" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Service
+public class ExternalApiService {
+    private final RestTemplate restTemplate;
+
+    @Value("${external.api.base-url}")
+    private String baseUrl;
+
+    public ExternalApiService() {
+        this.restTemplate = new RestTemplate();
+    }
+
+    public boolean verifyEmail(String email) {
+        try {
+            String url = baseUrl + "/verify/email?email=" + email;
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+            return Boolean.TRUE.equals(response.getBody().get("valid"));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 271-293" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Before" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Complete Service Migration Example" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "RestTemplate to RestClient Migration Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Step-by-step process for migrating a Spring Boot service from RestTemplate to RestClient" ;
+            oc:hasStep _:ref_2523aa17882ccc73,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Compile and run tests to verify migration correctness" ;
+                    oc:expectedOutcome "Project compiles and all tests pass" ;
+                    oc:stepDependsOn _:ref_3cf6553b401aad7d,
+                        _:ref_cc3f374fa834edb6,
+                        _:ref_d4e906574ecab24e ;
+                    oc:stepId "verify-compilation" ],
+                _:ref_3cf6553b401aad7d,
+                _:ref_5dd8a17071caa8aa,
+                _:ref_9c389b33173d525c,
+                _:ref_c565b96783d824fd,
+                _:ref_cc3f374fa834edb6,
+                _:ref_d4e906574ecab24e ;
+            oc:workflowId "restclient-migration-workflow" ;
+            oc:workflowName "RestTemplate to RestClient Migration" ] ;
+    oc:impartsKnowledge oc:kn_15692722,
+        oc:kn_29bbb696,
+        oc:kn_2f01015a,
+        oc:kn_64f8512b,
+        oc:kn_8cfd3c1d,
+        oc:kn_a22beb4b,
+        oc:kn_a2ab7453,
+        oc:kn_edb322f0,
+        oc:kn_fa688dbc ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "configure RestClient beans in Spring Boot 3.2+",
+        "migrate RestTemplate to RestClient",
+        "migrate error handling from ResponseErrorHandler to status handlers",
+        "replace deprecated RestTemplate with fluent API",
+        "update HTTP client code to use RestClient" ;
+    oc:yieldsState oc:RestClientMigrated .
+
+oc:kn_15692722 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "POST request without response body" ;
+    oc:codeLanguage "java" ;
+    oc:directiveContent """restClient.post()
+    .uri("/endpoint")
+    .contentType(MediaType.APPLICATION_JSON)
+    .body(payload)
+    .retrieve()
+    .toBodilessEntity();""" .
+
+oc:kn_29bbb696 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing HTTP client for reactive Spring applications" ;
+    oc:directiveContent "For reactive/async applications, use WebClient instead of RestClient. RestClient is for synchronous operations only." ;
+    oc:hasRationale "RestClient is synchronous and will block threads in reactive applications; WebClient supports non-blocking async operations." .
+
+oc:kn_2f01015a a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When creating RestClient configuration class" ;
+    oc:codeLanguage "java" ;
+    oc:directiveContent """@Configuration
+public class RestClientConfig {
+    @Bean
+    public RestClient restClient() {
+        return RestClient.builder()
+            .baseUrl(${baseUrl})
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+    }
+}""" ;
+    oc:templateVariables "baseUrl" .
+
+oc:kn_64f8512b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When constructing URLs in RestClient calls" ;
+    oc:directiveContent "Use .uri() with URI template variables (e.g., \"/users/{id}\", userId) instead of string concatenation for URL construction." ;
+    oc:hasRationale "Template variables handle proper encoding and prevent injection vulnerabilities." .
+
+oc:kn_8cfd3c1d a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When migrating any service class from RestTemplate to RestClient" ;
+    oc:directiveContent "1. Replace RestTemplate field with RestClient field. 2. Replace constructor new RestTemplate() with RestClient.create() or inject from @Bean config. 3. Convert template methods (getForEntity, postForEntity, exchange, delete) to fluent chain (.get()/.post()/.delete() → .uri() → .retrieve() → .body()). 4. Replace HttpEntity headers with inline .contentType()/.accept()/.header() calls. 5. Replace ResponseErrorHandler with .onStatus() handlers. 6. Use ParameterizedTypeReference for generic response types." ;
+    oc:stepOrder 1 .
+
+oc:kn_a22beb4b a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring RestClient for production use" ;
+    oc:directiveContent "Use RestClient.Builder to create configured RestClient beans with shared defaults (baseUrl, default headers), then inject via constructor — avoid RestClient.create() in production services." ;
+    oc:hasRationale "Centralized configuration ensures consistent headers, base URLs, and interceptors across all service methods." .
+
+oc:kn_a2ab7453 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting migration" ;
+    oc:directiveContent "RestClient requires Spring Framework 6.1+ (Spring Boot 3.2+). It cannot be used on Spring Boot 2.x or Spring Framework 5.x." ;
+    oc:hasRationale "RestClient was introduced in Spring Framework 6.1; earlier versions do not have this class." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_edb322f0 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Standard GET request with error handling pattern" ;
+    oc:codeLanguage "java" ;
+    oc:directiveContent """restClient.get()
+    .uri("/users/{id}", userId)
+    .retrieve()
+    .onStatus(HttpStatusCode::is4xxClientError, (req, res) -> {
+        throw new CustomException("message");
+    })
+    .body(new ParameterizedTypeReference<Map<String, Object>>() {});""" .
+
+oc:kn_fa688dbc a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deserializing responses with generic types like Map<K,V> or List<T>" ;
+    oc:directiveContent "Do not use raw Map.class for generic response types; always use ParameterizedTypeReference<Map<String, Object>>() for type-safe deserialization of generic types." ;
+    oc:hasRationale "Type erasure means Map.class loses generic type info at runtime, causing deserialization issues. ParameterizedTypeReference preserves full type information." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_3cf6553b401aad7d a oc:WorkflowStep ;
+    dcterms:description "Replace ResponseErrorHandler with .onStatus() handlers chained on retrieve()" ;
+    oc:expectedOutcome "Error handling uses RestClient status handlers" ;
+    oc:stepDependsOn _:ref_2523aa17882ccc73 ;
+    oc:stepId "migrate-error-handling" .
+
+_:ref_5dd8a17071caa8aa a oc:WorkflowStep ;
+    dcterms:description "Create RestClient @Bean configuration using RestClient.builder() with baseUrl and default headers" ;
+    oc:expectedOutcome "RestClient bean available for injection" ;
+    oc:stepDependsOn _:ref_c565b96783d824fd ;
+    oc:stepId "create-config" .
+
+_:ref_9c389b33173d525c a oc:WorkflowStep ;
+    dcterms:description "Replace RestTemplate fields with RestClient in service classes" ;
+    oc:expectedOutcome "Service classes reference RestClient instead of RestTemplate" ;
+    oc:stepDependsOn _:ref_5dd8a17071caa8aa ;
+    oc:stepId "replace-field" .
+
+_:ref_c565b96783d824fd a oc:WorkflowStep ;
+    dcterms:description "Verify project is on Spring Boot 3.2+ (Spring Framework 6.1+)" ;
+    oc:expectedOutcome "Confirmed compatible Spring Boot version" ;
+    oc:stepId "verify-prerequisites" .
+
+_:ref_cc3f374fa834edb6 a oc:WorkflowStep ;
+    dcterms:description "Replace HttpEntity header construction with inline .contentType()/.accept()/.header() calls" ;
+    oc:expectedOutcome "Headers set fluently without HttpEntity wrapper" ;
+    oc:stepDependsOn _:ref_2523aa17882ccc73 ;
+    oc:stepId "migrate-headers" .
+
+_:ref_d4e906574ecab24e a oc:WorkflowStep ;
+    dcterms:description "Replace raw class literals (Map.class) with ParameterizedTypeReference for generic types" ;
+    oc:expectedOutcome "Type-safe deserialization for generic response types" ;
+    oc:stepDependsOn _:ref_2523aa17882ccc73 ;
+    oc:stepId "fix-type-safety" .
+
+_:ref_2523aa17882ccc73 a oc:WorkflowStep ;
+    dcterms:description "Convert template-method calls (getForEntity, postForEntity, exchange, delete) to fluent API chains (.get()/.post()/.delete() → .uri() → .retrieve() → .body())" ;
+    oc:expectedOutcome "All HTTP calls use RestClient fluent API" ;
+    oc:stepDependsOn _:ref_9c389b33173d525c ;
+    oc:stepId "convert-calls" .
+

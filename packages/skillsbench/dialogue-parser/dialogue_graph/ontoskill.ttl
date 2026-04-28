@@ -1,0 +1,393 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_dialogue_parser_dialogue_graph a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "dialogue-graph" ;
+    skos:broader "Library" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/dialogue-parser/dialogue_graph" ;
+    oc:contentHash "79a709efdc62bf2e1c33f0419953c42b09eb1e764f7b633d9282d901ff28fb49" ;
+    oc:differentia "that builds, validates, visualizes, and serializes dialogue graphs for branching narrative structures" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "dialogue definition (nodes and edges) or JSON file path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "A library for building, validating, visualizing, and serializing dialogue graphs. Use this when parsing scripts or creating branching narrative structures." ;
+    oc:hasName "dialogue-graph" ;
+    oc:hasRequirement oc:req_1cce9dfa,
+        oc:req_3d15a7eb,
+        oc:req_72c92b35 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: dialogue-graph
+description: A library for building, validating, visualizing, and serializing dialogue graphs. Use this when parsing scripts or creating branching narrative structures.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill provides a `dialogue_graph` module to easily build valid dialogue trees/graphs." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Script Parsers**: When converting text to data." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Game Logic**: When traversing a dialogue tree." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Dialogue Editors**: When building tools to edit conversation flow." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Visualization**: When generating visual diagrams of dialogue flows." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from dialogue_graph import Graph, Node, Edge
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 20-22" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Import the module:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Serialize to JSON format for the engine." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """data = graph.to_dict()
+# returns {"nodes": [...], "edges": [...]}
+json_str = graph.to_json()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 56-60" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Export" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Simple transition
+graph.add_edge(Edge(source="Start", target="Choices"))
+
+# Choice transition (with text)
+graph.add_edge(Edge(source="Choices", target="End", text="1. Run away"))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 45-51" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Connect nodes (transitions)." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Adding Edges" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Define content nodes." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Regular line
+graph.add_node(Node(id="Start", speaker="Guard", text="Halt!", type="line"))
+
+# Choice hub
+graph.add_node(Node(id="Choices", type="choice"))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 34-40" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Adding Nodes" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The main container." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """graph = Graph()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 27-29" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. The `Graph` Class" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """errors = graph.validate()
+# Returns list of strings, e.g., ["Edge 'Start'->'Unk' points to missing node 'Unk'"]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 65-68" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Check for integrity." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Validation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "The visualization includes:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Generate a PNG/SVG graph diagram." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Gray edges** for regular choices" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Rounded boxes** for dialogue nodes (colored by speaker)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Black edges** for simple transitions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Bold blue edges** for skill-check choices like `[Lie]`, `[Attack]`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Diamond shapes** for choice nodes (light blue)" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Requires: pip install graphviz
+# Also requires Graphviz binary: https://graphviz.org/download/
+
+graph.visualize('dialogue_graph')  # Creates dialogue_graph.png
+graph.visualize('output', format='svg')  # Creates output.svg
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 73-79" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "6. Visualization" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Load an existing dialogue graph." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# From file
+graph = Graph.from_file('dialogue.json')
+
+# From dict
+graph = Graph.from_dict({'nodes': [...], 'edges': [...]})
+
+# From JSON string
+graph = Graph.from_json(json_string)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 91-100" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "7. Loading from JSON" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "How to use" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Dialogue Graph Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Load an existing dialogue graph from JSON and modify it." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Validate the modified graph and re-export" ;
+                    oc:expectedOutcome "Validated, serialized output of the updated graph" ;
+                    oc:stepDependsOn _:ref_10182ae97d1e0e43 ;
+                    oc:stepId "validate-and-export" ],
+                _:ref_10182ae97d1e0e43,
+                _:ref_968c3c03bc053bd5 ;
+            oc:workflowId "dialogue-graph-load" ;
+            oc:workflowName "Load and Modify Dialogue Graph" ],
+        [ a oc:Workflow ;
+            dcterms:description "Construct a dialogue graph from scratch, validate it, and export it." ;
+            oc:hasStep _:ref_1ce7dda16b265c67,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Export via to_dict(), to_json(), or visualize() as needed" ;
+                    oc:expectedOutcome "Serialized graph data or visual diagram file produced" ;
+                    oc:stepDependsOn _:ref_b4b39f14b5b2aa6e ;
+                    oc:stepId "export" ],
+                _:ref_a9e80cb92043f287,
+                _:ref_b4b39f14b5b2aa6e,
+                _:ref_ddc6db19fc7f0f21 ;
+            oc:workflowId "dialogue-graph-build" ;
+            oc:workflowName "Build and Export Dialogue Graph" ] ;
+    oc:impartsKnowledge oc:kn_056efbe3,
+        oc:kn_27dff27d,
+        oc:kn_42c56377,
+        oc:kn_56900c15,
+        oc:kn_a81ac8b2,
+        oc:kn_b758522c,
+        oc:kn_c02b5f7e,
+        oc:kn_cb23459b,
+        oc:kn_f4b78c62 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build dialogue graphs",
+        "create branching narrative structures",
+        "parse scripts into dialogue structures",
+        "serialize dialogue graphs to JSON",
+        "validate dialogue trees",
+        "visualize dialogue flows" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_056efbe3 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building a basic dialogue graph with branching" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """graph = Graph()
+graph.add_node(Node(id="Start", speaker="Guard", text="Halt!", type="line"))
+graph.add_node(Node(id="Choices", type="choice"))
+graph.add_edge(Edge(source="Start", target="Choices"))
+graph.add_edge(Edge(source="Choices", target="End", text="1. Run away"))
+errors = graph.validate()""" .
+
+oc:kn_27dff27d a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When serializing or deserializing dialogue graphs" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """data = graph.to_dict()   # {"nodes": [...], "edges": [...]}
+json_str = graph.to_json()
+graph2 = Graph.from_dict(data)
+graph3 = Graph.from_json(json_str)
+graph4 = Graph.from_file('dialogue.json')""" .
+
+oc:kn_42c56377 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After constructing or modifying a dialogue graph" ;
+    oc:directiveContent "Always call graph.validate() after building a graph to catch integrity errors like edges pointing to missing nodes." ;
+    oc:hasRationale "Validation returns a list of error strings describing structural problems like dangling edge references." .
+
+oc:kn_56900c15 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building any dialogue graph" ;
+    oc:directiveContent "Dialogue graphs are composed of Nodes (content) and Edges (transitions). Nodes have types: 'line' for dialogue and 'choice' for branching points." ;
+    oc:hasRationale "Separating content nodes from transition edges enables clean validation and serialization of branching structures." .
+
+oc:kn_a81ac8b2 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before using any dialogue graph functionality" ;
+    oc:directiveContent "Requires the dialogue_graph module to be importable: `from dialogue_graph import Graph, Node, Edge`" .
+
+oc:kn_b758522c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using graph.visualize()" ;
+    oc:directiveContent "Graphviz binary must be installed system-wide (not just the pip package) for visualization to work." ;
+    oc:hasRationale "The Python graphviz package is only a wrapper; the actual rendering engine must be installed separately." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c02b5f7e a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When exporting a dialogue graph to JSON or dict format" ;
+    oc:directiveContent "{\"nodes\": [{\"id\": \"...\", \"speaker\": \"...\", \"text\": \"...\", \"type\": \"line|choice\"}], \"edges\": [{\"source\": \"...\", \"target\": \"...\", \"text\": \"...\"}]}" ;
+    oc:templateVariables "edges",
+        "id",
+        "nodes",
+        "source",
+        "speaker",
+        "target",
+        "text",
+        "type" .
+
+oc:kn_cb23459b a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When needing to edit or inspect an existing dialogue graph" ;
+    oc:directiveContent "Use Graph.from_file(), Graph.from_dict(), or Graph.from_json() to reconstruct a graph from previously serialized data." ;
+    oc:hasRationale "Round-trip serialization preserves graph structure for editing and re-export." .
+
+oc:kn_f4b78c62 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When building a dialogue graph from scratch" ;
+    oc:directiveContent "1. Create Graph instance → 2. Add Nodes (line/choice types) → 3. Add Edges (with optional text for choices) → 4. Validate with graph.validate() → 5. Export via to_dict()/to_json() or visualize()" ;
+    oc:stepOrder 1 .
+
+oc:req_1cce9dfa a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.10+" .
+
+oc:req_3d15a7eb a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "graphviz (binary + pip package)" .
+
+oc:req_72c92b35 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "dialogue_graph Python module" .
+
+_:ref_10182ae97d1e0e43 a oc:WorkflowStep ;
+    dcterms:description "Add/remove nodes and edges as needed" ;
+    oc:expectedOutcome "Graph updated with new content" ;
+    oc:stepDependsOn _:ref_968c3c03bc053bd5 ;
+    oc:stepId "modify-graph" .
+
+_:ref_1ce7dda16b265c67 a oc:WorkflowStep ;
+    dcterms:description "Add Edge objects connecting source nodes to target nodes, with optional text for choice transitions" ;
+    oc:expectedOutcome "All transitions and branching paths defined" ;
+    oc:stepDependsOn _:ref_ddc6db19fc7f0f21 ;
+    oc:stepId "add-edges" .
+
+_:ref_968c3c03bc053bd5 a oc:WorkflowStep ;
+    dcterms:description "Load graph using Graph.from_file(), from_dict(), or from_json()" ;
+    oc:expectedOutcome "Graph object populated with existing nodes and edges" ;
+    oc:stepId "load-graph" .
+
+_:ref_a9e80cb92043f287 a oc:WorkflowStep ;
+    dcterms:description "Instantiate an empty Graph object" ;
+    oc:expectedOutcome "Empty graph container ready for nodes" ;
+    oc:stepId "create-graph" .
+
+_:ref_b4b39f14b5b2aa6e a oc:WorkflowStep ;
+    dcterms:description "Call graph.validate() and check the returned error list" ;
+    oc:expectedOutcome "Empty error list confirming graph integrity" ;
+    oc:stepDependsOn _:ref_1ce7dda16b265c67 ;
+    oc:stepId "validate" .
+
+_:ref_ddc6db19fc7f0f21 a oc:WorkflowStep ;
+    dcterms:description "Add Node objects with id, speaker, text, and type ('line' or 'choice')" ;
+    oc:expectedOutcome "All content and choice nodes registered in the graph" ;
+    oc:stepDependsOn _:ref_a9e80cb92043f287 ;
+    oc:stepId "add-nodes" .
+

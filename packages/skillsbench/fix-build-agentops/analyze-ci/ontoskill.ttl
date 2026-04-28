@@ -1,0 +1,185 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_agentops_analyze_ci a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "analyze-ci" ;
+    skos:broader "CI analysis tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-agentops/analyze-ci" ;
+    oc:contentHash "d8e86df9dcbb6325f68e2bbcb0ac608299588ebcfdf04abcff4a7d4e20810b9e" ;
+    oc:differentia "analyzes failed GitHub Action jobs using Claude to produce concise failure summaries with root cause identification" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "<pr_url> or <job_url> [job_url ...] [--debug]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Analyze failed GitHub Action jobs for a pull request." ;
+    oc:hasName "analyze-ci" ;
+    oc:hasRequirement oc:req_0eafac1e,
+        oc:req_333cda1a,
+        oc:req_4d830aa1 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: analyze-ci
+description: Analyze failed GitHub Action jobs for a pull request.
+allowed-tools:
+  - Bash(uv run skills analyze-ci:*)
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill analyzes logs from failed GitHub Action jobs using Claude." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Analyze CI failures for a PR
+uv run skills analyze-ci https://github.com/mlflow/mlflow/pull/19601
+
+# Analyze specific job URLs directly
+uv run skills analyze-ci https://github.com/mlflow/mlflow/actions/runs/12345/job/67890
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 33-39" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Output: A concise failure summary with root cause, error messages, test names, and relevant log snippets." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Analyze all failed jobs in a PR
+uv run skills analyze-ci <pr_url>
+
+# Analyze specific job URLs directly
+uv run skills analyze-ci <job_url> [job_url ...]
+
+# Show debug info (tokens and costs)
+uv run skills analyze-ci <pr_url> --debug
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-27" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**GitHub Token**: Auto-detected via `gh auth token`, or set `GITHUB_TOKEN` env var" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Prerequisites" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Analyze CI Failures" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Fetch and analyze failed GitHub Action jobs for a pull request or specific job URLs" ;
+            oc:hasStep _:ref_2a69462d2c3cf450,
+                _:ref_de6021faf70bfaeb,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Analyze logs using Claude to identify root cause, error messages, test names, and relevant snippets" ;
+                    oc:expectedOutcome "Concise failure summary with actionable root cause identification" ;
+                    oc:stepDependsOn _:ref_de6021faf70bfaeb ;
+                    oc:stepId "analyze-failures" ] ;
+            oc:workflowId "analyze-ci-failures" ;
+            oc:workflowName "Analyze CI Failures for a PR" ] ;
+    oc:impartsKnowledge oc:kn_54feaf6b,
+        oc:kn_5bb0be3a,
+        oc:kn_60006ab1,
+        oc:kn_a5ec4916,
+        oc:kn_ad275b06,
+        oc:kn_dd0aa32a,
+        oc:kn_df5ad39f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze CI failures",
+        "diagnose failed GitHub Actions",
+        "extract root cause from CI logs",
+        "summarize test failures in PR" ;
+    oc:yieldsState oc:CIAnalyzed,
+        oc:RootCauseIdentified .
+
+oc:kn_54feaf6b a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Accept PR URL or job URL(s) as input 2. Fetch GitHub Action logs via gh API 3. Analyze logs using Claude 4. Output concise failure summary with root cause, error messages, test names, log snippets" ;
+    oc:stepOrder 1 .
+
+oc:kn_5bb0be3a a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When processing CI logs" ;
+    oc:directiveContent "CI logs may contain secrets, tokens, or sensitive environment variables; avoid logging or persisting raw log output" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_60006ab1 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any CI analysis execution" ;
+    oc:directiveContent "GitHub authentication required: auto-detected via `gh auth token` or set `GITHUB_TOKEN` env var" .
+
+oc:kn_a5ec4916 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "Concise failure summary with: root cause, error messages, test names, relevant log snippets" ;
+    oc:templateVariables "error_messages",
+        "log_snippets",
+        "root_cause",
+        "test_names" .
+
+oc:kn_ad275b06 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running analysis" ;
+    oc:directiveContent "Running multiple times produces same analysis for unchanged CI logs; re-running on updated PR may yield different results if new failures occurred" .
+
+oc:kn_dd0aa32a a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing CI failures" ;
+    oc:directiveContent """uv run skills analyze-ci <pr_url>
+uv run skills analyze-ci <job_url> [job_url ...]
+uv run skills analyze-ci <pr_url> --debug""" .
+
+oc:kn_df5ad39f a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Verify gh auth token is available or GITHUB_TOKEN env var is set before running analysis" .
+
+oc:req_0eafac1e a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "GITHUB_TOKEN (auto-detected via gh auth token)" .
+
+oc:req_333cda1a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "gh CLI (GitHub CLI)" .
+
+oc:req_4d830aa1 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "uv package manager" .
+
+_:ref_2a69462d2c3cf450 a oc:WorkflowStep ;
+    dcterms:description "Verify GitHub authentication via gh auth token or GITHUB_TOKEN env var" ;
+    oc:expectedOutcome "Valid GitHub credentials confirmed" ;
+    oc:stepId "authenticate" .
+
+_:ref_de6021faf70bfaeb a oc:WorkflowStep ;
+    dcterms:description "Fetch failed job logs from GitHub Actions API using the provided PR URL or job URLs" ;
+    oc:expectedOutcome "Raw CI log data retrieved for all failed jobs" ;
+    oc:stepDependsOn _:ref_2a69462d2c3cf450 ;
+    oc:stepId "fetch-logs" .
+

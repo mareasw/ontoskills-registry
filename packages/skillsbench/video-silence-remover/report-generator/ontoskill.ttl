@@ -1,0 +1,278 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_report_generator a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "report-generator" ;
+    skos:broader "Report generator" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/report-generator" ;
+    oc:contentHash "d9a6a859aeafe7c5ab5d17e9f7cf8b6b4288f00f6706d6d6cbfbbf7de53c5d24" ;
+    oc:dependsOnSkill oc:skill_ontoskills_video_processor ;
+    oc:differentia "that produces structured JSON compression statistics comparing original and processed video files" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "--original VIDEO_PATH --compressed VIDEO_PATH --output REPORT_PATH [--segments SEGMENTS_JSON]" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Generate compression reports for video processing. Use when you need to create structured JSON reports with duration statistics, compression ratios, and segment details after video processing." ;
+    oc:hasName "report-generator" ;
+    oc:hasPayload oc:payload_d9a6a859aeafe7c5 ;
+    oc:hasRequirement oc:req_3fcf652e,
+        oc:req_6e3538b1,
+        oc:req_ecf37d43 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Generates compression reports for video processing tasks. Calculates durations, compression ratios, and produces a structured JSON report." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/report-generator/scripts/generate_report.py \\
+    --original /path/to/original.mp4 \\
+    --compressed /path/to/compressed.mp4 \\
+    --segments /path/to/segments.json \\
+    --output /path/to/report.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-24" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`--segments`: Path to segments JSON (optional, for detailed report)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--compressed`: Path to compressed video file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--original`: Path to original video file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`--output`: Path to output report JSON" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "original_duration_seconds": 600.00,
+  "compressed_duration_seconds": 351.00,
+  "removed_duration_seconds": 249.00,
+  "compression_percentage": 41.5,
+  "segments_removed": [
+    {"start": 0, "end": 221, "duration": 221, "type": "opening"},
+    {"start": 610, "end": 613, "duration": 3, "type": "pause"}
+  ]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 35-46" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Output Format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Generate compression report
+python3 /root/.claude/skills/report-generator/scripts/generate_report.py \\
+    --original data/input_video.mp4 \\
+    --compressed compressed_video.mp4 \\
+    --segments all_segments.json \\
+    --output compression_report.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 55-62" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Creating structured output reports" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Generating compression statistics" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Documenting video processing results" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Uses ffprobe for accurate duration measurement" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Compression percentage = (removed / original) × 100" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "ffprobe (from ffmpeg)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Python 3.11+" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Dependencies" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Report Generator" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: report-generator
+description: Generate compression reports for video processing. Use when you need to create structured JSON reports with duration statistics, compression ratios, and segment details after video processing.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Generate a structured JSON report comparing original and compressed video files" ;
+            oc:hasStep _:ref_3a88316aec530b17,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify the output JSON contains all expected fields and valid values" ;
+                    oc:expectedOutcome "Report is valid and complete" ;
+                    oc:stepDependsOn _:ref_3a88316aec530b17 ;
+                    oc:stepId "validate-output" ],
+                _:ref_f01a90f35a146ee0 ;
+            oc:workflowId "generate-report" ;
+            oc:workflowName "Generate Compression Report" ] ;
+    oc:impartsKnowledge oc:kn_018f9614,
+        oc:kn_4ffc5997,
+        oc:kn_51560035,
+        oc:kn_58477e1f,
+        oc:kn_5dffe962,
+        oc:kn_d2b54f94,
+        oc:kn_fadc37f3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "calculate compression ratio",
+        "create structured JSON report with duration statistics",
+        "document video processing results",
+        "generate compression report" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_018f9614 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Report output always uses this JSON structure" ;
+    oc:directiveContent """{
+  "original_duration_seconds": {orig_duration},
+  "compressed_duration_seconds": {comp_duration},
+  "removed_duration_seconds": {removed_duration},
+  "compression_percentage": {percentage},
+  "segments_removed": [{"start": {start}, "end": {end}, "duration": {dur}, "type": {type}}]
+}""" ;
+    oc:templateVariables "comp_duration",
+        "dur",
+        "end",
+        "orig_duration",
+        "percentage",
+        "removed_duration",
+        "start",
+        "type" .
+
+oc:kn_4ffc5997 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running report generation" ;
+    oc:directiveContent "Running the report generator multiple times with the same inputs produces identical output JSON" ;
+    oc:hasRationale "Report generation is read-only with respect to input files; only the output file is written" .
+
+oc:kn_51560035 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating a compression report from the CLI" ;
+    oc:directiveContent "python3 /root/.claude/skills/report-generator/scripts/generate_report.py --original {original} --compressed {compressed} --segments {segments} --output {output}" .
+
+oc:kn_58477e1f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating compression ratio" ;
+    oc:directiveContent "Compression percentage formula: (removed_duration / original_duration) × 100" ;
+    oc:hasRationale "Standardized formula ensures consistent and interpretable compression metrics" .
+
+oc:kn_5dffe962 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when measuring video duration" ;
+    oc:directiveContent "Uses ffprobe for accurate duration measurement rather than estimating from frame count or metadata alone" ;
+    oc:hasRationale "ffprobe provides frame-accurate duration from the container, avoiding drift from metadata estimation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d2b54f94 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When generating a compression report" ;
+    oc:directiveContent "1. Verify original and compressed video files exist 2. Run ffprobe on both files to get durations 3. Calculate compression_percentage = (removed / original) × 100 4. Load segments JSON if provided 5. Write structured JSON report to output path" ;
+    oc:hasRationale "Ensures accurate duration measurement and complete report generation" ;
+    oc:stepOrder 1 .
+
+oc:kn_fadc37f3 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Both original and compressed video files must exist before running the report generator; segments JSON is optional" ;
+    oc:hasRationale "ffprobe requires the video files to be present to measure duration" ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_d9a6a859aeafe7c5 a oc:ExecutionPayload ;
+    oc:code "python3 /root/.claude/skills/report-generator/scripts/generate_report.py --original {original} --compressed {compressed} --segments {segments} --output {output}" ;
+    oc:executor "shell" ;
+    oc:timeout 30 .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_6e3538b1 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.11+" .
+
+oc:req_ecf37d43 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffprobe (from ffmpeg)" .
+
+_:ref_3a88316aec530b17 a oc:WorkflowStep ;
+    dcterms:description "Execute generate_report.py with file paths as arguments" ;
+    oc:expectedOutcome "JSON report written to output path" ;
+    oc:stepDependsOn _:ref_f01a90f35a146ee0 ;
+    oc:stepId "run-generator" .
+
+_:ref_f01a90f35a146ee0 a oc:WorkflowStep ;
+    dcterms:description "Verify original video, compressed video, and optionally segments JSON exist" ;
+    oc:expectedOutcome "All required files confirmed present" ;
+    oc:stepId "verify-files" .
+

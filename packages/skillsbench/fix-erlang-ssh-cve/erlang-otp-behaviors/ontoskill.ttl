@@ -1,0 +1,1162 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_erlang_ssh_cve_erlang_otp_behaviors a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "erlang-otp-behaviors" ;
+    skos:broader "Behavior pattern framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-erlang-ssh-cve/erlang-otp-behaviors" ;
+    oc:contentHash "d5b504b28c95fa56e930433aa606882a20641575a5218e735aa0555e9800b0e3" ;
+    oc:dependsOnSkill oc:skill_ontoskills_erlang_concurrency ;
+    oc:differentia "provides gen_server, gen_statem, supervisor, and gen_event abstractions for building fault-tolerant Erlang applications with standardized process lifecycle management" ;
+    oc:handlesFailure oc:CallbackMissing,
+        oc:ProcessCrashed,
+        oc:SupervisorRestartLimitExceeded ;
+    oc:hasArgumentHint "OTP behavior type (gen_server, gen_statem, supervisor, gen_event)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when oTP behaviors including gen_server for stateful processes, gen_statem for state machines, supervisors for fault tolerance, gen_event for event handling, and building robust, production-ready Erlang applications with proven patterns." ;
+    oc:hasName "erlang-otp-behaviors" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: erlang-otp-behaviors
+description: Use when oTP behaviors including gen_server for stateful processes, gen_statem for state machines, supervisors for fault tolerance, gen_event for event handling, and building robust, production-ready Erlang applications with proven patterns.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """Behaviors define interfaces that processes must implement, with OTP handling the
+infrastructure. Gen_server provides client-server processes, gen_statem implements
+state machines, supervisors manage process lifecycles, and gen_event coordinates
+event distribution. Understanding these patterns is essential for production Erlang.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """OTP (Open Telecom Platform) behaviors provide reusable patterns for common process
+types in Erlang systems. These abstractions handle complex details like message
+passing, error handling, and state management, allowing developers to focus on
+business logic while maintaining system reliability.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """This skill covers gen_server for stateful processes, gen_statem for complex state
+machines, supervisor trees for fault tolerance, gen_event for event handling,
+application behavior for packaging, and patterns for building robust OTP systems.""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Introduction" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Erlang OTP Design Principles](<https://www.erlang.org/doc/design_principles/users_guide.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Gen_server Manual](<https://www.erlang.org/doc/man/gen_server.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[Learn You Some Erlang - OTP](<https://learnyousomeerlang.com/what-is-otp>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[Gen_statem Manual](<https://www.erlang.org/doc/man/gen_statem.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[Supervisor Manual](<https://www.erlang.org/doc/man/supervisor.html>)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """-module(my_supervisor).
+-behaviour(supervisor).
+
+-export([start_link/0]).
+-export([init/1]).
+
+start_link() ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+init([]) ->
+    SupFlags = #{
+        strategy => one_for_one,
+        intensity => 5,
+        period => 60
+    },
+
+    ChildSpecs = [
+        #{
+            id => counter_server,
+            start => {counter_server, start_link, []},
+            restart => permanent,
+            shutdown => 5000,
+            type => worker,
+            modules => [counter_server]
+        },
+        #{
+            id => cache_server,
+            start => {cache_server, start_link, [1000]},
+            restart => permanent,
+            shutdown => 5000,
+            type => worker,
+            modules => [cache_server]
+        }
+    ],
+
+    {ok, {SupFlags, ChildSpecs}}.
+
+%%%===================================================================
+%%% Supervisor strategies
+%%%===================================================================
+
+%% one_for_one: Restart only failed child
+init_one_for_one([]) ->
+    SupFlags = #{strategy => one_for_one},
+    Children = [worker_spec(worker1), worker_spec(worker2)],
+    {ok, {SupFlags, Children}}.
+
+%% one_for_all: Restart all children if any fails
+init_one_for_all([]) ->
+    SupFlags = #{strategy => one_for_all},
+    Children = [worker_spec(worker1), worker_spec(worker2)],
+    {ok, {SupFlags, Children}}.
+
+%% rest_for_one: Restart failed child and all started after it
+init_rest_for_one([]) ->
+    SupFlags = #{strategy => rest_for_one},
+    Children = [
+        worker_spec(database),
+        worker_spec(cache),  % Depends on database
+        worker_spec(api)     % Depends on cache
+    ],
+    {ok, {SupFlags, Children}}.
+
+worker_spec(Name) ->
+    #{
+        id => Name,
+        start => {Name, start_link, []},
+        restart => permanent,
+        shutdown => 5000,
+        type => worker
+    }.
+
+%%%===================================================================
+%%% Nested supervisors (supervision tree)
+%%%===================================================================
+
+-module(app_supervisor).
+-behaviour(supervisor).
+
+-export([start_link/0, init/1]).
+
+start_link() ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+init([]) ->
+    SupFlags = #{strategy => one_for_one},
+
+    ChildSpecs = [
+        #{
+            id => database_sup,
+            start => {database_supervisor, start_link, []},
+            restart => permanent,
+            type => supervisor
+        },
+        #{
+            id => api_sup,
+            start => {api_supervisor, start_link, []},
+            restart => permanent,
+            type => supervisor
+        },
+        #{
+            id => worker_sup,
+            start => {worker_supervisor, start_link, []},
+            restart => permanent,
+            type => supervisor
+        }
+    ],
+
+    {ok, {SupFlags, ChildSpecs}}.
+
+%%%===================================================================
+%%% Dynamic supervision
+%%%===================================================================
+
+-module(dynamic_sup).
+-behaviour(supervisor).
+
+-export([start_link/0, start_child/1, stop_child/1]).
+-export([init/1]).
+
+start_link() ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+start_child(Args) ->
+    supervisor:start_child(?MODULE, [Args]).
+
+stop_child(Pid) ->
+    supervisor:terminate_child(?MODULE, Pid).
+
+init([]) ->
+    SupFlags = #{
+        strategy => simple_one_for_one,
+        intensity => 5,
+        period => 60
+    },
+
+    ChildSpec = #{
+        id => worker,
+        start => {worker, start_link, []},
+        restart => temporary,
+        shutdown => 5000,
+        type => worker
+    },
+
+    {ok, {SupFlags, [ChildSpec]}}.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 429-575" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Supervisors monitor child processes and restart them on failure for fault
+tolerance.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Supervisor trees provide automatic fault recovery and system resilience." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Supervisor Trees" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_74fa873f2f0ffd68 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Gen_statem implements finite state machines with explicit state transitions." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """Gen_statem provides structured state machine implementation with explicit
+transitions.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """-module(door_fsm).
+-behaviour(gen_statem).
+
+-export([start_link/0, open/0, close/0, lock/0, unlock/1]).
+-export([init/1, callback_mode/0, terminate/3, code_change/4]).
+-export([locked/3, unlocked/3, open/3]).
+
+-define(CODE, "1234").
+
+start_link() ->
+    gen_statem:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+open() ->
+    gen_statem:call(?MODULE, open).
+
+close() ->
+    gen_statem:call(?MODULE, close).
+
+lock() ->
+    gen_statem:call(?MODULE, lock).
+
+unlock(Code) ->
+    gen_statem:call(?MODULE, {unlock, Code}).
+
+init([]) ->
+    {ok, locked, #{}}.
+
+callback_mode() ->
+    state_functions.
+
+%% Locked state
+locked(call, {unlock, Code}, Data) when Code =:= ?CODE ->
+    {next_state, unlocked, Data, [{reply, ok}]};
+
+locked(call, {unlock, _WrongCode}, Data) ->
+    {keep_state, Data, [{reply, {error, wrong_code}}]};
+
+locked(call, _Event, Data) ->
+    {keep_state, Data, [{reply, {error, door_locked}}]}.
+
+%% Unlocked state
+unlocked(call, lock, Data) ->
+    {next_state, locked, Data, [{reply, ok}]};
+
+unlocked(call, open, Data) ->
+    {next_state, open, Data, [{reply, ok}]};
+
+unlocked(call, _Event, Data) ->
+    {keep_state, Data, [{reply, ok}]}.
+
+%% Open state
+open(call, close, Data) ->
+    {next_state, unlocked, Data, [{reply, ok}]};
+
+open(call, _Event, Data) ->
+    {keep_state, Data, [{reply, {error, door_open}}]}.
+
+terminate(_Reason, _State, _Data) ->
+    ok.
+
+code_change(_OldVsn, State, Data, _Extra) ->
+    {ok, State, Data}.
+
+%%%===================================================================
+%%% Connection state machine
+%%%===================================================================
+
+-module(connection_fsm).
+-behaviour(gen_statem).
+
+-export([start_link/0, connect/0, disconnect/0, send/1]).
+-export([init/1, callback_mode/0, terminate/3, code_change/4]).
+-export([disconnected/3, connecting/3, connected/3]).
+
+-record(data, {
+    socket = undefined,
+    buffer = <<>>,
+    retry_count = 0
+}).
+
+start_link() ->
+    gen_statem:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+connect() ->
+    gen_statem:call(?MODULE, connect).
+
+disconnect() ->
+    gen_statem:call(?MODULE, disconnect).
+
+send(Data) ->
+    gen_statem:call(?MODULE, {send, Data}).
+
+init([]) ->
+    {ok, disconnected, #data{}}.
+
+callback_mode() ->
+    [state_functions, state_enter].
+
+%% Disconnected state
+disconnected(enter, _OldState, _Data) ->
+    io:format("Entered disconnected state~n"),
+    keep_state_and_data;
+
+disconnected(call, connect, Data) ->
+    case connect_to_server() of
+        {ok, Socket} ->
+            {next_state, connected, Data#data{socket = Socket, retry_count = 0},
+             [{reply, ok}]};
+        error ->
+            NewData = Data#data{retry_count = Data#data.retry_count + 1},
+            case NewData#data.retry_count < 3 of
+                true ->
+                    {next_state, connecting, NewData, [{reply, {error, retrying}}]};
+                false ->
+                    {keep_state, NewData, [{reply, {error, max_retries}}]}
+            end
+    end.
+
+%% Connecting state
+connecting(enter, _OldState, _Data) ->
+    erlang:send_after(1000, self(), retry_connect),
+    keep_state_and_data;
+
+connecting(info, retry_connect, Data) ->
+    case connect_to_server() of
+        {ok, Socket} ->
+            {next_state, connected, Data#data{socket = Socket, retry_count = 0}};
+        error ->
+            NewData = Data#data{retry_count = Data#data.retry_count + 1},
+            case NewData#data.retry_count < 3 of
+                true ->
+                    {keep_state, NewData};
+                false ->
+                    {next_state, disconnected, NewData}
+            end
+    end.
+
+%% Connected state
+connected(enter, _OldState, _Data) ->
+    io:format("Connection established~n"),
+    keep_state_and_data;
+
+connected(call, {send, Data}, StateData) ->
+    case send_data(StateData#data.socket, Data) of
+        ok ->
+            {keep_state_and_data, [{reply, ok}]};
+        error ->
+            {next_state, disconnected, StateData, [{reply, {error, send_failed}}]}
+    end;
+
+connected(call, disconnect, StateData) ->
+    close_connection(StateData#data.socket),
+    {next_state, disconnected, StateData#data{socket = undefined}, [{reply, ok}]}.
+
+terminate(_Reason, _State, Data) ->
+    case Data#data.socket of
+        undefined -> ok;
+        Socket -> close_connection(Socket)
+    end.
+
+code_change(_OldVsn, State, Data, _Extra) ->
+    {ok, State, Data}.
+
+%% Helper functions
+connect_to_server() ->
+    {ok, socket}.
+
+send_data(_Socket, _Data) ->
+    ok.
+
+close_connection(_Socket) ->
+    ok.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 246-419" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Gen_Statem for State Machines" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Gen_server provides structure for stateful processes with client-server patterns." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Gen_server implements client-server processes with synchronous and asynchronous
+communication.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """-module(counter_server).
+-behaviour(gen_server).
+
+%% API
+-export([start_link/0, increment/0, decrement/0, get_value/0, reset/0]).
+
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+
+-define(SERVER, ?MODULE).
+
+%% State record
+-record(state, {count = 0}).
+
+%%%===================================================================
+%%% API
+%%%===================================================================
+
+start_link() ->
+    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+
+increment() ->
+    gen_server:cast(?SERVER, increment).
+
+decrement() ->
+    gen_server:cast(?SERVER, decrement).
+
+get_value() ->
+    gen_server:call(?SERVER, get_value).
+
+reset() ->
+    gen_server:call(?SERVER, reset).
+
+%%%===================================================================
+%%% gen_server callbacks
+%%%===================================================================
+
+init([]) ->
+    {ok, #state{}}.
+
+%% Synchronous calls (with response)
+handle_call(get_value, _From, State) ->
+    {reply, State#state.count, State};
+
+handle_call(reset, _From, State) ->
+    {reply, ok, State#state{count = 0}};
+
+handle_call(_Request, _From, State) ->
+    {reply, ignored, State}.
+
+%% Asynchronous casts (no response)
+handle_cast(increment, State) ->
+    NewCount = State#state.count + 1,
+    {noreply, State#state{count = NewCount}};
+
+handle_cast(decrement, State) ->
+    NewCount = State#state.count - 1,
+    {noreply, State#state{count = NewCount}};
+
+handle_cast(_Msg, State) ->
+    {noreply, State}.
+
+%% Handle other messages
+handle_info(_Info, State) ->
+    {noreply, State}.
+
+terminate(_Reason, _State) ->
+    ok.
+
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
+
+%%%===================================================================
+%%% Complex gen_server example: Cache
+%%%===================================================================
+
+-module(cache_server).
+-behaviour(gen_server).
+
+-export([start_link/1, put/2, get/1, delete/1, clear/0, size/0]).
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+
+-record(state, {
+    cache = #{},
+    max_size = 1000,
+    hits = 0,
+    misses = 0
+}).
+
+start_link(MaxSize) ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [MaxSize], []).
+
+put(Key, Value) ->
+    gen_server:call(?MODULE, {put, Key, Value}).
+
+get(Key) ->
+    gen_server:call(?MODULE, {get, Key}).
+
+delete(Key) ->
+    gen_server:cast(?MODULE, {delete, Key}).
+
+clear() ->
+    gen_server:cast(?MODULE, clear).
+
+size() ->
+    gen_server:call(?MODULE, size).
+
+init([MaxSize]) ->
+    process_flag(trap_exit, true),
+    {ok, #state{max_size = MaxSize}}.
+
+handle_call({put, Key, Value}, _From, State) ->
+    Cache = State#state.cache,
+    case maps:size(Cache) >= State#state.max_size of
+        true ->
+            {reply, {error, cache_full}, State};
+        false ->
+            NewCache = maps:put(Key, Value, Cache),
+            {reply, ok, State#state{cache = NewCache}}
+    end;
+
+handle_call({get, Key}, _From, State) ->
+    Cache = State#state.cache,
+    case maps:find(Key, Cache) of
+        {ok, Value} ->
+            NewState = State#state{hits = State#state.hits + 1},
+            {reply, {ok, Value}, NewState};
+        error ->
+            NewState = State#state{misses = State#state.misses + 1},
+            {reply, not_found, NewState}
+    end;
+
+handle_call(size, _From, State) ->
+    Size = maps:size(State#state.cache),
+    {reply, Size, State};
+
+handle_call(_Request, _From, State) ->
+    {reply, {error, unknown_request}, State}.
+
+handle_cast({delete, Key}, State) ->
+    NewCache = maps:remove(Key, State#state.cache),
+    {noreply, State#state{cache = NewCache}};
+
+handle_cast(clear, State) ->
+    {noreply, State#state{cache = #{}}};
+
+handle_cast(_Msg, State) ->
+    {noreply, State}.
+
+handle_info(_Info, State) ->
+    {noreply, State}.
+
+terminate(Reason, State) ->
+    io:format("Cache terminating: ~p~n", [Reason]),
+    io:format("Stats - Hits: ~p, Misses: ~p~n", [State#state.hits, State#state.misses]),
+    ok.
+
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
+
+%%%===================================================================
+%%% gen_server with timeouts
+%%%===================================================================
+
+-module(session_server).
+-behaviour(gen_server).
+
+-export([start_link/0, touch/0]).
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+
+-define(TIMEOUT, 30000). % 30 seconds
+
+-record(state, {
+    last_activity,
+    data = #{}
+}).
+
+start_link() ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+touch() ->
+    gen_server:cast(?MODULE, touch).
+
+init([]) ->
+    {ok, #state{last_activity = erlang:system_time(millisecond)}, ?TIMEOUT}.
+
+handle_call(_Request, _From, State) ->
+    {reply, ok, State, ?TIMEOUT}.
+
+handle_cast(touch, State) ->
+    NewState = State#state{last_activity = erlang:system_time(millisecond)},
+    {noreply, NewState, ?TIMEOUT};
+
+handle_cast(_Msg, State) ->
+    {noreply, State, ?TIMEOUT}.
+
+handle_info(timeout, State) ->
+    io:format("Session timed out~n"),
+    {stop, normal, State};
+
+handle_info(_Info, State) ->
+    {noreply, State, ?TIMEOUT}.
+
+terminate(_Reason, _State) ->
+    ok.
+
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 29-238" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Gen_Server Basics" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_a4eefc7564b2d0d5 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """Leverage supervisors for all applications requiring fault tolerance and automatic
+recovery.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Use OTP behaviors for production systems requiring reliability and maintainability." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """Use gen_statem when implementing protocols or systems with explicit state
+transitions.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Build supervisor trees to structure complex applications with multiple components." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Apply gen_server for any stateful process requiring client-server interaction." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "When to Use This Skill" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Erlang OTP Behaviors" ] ;
+    oc:hasWorkflow _:ref_74fa873f2f0ffd68,
+        [ a oc:Workflow ;
+            dcterms:description "Create a fully functional gen_server module with API, callbacks, and state management." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Implement handle_cast/2 for asynchronous operations with {noreply, NewState}" ;
+                    oc:expectedOutcome "Fire-and-forget operations update state without blocking callers" ;
+                    oc:stepDependsOn _:ref_2bc3a6e42e136555 ;
+                    oc:stepId "gs-6" ],
+                _:ref_2bc3a6e42e136555,
+                _:ref_3b1c5b1cfb311c1c,
+                _:ref_5b2942a9b192238a,
+                _:ref_71cbe9b562c637f8,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Implement handle_call/3 for synchronous operations with {reply, Response, NewState}" ;
+                    oc:expectedOutcome "Synchronous requests get proper responses and state updates" ;
+                    oc:stepDependsOn _:ref_2bc3a6e42e136555 ;
+                    oc:stepId "gs-5" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Add gen_server to supervisor child specs and verify restart behavior" ;
+                    oc:expectedOutcome "Process restarts automatically on crash within intensity limits" ;
+                    oc:stepDependsOn _:ref_e26a3c50dabcf436 ;
+                    oc:stepId "gs-8" ],
+                _:ref_e26a3c50dabcf436 ;
+            oc:workflowId "erlang-otp-behaviors-gen-server" ;
+            oc:workflowName "Implement a gen_server" ],
+        _:ref_a4eefc7564b2d0d5,
+        [ a oc:Workflow ;
+            dcterms:description "Build a fault-tolerant supervision tree with appropriate strategies and nested supervisors." ;
+            oc:hasStep _:ref_58d5075110c865c5,
+                _:ref_5bc4384f32ddd989,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Test fault tolerance by intentionally crashing children and verifying recovery" ;
+                    oc:expectedOutcome "All children restart correctly and system returns to operational state" ;
+                    oc:stepDependsOn _:ref_58d5075110c865c5 ;
+                    oc:stepId "st-6" ],
+                _:ref_659d13fa98901236,
+                _:ref_8e990ea7051a2060,
+                _:ref_96d03f3885a07a19 ;
+            oc:workflowId "erlang-otp-behaviors-supervisor-tree" ;
+            oc:workflowName "Design supervisor tree" ] ;
+    oc:impartsKnowledge oc:kn_026779bb,
+        oc:kn_0ecc6517,
+        oc:kn_1a6acd90,
+        oc:kn_26ae8413,
+        oc:kn_2b4aa7f4,
+        oc:kn_504c82a1,
+        oc:kn_57d78795,
+        oc:kn_6686b3f0,
+        oc:kn_67715256,
+        oc:kn_691d697d,
+        oc:kn_8479a7f5,
+        oc:kn_965e7438,
+        oc:kn_a6269873,
+        oc:kn_b48b1f4a,
+        oc:kn_bc140660,
+        oc:kn_cb919fd8,
+        oc:kn_cf5225be,
+        oc:kn_d3011d32,
+        oc:kn_db9ca0bf,
+        oc:kn_eb34f81c,
+        oc:kn_f5519340,
+        oc:kn_fbee4ca4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build state machines with gen_statem",
+        "create OTP-compliant Erlang applications",
+        "design supervisor trees for fault tolerance",
+        "handle events with gen_event",
+        "implement gen_server stateful processes",
+        "structure production Erlang systems" ;
+    oc:yieldsState oc:OTPBehaviorImplemented .
+
+oc:kn_026779bb a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When supervisor detects and restarts a crashed child" ;
+    oc:directiveContent "Supervisor restarting children is a visible side effect—linked processes receive EXIT signals and logs are generated for each restart cycle." ;
+    oc:hasRationale "Restart cascades can affect dependent processes and generate log noise, requiring monitoring of restart intensity." .
+
+oc:kn_0ecc6517 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When structuring nested supervisor trees" ;
+    oc:directiveContent "Circular dependencies in supervisor trees cause startup failures—ensure child start_link functions never depend on processes defined later in the same supervisor." ;
+    oc:hasRationale "Circular startup ordering prevents any process from initializing, deadlocking the entire application." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1a6acd90 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scaffolding a new gen_server module" ;
+    oc:codeLanguage "erlang" ;
+    oc:directiveContent """-module(MODULE).
+-behaviour(gen_server).
+-export([start_link/0]).
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+
+init([]) -> {ok, #state{}}.
+handle_call(Request, _From, State) -> {reply, ok, State}.
+handle_cast(_Msg, State) -> {noreply, State}.
+handle_info(_Info, State) -> {noreply, State}.
+terminate(_Reason, _State) -> ok.
+code_change(_OldVsn, State, _Extra) -> {ok, State}.""" .
+
+oc:kn_26ae8413 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining supervisor child specifications" ;
+    oc:codeLanguage "erlang" ;
+    oc:directiveContent """init([]) ->
+    SupFlags = #{strategy => one_for_one, intensity => 5, period => 60},
+    ChildSpecs = [
+        #{id => worker1, start => {worker1, start_link, []}, restart => permanent, shutdown => 5000, type => worker}
+    ],
+    {ok, {SupFlags, ChildSpecs}}.""" .
+
+oc:kn_2b4aa7f4 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any gen_server module" ;
+    oc:directiveContent "All six gen_server callbacks must be implemented: init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3—even if they return default values." ;
+    oc:hasRationale "OTP behavior contracts require all callbacks; missing ones cause compilation warnings and runtime crashes." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_504c82a1 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After starting OTP behavior processes" ;
+    oc:directiveContent "A gen_server or gen_statem is successfully started when start_link returns {ok, Pid}; a supervisor is healthy when supervisor:count_children/1 shows expected active counts." .
+
+oc:kn_57d78795 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before implementing OTP behaviors" ;
+    oc:directiveContent "Erlang/OTP runtime must be installed and the application must include OTP as a dependency in its .app file." .
+
+oc:kn_6686b3f0 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining child specs in supervisor init/1" ;
+    oc:directiveContent "Do not use temporary restart strategy for critical processes—permanent or transient restart ensures automatic recovery." ;
+    oc:hasRationale "Temporary restart means the supervisor won't restart a crashed child, allowing permanent loss of critical services." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_67715256 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing gen_server state structures" ;
+    oc:directiveContent "Avoid storing large state in gen_server records—state is copied on every message handling cycle." ;
+    oc:hasRationale "Large state causes excessive memory copying and GC pressure, degrading system performance." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_691d697d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing gen_server handle_call/3 callbacks" ;
+    oc:directiveContent "Never perform blocking operations inside handle_call as this prevents the gen_server from processing other messages, leading to deadlock." ;
+    oc:hasRationale "handle_call runs in the server process; blocking it blocks all other callers, creating cascading timeouts and system stalls." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8479a7f5 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When supervisor restarts children" ;
+    oc:directiveContent "Supervisor restart strategies make process recovery idempotent—restarting a child that's already dead simply starts a new one; restarting one that's alive is a no-op." ;
+    oc:hasRationale "Supervisors track child state via pid references, ensuring restart operations are safe to repeat." .
+
+oc:kn_965e7438 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing which OTP behavior to implement" ;
+    oc:directiveContent "Use gen_server for stateful processes, gen_statem for complex state machines with explicit transitions, supervisors for fault tolerance, and gen_event for event distribution." ;
+    oc:hasRationale "Each behavior provides specialized infrastructure for its pattern—message passing, state transitions, lifecycle management, or event handling—reducing boilerplate and error-prone manual implementation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6269873 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing gen_server handle_call/3 callbacks" ;
+    oc:directiveContent "Never forget to reply in handle_call—unreplied calls leave the caller waiting indefinitely." ;
+    oc:hasRationale "The caller blocks until it receives a reply or times out; missing replies cause resource leaks and hung processes." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b48b1f4a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing supervisor hierarchies" ;
+    oc:directiveContent "Match supervision strategy to child dependency relationships: one_for_one for independent children, rest_for_one for sequential dependencies, one_for_all when all children must be consistent." ;
+    oc:hasRationale "Wrong strategy causes unnecessary restarts of healthy processes or leaves dependent processes in inconsistent states." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_bc140660 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When creating a supervisor" ;
+    oc:directiveContent "1. Define module with -behaviour(supervisor) 2. Implement init/1 returning {ok, {SupFlags, ChildSpecs}} 3. Set strategy (one_for_one, one_for_all, rest_for_one) 4. Set intensity and period for restart limits 5. Define child specs with id, start, restart, shutdown, type 6. Build nested trees with supervisor-type children for complex apps" ;
+    oc:stepOrder 3 .
+
+oc:kn_cb919fd8 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When defining supervisor child specifications" ;
+    oc:directiveContent """%% Child spec map:
+#{
+    id => atom(),
+    start => {Module, Function, Args},
+    restart => permanent | transient | temporary,
+    shutdown => integer() | infinity,
+    type => worker | supervisor,
+    modules => [Module] | dynamic
+}""" ;
+    oc:templateVariables "id",
+        "modules",
+        "restart",
+        "shutdown",
+        "start",
+        "type" .
+
+oc:kn_cf5225be a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When creating a new gen_server" ;
+    oc:directiveContent "1. Define module with -behaviour(gen_server) declaration 2. Export API functions wrapping gen_server:call/2 and gen_server:cast/2 3. Export all 6 callbacks 4. Implement init/1 returning {ok, State} 5. Implement handle_call/3 for synchronous ops 6. Implement handle_cast/2 for async ops 7. Implement handle_info/2 for non-OTP messages 8. Implement terminate/2 for cleanup 9. Implement code_change/3 for hot upgrades" ;
+    oc:stepOrder 1 .
+
+oc:kn_d3011d32 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing gen_statem state functions" ;
+    oc:codeLanguage "erlang" ;
+    oc:directiveContent """%% State function in gen_statem
+locked(call, {unlock, Code}, Data) when Code =:= ?CODE ->
+    {next_state, unlocked, Data, [{reply, ok}]};
+locked(call, _Event, Data) ->
+    {keep_state, Data, [{reply, {error, denied}}]}.""" .
+
+oc:kn_db9ca0bf a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When creating a new gen_statem state machine" ;
+    oc:directiveContent "1. Define module with -behaviour(gen_statem) 2. Export state functions named after each state 3. Implement callback_mode/0 returning state_functions 4. Each state function handles EventType, EventContent, Data 5. Return {next_state, NewState, NewData} for transitions 6. Return {keep_state, NewData} to stay in current state 7. Optionally add state_enter for entry actions" ;
+    oc:stepOrder 2 .
+
+oc:kn_eb34f81c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any gen_statem module" ;
+    oc:directiveContent "Always implement callback_mode/0 in gen_statem returning state_functions or handle_event_function to define the callback mode." ;
+    oc:hasRationale "gen_statem requires explicit callback mode selection to dispatch state transition events to the correct functions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f5519340 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing gen_server processes that manage external resources" ;
+    oc:directiveContent "Set process_flag(trap_exit, true) in init/1 when the process must perform cleanup in terminate/2, such as closing sockets or releasing resources." ;
+    oc:hasRationale "Without trapping exits, terminate/2 is not called on parent shutdown, leaking resources like sockets and file handles." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fbee4ca4 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before deploying any OTP behavior module" ;
+    oc:directiveContent "Verify all behaviour callbacks are exported and implemented before starting the process—missing exports cause runtime crashes." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_160e40520aa2b91c a oc:WorkflowStep ;
+    dcterms:description "**Using temporary restart** for critical processes allows permanent failures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_1e973e23be47c0df a oc:WorkflowStep ;
+    dcterms:description "**Not matching all message patterns** causes unhandled message accumulation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_2772c2c576b80a38 a oc:WorkflowStep ;
+    dcterms:description "**Use handle_cast for fire-and-forget** operations without response requirements" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_3634585740193155 a oc:WorkflowStep ;
+    dcterms:description "**Use gen_statem for complex state machines** with many states and transitions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_3fe09fd7230d0345 a oc:WorkflowStep ;
+    dcterms:description "**Keep state records simple** to reduce complexity and improve maintainability" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_477625b462b0bc26 a oc:WorkflowStep ;
+    dcterms:description "**Implement proper termination** in terminate/2 for resource cleanup" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_49f845c3c843a02d a oc:WorkflowStep ;
+    dcterms:description "**Blocking in handle_call** prevents processing other messages causing deadlock" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_64f0b2629e254259 a oc:WorkflowStep ;
+    dcterms:description "**Not implementing code_change** prevents hot code upgrades" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_6c5b6cd985a6ee6c a oc:WorkflowStep ;
+    dcterms:description "**Not setting process_flag trap_exit** prevents graceful termination handling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_77ead293990a47b8 a oc:WorkflowStep ;
+    dcterms:description "**Creating circular dependencies** in supervisor trees causes startup failures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_821bcfcd5203a4f7 a oc:WorkflowStep ;
+    dcterms:description "**Not handling timeout** in state machines allows infinite blocking" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_8773ee2862996a45 a oc:WorkflowStep ;
+    dcterms:description "**Storing large state** in gen_server causes memory issues" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_a9c0ce1785e33f33 a oc:WorkflowStep ;
+    dcterms:description """**Implement all callback functions** even if they return default values for
+completeness""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_b4672917fd6c2006 a oc:WorkflowStep ;
+    dcterms:description "**Set appropriate timeout values** to prevent indefinite blocking in calls" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_be0358ce1e1756b3 a oc:WorkflowStep ;
+    dcterms:description """**Test supervisor behavior** by intentionally crashing children to verify
+recovery""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_d85a9feb3b3c5d2b a oc:WorkflowStep ;
+    dcterms:description """**Use gen_server for stateful processes** to leverage OTP infrastructure and
+error handling""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d9155983a2ee9964 a oc:WorkflowStep ;
+    dcterms:description "**Design supervisor hierarchies** that match application component dependencies" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_edc1e430c37ac6a0 a oc:WorkflowStep ;
+    dcterms:description "**Use appropriate restart strategies** based on child process relationships" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_f54c76da9152ffac a oc:WorkflowStep ;
+    dcterms:description "**Forgetting to reply** in handle_call leaves callers waiting indefinitely" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fca903a6143b4eaa a oc:WorkflowStep ;
+    dcterms:description "**Using wrong supervision strategy** causes unnecessary process restarts" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_3b1c5b1cfb311c1c a oc:WorkflowStep ;
+    dcterms:description "Define state record with required fields" ;
+    oc:expectedOutcome "State record captures all process state" ;
+    oc:stepDependsOn _:ref_5b2942a9b192238a ;
+    oc:stepId "gs-2" .
+
+_:ref_58d5075110c865c5 a oc:WorkflowStep ;
+    dcterms:description "Set intensity and period limits to prevent restart storms" ;
+    oc:expectedOutcome "Supervisor shuts down after exceeding restart threshold rather than looping" ;
+    oc:stepDependsOn _:ref_8e990ea7051a2060 ;
+    oc:stepId "st-5" .
+
+_:ref_5b2942a9b192238a a oc:WorkflowStep ;
+    dcterms:description "Define module with -behaviour(gen_server) and export API functions and all 6 callbacks" ;
+    oc:expectedOutcome "Module compiles with behaviour declaration and proper exports" ;
+    oc:stepId "gs-1" .
+
+_:ref_5bc4384f32ddd989 a oc:WorkflowStep ;
+    dcterms:description "Choose supervision strategy based on dependencies: one_for_one (independent), rest_for_one (sequential deps), one_for_all (all-or-nothing)" ;
+    oc:expectedOutcome "Strategy minimizes unnecessary restarts while maintaining consistency" ;
+    oc:stepDependsOn _:ref_659d13fa98901236 ;
+    oc:stepId "st-2" .
+
+_:ref_659d13fa98901236 a oc:WorkflowStep ;
+    dcterms:description "Identify all worker processes and their dependency relationships" ;
+    oc:expectedOutcome "Clear map of which processes depend on which others" ;
+    oc:stepId "st-1" .
+
+_:ref_71cbe9b562c637f8 a oc:WorkflowStep ;
+    dcterms:description "Implement API functions wrapping gen_server:start_link/4, call/2, and cast/2" ;
+    oc:expectedOutcome "Public API hides gen_server details from callers" ;
+    oc:stepDependsOn _:ref_3b1c5b1cfb311c1c ;
+    oc:stepId "gs-3" .
+
+_:ref_74fa873f2f0ffd68 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_160e40520aa2b91c,
+        _:ref_1e973e23be47c0df,
+        _:ref_49f845c3c843a02d,
+        _:ref_64f0b2629e254259,
+        _:ref_6c5b6cd985a6ee6c,
+        _:ref_77ead293990a47b8,
+        _:ref_821bcfcd5203a4f7,
+        _:ref_8773ee2862996a45,
+        _:ref_f54c76da9152ffac,
+        _:ref_fca903a6143b4eaa ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8e990ea7051a2060 a oc:WorkflowStep ;
+    dcterms:description "Group related workers under nested sub-supervisors for isolation" ;
+    oc:expectedOutcome "Failures in one subsystem don't cascade to unrelated subsystems" ;
+    oc:stepDependsOn _:ref_96d03f3885a07a19 ;
+    oc:stepId "st-4" .
+
+_:ref_96d03f3885a07a19 a oc:WorkflowStep ;
+    dcterms:description "Define child specs with appropriate restart (permanent/transient/temporary), shutdown timeout, and type for each child" ;
+    oc:expectedOutcome "Each child has correct lifecycle policy matching its criticality" ;
+    oc:stepDependsOn _:ref_5bc4384f32ddd989 ;
+    oc:stepId "st-3" .
+
+_:ref_a4eefc7564b2d0d5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_2772c2c576b80a38,
+        _:ref_3634585740193155,
+        _:ref_3fe09fd7230d0345,
+        _:ref_477625b462b0bc26,
+        _:ref_a9c0ce1785e33f33,
+        _:ref_b4672917fd6c2006,
+        _:ref_be0358ce1e1756b3,
+        _:ref_d85a9feb3b3c5d2b,
+        _:ref_d9155983a2ee9964,
+        _:ref_edc1e430c37ac6a0 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_e26a3c50dabcf436 a oc:WorkflowStep ;
+    dcterms:description "Implement handle_info/2, terminate/2, and code_change/3 (can be minimal defaults)" ;
+    oc:expectedOutcome "All callbacks handled, no unhandled message accumulation" ;
+    oc:stepDependsOn _:ref_2bc3a6e42e136555 ;
+    oc:stepId "gs-7" .
+
+_:ref_2bc3a6e42e136555 a oc:WorkflowStep ;
+    dcterms:description "Implement init/1 returning {ok, InitialState} (or {ok, InitialState, Timeout})" ;
+    oc:expectedOutcome "Process initializes with correct starting state" ;
+    oc:stepDependsOn _:ref_71cbe9b562c637f8 ;
+    oc:stepId "gs-4" .
+

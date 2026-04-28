@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/exoplanet-detection-period",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "box-least-squares/ontoskill.ttl",
+    "exoplanet-workflows/ontoskill.ttl",
+    "light-curve-preprocessing/ontoskill.ttl",
+    "lomb-scargle-periodogram/ontoskill.ttl",
+    "transit-least-squares/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "box-least-squares/intents.json",
+    "exoplanet-workflows/intents.json",
+    "light-curve-preprocessing/intents.json",
+    "lomb-scargle-periodogram/intents.json",
+    "transit-least-squares/intents.json"
+  ],
+  "skills": []
+}

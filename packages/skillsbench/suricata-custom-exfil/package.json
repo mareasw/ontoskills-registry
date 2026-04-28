@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/suricata-custom-exfil",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "pcap-triage-tshark/ontoskill.ttl",
+    "suricata-offline-evejson/ontoskill.ttl",
+    "suricata-rules-basics/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "pcap-triage-tshark/intents.json",
+    "suricata-offline-evejson/intents.json",
+    "suricata-rules-basics/intents.json"
+  ],
+  "skills": []
+}

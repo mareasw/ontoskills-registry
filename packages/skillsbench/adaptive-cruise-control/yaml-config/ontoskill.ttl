@@ -1,0 +1,230 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_adaptive_cruise_control_yaml_config a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "yaml-config" ;
+    skos:broader "Configuration handler" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-adaptive-cruise-control/yaml-config" ;
+    oc:contentHash "3c4c7e40911e12408359ee3efeafbc94fee3fc4cb4bd73a4366e32fd571a0973" ;
+    oc:differentia "reads and writes YAML files with safe parsing, error handling, and default merging for vehicle simulation parameters" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:ParseError ;
+    oc:hasArgumentHint "file-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use this skill when reading or writing YAML configuration files, loading vehicle parameters, or handling config file parsing with proper error handling." ;
+    oc:hasName "yaml-config" ;
+    oc:hasRequirement oc:req_666f5839 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`default_flow_style=False`: Use block style (readable)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`sort_keys=False`: Preserve insertion order" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`allow_unicode=True`: Support unicode characters" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Options" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import yaml
+
+data = {
+    'settings': {
+        'param1': 1.5,
+        'param2': 0.1
+    }
+}
+
+with open('output.yaml', 'w') as f:
+    yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 24-36" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Writing YAML" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import os
+import yaml
+
+def load_config(filepath, defaults=None):
+    \"\"\"Load config file, return defaults if missing.\"\"\"
+    if defaults is None:
+        defaults = {}
+
+    if not os.path.exists(filepath):
+        return defaults
+
+    with open(filepath, 'r') as f:
+        loaded = yaml.safe_load(f) or {}
+
+    # Merge loaded values over defaults
+    result = defaults.copy()
+    result.update(loaded)
+    return result
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 61-80" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Optional Config Loading" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always use `safe_load` to prevent code execution vulnerabilities:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import yaml
+
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
+# Access nested values
+value = config['section']['key']
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 12-20" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Reading YAML" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import yaml
+
+try:
+    with open('config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+except FileNotFoundError:
+    config = {}  # Use defaults
+except yaml.YAMLError as e:
+    print(f"YAML parse error: {e}")
+    config = {}
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 46-57" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Error Handling" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "YAML Configuration Files" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: yaml-config
+description: Use this skill when reading or writing YAML configuration files, loading vehicle parameters, or handling config file parsing with proper error handling.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Write a Python dictionary to a YAML file with readable formatting." ;
+            oc:hasStep _:ref_37db581b979ab3cb,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Write data to file using yaml.dump() with default_flow_style=False and sort_keys=False" ;
+                    oc:expectedOutcome "Human-readable YAML file on disk" ;
+                    oc:stepDependsOn _:ref_37db581b979ab3cb ;
+                    oc:stepId "dump-yaml" ] ;
+            oc:workflowId "yaml-config-write" ;
+            oc:workflowName "Write YAML Configuration" ],
+        [ a oc:Workflow ;
+            dcterms:description "Safely load a YAML configuration file with error handling and default fallback." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Merge loaded values over any provided defaults" ;
+                    oc:expectedOutcome "Complete configuration dictionary with defaults filled in" ;
+                    oc:stepDependsOn _:ref_b9c078945bf343a8 ;
+                    oc:stepId "merge-defaults" ],
+                _:ref_74418e967719b422,
+                _:ref_b9c078945bf343a8 ;
+            oc:workflowId "yaml-config-load" ;
+            oc:workflowName "Load YAML Configuration" ] ;
+    oc:impartsKnowledge oc:kn_1242d0c1,
+        oc:kn_6abdd5e5,
+        oc:kn_8ed704fc,
+        oc:kn_967e4aa5,
+        oc:kn_ec7097c5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "handle config file parsing errors",
+        "load vehicle parameters from config",
+        "merge config with defaults",
+        "read YAML configuration files",
+        "write YAML configuration files" ;
+    oc:yieldsState oc:ConfigurationLoaded .
+
+oc:kn_1242d0c1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing YAML files" ;
+    oc:directiveContent "Use default_flow_style=False and sort_keys=False when calling yaml.dump() to produce human-readable block-style output that preserves insertion order." ;
+    oc:hasRationale "Block style is far more readable than flow style for configuration files, and preserving key order matches the developer's mental model." .
+
+oc:kn_6abdd5e5 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When loading configuration files that may be absent or corrupt" ;
+    oc:directiveContent "Catch FileNotFoundError and yaml.YAMLError separately — return an empty dict or defaults dict on both, never crash on missing or malformed config." ;
+    oc:hasRationale "Configuration files should be optional; the application should fall back gracefully to sensible defaults rather than failing to start." .
+
+oc:kn_8ed704fc a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading any YAML file" ;
+    oc:directiveContent "Always use yaml.safe_load() instead of yaml.load() to prevent arbitrary code execution vulnerabilities." ;
+    oc:hasRationale "yaml.load() can deserialize arbitrary Python objects, enabling remote code execution if the YAML file contains malicious payloads." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_967e4aa5 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Reading a YAML config file is idempotent; writing the same data produces identical output. The load_config helper merges loaded values over defaults deterministically." ;
+    oc:hasRationale "Repeated reads or writes with identical inputs yield identical results, making config operations safe to retry." .
+
+oc:kn_ec7097c5 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before loading optional configuration files" ;
+    oc:directiveContent "Verify the YAML file exists with os.path.exists() before attempting to open it when optional loading is needed." ;
+    oc:hasRationale "Checking existence first allows returning defaults without triggering exception overhead." .
+
+oc:req_666f5839 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "PyYAML (pip install pyyaml)" .
+
+_:ref_37db581b979ab3cb a oc:WorkflowStep ;
+    dcterms:description "Construct the data dictionary to serialize" ;
+    oc:expectedOutcome "Python dict ready for serialization" ;
+    oc:stepId "prepare-data" .
+
+_:ref_74418e967719b422 a oc:WorkflowStep ;
+    dcterms:description "Check if the config file exists at the given filepath" ;
+    oc:expectedOutcome "Know whether to attempt loading or return defaults" ;
+    oc:stepId "check-exists" .
+
+_:ref_b9c078945bf343a8 a oc:WorkflowStep ;
+    dcterms:description "Open and parse the YAML file using yaml.safe_load()" ;
+    oc:expectedOutcome "Parsed configuration dictionary" ;
+    oc:stepDependsOn _:ref_74418e967719b422 ;
+    oc:stepId "parse-yaml" .
+

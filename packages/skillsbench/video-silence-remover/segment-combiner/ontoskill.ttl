@@ -1,0 +1,241 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_segment_combiner a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "segment-combiner" ;
+    skos:broader "Data processor" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/segment-combiner" ;
+    oc:contentHash "c6f215ba6f5ee62f55cb66aa43d01535177cc615cd1b2484110b6eb564e184ec" ;
+    oc:dependsOnSkill oc:skill_ontoskills_pause_detector,
+        oc:skill_ontoskills_silence_detector ;
+    oc:differentia "merges multiple segment detection JSON files into a single sorted, unified segment list for downstream video processing" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "--segments <file1.json> <file2.json> ... --output <output.json>" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Combine multiple segment detection results into a unified list. Use when you need to merge segments from different detectors, prepare removal lists for video processing, or consolidate detection outputs." ;
+    oc:hasName "segment-combiner" ;
+    oc:hasPayload oc:payload_c6f215ba6f5ee62f ;
+    oc:hasRequirement oc:req_00703909 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Combines multiple segment JSON files into a single unified segments file for video processing." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Python 3.11+" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Preparing unified input for video-processor" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Merging segments from multiple detectors" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Consolidating detection results" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Segments are sorted by start time" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "All input files must have `segments` array" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Compatible with video-processor --remove-segments input" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Combine segments from multiple detectors
+python3 /root/.claude/skills/segment-combiner/scripts/combine_segments.py \\
+    --segments initial_silence.json pauses.json \\
+    --output all_segments.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 61-66" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/segment-combiner/scripts/combine_segments.py \\
+    --segments /path/to/segments1.json /path/to/segments2.json \\
+    --output /path/to/all_segments.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-22" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "segments": [
+    {"start": 0, "end": 120, "duration": 120},
+    {"start": 300, "end": 305, "duration": 5}
+  ],
+  "total_segments": 2,
+  "total_duration_seconds": 125
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 44-53" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Output Format" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--segments`: One or more segment JSON files to combine" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--output`: Path to output combined segments JSON" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "segments": [
+    {"start": 0, "end": 120, "duration": 120},
+    {"start": 300, "end": 305, "duration": 5}
+  ]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 33-40" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Each input file should have a `segments` array:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Input Format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Segment Combiner" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: segment-combiner
+description: Combine multiple segment detection results into a unified list. Use when you need to merge segments from different detectors, prepare removal lists for video processing, or consolidate detection outputs.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_414f1592,
+        oc:kn_6c866641,
+        oc:kn_7188346e,
+        oc:kn_bb590967,
+        oc:kn_c31be961,
+        oc:kn_ed954dd0,
+        oc:kn_ffbaf200 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "combine segment detection results",
+        "consolidate detection outputs",
+        "merge segments from multiple detectors",
+        "prepare unified removal list for video processing" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_414f1592 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When combining segments from multiple detectors into a unified removal list" ;
+    oc:directiveContent "1. Run individual detectors (silence-detector, pause-detector) to produce segment JSON files 2. Run combine_segments.py with all segment files via --segments flag 3. Verify output contains total_segments and total_duration_seconds 4. Pass output file to video-processor --remove-segments" ;
+    oc:stepOrder 1 .
+
+oc:kn_6c866641 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Running the combiner multiple times with the same inputs produces identical output" ;
+    oc:hasRationale "Deterministic output ensures reproducible video processing pipelines" .
+
+oc:kn_7188346e a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Output JSON structure for combined segments" ;
+    oc:directiveContent "{\"segments\": [{\"start\": {start}, \"end\": {end}, \"duration\": {duration}}], \"total_segments\": {count}, \"total_duration_seconds\": {total}}" ;
+    oc:templateVariables "count",
+        "duration",
+        "end",
+        "start",
+        "total" .
+
+oc:kn_bb590967 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing input files for combination" ;
+    oc:directiveContent "All input files must contain a 'segments' array with objects having 'start', 'end', and 'duration' fields" ;
+    oc:hasRationale "Missing or malformed segments arrays will cause the combiner to fail or produce incorrect output" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c31be961 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After running combine_segments.py" ;
+    oc:directiveContent "Output file contains 'segments' array sorted by start time, 'total_segments' count, and 'total_duration_seconds' sum" .
+
+oc:kn_ed954dd0 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Python 3.11+ must be available on the system" .
+
+oc:kn_ffbaf200 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When combining segments" ;
+    oc:directiveContent "Do not skip the sort-by-start-time step; unsorted segments will cause incorrect video processing" ;
+    oc:hasRationale "video-processor expects segments ordered chronologically for correct timeline manipulation" ;
+    oc:severityLevel "HIGH" .
+
+oc:payload_c6f215ba6f5ee62f a oc:ExecutionPayload ;
+    oc:code "python3 /root/.claude/skills/segment-combiner/scripts/combine_segments.py --segments {input_files} --output {output_file}" ;
+    oc:executor "shell" .
+
+oc:req_00703909 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.11+" .
+

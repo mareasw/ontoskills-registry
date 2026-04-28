@@ -1,0 +1,22 @@
+{
+  "package_id": "skillsbench/3d-scan-calc",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "mesh-analysis/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "mesh-analysis/intents.json"
+  ],
+  "skills": [
+    {
+      "id": "mesh-analysis",
+      "path": "mesh-analysis/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true
+    }
+  ]
+}

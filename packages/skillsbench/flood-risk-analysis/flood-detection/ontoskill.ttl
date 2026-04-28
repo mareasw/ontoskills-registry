@@ -1,0 +1,418 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_flood_risk_analysis_flood_detection a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "flood-detection" ;
+    skos:broader "analytical procedure" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/flood-risk-analysis/flood-detection" ;
+    oc:contentHash "443288f9b060bd5ef89370b9bbcf3039f81bb84a14d8573222b825a543dcc76b" ;
+    oc:dependsOnSkill oc:skill_ontoskills_nws_flood_thresholds,
+        oc:skill_ontoskills_usgs_data_download ;
+    oc:differentia "compares observed water levels against NWS flood stage thresholds to identify and classify flood events" ;
+    oc:handlesFailure oc:DataUnavailable,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "water level data and flood thresholds" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Detect flood events by comparing water levels to thresholds. Use when determining if flooding occurred, counting flood days, aggregating instantaneous data to daily values, or classifying flood severity." ;
+    oc:hasName "flood-detection" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "USGS instantaneous data is recorded at ~15-minute intervals. For flood detection, aggregate to daily maximum:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# df is DataFrame from nwis.get_iv() with datetime index
+# gage_col is the column name containing water levels
+
+daily_max = df[gage_col].resample('D').max()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 23-28" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "### Why Daily Maximum?" ;
+                                    oc:tableMarkdown """| Aggregation | Use Case |
+|-------------|----------|
+| `max()` | Flood detection - captures peak water level |
+| `mean()` | Long-term trends - may miss short flood peaks |
+| `min()` | Low flow analysis |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Why Daily Maximum?" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Aggregating Instantaneous Data to Daily" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "If multiple threshold levels are available:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def classify_flood(water_level, thresholds):
+    if water_level >= thresholds['major']:
+        return 'major'
+    elif water_level >= thresholds['moderate']:
+        return 'moderate'
+    elif water_level >= thresholds['flood']:
+        return 'minor'
+    elif water_level >= thresholds['action']:
+        return 'action'
+    else:
+        return 'normal'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 74-86" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Flood Severity Classification" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Flood detection involves comparing observed water levels against established flood stage thresholds. This guide covers how to process water level data and identify flood events." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import json
+
+output = {
+    'flood_events': flood_results,
+    'total_stations_with_flooding': len(flood_results)
+}
+
+with open('flood_report.json', 'w') as f:
+    json.dump(output, f, indent=2)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 102-112" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "JSON Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import csv
+
+with open('flood_results.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['station_id', 'flood_days'])
+    for result in flood_results:
+        writer.writerow([result['station_id'], result['flood_days']])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 91-99" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Simple CSV Output" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Output Format Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| No floods detected | Threshold too high or dry period | Verify threshold values |
+| All days show flooding | Threshold too low or data error | Check threshold units (feet vs meters) |
+| NaN in daily_max | Missing data for entire day | Check data availability |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """flood_threshold = <threshold_from_nws>  # feet
+
+# Count days with flooding
+flood_days = (daily_max >= flood_threshold).sum()
+
+# Get specific dates with flooding
+flood_dates = daily_max[daily_max >= flood_threshold].index.tolist()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 41-49" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Compare daily maximum water level against flood threshold:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Detecting Flood Days" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Only report stations with at least 1 flood day" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use daily maximum for flood detection to capture peaks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Ensure water level and threshold use same units (typically feet)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Sort results by flood severity or duration for prioritization" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """flood_results = []
+
+for site_id, site_data in all_data.items():
+    daily_max = site_data['water_levels'].resample('D').max()
+    threshold = thresholds[site_id]['flood']
+
+    days_above = int((daily_max >= threshold).sum())
+
+    if days_above > 0:
+        flood_results.append({
+            'station_id': site_id,
+            'flood_days': days_above
+        })
+
+# Sort by flood days descending
+flood_results.sort(key=lambda x: x['flood_days'], reverse=True)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 52-69" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Processing Multiple Stations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """water_level >= flood_stage_threshold
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-18" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "According to the National Weather Service, flood stage is the water level at which overflow of the natural banks begins to cause damage. A flood event occurs when:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Flood Stage Definition" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Flood Detection Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: flood-detection
+description: Detect flood events by comparing water levels to thresholds. Use when determining if flooding occurred, counting flood days, aggregating instantaneous data to daily values, or classifying flood severity.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Detect and classify flood events for a single USGS station" ;
+            oc:hasStep _:ref_186cfc6bc3fc0b95,
+                _:ref_554ee0dfe64202cc,
+                _:ref_5d02f67052c21dff,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Format and output results as CSV or JSON" ;
+                    oc:expectedOutcome "Flood detection report file" ;
+                    oc:stepDependsOn _:ref_5d02f67052c21dff ;
+                    oc:stepId "output-results" ],
+                _:ref_99cb6fd4054992a4,
+                _:ref_9ac2dfecb98e54b2 ;
+            oc:workflowId "flood-detection-single" ;
+            oc:workflowName "Single Station Flood Detection" ],
+        [ a oc:Workflow ;
+            dcterms:description "Detect and rank flood events across multiple USGS stations" ;
+            oc:hasStep _:ref_1ce967d9cbb0e260,
+                _:ref_bf52a2820ac37d30,
+                _:ref_d2894538c6be6652,
+                _:ref_ec9946535bfc7a10,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Output sorted results as CSV or JSON report" ;
+                    oc:expectedOutcome "Multi-station flood report" ;
+                    oc:stepDependsOn _:ref_ec9946535bfc7a10 ;
+                    oc:stepId "output-report" ] ;
+            oc:workflowId "flood-detection-multi" ;
+            oc:workflowName "Multi-Station Flood Detection" ] ;
+    oc:impartsKnowledge oc:kn_21c549f1,
+        oc:kn_604f14a9,
+        oc:kn_61d686ba,
+        oc:kn_683b56ac,
+        oc:kn_77540d12,
+        oc:kn_87ecf415,
+        oc:kn_92bc0c8f,
+        oc:kn_98211dff,
+        oc:kn_f459a437 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FloodThresholdsLoaded,
+        oc:WaterLevelDataAvailable ;
+    oc:resolvesIntent "aggregate instantaneous water level data to daily values",
+        "classify flood severity",
+        "count flood days from water level data",
+        "detect flood events",
+        "identify stations with flooding" ;
+    oc:yieldsState oc:FloodEventsDetected,
+        oc:FloodSeverityClassified .
+
+oc:kn_21c549f1 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating flood results for multiple stations" ;
+    oc:directiveContent "Do not report all stations regardless of flood status. Only report stations with at least 1 flood day to keep output meaningful." ;
+    oc:hasRationale "Including zero-flood stations in results creates noise and obscures actionable flood information." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_604f14a9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating flood detection results" ;
+    oc:directiveContent "If all days show flooding, suspect threshold too low or data error (e.g., threshold in wrong units). If no floods detected, verify threshold values are not too high or check for dry periods." ;
+    oc:hasRationale "Extreme results (all or none) typically indicate configuration errors rather than genuine hydrological conditions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_61d686ba a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When detecting flood events from water level data" ;
+    oc:directiveContent "1. Aggregate instantaneous data to daily maximum using resample('D').max() 2. Compare daily max against flood threshold 3. Count flood days with (daily_max >= threshold).sum() 4. Extract flood dates 5. Classify severity using action/minor/moderate/major thresholds 6. Sort results by severity or duration" ;
+    oc:hasRationale "Structured procedure ensures consistent and accurate flood detection across all stations." ;
+    oc:stepOrder 1 .
+
+oc:kn_683b56ac a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When encountering NaN in aggregated daily data" ;
+    oc:directiveContent "NaN values in daily_max indicate missing data for an entire day. Check data availability before running flood detection." ;
+    oc:hasRationale "USGS gauges can have data gaps due to equipment failure or transmission issues; NaN propagates through comparisons silently." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_77540d12 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When aggregating instantaneous USGS data for flood detection" ;
+    oc:directiveContent "Use daily maximum aggregation (resample('D').max()) for flood detection to capture peak water levels; never use mean or min as they may miss short flood peaks." ;
+    oc:hasRationale "Mean and min aggregations can miss short-duration flood peaks that occur between measurement intervals, leading to false negatives." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_87ecf415 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When outputting flood detection results" ;
+    oc:directiveContent """CSV: station_id,flood_days
+JSON: {"flood_events": [{"station_id": "...", "flood_days": N}], "total_stations_with_flooding": N}""" ;
+    oc:templateVariables "flood_days",
+        "station_id",
+        "total_stations_with_flooding" .
+
+oc:kn_92bc0c8f a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When classifying flood severity with multiple threshold levels" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def classify_flood(water_level, thresholds):
+    if water_level >= thresholds['major']:
+        return 'major'
+    elif water_level >= thresholds['moderate']:
+        return 'moderate'
+    elif water_level >= thresholds['flood']:
+        return 'minor'
+    elif water_level >= thresholds['action']:
+        return 'action'
+    else:
+        return 'normal'""" .
+
+oc:kn_98211dff a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When detecting flood days from a DataFrame of water levels" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """daily_max = df[gage_col].resample('D').max()
+flood_days = (daily_max >= flood_threshold).sum()
+flood_dates = daily_max[daily_max >= flood_threshold].index.tolist()""" .
+
+oc:kn_f459a437 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When comparing water levels against thresholds" ;
+    oc:directiveContent "Ensure water level data and flood threshold use the same units (typically feet). Unit mismatch between feet and meters causes false positives or negatives." ;
+    oc:hasRationale "NWS thresholds are in feet; USGS data may vary in units. Mismatched units silently produce incorrect results." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_186cfc6bc3fc0b95 a oc:WorkflowStep ;
+    dcterms:description "Aggregate instantaneous data to daily maximum using resample('D').max()" ;
+    oc:expectedOutcome "Series of daily maximum water levels" ;
+    oc:stepDependsOn _:ref_9ac2dfecb98e54b2 ;
+    oc:stepId "aggregate-daily" .
+
+_:ref_1ce967d9cbb0e260 a oc:WorkflowStep ;
+    dcterms:description "Load water level data for all stations of interest" ;
+    oc:expectedOutcome "Dictionary of station DataFrames" ;
+    oc:stepId "load-all-data" .
+
+_:ref_5d02f67052c21dff a oc:WorkflowStep ;
+    dcterms:description "Classify flood severity using action/minor/moderate/major thresholds if available" ;
+    oc:expectedOutcome "Severity classification for each flood day" ;
+    oc:stepDependsOn _:ref_554ee0dfe64202cc,
+        _:ref_99cb6fd4054992a4 ;
+    oc:stepId "classify-severity" .
+
+_:ref_99cb6fd4054992a4 a oc:WorkflowStep ;
+    dcterms:description "Compare daily max against flood threshold to count and identify flood days" ;
+    oc:expectedOutcome "Count of flood days and list of flood dates" ;
+    oc:stepDependsOn _:ref_186cfc6bc3fc0b95,
+        _:ref_554ee0dfe64202cc ;
+    oc:stepId "detect-flood-days" .
+
+_:ref_9ac2dfecb98e54b2 a oc:WorkflowStep ;
+    dcterms:description "Load instantaneous water level data from USGS (via usgs-data-download skill)" ;
+    oc:expectedOutcome "DataFrame with datetime index and water level column" ;
+    oc:stepId "load-data" .
+
+_:ref_bf52a2820ac37d30 a oc:WorkflowStep ;
+    dcterms:description "Load NWS flood thresholds for all stations" ;
+    oc:expectedOutcome "Dictionary of thresholds keyed by station ID" ;
+    oc:stepId "load-all-thresholds" .
+
+_:ref_d2894538c6be6652 a oc:WorkflowStep ;
+    dcterms:description "For each station: aggregate to daily max, compare against threshold, count flood days" ;
+    oc:expectedOutcome "List of stations with flood day counts" ;
+    oc:stepDependsOn _:ref_1ce967d9cbb0e260,
+        _:ref_bf52a2820ac37d30 ;
+    oc:stepId "process-each-station" .
+
+_:ref_ec9946535bfc7a10 a oc:WorkflowStep ;
+    dcterms:description "Filter to stations with at least 1 flood day, sort by flood days descending" ;
+    oc:expectedOutcome "Prioritized list of stations with active flooding" ;
+    oc:stepDependsOn _:ref_d2894538c6be6652 ;
+    oc:stepId "filter-and-sort" .
+
+_:ref_554ee0dfe64202cc a oc:WorkflowStep ;
+    dcterms:description "Load flood stage thresholds from NWS (via nws-flood-thresholds skill)" ;
+    oc:expectedOutcome "Flood threshold value(s) in feet" ;
+    oc:stepId "load-thresholds" .
+

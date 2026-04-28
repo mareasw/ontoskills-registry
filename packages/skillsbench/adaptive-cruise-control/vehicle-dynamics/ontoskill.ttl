@@ -1,0 +1,264 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_adaptive_cruise_control_vehicle_dynamics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "vehicle-dynamics" ;
+    skos:broader "Kinematic simulation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-adaptive-cruise-control/vehicle-dynamics" ;
+    oc:contentHash "85fa334604776b2eee0723df9057d9d120ac182d25fbaf622044641289cd96c8" ;
+    oc:dependsOnSkill oc:skill_ontoskills_pid_controller ;
+    oc:differentia "that models vehicle motion, safe following distances, time-to-collision, and cruise control state machines using discrete-time equations" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use this skill when simulating vehicle motion, calculating safe following distances, time-to-collision, speed/position updates, or implementing vehicle state machines for cruise control modes." ;
+    oc:hasName "vehicle-dynamics" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def time_to_collision(distance, ego_speed, lead_speed):
+    \"\"\"
+    Calculate time to collision.
+
+    Returns None if not approaching (ego slower than lead).
+    \"\"\"
+    relative_speed = ego_speed - lead_speed
+
+    if relative_speed <= 0:
+        return None  # Not approaching
+
+    return distance / relative_speed
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 51-64" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "TTC estimates time until collision at current velocities:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Time-to-Collision (TTC)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def safe_following_distance(speed, time_headway, min_distance):
+    \"\"\"
+    Calculate safe distance based on current speed.
+
+    Args:
+        speed: Current vehicle speed (m/s)
+        time_headway: Time gap to maintain (seconds)
+        min_distance: Minimum distance at standstill (meters)
+    \"\"\"
+    return speed * time_headway + min_distance
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 34-45" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The time headway model calculates safe following distance:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Safe Following Distance" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def determine_mode(lead_present, ttc, ttc_threshold):
+    \"\"\"
+    Determine operating mode based on conditions.
+
+    Returns one of: 'cruise', 'follow', 'emergency'
+    \"\"\"
+    if not lead_present:
+        return 'cruise'
+
+    if ttc is not None and ttc < ttc_threshold:
+        return 'emergency'
+
+    return 'follow'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 80-94" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Vehicle control often uses mode-based logic:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "State Machine Pattern" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Position Update:**" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """new_position = current_position + speed * dt
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 19-21" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For vehicle simulations, use discrete-time kinematic equations." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """new_speed = current_speed + acceleration * dt
+new_speed = max(0, new_speed)  # Speed cannot be negative
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 13-16" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Speed Update:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "**Distance Between Vehicles:**" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# When following another vehicle
+relative_speed = ego_speed - lead_speed
+new_distance = current_distance - relative_speed * dt
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 7 ;
+                            oc:sourceLocation "lines 24-28" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Basic Kinematic Model" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def clamp_acceleration(accel, max_accel, max_decel):
+    \"\"\"Constrain acceleration to physical limits.\"\"\"
+    return max(max_decel, min(accel, max_accel))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 70-74" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Real vehicles have physical constraints:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Acceleration Limits" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Vehicle Dynamics Simulation" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: vehicle-dynamics
+description: Use this skill when simulating vehicle motion, calculating safe following distances, time-to-collision, speed/position updates, or implementing vehicle state machines for cruise control modes.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Execute one discrete-time step of vehicle dynamics simulation" ;
+            oc:hasStep _:ref_3f872779390e5eb8,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Determine mode from state machine: cruise / follow / emergency" ;
+                    oc:expectedOutcome "Operating mode string" ;
+                    oc:stepDependsOn _:ref_c70382b45b822285 ;
+                    oc:stepId "determine-mode" ],
+                _:ref_7aaedbf25622469c,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Update position: new_position = current_position + speed * dt" ;
+                    oc:expectedOutcome "Updated position value" ;
+                    oc:stepDependsOn _:ref_7aaedbf25622469c ;
+                    oc:stepId "update-position" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Clamp acceleration to physical limits: max(max_decel, min(accel, max_accel))" ;
+                    oc:expectedOutcome "Acceleration within vehicle physical bounds" ;
+                    oc:stepId "clamp-accel" ],
+                _:ref_c70382b45b822285 ;
+            oc:workflowId "vehicle-simulation-step" ;
+            oc:workflowName "Vehicle Simulation Step" ] ;
+    oc:impartsKnowledge oc:kn_07303525,
+        oc:kn_246f6974,
+        oc:kn_2739fc09,
+        oc:kn_d3b35c92,
+        oc:kn_ea1b814a,
+        oc:kn_f7ddcd60 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "calculate safe following distance",
+        "compute time-to-collision",
+        "determine cruise control mode",
+        "simulate vehicle motion",
+        "update vehicle speed and position" ;
+    oc:yieldsState oc:VehicleStateComputed .
+
+oc:kn_07303525 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing adaptive cruise control logic" ;
+    oc:directiveContent "Use a state machine with three modes (cruise, follow, emergency) determined by lead vehicle presence and TTC threshold" ;
+    oc:hasRationale "Mode-based logic cleanly separates control strategies and ensures safe transitions between driving scenarios" .
+
+oc:kn_246f6974 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing acceleration outputs from a controller" ;
+    oc:directiveContent "Acceleration must always be clamped to [max_decel, max_accel] bounds using max(max_decel, min(accel, max_accel))" ;
+    oc:hasRationale "Real vehicles have physical limits on braking and throttle; unclamped values cause unrealistic simulation behavior" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2739fc09 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Kinematic updates are deterministic: same inputs always produce same outputs. Simulation is replayable." ;
+    oc:hasRationale "Deterministic simulation enables reproducible testing and debugging of control algorithms" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d3b35c92 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating time-to-collision" ;
+    oc:directiveContent "Never compute TTC when ego_speed <= lead_speed without returning None or infinity, as relative_speed <= 0 means vehicles are not converging" ;
+    oc:hasRationale "Dividing by zero or negative relative speed produces meaningless or misleading TTC values" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ea1b814a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating following distance for any speed" ;
+    oc:directiveContent "Use time headway model for safe following distance: safe_distance = speed * time_headway + min_distance" ;
+    oc:hasRationale "The time headway model scales gap with speed, providing proportional safety margin at all velocities" .
+
+oc:kn_f7ddcd60 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When updating vehicle speed in any simulation step" ;
+    oc:directiveContent "Vehicle speed must be clamped to non-negative values after every update: new_speed = max(0, new_speed + acceleration * dt)" ;
+    oc:hasRationale "Negative speed is physically meaningless in forward-moving vehicle models and would corrupt position and distance calculations" ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_3f872779390e5eb8 a oc:WorkflowStep ;
+    dcterms:description "Update relative distance: new_distance = current_distance - (ego_speed - lead_speed) * dt" ;
+    oc:expectedOutcome "Updated inter-vehicle distance" ;
+    oc:stepDependsOn _:ref_7aaedbf25622469c ;
+    oc:stepId "update-distance" .
+
+_:ref_c70382b45b822285 a oc:WorkflowStep ;
+    dcterms:description "Calculate TTC: distance / relative_speed if approaching, else None" ;
+    oc:expectedOutcome "TTC value in seconds or None if not approaching" ;
+    oc:stepDependsOn _:ref_3f872779390e5eb8 ;
+    oc:stepId "compute-ttc" .
+
+_:ref_7aaedbf25622469c a oc:WorkflowStep ;
+    dcterms:description "Update ego vehicle speed: new_speed = max(0, current_speed + acceleration * dt)" ;
+    oc:expectedOutcome "Non-negative updated speed value" ;
+    oc:stepId "update-speed" .
+

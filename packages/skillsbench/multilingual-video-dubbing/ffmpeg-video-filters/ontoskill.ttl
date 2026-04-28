@@ -1,0 +1,329 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_ffmpeg_video_filters a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-video-filters" ;
+    skos:broader "FFmpeg command builder" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/ffmpeg-video-filters" ;
+    oc:contentHash "ca378e42de94240114257446c73d4e3bd117ecd22f3b1ade4602eaa0542efa47" ;
+    oc:differentia "applies video filters for scaling, cropping, watermarking, speed changes, blur, brightness, rotation, fade, and chained effects" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "input-video-path filter-type [filter-options]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Apply video filters - scale, crop, watermark, speed, blur, and visual effects" ;
+    oc:hasName "ffmpeg-video-filters" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: FFmpeg Video Filters
+description: Apply video filters - scale, crop, watermark, speed, blur, and visual effects
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Apply video filters for scaling, cropping, watermarks, speed changes, and visual effects." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Multiple filters separated by commas" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Speed changes require both video (setpts) and audio (atempo) filters" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-vf` for video filters" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Use `-filter_complex` for complex operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Overlay positions: W=width, H=height, w=overlay width, h=overlay height" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Add image watermark (top-left)
+ffmpeg -i input.mp4 -i logo.png \\
+  -filter_complex "overlay=10:10" output.mp4
+
+# Bottom-right watermark
+ffmpeg -i input.mp4 -i logo.png \\
+  -filter_complex "overlay=W-w-10:H-h-10" output.mp4
+
+# Center watermark
+ffmpeg -i input.mp4 -i logo.png \\
+  -filter_complex "overlay=(W-w)/2:(H-h)/2" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 50-62" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Watermarks and Overlays" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Chain multiple filters
+ffmpeg -i input.mp4 -vf "scale=1280:720,crop=800:600:100:50" output.mp4
+
+# Complex filter chain
+ffmpeg -i input.mp4 -i logo.png \\
+  -filter_complex "[0:v]scale=1280:720[scaled];[scaled][1:v]overlay=10:10" \\
+  output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 118-126" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Multiple Filters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Scale to 720p (maintain aspect ratio)
+ffmpeg -i input.mp4 -vf scale=-2:720 output.mp4
+
+# Scale to specific width (maintain aspect ratio)
+ffmpeg -i input.mp4 -vf scale=1280:-2 output.mp4
+
+# Scale to exact dimensions (may distort)
+ffmpeg -i input.mp4 -vf scale=1920:1080 output.mp4
+
+# Scale with algorithm
+ffmpeg -i input.mp4 -vf scale=1280:720:flags=lanczos output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 21-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Scaling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Blur entire video
+ffmpeg -i input.mp4 -vf "boxblur=10:5" output.mp4
+
+# Blur specific region (coordinates x:y:w:h)
+ffmpeg -i input.mp4 -vf "boxblur=10:5:x=100:y=100:w=200:h=200" output.mp4
+
+# Gaussian blur
+ffmpeg -i input.mp4 -vf "gblur=sigma=5" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 79-88" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Blur Effects" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Crop to 16:9 from center
+ffmpeg -i input.mp4 -vf "crop=1920:1080" output.mp4
+
+# Crop with offset (x:y:width:height)
+ffmpeg -i input.mp4 -vf "crop=1920:1080:0:0" output.mp4
+
+# Crop from specific position
+ffmpeg -i input.mp4 -vf "crop=800:600:100:50" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 37-46" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Cropping" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Speed up 2x
+ffmpeg -i input.mp4 -vf "setpts=0.5*PTS" -af "atempo=2.0" output.mp4
+
+# Slow down 0.5x
+ffmpeg -i input.mp4 -vf "setpts=2.0*PTS" -af "atempo=0.5" output.mp4
+
+# Speed up video only (no audio)
+ffmpeg -i input.mp4 -vf "setpts=0.5*PTS" -an output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 66-75" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Speed Changes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Fade in (first 2 seconds)
+ffmpeg -i input.mp4 -vf "fade=t=in:st=0:d=2" output.mp4
+
+# Fade out (last 2 seconds)
+ffmpeg -i input.mp4 -vf "fade=t=out:st=10:d=2" output.mp4
+
+# Fade in and out
+ffmpeg -i input.mp4 -vf "fade=t=in:st=0:d=2,fade=t=out:st=8:d=2" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 130-139" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Fade Effects" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Rotate 90 degrees clockwise
+ffmpeg -i input.mp4 -vf "transpose=1" output.mp4
+
+# Rotate 90 degrees counter-clockwise
+ffmpeg -i input.mp4 -vf "transpose=2" output.mp4
+
+# Rotate 180 degrees
+ffmpeg -i input.mp4 -vf "transpose=1,transpose=1" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 105-114" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Rotation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Crop video frames" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Add watermarks or overlays" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Adjust brightness/contrast" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Resize videos" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Apply blur or other effects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Change playback speed" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Adjust brightness and contrast
+ffmpeg -i input.mp4 -vf "eq=brightness=0.1:contrast=1.2" output.mp4
+
+# Increase brightness
+ffmpeg -i input.mp4 -vf "eq=brightness=0.2" output.mp4
+
+# Adjust saturation
+ffmpeg -i input.mp4 -vf "eq=saturation=1.5" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 92-101" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Brightness and Contrast" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Video Filters Skill" ] ;
+    oc:impartsKnowledge oc:kn_13c6620f,
+        oc:kn_32456420,
+        oc:kn_6c754ed6,
+        oc:kn_b11f2359,
+        oc:kn_d9951869,
+        oc:kn_de2fffd9,
+        oc:kn_e41b9b16 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "add watermark or overlay to video",
+        "adjust brightness contrast and saturation",
+        "apply blur effects to video",
+        "apply fade in fade out transitions",
+        "chain multiple video filters",
+        "change video playback speed",
+        "crop video frames",
+        "rotate video",
+        "scale video resolution" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_13c6620f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When scaling videos" ;
+    oc:directiveContent "When scaling video, use -2 for the dimension you want auto-calculated to maintain aspect ratio (e.g., scale=-2:720), not an explicit value that may cause distortion." ;
+    oc:hasRationale "Using explicit width AND height can distort the video if the aspect ratio doesn't match the target dimensions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_32456420 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When positioning watermarks or overlays" ;
+    oc:directiveContent "Overlay position variables: W=main width, H=main height, w=overlay width, h=overlay height. Use these for relative positioning (e.g., bottom-right: overlay=W-w-10:H-h-10)." ;
+    oc:hasRationale "Using dynamic variables ensures correct positioning regardless of input resolution." .
+
+oc:kn_6c754ed6 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When chaining 3+ video filters or using filter_complex" ;
+    oc:directiveContent "Complex filter chains (especially with scaling + overlay + multiple re-encodes) are CPU-intensive and may take significantly longer than simple filters." ;
+    oc:hasRationale "Helps set realistic expectations for processing time on large video files." .
+
+oc:kn_b11f2359 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When changing playback speed" ;
+    oc:directiveContent "Speed changes require BOTH the video filter (setpts) and audio filter (atempo) to keep A/V sync. Use -an only if intentionally dropping audio." ;
+    oc:hasRationale "Omitting the audio tempo filter will cause audio-video desynchronization." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d9951869 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When combining filters that involve multiple input streams" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i input.mp4 -i logo.png -filter_complex \"[0:v]scale=1280:720[scaled];[scaled][1:v]overlay=10:10\" output.mp4" ;
+    oc:hasRationale "Multi-input operations like overlays need -filter_complex with named pad labels to route streams." .
+
+oc:kn_de2fffd9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing filter syntax" ;
+    oc:directiveContent "Use -vf for single-input filter chains; use -filter_complex for operations involving multiple inputs (overlays, picture-in-picture)." ;
+    oc:hasRationale "Choosing the wrong filter syntax causes errors or unexpected results." .
+
+oc:kn_e41b9b16 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When chaining multiple simple video filters" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i input.mp4 -vf \"scale=1280:720,crop=800:600:100:50\" output.mp4" ;
+    oc:hasRationale "Simple filters chain with commas in -vf; complex multi-input operations require -filter_complex." .
+

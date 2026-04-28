@@ -1,0 +1,524 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_speaker_diarization_subtitles_multimodal_fusion_for_speaker_diarization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "multimodal-fusion-for-speaker-diarization" ;
+    skos:broader "Diarization technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/speaker-diarization-subtitles/multimodal-fusion" ;
+    oc:contentHash "d993e4a9553a632d2c7395cf3c316a7b99f754b3406a5846339731f97901608f" ;
+    oc:dependsOnSkill oc:skill_ontoskills_voice_activity_detection_vad ;
+    oc:differentia "fuses visual features (face detection, lip movement) with audio-based speaker embeddings to improve speaker identification accuracy in video files" ;
+    oc:handlesFailure oc:FaceDetectionFailed,
+        oc:NoVisualData,
+        oc:VideoProcessingError ;
+    oc:hasArgumentHint "video-path and audio-path" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Combine visual features (face detection, lip movement analysis) with audio features to improve speaker diarization accuracy in video files. Use OpenCV for face detection and lip movement tracking, then fuse visual cues with audio-based speaker embeddings. Essential when processing video files with multiple visible speakers or when audio-only diarization needs visual validation." ;
+    oc:hasName "multimodal-fusion-for-speaker-diarization" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_83bbcfc2,
+        oc:req_8f08fde7,
+        oc:req_9c58f39c ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: Multimodal Fusion for Speaker Diarization
+description: Combine visual features (face detection, lip movement analysis) with audio features to improve speaker diarization accuracy in video files. Use OpenCV for face detection and lip movement tracking, then fuse visual cues with audio-based speaker embeddings. Essential when processing video files with multiple visible speakers or when audio-only diarization needs visual validation.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Processing time constraints" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "No faces visible" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Audio-only files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Poor video quality" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "When to Skip Visual Features" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Visual features need to be aligned with audio timestamps:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def get_faces_at_time(timestamp, tolerance=0.5):
+    \"\"\"Get number of faces at a given timestamp\"\"\"
+    if not faces_by_time:
+        return 0
+    closest = min(faces_by_time.keys(),
+                  key=lambda t: abs(t - timestamp),
+                  default=None)
+    if closest and abs(closest - timestamp) < tolerance:
+        return faces_by_time[closest]
+    return 0
+
+def get_lip_movement_at_time(timestamp, tolerance=0.5):
+    \"\"\"Check if lips are moving at a given timestamp\"\"\"
+    if not lip_movement_by_time:
+        return False
+    closest = min(lip_movement_by_time.keys(),
+                  key=lambda t: abs(t - timestamp),
+                  default=None)
+    if closest and abs(closest - timestamp) < tolerance:
+        return lip_movement_by_time[closest]
+    return False
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 98-120" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Temporal Alignment" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When working with video files, you can significantly improve speaker diarization by combining audio features with visual features like face detection and lip movement analysis." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Complete pipeline
+def multimodal_diarization(video_path, audio_path):
+    # 1. Extract visual features
+    faces_by_time, lip_movement_by_time = extract_visual_features(video_path)
+
+    # 2. Run audio-based diarization
+    audio_turns = run_audio_diarization(audio_path)
+
+    # 3. Fuse visual and audio features
+    for turn in audio_turns:
+        turn_center = (turn['start'] + turn['end']) / 2
+        turn['faces_detected'] = get_faces_at_time(turn_center)
+        turn['lip_movement'] = get_lip_movement_at_time(turn_center)
+        turn['on_screen'] = turn['faces_detected'] > 0
+
+    return audio_turns
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 203-220" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Integration Example" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Filter out segments where no one appears to be speaking:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Filter diarization turns based on lip movement
+filtered_turns = []
+for turn in diarization_turns:
+    turn_start = turn['start']
+    turn_end = turn['end']
+
+    # Check if lips are moving during this turn
+    has_lip_movement = any(
+        get_lip_movement_at_time(t)
+        for t in np.arange(turn_start, turn_end, 0.1)
+    )
+
+    if has_lip_movement:
+        filtered_turns.append(turn)
+    else:
+        # Low confidence: no visual confirmation of speech
+        turn['confidence'] = 'low'
+        filtered_turns.append(turn)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 172-191" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Lip Movement Filtering" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Count unique faces over video duration
+unique_faces = set()
+for timestamp in faces_by_time.keys():
+    if faces_by_time[timestamp] > 0:
+        # In a real implementation, you'd track individual faces
+        unique_faces.add(timestamp)
+
+# Validate predicted speaker count
+if len(unique_faces) > 0:
+    visual_speaker_count = max(faces_by_time.values())
+    if abs(visual_speaker_count - predicted_speaker_count) > 1:
+        # Warning: mismatch between audio and visual speaker counts
+        print(f"Warning: Audio predicts {predicted_speaker_count} speakers, "
+              f"but video shows up to {visual_speaker_count} faces")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 151-166" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use face count to validate speaker count:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Face Count Validation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# For each diarization turn
+for turn in diarization_turns:
+    turn_center = (turn['start'] + turn['end']) / 2
+    faces_at_turn = get_faces_at_time(turn_center)
+    lip_moving = get_lip_movement_at_time(turn_center)
+
+    # Use visual cues to refine speaker assignment
+    if lip_moving and faces_at_turn > 0:
+        # High confidence: speaker is visible and speaking
+        turn['confidence'] = 'high'
+    elif faces_at_turn > 0:
+        # Medium confidence: speaker visible but no clear lip movement
+        turn['confidence'] = 'medium'
+    else:
+        # Low confidence: no visual confirmation
+        turn['confidence'] = 'low'
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 128-145" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use visual features to help assign speakers to audio segments:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Visual-Aided Speaker Assignment" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Fusion Strategies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Processing video files (not just audio)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Multiple speakers visible on screen" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Need to disambiguate speakers with similar voices" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Improve accuracy by leveraging visual cues" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import cv2
+import numpy as np
+
+# Initialize face detector
+face_cascade = cv2.CascadeClassifier(
+    cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+)
+
+# Process video frames
+cap = cv2.VideoCapture(video_path)
+fps = cap.get(cv2.CAP_PROP_FPS)
+faces_by_time = {}
+
+frame_count = 0
+frame_skip = max(1, int(fps / 2))  # Process every other frame
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    if frame_count % frame_skip == 0:
+        timestamp = frame_count / fps
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+        faces_by_time[timestamp] = len(faces)
+
+    frame_count += 1
+
+cap.release()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 23-54" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Face Detection" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """lip_movement_by_time = {}
+prev_mouth_roi = None
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    if frame_count % frame_skip == 0:
+        timestamp = frame_count / fps
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+
+        lip_moving = False
+        for (x, y, w, h) in faces:
+            # Extract mouth region (lower 40% of face)
+            mouth_roi_y = y + int(h * 0.6)
+            mouth_roi_h = int(h * 0.4)
+            mouth_region = gray[mouth_roi_y:mouth_roi_y + mouth_roi_h, x:x + w]
+
+            if mouth_region.size > 0:
+                if prev_mouth_roi is not None and prev_mouth_roi.shape == mouth_region.shape:
+                    # Calculate movement score
+                    diff = cv2.absdiff(mouth_region, prev_mouth_roi)
+                    movement_score = np.mean(diff)
+                    if movement_score > 10:  # Threshold for movement
+                        lip_moving = True
+                prev_mouth_roi = mouth_region.copy()
+                break
+
+        lip_movement_by_time[timestamp] = lip_moving
+
+    frame_count += 1
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 58-92" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Lip Movement Detection" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Visual Feature Extraction" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_be616467adcd8313 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Lip movement detection is approximate" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Face detection may fail in poor lighting or angles" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Processing video is computationally expensive" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Visual features require video files (not just audio)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Limitations" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Multimodal Fusion for Speaker Diarization" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete pipeline for fusing visual and audio features for speaker diarization" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Align visual feature timestamps with audio diarization timestamps using tolerance windows" ;
+                    oc:expectedOutcome "Visual features accessible at any audio timestamp via interpolation functions" ;
+                    oc:stepId "temporal-alignment" ],
+                _:ref_81a0098d067f5d9e,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run audio-based speaker diarization on extracted audio to produce speaker turns" ;
+                    oc:expectedOutcome "List of diarization turns with start/end times and speaker labels" ;
+                    oc:stepId "run-audio-diarization" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Extract visual features from video: face detection and lip movement tracking with frame skipping" ;
+                    oc:expectedOutcome "faces_by_time and lip_movement_by_time dictionaries populated with timestamp-keyed data" ;
+                    oc:stepId "extract-visual-features" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Cross-validate speaker count against face count and return enriched diarization results" ;
+                    oc:expectedOutcome "Final diarization output with visual confidence scores and speaker count validation" ;
+                    oc:stepDependsOn _:ref_81a0098d067f5d9e ;
+                    oc:stepId "validate-output" ] ;
+            oc:workflowId "multimodal-diarization-pipeline" ;
+            oc:workflowName "Multimodal Diarization Pipeline" ],
+        _:ref_be616467adcd8313 ;
+    oc:impartsKnowledge oc:kn_5461545e,
+        oc:kn_7383106f,
+        oc:kn_7cf47812,
+        oc:kn_87952716,
+        oc:kn_8c18c280,
+        oc:kn_d1d45774,
+        oc:kn_d609faa1,
+        oc:kn_d8b5b183 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:AudioExtracted,
+        oc:VideoFileAvailable ;
+    oc:resolvesIntent "assign confidence scores to diarization turns using visual evidence",
+        "combine visual and audio features for speaker identification",
+        "detect who is speaking using video cues",
+        "improve speaker diarization accuracy in video",
+        "validate audio speaker count with visual face count" ;
+    oc:yieldsState oc:MultimodalDiarizationComplete,
+        oc:VisualFeaturesExtracted .
+
+oc:kn_5461545e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fusing visual cues with diarization turns" ;
+    oc:directiveContent "Assign confidence scores based on visual evidence: high (lip moving + face detected), medium (face detected, no lip movement), low (no visual confirmation)." ;
+    oc:hasRationale "Tiered confidence scoring allows downstream consumers to weight visual evidence appropriately" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7383106f a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When interpreting visual feature extraction results" ;
+    oc:directiveContent "Face detection fails in poor lighting, extreme angles, or occluded faces. Lip movement detection using pixel differencing is approximate and can produce false positives/negatives." ;
+    oc:hasRationale "Understanding limitations prevents over-reliance on noisy visual signals" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7cf47812 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When aligning visual feature timestamps with audio diarization timestamps" ;
+    oc:directiveContent "Temporal alignment between visual features and audio timestamps must use a tolerance window (default 0.5 seconds) to handle desynchronization." ;
+    oc:hasRationale "Video and audio streams may have slight timing offsets; tolerance windows prevent missed alignments" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_87952716 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After initial audio diarization produces a predicted speaker count" ;
+    oc:directiveContent "Cross-validate predicted speaker count against maximum face count detected in video frames. Flag a warning when the difference exceeds 1." ;
+    oc:hasRationale "Discrepancies between audio and visual speaker counts indicate potential diarization errors" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8c18c280 a oc:FallbackStrategy,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When visual extraction fails or video quality is poor" ;
+    oc:directiveContent "Always maintain a fallback to audio-only diarization when visual features are unavailable, unreliable, or processing fails." ;
+    oc:hasRationale "Visual features are supplementary; the system must degrade gracefully to audio-only mode rather than fail completely" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d1d45774 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting multimodal fusion pipeline" ;
+    oc:directiveContent "Do not use multimodal fusion on audio-only files, poor quality video, or when no faces are visible — visual processing adds cost without benefit in these cases." ;
+    oc:hasRationale "Visual feature extraction is computationally expensive and provides no value without usable visual data" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d609faa1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting visual features from video frames" ;
+    oc:directiveContent "Use frame_skip (process every other frame at most) to balance computational cost with feature extraction accuracy. Calculate as max(1, int(fps / 2))." ;
+    oc:hasRationale "Processing every frame is computationally prohibitive; skipping frames with timestamp interpolation is sufficient for diarization alignment" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d8b5b183 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When estimating processing time for multimodal diarization" ;
+    oc:directiveContent "Video processing is computationally expensive. Processing time scales linearly with video duration and inversely with frame_skip factor." ;
+    oc:hasRationale "Allows informed trade-offs between accuracy and processing time" ;
+    oc:severityLevel "LOW" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_83bbcfc2 a oc:RequirementHardware ;
+    oc:isOptional true ;
+    oc:requirementValue "Sufficient compute for video processing" .
+
+oc:req_8f08fde7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Audio-based speaker diarization pipeline" .
+
+oc:req_9c58f39c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "opencv-python (cv2)" .
+
+_:ref_84f54c841068ed68 a oc:WorkflowStep ;
+    dcterms:description "**Process frames efficiently**: Don't process every frame; use frame_skip" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_b593782423cbe2bb a oc:WorkflowStep ;
+    dcterms:description "**Error handling**: Video processing can fail; handle exceptions gracefully" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_c6b81824a92001ef a oc:WorkflowStep ;
+    dcterms:description "**Confidence scoring**: Use visual features to assign confidence scores" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_cc574edb68758d4f a oc:WorkflowStep ;
+    dcterms:description "**Handle missing visual data**: Always have fallback to audio-only" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d12904a29207904d a oc:WorkflowStep ;
+    dcterms:description "**Temporal alignment**: Ensure visual and audio timestamps are synchronized" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_81a0098d067f5d9e a oc:WorkflowStep ;
+    dcterms:description "Fuse visual and audio features: assign confidence scores, validate speaker counts, filter by lip movement" ;
+    oc:expectedOutcome "Diarization turns enriched with faces_detected, lip_movement, on_screen, and confidence fields" ;
+    oc:stepId "fuse-features" .
+
+_:ref_be616467adcd8313 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_84f54c841068ed68,
+        _:ref_b593782423cbe2bb,
+        _:ref_c6b81824a92001ef,
+        _:ref_cc574edb68758d4f,
+        _:ref_d12904a29207904d ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

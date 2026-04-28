@@ -1,0 +1,49 @@
+{
+  "package_id": "skillsbench/energy",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "ac-branch-pi-model/ontoskill.ttl",
+    "casadi-ipopt-nlp/ontoskill.ttl",
+    "power-flow-data/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "ac-branch-pi-model/intents.json",
+    "casadi-ipopt-nlp/intents.json",
+    "power-flow-data/intents.json"
+  ],
+  "skills": [
+    {
+      "id": "ac-branch-pi-model",
+      "path": "ac-branch-pi-model/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "research",
+      "is_user_invocable": true,
+      "depends_on_skills": [
+        "ontoskills-power-flow-data"
+      ]
+    },
+    {
+      "id": "casadi-ipopt-nlp",
+      "path": "casadi-ipopt-nlp/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true,
+      "depends_on_skills": [
+        "ontoskills-ac-branch-pi-model",
+        "ontoskills-power-flow-data"
+      ]
+    },
+    {
+      "id": "power-flow-data",
+      "path": "power-flow-data/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "research",
+      "is_user_invocable": true
+    }
+  ]
+}

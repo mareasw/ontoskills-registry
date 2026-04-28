@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/mario-coin-counting",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "ffmpeg/ontoskill.ttl",
+    "image_editing/ontoskill.ttl",
+    "object_counter/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "ffmpeg/intents.json",
+    "image_editing/intents.json",
+    "object_counter/intents.json"
+  ],
+  "skills": []
+}

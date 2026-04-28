@@ -1,0 +1,417 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_speaker_diarization_subtitles_voice_activity_detection_vad a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "voice-activity-detection-vad" ;
+    skos:broader "Audio preprocessing technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/speaker-diarization-subtitles/voice-activity-detection" ;
+    oc:contentHash "7ba0602dc20d13fbf39e61f9d404229a07b3cbe39ab7a6fa4fb80911024bdf4c" ;
+    oc:differentia "detects speech segments in audio signals using VAD tools (Silero, SpeechBrain, WebRTC) to separate speech from silence and noise" ;
+    oc:handlesFailure oc:AudioFormatError,
+        oc:ModelLoadError ;
+    oc:hasArgumentHint "audio-path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Detect speech segments in audio using VAD tools like Silero VAD, SpeechBrain VAD, or WebRTC VAD. Use when preprocessing audio for speaker diarization, filtering silence, or segmenting audio into speech chunks. Choose Silero VAD for short segments, SpeechBrain VAD for general purpose, or WebRTC VAD for lightweight applications." ;
+    oc:hasName "voice-activity-detection-vad" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: Voice Activity Detection (VAD)
+description: Detect speech segments in audio using VAD tools like Silero VAD, SpeechBrain VAD, or WebRTC VAD. Use when preprocessing audio for speaker diarization, filtering silence, or segmenting audio into speech chunks. Choose Silero VAD for short segments, SpeechBrain VAD for general purpose, or WebRTC VAD for lightweight applications.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Improving diarization accuracy by focusing on speech regions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Segmenting audio into speech chunks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Preprocessing audio before speaker diarization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Filtering out silence and noise" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Voice Activity Detection identifies which parts of an audio signal contain speech versus silence or background noise. This is a critical first step in speaker diarization pipelines." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Choosing the Right VAD" ;
+                            oc:tableMarkdown """| Tool | Best For | Pros | Cons |
+|------|----------|------|------|
+| Silero VAD | Short segments, real-time | Better short-segment detection | Requires PyTorch |
+| SpeechBrain VAD | General purpose | Reliable, well-tested | May miss short segments |
+| WebRTC VAD | Lightweight apps | Fast, lightweight | Less accurate, requires specific frame sizes |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Choosing the Right VAD" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_a248263c2931ff26 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Issues and Solutions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After VAD, you should postprocess boundaries to:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def postprocess_boundaries(boundaries, min_dur=0.30, merge_gap=0.25):
+    \"\"\"
+    boundaries: list of [start_sec, end_sec]
+    min_dur: drop segments shorter than this (sec)
+    merge_gap: merge segments if silence gap <= this (sec)
+    \"\"\"
+    # Sort by start time
+    boundaries = sorted(boundaries, key=lambda x: x[0])
+
+    # Remove short segments
+    boundaries = [(s, e) for s, e in boundaries if (e - s) >= min_dur]
+
+    # Merge close segments
+    merged = [list(boundaries[0])]
+    for s, e in boundaries[1:]:
+        prev_s, prev_e = merged[-1]
+        if s - prev_e <= merge_gap:
+            merged[-1][1] = max(prev_e, e)
+        else:
+            merged.append([s, e])
+
+    return merged
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 103-126" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Remove very short segments" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Merge close segments" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Smooth boundaries" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Postprocessing VAD Boundaries" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_936dd17a9bff3bb5,
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# After VAD, extract embeddings only for speech segments
+for start, end in vad_boundaries:
+    segment_audio = waveform[:, int(start*sr):int(end*sr)]
+    embedding = speaker_model.encode_batch(segment_audio)
+    # ... continue with clustering
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 150-156" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "VAD boundaries are used to:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Integration with Speaker Diarization" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Optimized for real-time processing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Better at detecting short speech segments" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Lower false alarm rate" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** Short audio segments, real-time applications, better detection of brief speech" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import torch
+
+# Load Silero VAD model
+model, utils = torch.hub.load(
+    repo_or_dir='snakers4/silero-vad',
+    model='silero_vad',
+    force_reload=False,
+    onnx=False
+)
+get_speech_timestamps = utils[0]
+
+# Run VAD
+speech_timestamps = get_speech_timestamps(
+    waveform[0],  # mono audio waveform
+    model,
+    threshold=0.6,  # speech probability threshold
+    min_speech_duration_ms=350,  # minimum speech segment length
+    min_silence_duration_ms=400,  # minimum silence between segments
+    sampling_rate=sample_rate
+)
+
+# Convert to boundaries format
+boundaries = [[ts['start'] / sample_rate, ts['end'] / sample_rate]
+              for ts in speech_timestamps]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 25-50" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Silero VAD (Recommended for Short Segments)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Fast processing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Very lightweight" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Good for real-time applications" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import webrtcvad
+
+vad = webrtcvad.Vad(2)  # Aggressiveness: 0-3 (higher = more aggressive)
+
+# Process audio frames (must be 10ms, 20ms, or 30ms)
+is_speech = vad.is_speech(frame_bytes, sample_rate)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 82-89" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** Lightweight applications, real-time processing" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. WebRTC VAD" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from speechbrain.inference.VAD import VAD
+
+VAD_model = VAD.from_hparams(
+    source="speechbrain/vad-crdnn-libriparty",
+    savedir="/tmp/speechbrain_vad"
+)
+
+# Get speech segments
+boundaries = VAD_model.get_speech_segments(audio_path)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 61-71" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Best for:** General-purpose VAD, longer audio files" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Part of comprehensive SpeechBrain toolkit" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Well-tested and reliable" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Good for longer audio files" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. SpeechBrain VAD" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Available VAD Tools" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Voice Activity Detection (VAD)" ] ;
+    oc:hasWorkflow _:ref_936dd17a9bff3bb5,
+        _:ref_a248263c2931ff26 ;
+    oc:impartsKnowledge oc:kn_06099275,
+        oc:kn_60d6b7a2,
+        oc:kn_6eafc066,
+        oc:kn_bfbec431,
+        oc:kn_f67640a9,
+        oc:kn_ffd7b7c1 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "detect speech segments in audio",
+        "filter silence from audio",
+        "preprocess audio for speaker diarization",
+        "segment audio into speech chunks" ;
+    oc:yieldsState oc:SpeechSegmentsDetected .
+
+oc:kn_06099275 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When VAD output quality is poor" ;
+    oc:directiveContent "For too many false alarms: increase threshold or min_speech_duration_ms. For missing short segments: use Silero VAD or decrease threshold. For over-segmentation: increase merge_gap. For missing speech at boundaries: decrease min_silence_duration_ms." ;
+    oc:hasRationale "Tuning VAD parameters resolves the most common quality issues without switching tools." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_60d6b7a2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building diarization workflows" ;
+    oc:directiveContent "VAD is a critical first step in speaker diarization pipelines — it determines which audio regions are passed to embedding extraction and clustering." ;
+    oc:hasRationale "Accurate VAD boundaries directly improve downstream speaker clustering by eliminating non-speech noise." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6eafc066 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After running any VAD tool" ;
+    oc:directiveContent "Do not skip postprocessing VAD boundaries — always merge close segments, remove very short segments, and smooth boundaries." ;
+    oc:hasRationale "Raw VAD output often contains over-segmentation, false positives from brief noise, and jagged boundaries that degrade downstream diarization." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bfbec431 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "VAD is read-only and idempotent on the same audio input with the same parameters — re-running produces identical boundaries." ;
+    oc:hasRationale "No state mutation occurs; VAD only produces timestamp lists." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_f67640a9 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a VAD tool" ;
+    oc:directiveContent "Choose VAD tool based on use case: Silero VAD for short segments and real-time, SpeechBrain VAD for general purpose and longer files, WebRTC VAD for lightweight/low-latency applications." ;
+    oc:hasRationale "Each tool has different accuracy/speed tradeoffs optimized for different scenarios." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ffd7b7c1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using WebRTC VAD" ;
+    oc:directiveContent "WebRTC VAD requires audio frames of exactly 10ms, 20ms, or 30ms duration." ;
+    oc:hasRationale "WebRTC VAD will error on non-standard frame sizes." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_04a736b6cc37af2e a oc:WorkflowStep ;
+    dcterms:description "Filter out non-speech regions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_35abbb313ce7ab16 a oc:WorkflowStep ;
+    dcterms:description "**Over-segmentation**: Increase merge_gap in postprocessing" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3f16897b7723f105 a oc:WorkflowStep ;
+    dcterms:description "Improve clustering by focusing on actual speech" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_4b8d568d2bbf00e7 a oc:WorkflowStep ;
+    dcterms:description "**Missing speech at boundaries**: Decrease min_silence_duration_ms" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_66ce8b4c58519537 a oc:WorkflowStep ;
+    dcterms:description "Extract speech segments for speaker embedding extraction" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_b9a2a049438d82ac a oc:WorkflowStep ;
+    dcterms:description "**Missing short segments**: Use Silero VAD or decrease threshold" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c59ba8e47beb130b a oc:WorkflowStep ;
+    dcterms:description "**Too many false alarms**: Increase threshold or min_speech_duration_ms" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_936dd17a9bff3bb5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_04a736b6cc37af2e,
+        _:ref_3f16897b7723f105,
+        _:ref_66ce8b4c58519537 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_a248263c2931ff26 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_35abbb313ce7ab16,
+        _:ref_4b8d568d2bbf00e7,
+        _:ref_b9a2a049438d82ac,
+        _:ref_c59ba8e47beb130b ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

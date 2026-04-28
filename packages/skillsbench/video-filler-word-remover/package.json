@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/video-filler-word-remover",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "ffmpeg-video-editing/ontoskill.ttl",
+    "filler-word-processing/ontoskill.ttl",
+    "whisper-transcription/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "ffmpeg-video-editing/intents.json",
+    "filler-word-processing/intents.json",
+    "whisper-transcription/intents.json"
+  ],
+  "skills": []
+}

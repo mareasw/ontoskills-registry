@@ -1,0 +1,860 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_edit_pdf_pdf_editing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf-editing" ;
+    skos:broader "Document editing skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/edit-pdf/pdf-editing" ;
+    oc:contentHash "cbe948f795114781e7491f94cb9b22cbfb1d0b7a68dcbdeb78251ba3aff105f6" ;
+    oc:dependsOnSkill oc:skill_ontoskills_text_parser ;
+    oc:differentia "enables reading, replacing text, and redacting sensitive data in PDF files using PyMuPDF (fitz) while preserving the text layer" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "input.pdf path and field values to update" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Complete guide for reading and editing PDF documents with PyMuPDF." ;
+    oc:hasName "pdf-editing" ;
+    oc:hasRequirement oc:req_8c4270e2,
+        oc:req_a34d77ef ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pdf-editing
+description: "Complete guide for reading and editing PDF documents with PyMuPDF."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """**WARNING:** pdf-lib may create text that cannot be extracted by pypdf.
+Use Python with PyMuPDF instead whenever possible.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "If you must use Node.js/JavaScript, use pdf-lib with the same approach:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// WRONG: Adding text to the right of old value
+page.drawText('New Value', {
+  x: oldTextX + oldTextWidth + 10,  // NO! Don't offset
+  ...
+});
+
+// WRONG: Drawing strikethrough line
+page.drawLine({
+  start: { x: x1, y: y },
+  end: { x: x2, y: y },
+  color: rgb(0, 0, 0),  // NO strikethrough!
+});
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 315-328" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """const { PDFDocument, rgb } = require('pdf-lib');
+const fs = require('fs');
+
+async function editPdf() {
+  const pdfBytes = fs.readFileSync('input.pdf');
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+  const page = pdfDoc.getPages()[0];
+  const { height } = page.getSize();
+
+  // To replace text at known coordinates:
+  // STEP 1: Draw WHITE rectangle to cover old text
+  page.drawRectangle({
+    x: oldTextX,
+    y: oldTextY,
+    width: oldTextWidth,
+    height: oldTextHeight,
+    color: rgb(1, 1, 1),  // WHITE
+  });
+
+  // STEP 2: Draw new text at the SAME position
+  page.drawText('New Value', {
+    x: oldTextX,  // SAME X position, not offset!
+    y: oldTextY,
+    size: 11,
+    color: rgb(0, 0, 0),
+  });
+
+  fs.writeFileSync('output.pdf', await pdfDoc.save());
+}
+""" ;
+                            oc:codeLanguage "javascript" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 282-312" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**WRONG with pdf-lib:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Alternative: JavaScript with pdf-lib (NOT RECOMMENDED)" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_207e3cbb5a314ea8,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**TWO APPROACHES - CHOOSE THE RIGHT ONE:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "NEVER rasterize or flatten the PDF to images" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "NEVER add text NEXT TO old values - REPLACE them at the SAME position" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "NEVER use add_redact_annot() with BLACK fill (use WHITE fill instead)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "NEVER convert PDF pages to PNG/JPG and draw on them" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "NEVER use pdf-to-image-to-pdf workflows" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "NEVER use strikethrough lines to cross out text" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**NEVER DO THESE:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "CRITICAL RULES - READ FIRST" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_3d3ccd8d97945ae7,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When you need to replace text that's already in the PDF with new/correct values:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`(1, 1, 1)` is white in RGB (0-1 scale)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "The old text becomes invisible under the white rectangle" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`draw_rect(rect, fill=(1,1,1), width=0)` draws a WHITE filled rectangle" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Insert new text at `rect.x0` (same X position), NOT `rect.x1 + offset`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "The new text appears in the same location" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Text layer is preserved (text remains extractable)" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import fitz
+
+doc = fitz.open("input.pdf")
+page = doc[0]
+
+# First, extract text to see what's in the PDF
+current_text = page.get_text()
+print(current_text)  # Examine what values exist
+
+# To replace a value you found that needs changing:
+old_value = "..."  # The value you found in the PDF that's wrong
+new_value = "..."  # The correct value from your input source
+
+rects = page.search_for(old_value)
+if rects:
+    rect = rects[0]
+
+    # STEP 1: Draw WHITE rectangle to COMPLETELY COVER old text
+    page.draw_rect(rect, color=(1, 1, 1), fill=(1, 1, 1), width=0)
+
+    # STEP 2: Insert new text at the SAME position (not offset!)
+    page.insert_text((rect.x0, rect.y1), new_value, fontsize=11, color=(0, 0, 0))
+
+doc.save("output.pdf")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 132-157" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**RIGHT - DO THIS:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# WRONG: Adding text next to old value
+page.insert_text((old_rect.x1 + 10, old_rect.y1), new_value)  # NO!
+
+# WRONG: Using strikethrough
+page.draw_line(start, end, color=(0,0,0))  # NO!
+
+# WRONG: Rasterizing to image
+pix = page.get_pixmap()  # NO! Destroys text layer
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 120-129" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**WRONG - DO NOT DO THIS:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Key points:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "WRONG vs RIGHT approaches:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Replacing Existing Text (CRITICAL - MUST FOLLOW)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+
+doc = fitz.open("input.pdf")
+page = doc[0]
+
+# Step 1: Read PDF to see current content
+pdf_text = page.get_text()
+print(pdf_text)
+
+# Step 2: Read your input source to get correct values
+# (parse input file, extract the values you need)
+
+# Step 3: For each value that differs, replace it
+# Build a dict of {old_value_in_pdf: correct_value}
+replacements = {}  # Populate by comparing PDF content with correct values
+
+for old_val, new_val in replacements.items():
+    if old_val == new_val:
+        continue  # Skip if already correct
+    rects = page.search_for(old_val)
+    if rects:
+        rect = rects[0]
+        # Cover old text with white rectangle
+        page.draw_rect(rect, color=(1, 1, 1), fill=(1, 1, 1), width=0)
+        # Insert new text
+        page.insert_text((rect.x0, rect.y1), new_val, fontsize=11, color=(0, 0, 0))
+
+doc.save("output.pdf")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 233-262" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Workflow: Compare and Update" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """PyMuPDF preserves the text layer properly, making text extractable after editing.
+JavaScript libraries like pdf-lib may create text that tools like pypdf cannot extract.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# PyMuPDF is already installed - just use it
+python3 -c "import fitz; print('PyMuPDF ready')"
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 38-41" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**USE PYTHON WITH PyMuPDF (fitz)** - it is pre-installed and produces the best results." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+
+doc = fitz.open("input.pdf")
+page = doc[0]
+
+# Extract all text to understand the document
+text = page.get_text()
+print(text)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 45-54" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Reading PDF Content" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Insert text at a specific position
+page.insert_text(
+    (x_position, y_position),  # coordinates
+    "text to insert",
+    fontsize=11,
+    color=(0, 0, 0)  # black
+)
+
+doc.save("output.pdf")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 70-80" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Inserting Text" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# search_for() returns list of rectangles where text is found
+rects = page.search_for("Label Text")
+if rects:
+    rect = rects[0]
+    # rect.x0, rect.y0 = top-left corner
+    # rect.x1, rect.y1 = bottom-right corner
+    print(f"Found at: ({rect.x0}, {rect.y0}) to ({rect.x1}, {rect.y1})")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 58-66" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Finding Text Positions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Example:** \"A12345678\" should become \"****5678\" (show only last 4 digits)" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 7 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`add_redact_annot(rect, fill=(1, 1, 1))` - marks area with WHITE rectangle" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`apply_redactions()` - REMOVES the underlying text from PDF structure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`insert_text()` - adds the masked value" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "**Why this works:**" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# WRONG: Black box redaction (ugly and suspicious)
+page.add_redact_annot(rect, fill=(0, 0, 0))  # NO! Use white fill
+
+# WRONG: Only using draw_rect (text still extractable!)
+page.draw_rect(rect, fill=(1, 1, 1))  # NO! This only covers visually
+page.insert_text(...)  # Original text is still in PDF structure!
+
+# WRONG: Adding masked value NEXT TO original
+page.insert_text((rect.x1 + 10, rect.y1), masked)  # NO!
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 9 ;
+                            oc:sourceLocation "lines 217-227" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`draw_rect()` = Visual cover only (text still extractable by machines)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`add_redact_annot()` + `apply_redactions()` = TRUE redaction (text removed from PDF)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**CRITICAL DISTINCTION:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 8 ;
+                            oc:textContent "**WRONG approaches:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For sensitive data like student IDs, you must use TRUE REDACTION that removes the original text from the PDF structure. A white rectangle only VISUALLY covers text - tools like pypdf can still extract the hidden text!" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+
+doc = fitz.open("input.pdf")
+page = doc[0]
+
+# 1. First find what value is in the PDF by reading the text
+pdf_text = page.get_text()
+# Find the ID in the text (e.g., "A88888888")
+
+original_in_pdf = "A88888888"  # Value you found in the PDF
+# Extract just the digits for masking
+digits = ''.join(c for c in original_in_pdf if c.isdigit())
+masked = "****" + digits[-4:]  # Result: "****8888"
+
+rects = page.search_for(original_in_pdf)
+if rects:
+    rect = rects[0]
+
+    # STEP 1: Create TIGHT bounding box to avoid covering nearby labels
+    tight_rect = fitz.Rect(rect.x0, rect.y0 + 8, rect.x1, rect.y1 - 2)
+
+    # STEP 2: Add redaction annotation with WHITE fill (not black!)
+    page.add_redact_annot(tight_rect, fill=(1, 1, 1))  # WHITE fill
+
+    # STEP 2: Apply redactions - this REMOVES the text from PDF structure
+    page.apply_redactions()
+
+    # STEP 3: Insert masked value at the same position
+    page.insert_text((rect.x0, rect.y1), masked, fontsize=11, color=(0, 0, 0))
+
+doc.save("output.pdf")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 177-209" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "TRUE REDACTION for Sensitive Data (IMPORTANT!)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When a form field is empty (no existing value), insert text next to the label:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+
+doc = fitz.open("input.pdf")
+page = doc[0]
+
+# Find label, insert value to the right of it
+label_rect = page.search_for("FIELD LABEL:")[0]
+page.insert_text((label_rect.x1 + 5, label_rect.y1), "value", fontsize=11)
+
+# For today's date
+from datetime import datetime
+date_rect = page.search_for("Date")[0]
+today = datetime.now().strftime("%Y/%m/%d")
+page.insert_text((date_rect.x1 + 5, date_rect.y1), today, fontsize=11)
+
+# For signatures - insert the person's name
+sig_rect = page.search_for("signature")[0]
+page.insert_text((sig_rect.x1 + 5, sig_rect.y1), "Full Name", fontsize=12)
+
+doc.save("output.pdf")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 86-107" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Common Pattern: Fill Empty Form Fields" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_7c4aeefb88e18664 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Important Guidelines" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PDF Editing Skill" ] ;
+    oc:hasWorkflow _:ref_207e3cbb5a314ea8,
+        _:ref_3d3ccd8d97945ae7,
+        [ a oc:Workflow ;
+            dcterms:description "Workflow for removing sensitive data from the PDF structure (not just visual cover) and inserting masked values" ;
+            oc:hasStep _:ref_1bb4699127e628fa,
+                _:ref_33fb80bf5576bc1d,
+                _:ref_46e2319ac5bd9d1e,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Save the redacted document" ;
+                    oc:expectedOutcome "Output PDF with sensitive data structurally removed" ;
+                    oc:stepDependsOn _:ref_1bb4699127e628fa ;
+                    oc:stepId "save-redacted" ] ;
+            oc:workflowId "pdf-true-redaction" ;
+            oc:workflowName "True Redaction of Sensitive Data" ],
+        _:ref_7c4aeefb88e18664,
+        [ a oc:Workflow ;
+            dcterms:description "Standard workflow for reading a PDF, identifying text to replace, and updating it while preserving the text layer" ;
+            oc:hasStep _:ref_6789462ba7583d94,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Open PDF with fitz.open() and extract text with page.get_text() to see current content" ;
+                    oc:expectedOutcome "Full text content of the PDF page available for comparison" ;
+                    oc:stepId "read-pdf" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Save the modified document to output.pdf" ;
+                    oc:expectedOutcome "Output PDF saved with all replacements applied and text layer preserved" ;
+                    oc:stepDependsOn _:ref_fae02eb56dc243ff ;
+                    oc:stepId "save-output" ],
+                _:ref_fae02eb56dc243ff ;
+            oc:workflowId "pdf-text-replacement" ;
+            oc:workflowName "Replace Text in PDF" ] ;
+    oc:impartsKnowledge oc:kn_070f2f05,
+        oc:kn_0718b4ef,
+        oc:kn_145fda72,
+        oc:kn_1e9a011a,
+        oc:kn_35088a03,
+        oc:kn_38575ce7,
+        oc:kn_761f2aa7,
+        oc:kn_832ff535,
+        oc:kn_8b3ca8dd,
+        oc:kn_a6d28788,
+        oc:kn_a8be1ddb,
+        oc:kn_ae16a01c,
+        oc:kn_bfa8387b,
+        oc:kn_c2f5617e,
+        oc:kn_f1b19a7a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "edit pdf document",
+        "fill pdf form fields",
+        "read and extract pdf content",
+        "redact sensitive data in pdf",
+        "replace text in pdf" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_070f2f05 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When locating text positions in a PDF for editing" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """rects = page.search_for("Label Text")
+if rects:
+    rect = rects[0]
+    print(f"Found at: ({rect.x0}, {rect.y0}) to ({rect.x1}, {rect.y1})")""" .
+
+oc:kn_0718b4ef a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When redacting sensitive data like IDs" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """rects = page.search_for("A88888888")
+if rects:
+    rect = rects[0]
+    tight_rect = fitz.Rect(rect.x0, rect.y0 + 8, rect.x1, rect.y1 - 2)
+    page.add_redact_annot(tight_rect, fill=(1, 1, 1))
+    page.apply_redactions()
+    page.insert_text((rect.x0, rect.y1), "****8888", fontsize=11, color=(0,0,0))""" .
+
+oc:kn_145fda72 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After completing PDF edits" ;
+    oc:directiveContent "After saving: re-open the output PDF, extract text with page.get_text(), and verify that replaced values are correct, labels are preserved, and redacted values are no longer extractable." ;
+    oc:hasRationale "Validates that edits were applied correctly and text layer integrity is maintained" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1e9a011a a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When redacting sensitive data near other content" ;
+    oc:directiveContent "When using add_redact_annot for true redaction, create a TIGHT bounding box (e.g., adjust y0+8, y1-2) to avoid covering nearby labels or adjacent text." ;
+    oc:hasRationale "Redaction annotations can cover more area than the target text, accidentally removing nearby labels" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_35088a03 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When replacing text in a PDF document" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import fitz
+doc = fitz.open("input.pdf")
+page = doc[0]
+rects = page.search_for("old_value")
+if rects:
+    rect = rects[0]
+    page.draw_rect(rect, color=(1,1,1), fill=(1,1,1), width=0)
+    page.insert_text((rect.x0, rect.y1), "new_value", fontsize=11, color=(0,0,0))
+doc.save("output.pdf")""" .
+
+oc:kn_38575ce7 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "True redaction of sensitive data (e.g., student IDs)" ;
+    oc:directiveContent "1. Extract text to find the sensitive value 2. search_for(value) to get bounding rect 3. Create tight_rect (narrower than full rect) 4. add_redact_annot(tight_rect, fill=(1,1,1)) 5. apply_redactions() to remove from structure 6. insert_text(masked_value) at same position" ;
+    oc:hasRationale "True redaction removes text from the PDF binary structure, not just visually covering it" ;
+    oc:stepOrder 2 .
+
+oc:kn_761f2aa7 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Standard text replacement workflow" ;
+    oc:directiveContent "1. Open PDF with fitz.open() 2. Extract current text with page.get_text() 3. Compare with correct values from input source 4. For each changed value: search_for(old_value) → draw_rect(white fill) to cover → insert_text(new_value) at same position 5. Save output" ;
+    oc:hasRationale "This read-first-compare-then-replace approach prevents unnecessary edits and ensures accuracy" ;
+    oc:stepOrder 1 .
+
+oc:kn_832ff535 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when editing any PDF" ;
+    oc:directiveContent "NEVER use strikethrough lines, rasterization (get_pixmap), PDF-to-image workflows, or black-fill redaction (add_redact_annot with fill=(0,0,0)). These destroy the text layer or produce poor results." ;
+    oc:hasRationale "These approaches either destroy the extractable text layer or create visually ugly/suspicious black boxes" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8b3ca8dd a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any PDF edit" ;
+    oc:directiveContent "Before editing: 1. Verify PyMuPDF is available (python3 -c 'import fitz') 2. Extract current PDF text to confirm content 3. Identify all values needing change by comparing with correct source" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6d28788 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When inserting new text into a PDF" ;
+    oc:directiveContent "Always match the existing font size (typically 10-12pt for forms) and preserve all form labels when editing PDF documents." ;
+    oc:hasRationale "Consistent font sizing and preserved labels maintain document professionalism and readability" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a8be1ddb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a PDF editing library" ;
+    oc:directiveContent "Use Python with PyMuPDF (fitz) over JavaScript pdf-lib. PyMuPDF preserves the text layer properly so text remains extractable after editing; pdf-lib may create text that tools like pypdf cannot extract." ;
+    oc:hasRationale "PyMuPDF produces more compatible output that preserves text extractability across tools" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ae16a01c a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any edit operation" ;
+    oc:directiveContent "PDF editing is NOT idempotent - running the same edit twice will add duplicate text layers. Always check current PDF content before making changes by extracting text first." ;
+    oc:hasRationale "Repeated application of the same edit compounds visual artifacts and text layer corruption" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bfa8387b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between visual cover and structural redaction" ;
+    oc:directiveContent "Use draw_rect() with white fill (1,1,1) and width=0 for simple text replacement. Use add_redact_annot() + apply_redactions() for TRUE redaction where text must be removed from PDF structure." ;
+    oc:hasRationale "draw_rect only visually covers text (still machine-extractable); true redaction removes text from the PDF structure entirely" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c2f5617e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When replacing existing text in a PDF" ;
+    oc:directiveContent "NEVER add new text NEXT TO old values. Always REPLACE old text at the SAME position by covering with a white rectangle first." ;
+    oc:hasRationale "Adding text beside old values leaves both visible, creating confusion and unprofessional output" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f1b19a7a a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Expected result of PDF text replacement" ;
+    oc:directiveContent """Input: input.pdf with current values
+Output: output.pdf with:
+- Old text covered by white rectangles (invisible)
+- New text inserted at same positions
+- Text layer preserved (extractable)
+- All labels intact""" ;
+    oc:templateVariables "input.pdf",
+        "output.pdf" .
+
+oc:req_8c4270e2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "PyMuPDF (fitz)" .
+
+oc:req_a34d77ef a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3" .
+
+_:ref_02740f28bbf72f4e a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 4 ;
+    oc:itemText "Original text is completely removed, not just covered" .
+
+_:ref_05703d12364e1b0c a oc:WorkflowStep ;
+    dcterms:description "**For TRUE REDACTION of sensitive data** (e.g., student ID):" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_02740f28bbf72f4e,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Call `apply_redactions()` to REMOVE text from PDF structure" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Then `insert_text()` to add masked value (e.g., \"****5678\")" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Use `add_redact_annot(rect, fill=(1,1,1))` with WHITE fill" ] ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1367c5028838d71c a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Use `draw_rect()` with white fill to cover old text" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Text layer is preserved" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Use `insert_text()` at the SAME position" ] .
+
+_:ref_3513af4ea23186cd a oc:WorkflowStep ;
+    dcterms:description "**Never use strikethrough** - No lines through text, no crossing out" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_49ab5e241578c047 a oc:WorkflowStep ;
+    dcterms:description "**For REPLACING text** (e.g., updating name, email, DOB):" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_1367c5028838d71c ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8698f99acb402982 a oc:WorkflowStep ;
+    dcterms:description "**Never use add_redact_annot() with black** - It creates black boxes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_9acc09ff307dc7ad a oc:WorkflowStep ;
+    dcterms:description "**Preserve all labels** - Form labels should remain visible" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_9ae340402a4cb36f a oc:WorkflowStep ;
+    dcterms:description "Compare with the correct values from your input source" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_9e751aa7e7ba4d2f a oc:WorkflowStep ;
+    dcterms:description "First extract the PDF text to see what's currently there" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_a67fe4a369a0995c a oc:WorkflowStep ;
+    dcterms:description "**Never rasterize** - No converting PDF to images, no get_pixmap() workflows" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c1cd94d4add5fde0 a oc:WorkflowStep ;
+    dcterms:description "For any value that needs to change: **COVER with white rectangle, then insert new text AT THE SAME POSITION**" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c2f28606de279f40 a oc:WorkflowStep ;
+    dcterms:description "**COVER then REPLACE** - Use white rectangle to cover old text, insert new text at SAME position" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e3cc57baac219578 a oc:WorkflowStep ;
+    dcterms:description "**Preserve text layer** - Text must remain extractable after editing" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_e9e1be5a217d25fd a oc:WorkflowStep ;
+    dcterms:description "**Match font size** - Typically 10-12pt for forms" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_f7d6a4aedb494307 a oc:WorkflowStep ;
+    dcterms:description "**Never add text NEXT TO old values** - Replace AT the same position" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_1bb4699127e628fa a oc:WorkflowStep ;
+    dcterms:description "Create tight bounding box, add_redact_annot with white fill, apply_redactions(), then insert_text masked value at same position" ;
+    oc:expectedOutcome "Original text removed from PDF structure, masked value visible" ;
+    oc:stepDependsOn _:ref_46e2319ac5bd9d1e ;
+    oc:stepId "redact-and-replace" .
+
+_:ref_207e3cbb5a314ea8 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_05703d12364e1b0c,
+        _:ref_49ab5e241578c047 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_33fb80bf5576bc1d a oc:WorkflowStep ;
+    dcterms:description "Extract PDF text and identify the sensitive value (e.g., student ID)" ;
+    oc:expectedOutcome "The exact sensitive string found in the PDF" ;
+    oc:stepId "find-sensitive-value" .
+
+_:ref_3d3ccd8d97945ae7 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_9ae340402a4cb36f,
+        _:ref_9e751aa7e7ba4d2f,
+        _:ref_c1cd94d4add5fde0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_46e2319ac5bd9d1e a oc:WorkflowStep ;
+    dcterms:description "Create masked version showing only last 4 digits (e.g., '****5678')" ;
+    oc:expectedOutcome "Masked string ready for insertion" ;
+    oc:stepDependsOn _:ref_33fb80bf5576bc1d ;
+    oc:stepId "compute-masked-value" .
+
+_:ref_6789462ba7583d94 a oc:WorkflowStep ;
+    dcterms:description "Compare extracted PDF text with correct values from input source to identify differences" ;
+    oc:expectedOutcome "Dictionary of {old_value: new_value} replacements" ;
+    oc:stepId "compare-values" .
+
+_:ref_7c4aeefb88e18664 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_3513af4ea23186cd,
+        _:ref_8698f99acb402982,
+        _:ref_9acc09ff307dc7ad,
+        _:ref_a67fe4a369a0995c,
+        _:ref_c2f28606de279f40,
+        _:ref_e3cc57baac219578,
+        _:ref_e9e1be5a217d25fd,
+        _:ref_f7d6a4aedb494307 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_fae02eb56dc243ff a oc:WorkflowStep ;
+    dcterms:description "For each replacement: search_for(old_value) → draw_rect with white fill to cover → insert_text(new_value) at same position" ;
+    oc:expectedOutcome "All changed values visually replaced with correct ones" ;
+    oc:stepDependsOn _:ref_6789462ba7583d94 ;
+    oc:stepId "replace-each-value" .
+

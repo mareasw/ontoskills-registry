@@ -1,0 +1,247 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_adaptive_cruise_control_csv_processing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "csv-processing" ;
+    skos:broader "Data processing utility" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-adaptive-cruise-control/csv-processing" ;
+    oc:contentHash "55d028e5d0c96af6c81ab4f5f0cb438b46b2f29702fd5284dcdee53d9fa177b7" ;
+    oc:differentia "Reads, writes, and transforms CSV data using pandas DataFrames with missing value handling and incremental result building" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "file-path or DataFrame operation" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use this skill when reading sensor data from CSV files, writing simulation results to CSV, processing time-series data with pandas, or handling missing values in datasets." ;
+    oc:hasName "csv-processing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: csv-processing
+description: Use this skill when reading sensor data from CSV files, writing simulation results to CSV, processing time-series data with pandas, or handling missing values in datasets.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """results = []
+
+for item in items:
+    row = {
+        'time': item.time,
+        'value': item.value,
+        'status': item.status if item.valid else None
+    }
+    results.append(row)
+
+df = pd.DataFrame(results)
+df.to_csv('results.csv', index=False)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 69-82" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Building Results Incrementally" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+
+# From dictionary
+data = {
+    'time': [0.0, 0.1, 0.2],
+    'value': [1.0, 2.0, 3.0],
+    'label': ['a', 'b', 'c']
+}
+df = pd.DataFrame(data)
+df.to_csv('output.csv', index=False)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 54-65" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Writing CSV" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+
+df = pd.read_csv('data.csv')
+
+# View structure
+print(df.head())
+print(df.columns.tolist())
+print(len(df))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 10-19" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Reading CSV" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Statistics
+mean_val = df['column'].mean()
+max_val = df['column'].max()
+min_val = df['column'].min()
+std_val = df['column'].std()
+
+# Add computed column
+df['diff'] = df['col1'] - df['col2']
+
+# Iterate rows
+for index, row in df.iterrows():
+    process(row['col1'], row['col2'])
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 86-99" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Operations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Read with explicit NA handling
+df = pd.read_csv('data.csv', na_values=['', 'NA', 'null'])
+
+# Check for missing values
+print(df.isnull().sum())
+
+# Check if specific value is NaN
+if pd.isna(row['column']):
+    # Handle missing value
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 23-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Handling Missing Values" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Single column
+values = df['column_name']
+
+# Multiple columns
+subset = df[['col1', 'col2']]
+
+# Filter rows
+filtered = df[df['column'] > 10]
+filtered = df[(df['time'] >= 30) & (df['time'] < 60)]
+
+# Rows where column is not null
+valid = df[df['column'].notna()]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 37-50" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Accessing Data" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "CSV Processing with Pandas" ] ;
+    oc:impartsKnowledge oc:kn_1a19ad30,
+        oc:kn_2baa4107,
+        oc:kn_35ad3c29,
+        oc:kn_48dc5ed6,
+        oc:kn_9d41cbd1,
+        oc:kn_b3fcce80,
+        oc:kn_cec4070a,
+        oc:kn_d73c4ac3,
+        oc:kn_e7e5fb4b,
+        oc:kn_eb848605 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "filter and transform tabular data",
+        "handle missing values in CSV datasets",
+        "process time-series sensor data from CSV",
+        "read CSV data into pandas DataFrames",
+        "write simulation results to CSV files" ;
+    oc:yieldsState oc:DataProcessed,
+        oc:DocumentCreated .
+
+oc:kn_1a19ad30 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any CSV processing operation" ;
+    oc:directiveContent "pandas must be installed (pip install pandas) and importable as pd." .
+
+oc:kn_2baa4107 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When checking individual cell values for missing data" ;
+    oc:directiveContent "Use pd.isna(row['column']) to check for NaN values, not equality comparison (row['column'] == np.nan is always False)." ;
+    oc:hasRationale "NaN != NaN by IEEE 754 standard, so direct equality comparison always fails." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_35ad3c29 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating simulation or processing results row-by-row" ;
+    oc:directiveContent "Build results incrementally by appending row dictionaries to a list, then create a DataFrame from the full list rather than repeatedly appending to a DataFrame." ;
+    oc:hasRationale "Repeated DataFrame.append() or concatenation is O(n²); building a list of dicts and constructing a DataFrame once is O(n)." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_48dc5ed6 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When calling df.to_csv()" ;
+    oc:directiveContent "Writing CSV files overwrites existing files without confirmation; ensure output paths do not collide with source data files." ;
+    oc:hasRationale "Data loss can occur if output path matches an existing file that hasn't been backed up." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9d41cbd1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading CSV files with potentially missing data" ;
+    oc:directiveContent "Always specify na_values explicitly when reading CSVs that may contain empty strings, 'NA', or 'null' as missing value markers." ;
+    oc:hasRationale "Default NA detection may miss domain-specific missing value representations, leading to incorrect data types or failed comparisons." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b3fcce80 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After loading any CSV file" ;
+    oc:directiveContent "Validate CSV structure after reading by checking df.head(), df.columns.tolist(), and len(df) before processing." ;
+    oc:hasRationale "Early structure validation prevents silent errors from unexpected column names or empty datasets propagating through downstream processing." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_cec4070a a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Standard CSV processing workflow" ;
+    oc:directiveContent "1. Import pandas as pd → 2. Read CSV with pd.read_csv() specifying na_values → 3. Validate structure with head/columns/len → 4. Process/filter data → 5. Build results list incrementally → 6. Create DataFrame from list → 7. Write output with to_csv(index=False)" ;
+    oc:stepOrder 1 .
+
+oc:kn_d73c4ac3 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building simulation results incrementally" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """results = []
+for item in items:
+    row = {'time': item.time, 'value': item.value}
+    results.append(row)
+df = pd.DataFrame(results)
+df.to_csv('output.csv', index=False)""" .
+
+oc:kn_e7e5fb4b a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading CSV with explicit missing value handling" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "df = pd.read_csv('data.csv', na_values=['', 'NA', 'null'])" .
+
+oc:kn_eb848605 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing CSV output files" ;
+    oc:directiveContent "Never write CSV with index=True unless you explicitly need the row index as a column; always use to_csv(path, index=False) to avoid unnamed index columns on re-read." ;
+    oc:hasRationale "Pandas includes the DataFrame index by default, which creates a spurious unnamed column when the file is read back." ;
+    oc:severityLevel "HIGH" .
+

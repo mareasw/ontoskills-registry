@@ -1,0 +1,1250 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_organize_messy_files_file_organizer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "file-organizer" ;
+    skos:broader "File system management assistant" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/organize-messy-files/file-organizer" ;
+    oc:contentHash "17d6df2d87c37062835f84d658284ad275aba0f05cea8bf65dc5e1c63ed19d0b" ;
+    oc:differentia "Analyzes directory structures, identifies duplicates, proposes and executes organization plans with user approval" ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "target-directory-path" ;
+    oc:hasCategory "productivity" ;
+    oc:hasDescription "Intelligently organizes your files and folders across your computer by understanding context, finding duplicates, suggesting better structures, and automating cleanup tasks. Reduces cognitive load and keeps your digital workspace tidy without manual effort." ;
+    oc:hasName "file-organizer" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill acts as your personal organization assistant, helping you maintain a clean, logical file structure across your computer without the mental overhead of constant manual organization." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_3ef9e4718e289399 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 20 ;
+                    oc:sectionTitle "Pro Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Organizing shared team folders" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Cleaning up before storage cleanup" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Setting up organization for a new computer" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Preparing files for backup/archiving" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Structuring new project directories" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 25 ;
+                    oc:sectionTitle "Related Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Organize all photos in this folder by date (year/month) based
+on when they were taken.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 386-389" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "Photo Organization" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """My Desktop is covered in files. Help me organize everything into
+my Documents folder properly.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 380-383" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Desktop Cleanup" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Find all duplicate files in my Documents folder and help me
+decide which ones to keep.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 374-377" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 16 ;
+                            oc:sectionTitle "Duplicate Removal" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Help me separate my work files from personal files across my
+Documents folder.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 392-395" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 19 ;
+                            oc:sectionTitle "Work/Personal Separation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Organize my Downloads folder - move documents to Documents,
+images to Pictures, keep installers separate, and archive files
+older than 3 months.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 361-365" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Downloads Cleanup" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Review my Projects folder structure and help me separate active
+projects from old ones I should archive.
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 368-371" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "Project Organization" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Common Organization Tasks" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_780977b5b64e3830 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "What This Skill Does" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "You can't find files because they're scattered everywhere" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Your Downloads folder is a chaotic mess" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "You're starting a new project and need a good structure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "You're cleaning up before archiving old projects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "You have duplicate files taking up space" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "You want to establish better organization habits" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Your folder structure doesn't make sense anymore" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Process**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**User**: \"My Downloads folder is a mess with 500+ files. Help me organize it.\"" ],
+                                _:ref_c8083942cd023c40 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Example 1: Organizing Downloads (From Justin Dielmann)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent """Projects/
+├── Active/
+│   ├── client-work/
+│   ├── side-projects/
+│   └── learning/
+├── Archive/
+│   ├── 2022/
+│   ├── 2023/
+│   └── 2024/
+└── Templates/""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**User**: \"Review my ~/Projects directory and suggest improvements.\"" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Analysis of ~/Projects
+
+## Current Structure Issues
+- Mix of active and archived projects (3+ years old)
+- No consistent naming convention
+- Some projects at root, others in random subfolders
+- Duplicate folders (project-name, project-name-old, project-name-v2)
+
+## Proposed Structure
+
+""" ;
+                                    oc:codeLanguage "markdown" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 306-317" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+## Specific Changes
+1. Move 12 projects not touched since 2022 → Archive/
+2. Consolidate 4 duplicate project folders
+3. Rename projects to consistent format: "client-name-project-name"
+4. Create Archive for old work
+
+Want me to implement this?
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 328-337" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Output**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Example 3: Restructuring Projects Folder" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Output**: Creates structure like:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "Then moves photos based on EXIF data or file modification dates." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Photos/
+├── 2023/
+│   ├── 01-January/
+│   ├── 02-February/
+│   └── ...
+├── 2024/
+│   ├── 01-January/
+│   └── ...
+└── Unsorted/
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 344-354" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**User**: \"Organize my photo folders by year and month.\"" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Example 4: Organizing Photos by Date" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**User**: \"Find duplicate files in my Documents and help me decide which to keep.\"" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Found 23 Sets of Duplicates (156 MB total)
+
+## Duplicate Set 1: "proposal.pdf"
+- `/Documents/proposal.pdf` (2.3 MB, modified: 2024-03-15)
+- `/Documents/old/proposal.pdf` (2.3 MB, modified: 2024-03-15)
+- `/Desktop/proposal.pdf` (2.3 MB, modified: 2024-03-10)
+
+**Recommendation**: Keep `/Documents/proposal.pdf` (most recent in correct location)
+Delete the other 2 copies?
+
+[Continue for all duplicates...]
+""" ;
+                                    oc:codeLanguage "markdown" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 287-299" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Output**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "Example 2: Finding and Removing Duplicates" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_02faf11b3f808142,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When a user requests file organization help:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Instructions" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Use prefixes for ordering: \"01-current\", \"02-archive\"" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Avoid spaces (use hyphens or underscores)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Use clear, descriptive names" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Be specific: \"client-proposals\" not \"docs\"" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 22 ;
+                            oc:sectionTitle "Folder Naming" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Remove download artifacts: \"document-final-v2 (1).pdf\" → \"document.pdf\"" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Include dates: \"2024-10-17-meeting-notes.md\"" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Be descriptive: \"q3-financial-report.xlsx\"" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Avoid version numbers in names (use version control instead)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 23 ;
+                            oc:sectionTitle "File Naming" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Files you're hesitant to delete (archive first)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Projects not touched in 6+ months" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Completed work that might be referenced later" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Old versions after migration to new systems" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 24 ;
+                            oc:sectionTitle "When to Archive" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Create a better folder structure for my [work/projects/photos/etc]
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 65-67" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Clean up old files I haven't touched in 6+ months
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 61-63" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Organize these downloads into proper folders based on what they are
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 53-55" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Find duplicate files and help me decide which to keep
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 57-59" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Specific Organization Tasks" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Find duplicate files in my Documents folder
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 43-45" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Review my project directories and suggest improvements
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 47-49" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """cd ~
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 33-35" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Help me organize my Downloads folder
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 39-41" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Then run Claude Code and ask for help:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "From Your Home Directory" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "How to Use" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "File Organizer" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: file-organizer
+description: Intelligently organizes your files and folders across your computer by understanding context, finding duplicates, suggesting better structures, and automating cleanup tasks. Reduces cognitive load and keeps your digital workspace tidy without manual effort.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_02faf11b3f808142,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for analyzing, planning, and executing file system organization" ;
+            oc:hasStep _:ref_0482a6e6bb8f8157,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Provide summary of changes, new structure, maintenance tips, and quick commands" ;
+                    oc:expectedOutcome "User has clear record of what changed and how to maintain organization" ;
+                    oc:stepDependsOn _:ref_5d325df9fb38f919 ;
+                    oc:stepId "summary" ],
+                _:ref_3fbffe498b8bd91b,
+                _:ref_5d325df9fb38f919,
+                _:ref_95bb6593800f046a,
+                _:ref_e6bd41f6bb253127,
+                _:ref_f96ad63ac7ddc207 ;
+            oc:workflowId "file-organizer-main" ;
+            oc:workflowName "File Organization Workflow" ],
+        _:ref_3ef9e4718e289399,
+        _:ref_780977b5b64e3830,
+        _:ref_c8083942cd023c40 ;
+    oc:impartsKnowledge oc:kn_1e0c3eca,
+        oc:kn_4509dd98,
+        oc:kn_5f0703f0,
+        oc:kn_86b5dd95,
+        oc:kn_aae358d9,
+        oc:kn_afbef8f2,
+        oc:kn_cb06dad0,
+        oc:kn_db1a5866,
+        oc:kn_df47daa3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:DirectoryWritable,
+        oc:FileExists ;
+    oc:resolvesIntent "archive old files",
+        "clean up messy directories",
+        "create project directory structures",
+        "find duplicate files",
+        "organize files and folders",
+        "rename files consistently",
+        "suggest folder structure improvements" ;
+    oc:yieldsState oc:DuplicatesIdentified,
+        oc:FilesOrganized .
+
+oc:kn_1e0c3eca a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "During execution phase" ;
+    oc:directiveContent "File moves, renames, and deletions alter the filesystem. Log all moves for potential undo. Preserve original modification dates." ;
+    oc:hasRationale "Logging enables recovery; preserving dates maintains temporal provenance of files" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4509dd98 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When user is new to file organization" ;
+    oc:directiveContent "Start with one small messy folder (like Downloads) to build trust before tackling larger reorganizations." ;
+    oc:hasRationale "Incremental wins build confidence and let the user validate the approach before larger changes" .
+
+oc:kn_5f0703f0 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing file moves, renames, or deletions" ;
+    oc:directiveContent "Never delete files without explicit user confirmation. Always ask before any destructive operation." ;
+    oc:hasRationale "Irreversible data loss can occur; user must retain agency over all destructive actions" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_86b5dd95 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before executing any file moves, creates, or deletes" ;
+    oc:directiveContent "Always present a full organization plan and get explicit approval before making any filesystem changes." ;
+    oc:hasRationale "Preview-and-confirm prevents unwanted reorganization and builds user trust" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aae358d9 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining logical groupings for organization" ;
+    oc:directiveContent "Group files by type (documents, images, videos, archives, code), by purpose (work/personal, active/archive), and by date (current/old)." ;
+    oc:hasRationale "Multiple grouping dimensions provide flexible organization that matches how people actually search for files" .
+
+oc:kn_afbef8f2 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When renaming files or creating folders" ;
+    oc:directiveContent "Use consistent file naming: 'YYYY-MM-DD - Description.ext'. Use clear folder names with hyphens. Avoid spaces. Use prefixes for ordering: '01-current', '02-archive'." ;
+    oc:hasRationale "Consistent naming makes files sortable, searchable, and predictable" .
+
+oc:kn_cb06dad0 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any organization task" ;
+    oc:directiveContent "Verify target directory exists and is writable. Check for any files or folders the user wants to exclude. Clarify scope (which directory, how aggressive)." ;
+    oc:hasRationale "Scope clarity prevents unintended changes to sensitive or active project files" .
+
+oc:kn_db1a5866 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After execution phase" ;
+    oc:directiveContent "Organization is complete when: new folders created, files moved to logical locations, duplicates resolved, and a summary with maintenance tips is provided." ;
+    oc:hasRationale "Comprehensive closure ensures the user understands what changed and how to maintain it" .
+
+oc:kn_df47daa3 a oc:FallbackStrategy,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When file classification is ambiguous" ;
+    oc:directiveContent "If uncertain about a file's destination, place it in a ToSort/ folder rather than guessing. Stop and ask the user about unexpected situations." ;
+    oc:hasRationale "Ambiguity handled by deferral is safer than misclassification" .
+
+_:ref_044bdd38dc14f04a a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 6 ;
+    oc:textContent "**By Date**:" .
+
+_:ref_096f7c2785f33bcc a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Work/" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Personal/" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 5 ;
+            oc:itemText "ToSort/ (things needing decisions)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Archive/" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Installers/ (DMG, PKG files)" ] .
+
+_:ref_0e3548bf3175744b a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Size distribution" .
+
+_:ref_0e4466ec9eb6c0d4 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Always confirm before deleting anything" .
+
+_:ref_0fd98541c770909c a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 1 ;
+    oc:textContent "Ask clarifying questions:" .
+
+_:ref_12fde63d0fbe5bba a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Which directory needs organization? (Downloads, Documents, entire home folder?)" .
+
+_:ref_15ec0c5ea9f701e5 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 2 ;
+    oc:textContent "**By Type**:" .
+
+_:ref_16a4fc78e2d90b19 a oc:WorkflowStep ;
+    dcterms:description "**Execute Organization**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 4 ;
+            oc:hasItem _:ref_0e4466ec9eb6c0d4,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Preserve original modification dates" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 5 ;
+                    oc:itemText "Stop and ask if you encounter unexpected situations" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Log all moves for potential undo" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "Handle filename conflicts gracefully" ] ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 3 ;
+            oc:textContent "**Important Rules**:" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 1 ;
+            oc:textContent "After approval, organize systematically:" ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """# Create folder structure
+mkdir -p "path/to/new/folders"
+
+# Move files with clear logging
+mv "old/path/file.pdf" "new/path/file.pdf"
+
+# Rename files with consistent patterns
+# Example: "YYYY-MM-DD - Description.ext"
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 2 ;
+            oc:sourceLocation "lines 201-210" ] ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_1986e221e946bad8 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Obvious organization issues" .
+
+_:ref_1d329891a19db748 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 4 ;
+    oc:textContent "**By Purpose**:" .
+
+_:ref_1d79b536763e88e6 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Current year/month" .
+
+_:ref_23d4dc5fba28ae1f a oc:WorkflowStep ;
+    dcterms:description "**Maintains Context**: Makes smart decisions based on file types, dates, and content" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_23fc3d482c8483e5 a oc:WorkflowStep ;
+    dcterms:description "Asks for confirmation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_296f41d4aa2bc067 a oc:WorkflowStep ;
+    dcterms:description "Moves files intelligently based on content and names" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_2d977337e7dfb013 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "Active vs. Archive" .
+
+_:ref_32176017deb9d707 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """# Get overview of current structure
+ls -la [target_directory]
+
+# Check file types and sizes
+find [target_directory] -type f -exec file {} \\; | head -20
+
+# Identify largest files
+du -sh [target_directory]/* | sort -rh | head -20
+
+# Count file types
+find [target_directory] -type f | sed 's/.*\\.//' | sort | uniq -c | sort -rn
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 2 ;
+    oc:sourceLocation "lines 84-96" .
+
+_:ref_3848375effcd5107 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """# Organization Complete! ✨
+
+## What Changed
+
+- Created [X] new folders
+- Organized [Y] files
+- Freed [Z] GB by removing duplicates
+- Archived [W] old files
+
+## New Structure
+
+[Show the new folder tree]
+
+## Maintenance Tips
+
+To keep this organized:
+
+1. **Weekly**: Sort new downloads
+2. **Monthly**: Review and archive completed projects
+3. **Quarterly**: Check for new duplicates
+4. **Yearly**: Archive old files
+
+## Quick Commands for You
+
+```bash
+# Find files modified this week
+find . -type f -mtime -7
+
+# Sort downloads by type
+[custom command for their setup]
+
+# Find duplicates
+[custom command]
+""" ;
+    oc:codeLanguage "markdown" ;
+    oc:contentOrder 2 ;
+    oc:sourceLocation "lines 223-257" .
+
+_:ref_3d73d7ac05ebd3b9 a oc:WorkflowStep ;
+    dcterms:description "**Analyzes Current Structure**: Reviews your folders and files to understand what you have" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3ed9e277baf4b4f8 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "What's the main problem? (Can't find things, duplicates, too messy, no structure?)" .
+
+_:ref_46f16775a689854e a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 4 ;
+    oc:hasItem _:ref_0e3548bf3175744b,
+        _:ref_1986e221e946bad8,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Date ranges" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Total files and folders" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "File type breakdown" ] .
+
+_:ref_4d31028dab9b3b6f a oc:WorkflowStep ;
+    dcterms:description "**Understand the Scope**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_0fd98541c770909c,
+        [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 2 ;
+            oc:hasItem _:ref_12fde63d0fbe5bba,
+                _:ref_3ed9e277baf4b4f8,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 4 ;
+                    oc:itemText "How aggressively to organize? (Conservative vs. comprehensive cleanup)" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Any files or folders to avoid? (Current projects, sensitive data?)" ] ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_50c8a34772ae1ea2 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 4 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Display sizes and modification dates" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Recommend which to keep (usually newest or best-named)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Show all file paths" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "**Important**: Always ask for confirmation before deleting" ] .
+
+_:ref_583c119dfd3c5400 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 3 ;
+    oc:textContent "Want to organize another folder?" .
+
+_:ref_594763c23cad8fbf a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Videos (MP4, MOV)" .
+
+_:ref_642a7ef743c09477 a oc:WorkflowStep ;
+    dcterms:description "**Finds Duplicates**: Identifies duplicate files across your system" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_65dbd2d884dad8e8 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 3 ;
+    oc:textContent """[Directory]/
+   ├── Work/
+   │   ├── Projects/
+   │   ├── Documents/
+   │   └── Archive/
+   ├── Personal/
+   │   ├── Photos/
+   │   ├── Documents/
+   │   └── Media/
+   └── Downloads/
+       ├── To-Sort/
+       └── Archive/""" .
+
+_:ref_67cac787c9b6e50f a oc:WorkflowStep ;
+    dcterms:description "**Start Small**: Begin with one messy folder (like Downloads) to build trust" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_680c2275ac6aa873 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Code/Projects (directories with code)" .
+
+_:ref_7146fb3f46f394c0 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 3 ;
+    oc:textContent "For each set of duplicates:" .
+
+_:ref_730857aed63ffa78 a oc:WorkflowStep ;
+    dcterms:description "**Find Duplicates**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_50c8a34772ae1ea2,
+        _:ref_7146fb3f46f394c0,
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """# Find exact duplicates by hash
+find [directory] -type f -exec md5 {} \\; | sort | uniq -d
+
+# Find files with same name
+find [directory] -type f -printf '%f\\n' | sort | uniq -d
+
+# Find similar-sized files
+find [directory] -type f -printf '%s %p\\n' | sort -n
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 2 ;
+            oc:sourceLocation "lines 133-142" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 1 ;
+            oc:textContent "When requested, search for duplicates:" ] ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_730c115d47026955 a oc:WorkflowStep ;
+    dcterms:description "Finds patterns: work docs, personal photos, installers, random PDFs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_766cd6a2f7b88808 a oc:WorkflowStep ;
+    dcterms:description "**Trust the Process**: Let Claude handle the cognitive load of where things go" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_78696a5182c11a74 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 3 ;
+    oc:hasItem _:ref_594763c23cad8fbf,
+        _:ref_680c2275ac6aa873,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Images (JPG, PNG, SVG)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 7 ;
+            oc:itemText "Presentations (PPTX, KEY)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Archives (ZIP, TAR, DMG)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 6 ;
+            oc:itemText "Spreadsheets (XLSX, CSV)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 1 ;
+            oc:itemText "Documents (PDFs, DOCX, TXT)" ] .
+
+_:ref_7ad853a0f7caf8bf a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:hasChild _:ref_096f7c2785f33bcc ;
+            oc:itemOrder 1 ;
+            oc:itemText "Downloads/" ] .
+
+_:ref_7bc6c6a6adc4ac00 a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 7 ;
+    oc:hasItem _:ref_1d79b536763e88e6,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "Very old (archive candidates)" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 2 ;
+            oc:itemText "Previous years" ] .
+
+_:ref_83bd0951a9297b0f a oc:WorkflowStep ;
+    dcterms:description "Analyzes Downloads folder" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_882de5e6514d3033 a oc:WorkflowStep ;
+    dcterms:description "**Analyze Current State**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_32176017deb9d707,
+        _:ref_46f16775a689854e,
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 1 ;
+            oc:textContent "Review the target directory:" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 3 ;
+            oc:textContent "Summarize findings:" ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_90eab35b08314ae7 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """
+""" ;
+    oc:codeLanguage "" ;
+    oc:contentOrder 4 ;
+    oc:sourceLocation "lines 260-261" .
+
+_:ref_93cb39d172c6fa15 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 5 ;
+    oc:itemText "Temporary/scratch files" .
+
+_:ref_a1391d33c3bc2c87 a oc:WorkflowStep ;
+    dcterms:description "**Propose Organization Plan**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_65dbd2d884dad8e8,
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """# Organization Plan for [Directory]
+
+## Current State
+- X files across Y folders
+- [Size] total
+- File types: [breakdown]
+- Issues: [list problems]
+
+## Proposed Structure
+
+""" ;
+            oc:codeLanguage "markdown" ;
+            oc:contentOrder 2 ;
+            oc:sourceLocation "lines 154-165" ],
+        [ a oc:Paragraph ;
+            oc:blockType "paragraph" ;
+            oc:contentOrder 1 ;
+            oc:textContent "Present a clear plan before making changes:" ],
+        [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """
+## Changes I'll Make
+
+1. **Create new folders**: [list]
+2. **Move files**:
+   - X PDFs → Work/Documents/
+   - Y images → Personal/Photos/
+   - Z old files → Archive/
+3. **Rename files**: [any renaming patterns]
+4. **Delete**: [duplicates or trash files]
+
+## Files Needing Your Decision
+
+- [List any files you're unsure about]
+
+Ready to proceed? (yes/no/modify)
+""" ;
+            oc:codeLanguage "" ;
+            oc:contentOrder 4 ;
+            oc:sourceLocation "lines 178-195" ] ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_a6e90b4175a6eb2c a oc:WorkflowStep ;
+    dcterms:description "Results: 500 files → 5 organized folders" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_b754c22415004b84 a oc:WorkflowStep ;
+    dcterms:description "**Regular Maintenance**: Run weekly cleanup on Downloads" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c06d5513dc691bc7 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 3 ;
+    oc:itemText "Project-specific" .
+
+_:ref_c658506b257983ee a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 1 ;
+    oc:textContent "After organizing:" .
+
+_:ref_c72c0d17b505cf6d a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "Work vs. Personal" .
+
+_:ref_c76f382323802d2a a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 5 ;
+    oc:hasItem _:ref_2d977337e7dfb013,
+        _:ref_93cb39d172c6fa15,
+        _:ref_c06d5513dc691bc7,
+        _:ref_c72c0d17b505cf6d,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "Reference materials" ] .
+
+_:ref_cdcb0935e12b12ac a oc:WorkflowStep ;
+    dcterms:description "**Suggests Organization**: Proposes logical folder structures based on your content" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_cfbdd720cbc5fd0f a oc:WorkflowStep ;
+    dcterms:description "**Provide Summary and Maintenance Tips**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_3848375effcd5107,
+        _:ref_583c119dfd3c5400,
+        _:ref_90eab35b08314ae7,
+        _:ref_c658506b257983ee ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_d1aecfcb39f3c324 a oc:Paragraph ;
+    oc:blockType "paragraph" ;
+    oc:contentOrder 1 ;
+    oc:textContent "Based on the files, determine logical groupings:" .
+
+_:ref_d4728cced0630457 a oc:WorkflowStep ;
+    dcterms:description "**Identify Organization Patterns**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_044bdd38dc14f04a,
+        _:ref_15ec0c5ea9f701e5,
+        _:ref_1d329891a19db748,
+        _:ref_78696a5182c11a74,
+        _:ref_7bc6c6a6adc4ac00,
+        _:ref_c76f382323802d2a,
+        _:ref_d1aecfcb39f3c324 ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_de6910dea49f157a a oc:WorkflowStep ;
+    dcterms:description "**Archive Aggressively**: Move old projects to Archive instead of deleting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f0209a89e9966f83 a oc:WorkflowStep ;
+    dcterms:description "**Automates Cleanup**: Moves, renames, and organizes files with your approval" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f0723c10828345d2 a oc:WorkflowStep ;
+    dcterms:description "Proposes structure:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_7ad853a0f7caf8bf ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fd7424ed9d6636c0 a oc:WorkflowStep ;
+    dcterms:description "**Keep Active Separate**: Maintain clear boundaries between active and archived work" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_fed401a9932e2100 a oc:WorkflowStep ;
+    dcterms:description "**Reduces Clutter**: Identifies old files you probably don't need anymore" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_ff153ac46160985f a oc:WorkflowStep ;
+    dcterms:description "**Consistent Naming**: Use \"YYYY-MM-DD - Description\" format for important files" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_02faf11b3f808142 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_16a4fc78e2d90b19,
+        _:ref_4d31028dab9b3b6f,
+        _:ref_730857aed63ffa78,
+        _:ref_882de5e6514d3033,
+        _:ref_a1391d33c3bc2c87,
+        _:ref_cfbdd720cbc5fd0f,
+        _:ref_d4728cced0630457 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_0482a6e6bb8f8157 a oc:WorkflowStep ;
+    dcterms:description "Understand scope: ask which directory, what problems exist, any exclusions, and how aggressive to organize" ;
+    oc:expectedOutcome "Clear understanding of target directory and user preferences" ;
+    oc:stepId "scope" .
+
+_:ref_3ef9e4718e289399 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_67cac787c9b6e50f,
+        _:ref_766cd6a2f7b88808,
+        _:ref_b754c22415004b84,
+        _:ref_de6910dea49f157a,
+        _:ref_fd7424ed9d6636c0,
+        _:ref_ff153ac46160985f ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_3fbffe498b8bd91b a oc:WorkflowStep ;
+    dcterms:description "Propose organization plan with current state, proposed structure, changes to make, and files needing user decision" ;
+    oc:expectedOutcome "User approves, modifies, or rejects the plan" ;
+    oc:stepDependsOn _:ref_e6bd41f6bb253127,
+        _:ref_f96ad63ac7ddc207 ;
+    oc:stepId "plan" .
+
+_:ref_5d325df9fb38f919 a oc:WorkflowStep ;
+    dcterms:description "Execute approved plan: create folders, move files, rename files, delete confirmed duplicates" ;
+    oc:expectedOutcome "All approved file operations completed with logging" ;
+    oc:stepDependsOn _:ref_3fbffe498b8bd91b ;
+    oc:stepId "execute" .
+
+_:ref_780977b5b64e3830 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_23d4dc5fba28ae1f,
+        _:ref_3d73d7ac05ebd3b9,
+        _:ref_642a7ef743c09477,
+        _:ref_cdcb0935e12b12ac,
+        _:ref_f0209a89e9966f83,
+        _:ref_fed401a9932e2100 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c8083942cd023c40 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_23fc3d482c8483e5,
+        _:ref_296f41d4aa2bc067,
+        _:ref_730c115d47026955,
+        _:ref_83bd0951a9297b0f,
+        _:ref_a6e90b4175a6eb2c,
+        _:ref_f0723c10828345d2 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_e6bd41f6bb253127 a oc:WorkflowStep ;
+    dcterms:description "Identify organization patterns: group by type, purpose, and date to determine logical structure" ;
+    oc:expectedOutcome "Determined grouping strategy for the files" ;
+    oc:stepDependsOn _:ref_95bb6593800f046a ;
+    oc:stepId "patterns" .
+
+_:ref_f96ad63ac7ddc207 a oc:WorkflowStep ;
+    dcterms:description "Find duplicates by hash, filename, or size similarity when requested" ;
+    oc:expectedOutcome "List of duplicate sets with paths, sizes, dates, and keep recommendations" ;
+    oc:stepDependsOn _:ref_95bb6593800f046a ;
+    oc:stepId "duplicates" .
+
+_:ref_95bb6593800f046a a oc:WorkflowStep ;
+    dcterms:description "Analyze current state: list files, check types/sizes, identify largest files, count file types" ;
+    oc:expectedOutcome "Summary of total files, type breakdown, size distribution, date ranges, and issues" ;
+    oc:stepDependsOn _:ref_0482a6e6bb8f8157 ;
+    oc:stepId "analyze" .
+

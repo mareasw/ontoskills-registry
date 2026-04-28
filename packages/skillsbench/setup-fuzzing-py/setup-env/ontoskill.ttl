@@ -1,0 +1,325 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_setup_fuzzing_py_setup_env a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "setup-env" ;
+    skos:broader "Environment setup routine" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/setup-fuzzing-py/setup-env" ;
+    oc:contentHash "fa924f23f560379644eac3740dddfd1f35f8aff96e055d8a013fb56a0b7d892e" ;
+    oc:differentia "uses uv to create virtual environments, install dependencies, and run Python scripts based on project configuration detection" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "project-directory" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "When given a Python project codebase, this skill helps the agent to set up virtual environments, install dependencies, and run scripts." ;
+    oc:hasName "setup-env" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Assume `uv` is already available on PATH." ],
+                        _:ref_627a733ea24e31eb ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Scope" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Run using the venv interpreter directly (no activation required):" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "(uv will also automatically find and use the default `.venv` in subsequent invocations when you use `uv pip ...` commands.)" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`.venv/bin/python <script.py> [args...]`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`.venv/bin/python -m <module> [args...]`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Run scripts / commands" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "From the repo root:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`uv venv` # creates `.venv` by default" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Create venv" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`uv pip install -r requirements.txt`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Install dependencies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Pip workflow (requirements.txt)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`uv pip list` (verify packages installed)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`test -x .venv/bin/python`" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Minimal sanity checks (optional)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`uv run -- python <script.py> [args...]`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`uv run -- python -m <module> [args...]`" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Always run within the project environment:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Notes:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`uv run` executes inside the project environment and ensures it is up-to-date." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Run scripts / commands (preferred)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Notes:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "uv maintains a persistent project environment at `.venv` and installs deps there." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "From the repo root (where `pyproject.toml` is):" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`uv sync`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Create venv + install dependencies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Project workflow (pyproject.toml)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Else if `requirements.txt` exists: use **pip workflow** (`uv venv`, `uv pip install -r ...`, `.venv/bin/python ...`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Else: stop with an error (\"No pyproject.toml or requirements.txt found.\")" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "If `pyproject.toml` exists: use **project workflow** (`uv sync`, `uv run`)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Workflow selection" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Skill: Use uv to manage Python environments" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: setup-env
+description: "When given a Python project codebase, this skill helps the agent to set up virtual environments, install dependencies, and run scripts."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Set up environment and run scripts when only requirements.txt is present" ;
+            oc:hasStep _:ref_7e3b74605aebd08f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run sanity checks: `test -x .venv/bin/python` and `uv pip list`" ;
+                    oc:expectedOutcome "Venv exists and packages are listed" ;
+                    oc:stepDependsOn _:ref_de641e8b7b691d56 ;
+                    oc:stepId "verify-setup-pip" ],
+                _:ref_a3dc6abe9c17f528,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run scripts using `.venv/bin/python <script.py>` or `.venv/bin/python -m <module>`" ;
+                    oc:expectedOutcome "Script executes within the venv" ;
+                    oc:stepDependsOn _:ref_de641e8b7b691d56 ;
+                    oc:stepId "run-script-pip" ],
+                _:ref_de641e8b7b691d56 ;
+            oc:workflowId "setup-env-pip" ;
+            oc:workflowName "Pip Workflow (requirements.txt)" ],
+        [ a oc:Workflow ;
+            dcterms:description "Set up environment and run scripts when pyproject.toml is present" ;
+            oc:hasStep _:ref_006e259f044de5f7,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run sanity checks: `test -x .venv/bin/python` and `uv pip list`" ;
+                    oc:expectedOutcome "Venv exists and packages are listed" ;
+                    oc:stepDependsOn _:ref_006e259f044de5f7 ;
+                    oc:stepId "verify-setup" ],
+                _:ref_60f195b843936e09,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run scripts using `uv run -- python <script.py>` or `uv run -- python -m <module>`" ;
+                    oc:expectedOutcome "Script executes within the project environment" ;
+                    oc:stepDependsOn _:ref_006e259f044de5f7 ;
+                    oc:stepId "run-script" ] ;
+            oc:workflowId "setup-env-project" ;
+            oc:workflowName "Project Workflow (pyproject.toml)" ],
+        _:ref_627a733ea24e31eb ;
+    oc:impartsKnowledge oc:kn_091b692b,
+        oc:kn_419b3873,
+        oc:kn_4e553577,
+        oc:kn_773d60da,
+        oc:kn_7ebdb242 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "install Python project dependencies",
+        "run Python scripts in isolated environment",
+        "set up Python virtual environment" ;
+    oc:yieldsState oc:EnvironmentReady .
+
+oc:kn_091b692b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "uv must be installed and available on PATH before this skill can execute." ;
+    oc:hasRationale "All commands in this skill depend on the uv tool." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_419b3873 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any environment setup" ;
+    oc:directiveContent "Select workflow by detecting project files: if pyproject.toml exists use project workflow (uv sync, uv run); else if requirements.txt exists use pip workflow (uv venv, uv pip install, .venv/bin/python); else error out." ;
+    oc:hasRationale "Choosing the wrong workflow leads to missing dependencies or broken environments." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4e553577 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "After completing environment setup" ;
+    oc:directiveContent "Verify setup with: `test -x .venv/bin/python` and `uv pip list` to confirm the venv exists and packages are installed." ;
+    oc:hasRationale "Silent failures in venv creation or package installation can cause confusing downstream errors." .
+
+oc:kn_773d60da a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before environment setup begins" ;
+    oc:directiveContent "The project must have either pyproject.toml or requirements.txt at the repo root. If neither exists, stop with an error." ;
+    oc:hasRationale "Without a dependency manifest, there is no way to determine what to install." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7ebdb242 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing any Python script or module" ;
+    oc:directiveContent "Always run scripts inside the project environment using `uv run -- python <script.py>` for project workflow or `.venv/bin/python <script.py>` for pip workflow. Never activate the venv manually." ;
+    oc:hasRationale "Direct activation is error-prone in automated agent contexts; explicit interpreter paths or uv run are more reliable." .
+
+_:ref_0c5177de61a78e15 a oc:WorkflowStep ;
+    dcterms:description "Run Python scripts/commands" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_48529fd4417681a0 a oc:WorkflowStep ;
+    dcterms:description "Create a virtual environment" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_9fd4d453aea93003 a oc:WorkflowStep ;
+    dcterms:description "Install dependencies" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_60f195b843936e09 a oc:WorkflowStep ;
+    dcterms:description "Check for pyproject.toml in repo root" ;
+    oc:expectedOutcome "pyproject.toml found, proceed with project workflow" ;
+    oc:stepId "detect-project" .
+
+_:ref_627a733ea24e31eb a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0c5177de61a78e15,
+        _:ref_48529fd4417681a0,
+        _:ref_9fd4d453aea93003 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7e3b74605aebd08f a oc:WorkflowStep ;
+    dcterms:description "Run `uv venv` from repo root to create .venv" ;
+    oc:expectedOutcome ".venv directory created" ;
+    oc:stepDependsOn _:ref_a3dc6abe9c17f528 ;
+    oc:stepId "create-venv" .
+
+_:ref_a3dc6abe9c17f528 a oc:WorkflowStep ;
+    dcterms:description "Check for requirements.txt in repo root" ;
+    oc:expectedOutcome "requirements.txt found, proceed with pip workflow" ;
+    oc:stepId "detect-requirements" .
+
+_:ref_006e259f044de5f7 a oc:WorkflowStep ;
+    dcterms:description "Run `uv sync` from repo root to create .venv and install all dependencies" ;
+    oc:expectedOutcome ".venv directory created with all dependencies installed" ;
+    oc:stepDependsOn _:ref_60f195b843936e09 ;
+    oc:stepId "sync-deps" .
+
+_:ref_de641e8b7b691d56 a oc:WorkflowStep ;
+    dcterms:description "Run `uv pip install -r requirements.txt`" ;
+    oc:expectedOutcome "All packages from requirements.txt installed into .venv" ;
+    oc:stepDependsOn _:ref_7e3b74605aebd08f ;
+    oc:stepId "install-deps" .
+

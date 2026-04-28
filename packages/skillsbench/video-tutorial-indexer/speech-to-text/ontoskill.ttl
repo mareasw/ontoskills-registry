@@ -1,0 +1,115 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_tutorial_indexer_speech_to_text a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "speech-to-text" ;
+    skos:broader "Transcription tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-tutorial-indexer/speech-to-text" ;
+    oc:contentHash "f3829c6d4b16335664440ef431ae0030e9eaa105737da592a9bcb86c353c0483" ;
+    oc:differentia "that converts video audio to timestamped text using the Whisper tiny model" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "video-file-path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Transcribe video to timestamped text using Whisper tiny model (pre-installed)." ;
+    oc:hasName "speech-to-text" ;
+    oc:hasPayload oc:payload_f3829c6d4b163356 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Transcribe video to text with timestamps." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 scripts/transcribe.py /root/tutorial_video.mp4 -o transcript.txt --model tiny
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "The tiny model is pre-downloaded and takes ~2 minutes for a 23-min video." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """[0.0s - 5.2s] Welcome to this tutorial.
+[5.2s - 12.8s] Today we're going to learn...
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 17-20" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "This produces output like:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Usage" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Speech-to-Text" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: speech-to-text
+description: Transcribe video to timestamped text using Whisper tiny model (pre-installed).
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_1c346ca9,
+        oc:kn_42684a9d,
+        oc:kn_57c8d2c9,
+        oc:kn_d9566a0b,
+        oc:kn_fe29ecdd ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "extract timestamped speech from video",
+        "generate transcript from video file",
+        "transcribe video to text" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_1c346ca9 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When running speech-to-text transcription" ;
+    oc:directiveContent "1. Provide video file path 2. Run transcribe.py with --model tiny and -o output path 3. Review timestamped transcript output" ;
+    oc:stepOrder 1 .
+
+oc:kn_42684a9d a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running transcription" ;
+    oc:directiveContent "Whisper tiny model must be pre-downloaded and available (pre-installed in environment)" .
+
+oc:kn_57c8d2c9 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When reading or validating transcript output" ;
+    oc:directiveContent "[{start_time}s - {end_time}s] {transcribed_text}" ;
+    oc:templateVariables "end_time",
+        "start_time",
+        "transcribed_text" .
+
+oc:kn_d9566a0b a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When transcribing a video file to timestamped text" ;
+    oc:directiveContent "python3 scripts/transcribe.py /root/tutorial_video.mp4 -o transcript.txt --model tiny" .
+
+oc:kn_fe29ecdd a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When estimating transcription time" ;
+    oc:directiveContent "The tiny model takes approximately 2 minutes to transcribe a 23-minute video" ;
+    oc:hasRationale "Helps set user expectations and plan workflow timing" .
+
+oc:payload_f3829c6d4b163356 a oc:ExecutionPayload ;
+    oc:code "python3 scripts/transcribe.py {input_video} -o {output_file} --model tiny" ;
+    oc:executor "shell" ;
+    oc:timeout 300 .
+

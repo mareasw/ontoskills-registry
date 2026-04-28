@@ -1,0 +1,1023 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_protein_expression_analysis_xlsx a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "xlsx" ;
+    skos:broader "Spreadsheet processor" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/protein-expression-analysis/xlsx" ;
+    oc:contentHash "5846822043268b44fc25706013dba00d8087f1fca4620257727c708d772383d5" ;
+    oc:differentia "creates, edits, and analyzes Excel files with formulas, formatting, financial modeling standards, and automated recalculation" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "LibreOffice",
+        "openpyxl",
+        "pandas",
+        "python" ;
+    oc:hasArgumentHint "file path to .xlsx/.xlsm/.csv/.tsv file" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Claude needs to work with spreadsheets (.xlsx, .xlsm, .csv, .tsv, etc) for: (1) Creating new spreadsheets with formulas and formatting, (2) Reading or analyzing data, (3) Modify existing spreadsheets while preserving formulas, (4) Data analysis and visualization in spreadsheets, or (5) Recalculating formulas" ;
+    oc:hasName "xlsx" ;
+    oc:hasRequirement oc:req_111f766b,
+        oc:req_22a0b4bf,
+        oc:req_33dfb958,
+        oc:req_47a90164,
+        oc:req_746aacc9,
+        oc:req_7e9ca2f5 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "**Years**: Format as text strings (e.g., \"2024\" not \"2,024\")" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "**Currency**: Use $#,##0 format; ALWAYS specify units in headers (\"Revenue ($mm)\")" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "**Multiples**: Format as 0.0x for valuation multiples (EV/EBITDA, P/E)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 6 ;
+                                                    oc:itemText "**Negative numbers**: Use parentheses (123) not minus -123" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "**Zeros**: Use number formatting to make all zeros \"-\", including percentages (e.g., \"$#,##0;($#,##0);-\")" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "**Percentages**: Default to 0.0% format (one decimal)" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Required Format Rules" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Number Formatting Standards" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Unless otherwise stated by the user or existing template" ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "**Blue text (RGB: 0,0,255)**: Hardcoded inputs, and numbers users will change for scenarios" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "**Green text (RGB: 0,128,0)**: Links pulling from other worksheets within same workbook" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "**Yellow background (RGB: 255,255,0)**: Key assumptions needing attention or cells that need to be updated" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "**Red text (RGB: 255,0,0)**: External links to other files" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "**Black text (RGB: 0,0,0)**: ALL formulas and calculations" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Industry-Standard Color Conventions" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Color Coding Standards" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Comment or in cells beside (if end of table). Format: \"Source: [System/Document], [Date], [Specific Reference], [URL if applicable]\"" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:hasChild [ a oc:BulletList ;
+                                                            oc:blockType "bullet_list" ;
+                                                            oc:contentOrder 1 ;
+                                                            oc:hasItem [ a oc:BulletItem ;
+                                                                    oc:blockType "bullet_item" ;
+                                                                    oc:itemOrder 3 ;
+                                                                    oc:itemText "\"Source: Bloomberg Terminal, 8/15/2025, AAPL US Equity\"" ],
+                                                                [ a oc:BulletItem ;
+                                                                    oc:blockType "bullet_item" ;
+                                                                    oc:itemOrder 4 ;
+                                                                    oc:itemText "\"Source: FactSet, 8/20/2025, Consensus Estimates Screen\"" ],
+                                                                [ a oc:BulletItem ;
+                                                                    oc:blockType "bullet_item" ;
+                                                                    oc:itemOrder 2 ;
+                                                                    oc:itemText "\"Source: Company 10-Q, Q2 2025, Exhibit 99.1, [SEC EDGAR URL]\"" ],
+                                                                [ a oc:BulletItem ;
+                                                                    oc:blockType "bullet_item" ;
+                                                                    oc:itemOrder 1 ;
+                                                                    oc:itemText "\"Source: Company 10-K, FY2024, Page 45, Revenue Note, [SEC EDGAR URL]\"" ] ] ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Examples:" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "Documentation Requirements for Hardcodes" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Place ALL assumptions (growth rates, margins, multiples, etc.) in separate assumption cells" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Example: Use =B5*(1+$B$6) instead of =B5*1.05" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Use cell references instead of hardcoded values in formulas" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Assumptions Placement" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "Check for off-by-one errors in ranges" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Verify all cell references are correct" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "Ensure consistent formulas across all projection periods" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Test with edge cases (zero values, negative numbers)" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 5 ;
+                                                    oc:itemText "Verify no unintended circular references" ] ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Formula Error Prevention" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Formula Construction Rules" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Financial models" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Every Excel model MUST be delivered with ZERO formula errors (#REF!, #DIV/0!, #VALUE!, #N/A, #NAME?)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Zero Formula Errors" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Never impose standardized formatting on files with established patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Existing template conventions ALWAYS override these guidelines" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Study and EXACTLY match existing format, style, and conventions when modifying files" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Preserve Existing Templates (when updating templates)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "All Excel files" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Requirements for Outputs" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For data analysis, visualization, and basic operations, use **pandas** which provides powerful data manipulation capabilities:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pandas as pd
+
+# Read Excel
+df = pd.read_excel('file.xlsx')  # Default: first sheet
+all_sheets = pd.read_excel('file.xlsx', sheet_name=None)  # All sheets as dict
+
+# Analyze
+df.head()      # Preview data
+df.info()      # Column info
+df.describe()  # Statistics
+
+# Write Excel
+df.to_excel('output.xlsx', index=False)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 78-92" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Data analysis with pandas" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Reading and analyzing data" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Always use Excel formulas instead of calculating values in Python and hardcoding them.** This ensures the spreadsheet remains dynamic and updateable." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "This applies to ALL calculations - totals, percentages, ratios, differences, etc. The spreadsheet should be able to recalculate when source data changes." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Bad: Calculating in Python and hardcoding result
+total = df['Sales'].sum()
+sheet['B10'] = total  # Hardcodes 5000
+
+# Bad: Computing growth rate in Python
+growth = (df.iloc[-1]['Revenue'] - df.iloc[0]['Revenue']) / df.iloc[0]['Revenue']
+sheet['C5'] = growth  # Hardcodes 0.15
+
+# Bad: Python calculation for average
+avg = sum(values) / len(values)
+sheet['D20'] = avg  # Hardcodes 42.5
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 101-113" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "❌ WRONG - Hardcoding Calculated Values" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Good: Let Excel calculate the sum
+sheet['B10'] = '=SUM(B2:B9)'
+
+# Good: Growth rate as Excel formula
+sheet['C5'] = '=(C4-C2)/C2'
+
+# Good: Average using Excel function
+sheet['D20'] = '=AVERAGE(D2:D19)'
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 116-125" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "✅ CORRECT - Using Excel Formulas" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "CRITICAL: Use Formulas, Not Hardcoded Values" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python recalc.py <excel_file> [timeout_seconds]
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 208-210" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Returns JSON with detailed error locations and counts" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Automatically sets up LibreOffice macro on first run" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Works on both Linux and macOS" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Recalculates all formulas in all sheets" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Scans ALL cells for Excel errors (#REF!, #DIV/0!, etc.)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Excel files created or modified by openpyxl contain formulas as strings but not calculated values. Use the provided `recalc.py` script to recalculate formulas:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Example:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python recalc.py output.xlsx 30
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 213-215" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "The script:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Recalculating formulas" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_f150f9e531545daa ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Using openpyxl to preserve formulas and formatting
+from openpyxl import load_workbook
+
+# Load existing file
+wb = load_workbook('existing.xlsx')
+sheet = wb.active  # or wb['SheetName'] for specific sheet
+
+# Working with multiple sheets
+for sheet_name in wb.sheetnames:
+    sheet = wb[sheet_name]
+    print(f"Sheet: {sheet_name}")
+
+# Modify cells
+sheet['A1'] = 'New Value'
+sheet.insert_rows(2)  # Insert row at position 2
+sheet.delete_cols(3)  # Delete column 3
+
+# Add new sheet
+new_sheet = wb.create_sheet('NewSheet')
+new_sheet['A1'] = 'Data'
+
+wb.save('modified.xlsx')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 179-202" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Editing existing Excel files" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Using openpyxl for formulas and formatting
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+
+wb = Workbook()
+sheet = wb.active
+
+# Add data
+sheet['A1'] = 'Hello'
+sheet['B1'] = 'World'
+sheet.append(['Row', 'of', 'data'])
+
+# Add formula
+sheet['B2'] = '=SUM(A1:A10)'
+
+# Formatting
+sheet['A1'].font = Font(bold=True, color='FF0000')
+sheet['A1'].fill = PatternFill('solid', start_color='FFFF00')
+sheet['A1'].alignment = Alignment(horizontal='center')
+
+# Column width
+sheet.column_dimensions['A'].width = 20
+
+wb.save('output.xlsx')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 150-175" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Creating new Excel files" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A user may ask you to create, edit, or analyze the contents of an .xlsx file. You have different tools and workflows available for different tasks." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**For Excel files themselves**:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**IMPORTANT**: When generating Python code for Excel operations:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Include notes for key calculations and model sections" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Document data sources for hardcoded values" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Add comments to cells with complex formulas or important assumptions" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Avoid unnecessary print statements" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Avoid verbose variable names and redundant operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Write minimal, concise Python code without unnecessary comments" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Code Style Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Formulas are preserved but not evaluated - use recalc.py to update values" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use `data_only=True` to read calculated values: `load_workbook('file.xlsx', data_only=True)`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Cell indices are 1-based (row=1, column=1 refers to cell A1)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Warning**: If opened with `data_only=True` and saved, formulas are replaced with values and permanently lost" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "For large files: Use `read_only=True` for reading or `write_only=True` for writing" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Working with openpyxl" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Handle dates properly: `pd.read_excel('file.xlsx', parse_dates=['date_column'])`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Specify data types to avoid inference issues: `pd.read_excel('file.xlsx', dtype={'id': str})`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "For large files, read specific columns: `pd.read_excel('file.xlsx', usecols=['A', 'C', 'E'])`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Working with pandas" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**pandas**: Best for data analysis, bulk operations, and simple data export" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**openpyxl**: Best for complex formatting, formulas, and Excel-specific features" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Library Selection" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Excel File Workflows" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Quick checks to ensure formulas work correctly:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "[ ] **Row offset**: Remember Excel rows are 1-indexed (DataFrame row 5 = Excel row 6)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[ ] **Column mapping**: Confirm Excel columns match (e.g., column 64 = BL, not BK)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[ ] **Test 2-3 sample references**: Verify they pull correct values before building full model" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Essential Verification" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "[ ] **Test edge cases**: Include zero, negative, and very large values" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[ ] **Start small**: Test formulas on 2-3 cells before applying broadly" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[ ] **Verify dependencies**: Check all cells referenced in formulas exist" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Formula Testing Strategy" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The script returns JSON with error details:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "status": "success",           // or "errors_found"
+  "total_errors": 0,              // Total error count
+  "total_formulas": 42,           // Number of formulas in file
+  "error_summary": {              // Only present if errors found
+    "#REF!": {
+      "count": 2,
+      "locations": ["Sheet1!B5", "Sheet1!C10"]
+    }
+  }
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 248-260" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Interpreting recalc.py Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "[ ] **Multiple matches**: Search all occurrences, not just first" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "[ ] **Division by zero**: Check denominators before using `/` in formulas (#DIV/0!)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "[ ] **Wrong references**: Verify all cell references point to intended cells (#REF!)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "[ ] **Cross-sheet references**: Use correct format (Sheet1!A1) for linking sheets" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[ ] **Far-right columns**: FY data often in columns 50+" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[ ] **NaN handling**: Check for null values with `pd.notna()`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Common Pitfalls" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Formula Verification Checklist" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**LibreOffice Required for Formula Recalculation**: You can assume LibreOffice is installed for recalculating formula values using the `recalc.py` script. The script automatically configures LibreOffice on first run" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Important Requirements" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "XLSX creation, editing, and analysis" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: xlsx
+description: "Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Claude needs to work with spreadsheets (.xlsx, .xlsm, .csv, .tsv, etc) for: (1) Creating new spreadsheets with formulas and formatting, (2) Reading or analyzing data, (3) Modify existing spreadsheets while preserving formulas, (4) Data analysis and visualization in spreadsheets, or (5) Recalculating formulas"
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Standard workflow for creating or editing Excel files with formulas, formatting, and validation" ;
+            oc:hasStep _:ref_406fad4625d4dc7d,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Check recalc.py JSON output; if status is 'errors_found', review error_summary, fix errors in code, and re-run from step 3" ;
+                    oc:expectedOutcome "Zero formula errors confirmed" ;
+                    oc:stepDependsOn _:ref_7c9594c058db751f ;
+                    oc:stepId "verify-fix" ],
+                _:ref_7c9594c058db751f,
+                _:ref_94beada9128bb095,
+                _:ref_ad197182b04843b4,
+                _:ref_f7564184b0f5b4ab ;
+            oc:workflowId "xlsx-create-edit" ;
+            oc:workflowName "Excel File Creation and Editing Workflow" ],
+        _:ref_f150f9e531545daa ;
+    oc:impartsKnowledge oc:kn_09e332ce,
+        oc:kn_0b66b78f,
+        oc:kn_21355463,
+        oc:kn_21ab463a,
+        oc:kn_24314524,
+        oc:kn_3a95e4da,
+        oc:kn_41e06f9a,
+        oc:kn_6cc62eb4,
+        oc:kn_74fd42a0,
+        oc:kn_7dd368d0,
+        oc:kn_84a7f271,
+        oc:kn_857d07b5,
+        oc:kn_9a0972d3,
+        oc:kn_a3640bc0,
+        oc:kn_a5bf3467,
+        oc:kn_ac95e0ce,
+        oc:kn_caf764d0,
+        oc:kn_d1cabb18,
+        oc:kn_eef556cb ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "analyze excel data",
+        "create financial model",
+        "create spreadsheet",
+        "edit xlsx file",
+        "preserve formulas while modifying excel",
+        "recalculate formulas in spreadsheet" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:DocumentModified .
+
+oc:kn_09e332ce a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, before final delivery of any spreadsheet" ;
+    oc:directiveContent "Every Excel model MUST be delivered with ZERO formula errors (#REF!, #DIV/0!, #VALUE!, #N/A, #NAME?). Use recalc.py to verify before delivery." ;
+    oc:hasRationale "Formula errors indicate broken references or logic that will propagate incorrect results and erode user trust." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_0b66b78f a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing existing Excel files while preserving formulas" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from openpyxl import load_workbook
+
+wb = load_workbook('existing.xlsx')
+sheet = wb.active
+sheet['A1'] = 'New Value'
+wb.save('modified.xlsx')""" .
+
+oc:kn_21355463 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any calculated value to an Excel cell" ;
+    oc:directiveContent "Never hardcode calculated values in cells — always use Excel formulas (=SUM, =AVERAGE, etc.) so the spreadsheet remains dynamic and recalculable." ;
+    oc:hasRationale "Hardcoded values break spreadsheet integrity: when source data changes, results do not update, making the model unreliable." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_21ab463a a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When recalculating formulas after creating or modifying Excel files" ;
+    oc:directiveContent "python recalc.py <excel_file> [timeout_seconds]" .
+
+oc:kn_24314524 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating or formatting financial models" ;
+    oc:directiveContent "Use industry-standard financial color coding: Blue (0,0,255) for hardcoded inputs, Black (0,0,0) for formulas, Green (0,128,0) for cross-sheet links, Red (255,0,0) for external links, Yellow background (255,255,0) for key assumptions." ;
+    oc:hasRationale "Color coding is a universal convention in finance that enables instant visual distinction between inputs, calculations, and links." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3a95e4da a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building financial models or any formula-heavy spreadsheet" ;
+    oc:directiveContent "Place ALL assumptions (growth rates, margins, multiples) in separate assumption cells and reference them via cell references in formulas, e.g., =B5*(1+$B$6) not =B5*1.05." ;
+    oc:hasRationale "Separate assumptions enable scenario analysis, make the model auditable, and prevent hard-to-find errors from embedded constants." .
+
+oc:kn_41e06f9a a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing which Python library to use for a spreadsheet task" ;
+    oc:directiveContent "Use pandas for data analysis, bulk operations, and simple data export. Use openpyxl for complex formatting, formulas, and Excel-specific features." ;
+    oc:hasRationale "Each library has different strengths: pandas excels at data manipulation, openpyxl excels at Excel-specific features like formulas and formatting." .
+
+oc:kn_6cc62eb4 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Python packages required: openpyxl (for formulas/formatting), pandas (for data analysis)" .
+
+oc:kn_74fd42a0 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When mapping between pandas DataFrames and Excel cell references" ;
+    oc:directiveContent "Excel rows are 1-indexed while DataFrame rows are 0-indexed — DataFrame row 5 corresponds to Excel row 6 (accounting for header). Column 64 is BL, not BK." ;
+    oc:hasRationale "Off-by-one errors in row/column mapping are the most common source of #REF! errors in generated spreadsheets." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7dd368d0 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When editing any pre-existing Excel file" ;
+    oc:directiveContent "When modifying existing templates, study and EXACTLY match existing format, style, and conventions. Existing template conventions ALWAYS override default guidelines." ;
+    oc:hasRationale "Inconsistent formatting disrupts established workflows and makes models harder to maintain." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_84a7f271 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When formatting financial data in Excel cells" ;
+    oc:directiveContent "Apply correct number formatting: Years as text, Currency as $#,##0 with units in headers, Zeros as \"-\", Percentages as 0.0%, Multiples as 0.0x, Negatives with parentheses." ;
+    oc:hasRationale "Consistent number formatting ensures readability and meets professional financial reporting standards." .
+
+oc:kn_857d07b5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading calculated values from openpyxl" ;
+    oc:directiveContent "Never open a workbook with data_only=True and then save it — this permanently replaces all formulas with their cached values, destroying the model logic." ;
+    oc:hasRationale "Formula loss is irreversible; the spreadsheet becomes a static snapshot with no computational integrity." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9a0972d3 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading, analyzing, or exporting Excel data" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import pandas as pd
+
+df = pd.read_excel('file.xlsx')
+all_sheets = pd.read_excel('file.xlsx', sheet_name=None)
+df.to_excel('output.xlsx', index=False)""" .
+
+oc:kn_a3640bc0 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating new Excel files with formulas and formatting" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+
+wb = Workbook()
+sheet = wb.active
+sheet['B2'] = '=SUM(A1:A10)'
+sheet['A1'].font = Font(bold=True, color='FF0000')
+sheet.column_dimensions['A'].width = 20
+wb.save('output.xlsx')""" .
+
+oc:kn_a5bf3467 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "For any Excel creation or editing task" ;
+    oc:directiveContent "1. Choose tool (pandas for data/analysis, openpyxl for formulas/formatting) 2. Create new workbook or load existing file 3. Add/edit data, formulas, and formatting 4. Save to file 5. Run recalc.py to recalculate formulas 6. Verify output JSON for errors; fix and recalc if needed" ;
+    oc:stepOrder 1 .
+
+oc:kn_ac95e0ce a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "LibreOffice must be installed for formula recalculation via recalc.py (auto-configures on first run)" .
+
+oc:kn_caf764d0 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When interpreting recalc.py output" ;
+    oc:directiveContent """{
+  "status": "success" | "errors_found",
+  "total_errors": {count},
+  "total_formulas": {count},
+  "error_summary": {
+    "#REF!": {"count": N, "locations": ["Sheet1!B5"]}
+  }
+}""" ;
+    oc:templateVariables "error_summary",
+        "status",
+        "total_errors",
+        "total_formulas" .
+
+oc:kn_d1cabb18 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "Always after creating or modifying an Excel file with formulas" ;
+    oc:directiveContent "After saving any workbook with formulas, run `python recalc.py <file>` to recalculate all formulas and verify zero errors. If errors found, check error_summary for locations and fix iteratively." ;
+    oc:hasRationale "openpyxl stores formulas as strings without evaluating them; recalc.py uses LibreOffice to compute actual values and detect errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_eef556cb a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before applying formulas broadly across a spreadsheet" ;
+    oc:directiveContent "Before building formulas: Test 2-3 sample cell references to verify they pull correct values, confirm column mapping (especially columns 50+), and account for row index offset." ;
+    oc:hasRationale "Catching reference errors early prevents cascading failures across an entire model." .
+
+oc:req_111f766b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "LibreOffice" .
+
+oc:req_22a0b4bf a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Excel formula syntax" .
+
+oc:req_33dfb958 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Financial modeling color conventions" .
+
+oc:req_47a90164 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "openpyxl" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_7e9ca2f5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python" .
+
+_:ref_1d409254ed87e53c a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "The script returns JSON with error details" .
+
+_:ref_1fc34ec0e6e616a3 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 1 ;
+    oc:itemText "`#REF!`: Invalid cell references" .
+
+_:ref_243e0c6727f6f932 a oc:WorkflowStep ;
+    dcterms:description "**Modify**: Add/edit data, formulas, and formatting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3ea56daa14a7ce23 a oc:WorkflowStep ;
+    dcterms:description "**Choose tool**: pandas for data, openpyxl for formulas/formatting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4a6f9b988c3b3247 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "`#DIV/0!`: Division by zero" .
+
+_:ref_4c9c493910fa7442 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:itemOrder 2 ;
+    oc:itemText "If `status` is `errors_found`, check `error_summary` for specific error types and locations" .
+
+_:ref_4db80edd8117f58b a oc:BulletList ;
+    oc:blockType "bullet_list" ;
+    oc:contentOrder 1 ;
+    oc:hasItem _:ref_1fc34ec0e6e616a3,
+        _:ref_4a6f9b988c3b3247,
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 3 ;
+            oc:itemText "`#VALUE!`: Wrong data type in formula" ],
+        [ a oc:BulletItem ;
+            oc:blockType "bullet_item" ;
+            oc:itemOrder 4 ;
+            oc:itemText "`#NAME?`: Unrecognized formula name" ] .
+
+_:ref_7ebe5c8433eb1a54 a oc:WorkflowStep ;
+    dcterms:description "**Recalculate formulas (MANDATORY IF USING FORMULAS)**: Use the recalc.py script" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """python recalc.py output.xlsx
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 135-137" ] ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_95160ad87c64e792 a oc:BulletItem ;
+    oc:blockType "bullet_item" ;
+    oc:hasChild _:ref_4db80edd8117f58b ;
+    oc:itemOrder 4 ;
+    oc:itemText "Common errors to fix:" .
+
+_:ref_9d7f4f2d6e6aa591 a oc:WorkflowStep ;
+    dcterms:description "**Verify and fix any errors**:" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem _:ref_1d409254ed87e53c,
+                _:ref_4c9c493910fa7442,
+                _:ref_95160ad87c64e792,
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 3 ;
+                    oc:itemText "Fix the identified errors and recalculate again" ] ] ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_f0a6586f5dc6d25e a oc:WorkflowStep ;
+    dcterms:description "**Save**: Write to file" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_fa3cf1984f008d0c a oc:WorkflowStep ;
+    dcterms:description "**Create/Load**: Create new workbook or load existing file" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_406fad4625d4dc7d a oc:WorkflowStep ;
+    dcterms:description "Select appropriate library: pandas for data analysis/bulk ops, openpyxl for formulas/formatting" ;
+    oc:expectedOutcome "Correct library selected based on task requirements" ;
+    oc:stepId "choose-tool" .
+
+_:ref_7c9594c058db751f a oc:WorkflowStep ;
+    dcterms:description "Run `python recalc.py <file>` to recalculate all formulas via LibreOffice" ;
+    oc:expectedOutcome "Formula values populated, error report generated" ;
+    oc:stepDependsOn _:ref_94beada9128bb095 ;
+    oc:stepId "recalculate" .
+
+_:ref_94beada9128bb095 a oc:WorkflowStep ;
+    dcterms:description "Save workbook to file using wb.save()" ;
+    oc:expectedOutcome "Excel file written to disk" ;
+    oc:stepDependsOn _:ref_f7564184b0f5b4ab ;
+    oc:stepId "save" .
+
+_:ref_ad197182b04843b4 a oc:WorkflowStep ;
+    dcterms:description "Create new Workbook() or load_workbook() on existing file" ;
+    oc:expectedOutcome "Workbook object ready for modification" ;
+    oc:stepDependsOn _:ref_406fad4625d4dc7d ;
+    oc:stepId "create-load" .
+
+_:ref_f150f9e531545daa a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_243e0c6727f6f932,
+        _:ref_3ea56daa14a7ce23,
+        _:ref_7ebe5c8433eb1a54,
+        _:ref_9d7f4f2d6e6aa591,
+        _:ref_f0a6586f5dc6d25e,
+        _:ref_fa3cf1984f008d0c ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f7564184b0f5b4ab a oc:WorkflowStep ;
+    dcterms:description "Add/edit data, formulas (always use Excel formula strings, never hardcoded values), and formatting" ;
+    oc:expectedOutcome "All content and formatting applied to worksheet" ;
+    oc:stepDependsOn _:ref_ad197182b04843b4 ;
+    oc:stepId "modify" .
+

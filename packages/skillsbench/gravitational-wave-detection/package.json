@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/gravitational-wave-detection",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "conditioning/ontoskill.ttl",
+    "matched-filtering/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "conditioning/intents.json",
+    "matched-filtering/intents.json"
+  ],
+  "skills": []
+}

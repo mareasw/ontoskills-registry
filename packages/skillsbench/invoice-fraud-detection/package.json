@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/invoice-fraud-detection",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "fuzzy-match/ontoskill.ttl",
+    "pdf/ontoskill.ttl",
+    "xlsx/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "fuzzy-match/intents.json",
+    "pdf/intents.json",
+    "xlsx/intents.json"
+  ],
+  "skills": []
+}

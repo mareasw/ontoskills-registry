@@ -1,0 +1,285 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mario_coin_counting_image_editing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "image-editing" ;
+    skos:broader "Command-line image processing toolkit" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mario-coin-counting/image_editing" ;
+    oc:contentHash "f929a021d5a01ba9dbeefd91beca3747e18836d062870987af64fdd43797e845" ;
+    oc:differentia "wraps ImageMagick convert to perform batch image manipulation operations such as resize, blur, crop, flip, and format conversion" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "image file path or glob pattern" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Comprehensive command-line tools for modifying and manipulating images, such as resize, blur, crop, flip, and many more." ;
+    oc:hasName "image-editing" ;
+    oc:hasRequirement oc:req_a216881c,
+        oc:req_e5e33c0b ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Required dependencies (install if not available):" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "convert: Run `sudo apt install imagemagick` to install. After that, you can use `convert` command." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 12 ;
+                            oc:textContent """`-blend <geometry>`
+Blend an image into another by the given absolute value or percent. Blend will average the images together ('plus') according to the percentages given and each pixels transparency. If only a single percentage value is given it sets the weight of the composite or 'source' image, while the background image is weighted by the exact opposite amount. That is a -blend 30% merges 30% of the 'source' image with 70% of the 'destination' image. Thus it is equivalent to -blend 30x70%.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """Example Usage
+We list a few examples of the command here to illustrate its usefulness and ease of use. To get started, let's reduce the size of our rose:""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "You can resize all your JPEG images in a folder to a maximum dimension of 256x256 with this command:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 18 ;
+                            oc:textContent """`-channel type`
+Specify those image color channels to which subsequent operators are limited. Choose from: Red, Green, Blue, Alpha, Gray, Cyan, Magenta, Yellow, Black, Opacity, Index, RGB, RGBA, CMYK, or CMYKA.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """convert -format jpg *.png
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 7 ;
+                            oc:sourceLocation "lines 32-34" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 20 ;
+                            oc:textContent """`-colorspace value`
+Set the image colorspace.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 10 ;
+                            oc:textContent """`-auto-orient`
+Adjusts an image so that its orientation is suitable for viewing (i.e. top-left orientation). This operator reads and resets the EXIF image profile setting 'Orientation' and then performs the appropriate 90 degree rotation on the image to orient the image, for correct viewing.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 9 ;
+                            oc:textContent "Useful image operations and their corresponding command:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 16 ;
+                            oc:textContent """`-border <value%>`
+Surround the image with a border of color. value % of width is added to left/right and value % of height is added to top/bottom""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """convert -resize 50% rose.jpg
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 21-23" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 17 ;
+                            oc:textContent """`-brightness-contrast brightness`
+`-brightness-contrast brightness{xcontrast}{%}`
+Adjust the brightness and/or contrast of the image. Brightness and Contrast values apply changes to the input image. They are not absolute settings. A brightness or contrast value of zero means no change. The range of values is -100 to +100 on each. Positive values increase the brightness or contrast and negative values decrease the brightness or contrast. To control only contrast, set the `brightness=0`. To control only brightness, set `contrast=0` or just leave it off. You may also use `-channel` to control which channels to apply the brightness and/or contrast change. The default is to apply the same transformation to all channels.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "Finally, we convert all our PNG images in a folder to the JPEG format:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """convert -resize 256x256 *.jpg
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 26-28" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 19 ;
+                            oc:textContent """`-contrast`
+Enhance or reduce the image contrast.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 14 ;
+                            oc:textContent """`-blur radius`
+`-blur radius{xsigma}`
+Reduce image noise and reduce detail levels. Convolve the image with a Gaussian or normal distribution using the given Sigma value. The formula is:
+$$
+G(u, v) = \\frac{1}{2\\pi\\sigma^2}e^{-(u^2+v^2)/(2\\sigma^2)}
+$$
+The sigma value is the important argument, and determines the actual amount of blurring that will take place.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 15 ;
+                            oc:textContent """`-bordercolor color`
+Set the border color. The color is specified using the format described under the -fill option. The default border color is #DFDFDF, this shade of gray.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use the `convert` command to resize an image, blur, crop, despeckle, dither, draw on, flip, join, re-sample, and much more." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 8 ;
+                            oc:textContent "Here image files 1.png, 2.png, etc., are left untouched and files 1.jpg, 2.jpg, etc., are created. They are copies of their respective PNG images except are stored in the JPEG image format." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 11 ;
+                            oc:textContent """`-background <color>`
+Set the background color. The color is specified using the format described under the -fill option. The default background color (if none is specified or found in the image) is white.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 13 ;
+                            oc:textContent """`-blue-shift <factor>`
+Simulate a scene at nighttime in the moonlight. Start with a factor of 1.5""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Image Operations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This guide covers essential image processing operations using ImageMagick, a collection of command-line tools that can be applied to modify and manipulate images. With this toolkit, you can edit images in batch on Linux command-line." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Command-line Tools: Convert" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: image_editing
+description: Comprehensive command-line tools for modifying and manipulating images, such as resize, blur, crop, flip, and many more.
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Apply a single image manipulation operation to one or more image files" ;
+            oc:hasStep _:ref_312f20b6ac102142,
+                _:ref_3fac85a387f45199,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify the output file exists and has expected properties" ;
+                    oc:expectedOutcome "Output file is confirmed valid" ;
+                    oc:stepDependsOn _:ref_3fac85a387f45199 ;
+                    oc:stepId "verify-output" ],
+                _:ref_87f89e6b3c9fbfed ;
+            oc:workflowId "image-edit-basic" ;
+            oc:workflowName "Basic Image Edit" ] ;
+    oc:impartsKnowledge oc:kn_00912cf2,
+        oc:kn_4e5bdf46,
+        oc:kn_5c4e19fc,
+        oc:kn_6067b38b,
+        oc:kn_be09ba84,
+        oc:kn_c862b423,
+        oc:kn_cc7fa2e7,
+        oc:kn_cef2807b,
+        oc:kn_d46f2bbe ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "adjust image brightness and contrast",
+        "batch process images",
+        "blur image",
+        "convert image format",
+        "crop image",
+        "manipulate image properties",
+        "resize image" ;
+    oc:yieldsState oc:FileModified .
+
+oc:kn_00912cf2 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When batch resizing all JPEG images to a maximum dimension" ;
+    oc:directiveContent "convert -resize 256x256 *.jpg" .
+
+oc:kn_4e5bdf46 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When correcting image orientation" ;
+    oc:directiveContent "Do not use -auto-orient without understanding it reads and resets the EXIF Orientation profile before rotating." ;
+    oc:hasRationale "Auto-orient modifies EXIF data which may be needed by downstream consumers." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5c4e19fc a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "General pattern for all ImageMagick convert operations" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "convert [options] <input>" .
+
+oc:kn_6067b38b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying blur operations" ;
+    oc:directiveContent "For -blur, the sigma value is the important argument that determines actual blur amount, not the radius." ;
+    oc:hasRationale "Misunderstanding radius vs sigma leads to unexpected blur results." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_be09ba84 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using -brightness-contrast" ;
+    oc:directiveContent "Brightness and contrast values range from -100 to +100. Zero means no change. Positive increases, negative decreases." ;
+    oc:hasRationale "Values outside this range are invalid and may cause errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c862b423 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When converting image formats" ;
+    oc:directiveContent "Format conversion (e.g., -format jpg *.png) creates new files without modifying originals." ;
+    oc:hasRationale "Original source files are preserved; new copies are created in the target format." .
+
+oc:kn_cc7fa2e7 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When resizing an image by percentage" ;
+    oc:directiveContent "convert -resize 50% <input.jpg>" .
+
+oc:kn_cef2807b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any image editing operation" ;
+    oc:directiveContent "ImageMagick must be installed: run `sudo apt install imagemagick` to install the `convert` command." ;
+    oc:hasRationale "The entire skill depends on the ImageMagick `convert` CLI tool being available on the system." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d46f2bbe a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting all PNG images to JPEG format" ;
+    oc:directiveContent "convert -format jpg *.png" .
+
+oc:req_a216881c a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "sudo apt install imagemagick" .
+
+oc:req_e5e33c0b a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ImageMagick convert command" .
+
+_:ref_312f20b6ac102142 a oc:WorkflowStep ;
+    dcterms:description "Verify ImageMagick is installed (`which convert`)" ;
+    oc:expectedOutcome "convert command is available" ;
+    oc:stepId "check-deps" .
+
+_:ref_3fac85a387f45199 a oc:WorkflowStep ;
+    dcterms:description "Execute the convert command with the appropriate flags" ;
+    oc:expectedOutcome "Output image file is created or modified" ;
+    oc:stepDependsOn _:ref_87f89e6b3c9fbfed ;
+    oc:stepId "run-convert" .
+
+_:ref_87f89e6b3c9fbfed a oc:WorkflowStep ;
+    dcterms:description "Identify the input image file(s) and desired operation" ;
+    oc:expectedOutcome "Input path and operation parameters are known" ;
+    oc:stepDependsOn _:ref_312f20b6ac102142 ;
+    oc:stepId "identify-input" .
+

@@ -1,0 +1,1030 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_google_auto_maven_build_lifecycle a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "maven-build-lifecycle" ;
+    skos:broader "Build Lifecycle Framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-google-auto/maven-build-lifecycle" ;
+    oc:contentHash "4966fa434edc6498f2e6ba2003d84035ccc6d7eb07e134a9f5ba7ed00a98632b" ;
+    oc:differentia "that defines the ordered phases, goals, profiles, and customization mechanisms for Maven-based Java project builds" ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "maven-phase-or-goal (e.g., compile, test, package, install, deploy)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when working with Maven build phases, goals, profiles, or customizing the build process for Java projects." ;
+    oc:hasName "maven-build-lifecycle" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Master Maven's build lifecycle including phases, goals, profiles, and build customization for efficient Java project builds." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Enable build cache (Maven 4+)
+mvn install -Dmaven.build.cache.enabled=true
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 440-443" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 32 ;
+                            oc:sectionTitle "Build Cache" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Skip unchanged modules
+mvn install -amd
+
+# Use build cache (requires Maven Daemon)
+mvnd install
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 411-417" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 30 ;
+                            oc:sectionTitle "Incremental Builds" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <fork>true</fork>
+                <compilerArgs>
+                    <arg>-J-Xmx512m</arg>
+                </compilerArgs>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 421-436" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 31 ;
+                            oc:sectionTitle "Parallel Builds" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 29 ;
+                    oc:sectionTitle "Build Optimization" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Compile only
+mvn compile
+
+# Compile and run tests
+mvn test
+
+# Create package
+mvn package
+
+# Install to local repository
+mvn install
+
+# Deploy to remote repository
+mvn deploy
+
+# Clean and build
+mvn clean install
+
+# Skip tests
+mvn install -DskipTests
+
+# Skip test compilation and execution
+mvn install -Dmaven.test.skip=true
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 46-70" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Common Phase Commands" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """1.  validate      - Validate project structure
+2.  initialize    - Initialize build state
+3.  generate-sources
+4.  process-sources
+5.  generate-resources
+6.  process-resources - Copy resources to output
+7.  compile       - Compile source code
+8.  process-classes
+9.  generate-test-sources
+10. process-test-sources
+11. generate-test-resources
+12. process-test-resources
+13. test-compile  - Compile test sources
+14. process-test-classes
+15. test          - Run unit tests
+16. prepare-package
+17. package       - Create JAR/WAR
+18. pre-integration-test
+19. integration-test - Run integration tests
+20. post-integration-test
+21. verify        - Run verification checks
+22. install       - Install to local repo
+23. deploy        - Deploy to remote repo
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 18-42" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Complete Phase Order" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Default Lifecycle Phases" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Activate by name
+mvn install -Pproduction
+
+# Multiple profiles
+mvn install -Pproduction,ci
+
+# Deactivate profile
+mvn install -P!development
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 190-199" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Profile Activation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<profiles>
+    <profile>
+        <id>development</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <env>dev</env>
+            <skip.integration.tests>true</skip.integration.tests>
+        </properties>
+    </profile>
+
+    <profile>
+        <id>production</id>
+        <properties>
+            <env>prod</env>
+            <skip.integration.tests>false</skip.integration.tests>
+        </properties>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <debug>false</debug>
+                        <optimize>true</optimize>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 153-186" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "Profile Definition" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<profile>
+    <id>jdk17</id>
+    <activation>
+        <!-- Activate by JDK version -->
+        <jdk>17</jdk>
+    </activation>
+</profile>
+
+<profile>
+    <id>windows</id>
+    <activation>
+        <!-- Activate by OS -->
+        <os>
+            <family>windows</family>
+        </os>
+    </activation>
+</profile>
+
+<profile>
+    <id>ci</id>
+    <activation>
+        <!-- Activate by environment variable -->
+        <property>
+            <name>env.CI</name>
+            <value>true</value>
+        </property>
+    </activation>
+</profile>
+
+<profile>
+    <id>with-config</id>
+    <activation>
+        <!-- Activate by file existence -->
+        <file>
+            <exists>src/main/config/app.properties</exists>
+        </file>
+    </activation>
+</profile>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 203-242" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "Activation Triggers" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Build Profiles" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """1. pre-clean
+2. clean         - Delete target directory
+3. post-clean
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 74-78" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Clean build artifacts
+mvn clean
+
+# Clean specific directory
+mvn clean -DbuildDirectory=out
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 80-86" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Clean Lifecycle" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_6873be9586236bbb ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 38 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.2.3</version>
+    <configuration>
+        <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+        </includes>
+        <excludes>
+            <exclude>**/*IntegrationTest.java</exclude>
+        </excludes>
+        <parallel>methods</parallel>
+        <threadCount>4</threadCount>
+        <forkCount>1</forkCount>
+        <reuseForks>true</reuseForks>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 362-381" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 27 ;
+                            oc:sectionTitle "Surefire Plugin (Unit Tests)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-failsafe-plugin</artifactId>
+    <version>3.2.3</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <includes>
+            <include>**/*IT.java</include>
+            <include>**/*IntegrationTest.java</include>
+        </includes>
+    </configuration>
+</plugin>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 385-405" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 28 ;
+                            oc:sectionTitle "Failsafe Plugin (Integration Tests)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 26 ;
+                    oc:sectionTitle "Test Configuration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <directory>target</directory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 315-322" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 22 ;
+                            oc:sectionTitle "Final Name and Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 285-292" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 20 ;
+                            oc:sectionTitle "Source and Target Configuration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
+    <testResources>
+        <testResource>
+            <directory>src/test/resources</directory>
+        </testResource>
+    </testResources>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 296-311" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 21 ;
+                            oc:sectionTitle "Custom Source Directories" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 19 ;
+                    oc:sectionTitle "Build Customization" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.12.1</version>
+            <executions>
+                <execution>
+                    <id>compile-sources</id>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 128-147" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Phase-to-Goal Bindings" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Execute specific goal
+mvn compiler:compile
+mvn surefire:test
+mvn jar:jar
+
+# Multiple goals
+mvn dependency:tree compiler:compile
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 116-124" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "Executing Goals" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Execute phase (runs all previous phases)
+mvn package
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 109-112" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Executing Phases" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Goals vs Phases" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+            <excludes>
+                <exclude>**/*.properties</exclude>
+                <exclude>**/*.xml</exclude>
+            </excludes>
+        </resource>
+    </resources>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 248-269" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Enable Filtering" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# application.properties
+app.name=${project.name}
+app.version=${project.version}
+app.environment=${env}
+build.timestamp=${maven.build.timestamp}
+""" ;
+                                    oc:codeLanguage "properties" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 273-279" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "Property Substitution" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "Resource Filtering" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- parent/pom.xml -->
+<modules>
+    <module>common</module>
+    <module>api</module>
+    <module>service</module>
+    <module>web</module>
+</modules>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 348-356" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 25 ;
+                            oc:sectionTitle "Module Order Control" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Build all modules
+mvn install
+
+# Build specific module and dependencies
+mvn install -pl module-name -am
+
+# Build dependents of a module
+mvn install -pl module-name -amd
+
+# Resume from specific module
+mvn install -rf :module-name
+
+# Build in parallel
+mvn install -T 4
+mvn install -T 1C  # 1 thread per CPU core
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 328-344" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 24 ;
+                            oc:sectionTitle "Reactor Options" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "Multi-Module Builds" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Debug mode
+mvn install -X
+
+# Error stacktrace
+mvn install -e
+
+# Quiet mode
+mvn install -q
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 449-458" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 34 ;
+                            oc:sectionTitle "Verbose Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# View resolved POM
+mvn help:effective-pom
+
+# View effective settings
+mvn help:effective-settings
+
+# Active profiles
+mvn help:active-profiles
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 462-471" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 35 ;
+                            oc:sectionTitle "Effective POM" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check plugin versions
+mvn versions:display-plugin-updates
+
+# Check dependency versions
+mvn versions:display-dependency-updates
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 475-481" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 36 ;
+                            oc:sectionTitle "Dependency Analysis" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 33 ;
+                    oc:sectionTitle "Debugging Builds" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Maven's build lifecycle is a well-defined sequence of phases that execute in order. Understanding the lifecycle is essential for effective build configuration and optimization." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Generate site
+mvn site
+
+# Generate and deploy site
+mvn site-deploy
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 97-103" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """1. pre-site
+2. site          - Generate documentation
+3. post-site
+4. site-deploy   - Deploy documentation
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 90-95" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Site Lifecycle" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """stage('Build') {
+    steps {
+        sh 'mvn -B clean package -DskipTests'
+    }
+}
+stage('Test') {
+    steps {
+        sh 'mvn -B test'
+    }
+}
+stage('Integration Test') {
+    steps {
+        sh 'mvn -B verify -DskipUnitTests'
+    }
+}
+""" ;
+                                    oc:codeLanguage "groovy" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 521-537" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 41 ;
+                            oc:sectionTitle "Jenkins Pipeline" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """- name: Build with Maven
+  run: mvn -B clean verify -Pci
+
+- name: Release
+  run: mvn -B deploy -Prelease -DskipTests
+""" ;
+                                    oc:codeLanguage "yaml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 511-517" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 40 ;
+                            oc:sectionTitle "GitHub Actions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 39 ;
+                    oc:sectionTitle "CI/CD Integration" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Debugging build failures" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Configuring test execution" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Creating build profiles for environments" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Customizing build phases" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Setting up new Maven projects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Setting up CI/CD pipelines" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Optimizing build performance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Multi-module project configuration" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 42 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_278e9d2dec9433b4 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 37 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Maven Build Lifecycle" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: maven-build-lifecycle
+description: Use when working with Maven build phases, goals, profiles, or customizing the build process for Java projects.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_278e9d2dec9433b4,
+        _:ref_6873be9586236bbb ;
+    oc:impartsKnowledge oc:kn_160d5b4e,
+        oc:kn_2c1a2e39,
+        oc:kn_2e9bd853,
+        oc:kn_4b15459b,
+        oc:kn_52566a56,
+        oc:kn_5743a7ef,
+        oc:kn_753f9723,
+        oc:kn_7def2879,
+        oc:kn_8699ddca,
+        oc:kn_90ff4aef,
+        oc:kn_b040b898,
+        oc:kn_d0b5d98d,
+        oc:kn_dca3347f,
+        oc:kn_e9355178,
+        oc:kn_fcc1e79b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:resolvesIntent "configure maven build phases and goals",
+        "configure test execution with surefire and failsafe",
+        "create and activate maven build profiles",
+        "customize maven build process for java projects",
+        "debug maven build failures",
+        "optimize maven multi-module builds",
+        "set up maven CI/CD pipelines" .
+
+oc:kn_160d5b4e a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining Maven build profiles with activation triggers" ;
+    oc:codeLanguage "xml" ;
+    oc:directiveContent """<profiles>
+  <profile>
+    <id>profile-id</id>
+    <activation>
+      <activeByDefault>false</activeByDefault>
+      <property><name>env.VAR</name><value>value</value></property>
+    </activation>
+    <properties>
+      <key>value</key>
+    </properties>
+  </profile>
+</profiles>""" .
+
+oc:kn_2c1a2e39 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running any Maven phase command" ;
+    oc:directiveContent "Maven lifecycle phases execute sequentially — running `mvn package` executes all phases from validate through package." ;
+    oc:hasRationale "Understanding phase ordering is essential to predict what happens during a build and to avoid phase confusion" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2e9bd853 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When creating Maven build profiles" ;
+    oc:directiveContent "1. Define profile in <profiles> section with unique id → 2. Set activation trigger (activeByDefault, JDK, OS, property, file) → 3. Configure profile-specific properties and plugins → 4. Activate via `-PprofileName` or rely on activation trigger" ;
+    oc:stepOrder 2 .
+
+oc:kn_4b15459b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring test plugins in pom.xml" ;
+    oc:directiveContent "Use Surefire for unit tests (*Test.java, *Tests.java) and Failsafe for integration tests (*IT.java, *IntegrationTest.java) to keep test lifecycles separate." ;
+    oc:hasRationale "Separation enables integration tests to run in the integration-test phase after packaging, when the application is fully assembled" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_52566a56 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Maven 3.x+ must be installed (mvn command available). Maven 4+ required for build cache feature." .
+
+oc:kn_5743a7ef a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When working with multi-module Maven projects" ;
+    oc:directiveContent "Use `-pl module-name -am` to build a specific module and its dependencies, `-amd` for dependents, and `-T 1C` for parallel builds in multi-module projects." ;
+    oc:hasRationale "Targeted module builds save significant time in large projects; parallel builds utilize available CPU cores" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_753f9723 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Common Maven build commands for different scenarios" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent """mvn clean install -Pproduction -DskipTests
+mvn clean verify -Pci
+mvn install -pl module-name -am -T 1C""" .
+
+oc:kn_7def2879 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining Maven profiles" ;
+    oc:directiveContent "Keep build profiles focused and isolated — each profile should address a single concern (environment, JDK version, CI) and not overlap with others." ;
+    oc:hasRationale "Overlapping profile configurations cause unpredictable build behavior and make debugging difficult" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_8699ddca a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent "Lifecycle phases execute in order: validate → initialize → generate-sources → process-sources → generate-resources → process-resources → compile → process-classes → generate-test-sources → process-test-sources → generate-test-resources → process-test-resources → test-compile → process-test-classes → test → prepare-package → package → pre-integration-test → integration-test → post-integration-test → verify → install → deploy" .
+
+oc:kn_90ff4aef a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When a Maven build fails" ;
+    oc:directiveContent "For build failures: run `mvn install -X` for debug logs, `mvn install -e` for stack traces, and `mvn help:effective-pom` to inspect resolved configuration." ;
+    oc:hasRationale "Debug flags and effective POM inspection are the primary diagnostic tools for Maven build issues" .
+
+oc:kn_b040b898 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When configuring resource filtering in build/resources section" ;
+    oc:directiveContent "Resource filtering enabled on binary files will corrupt them. Enable filtering only for text-based resources like .properties and .xml files." ;
+    oc:hasRationale "Maven replaces ${...} placeholders in filtered resources — applying this to binary files (images, jars) corrupts their content" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d0b5d98d a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring CI/CD pipelines" ;
+    oc:directiveContent "Never skip tests in CI pipelines; use -DskipTests only for local development or release builds where tests have already been verified." ;
+    oc:hasRationale "Skipping tests in CI defeats the purpose of continuous integration and allows regressions to slip through" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_dca3347f a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When preparing release builds" ;
+    oc:directiveContent "Always pin exact plugin versions in pom.xml and run `mvn clean` before releases to ensure reproducible builds." ;
+    oc:hasRationale "Unpinned versions can cause non-deterministic builds; stale target files can cause subtle build inconsistencies" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e9355178 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When performing a standard Maven build" ;
+    oc:directiveContent "1. Run `mvn clean` to remove stale artifacts → 2. Execute desired phase (compile/test/package/install/deploy) → 3. Use `-X` for debug output if build fails → 4. Check effective POM with `mvn help:effective-pom` for configuration issues" ;
+    oc:stepOrder 1 .
+
+oc:kn_fcc1e79b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When needing to skip tests during builds" ;
+    oc:directiveContent "Use `-DskipTests` to skip test execution but still compile tests; use `-Dmaven.test.skip=true` to skip both compilation and execution." ;
+    oc:hasRationale "Understanding the difference prevents confusion when tests are or aren't compiled during rapid iteration" ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_0ae005862ab8d231 a oc:WorkflowStep ;
+    dcterms:description "**Resource Filtering** - Enable only where needed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_1b4e17de8d4d3378 a oc:WorkflowStep ;
+    dcterms:description "**Consistent Versions** - Lock plugin versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_2ca8c5c6ce2f5525 a oc:WorkflowStep ;
+    dcterms:description "**Test Separation** - Unit tests in Surefire, integration in Failsafe" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_2f82155c044fc96a a oc:WorkflowStep ;
+    dcterms:description "**Use Clean Builds** - Run `mvn clean` before releases" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3afb5a3e21fb9af9 a oc:WorkflowStep ;
+    dcterms:description "**Phase Confusion** - Running wrong phase" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_42cb793031cb5a58 a oc:WorkflowStep ;
+    dcterms:description "**Memory Issues** - Insufficient heap for large builds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_487ca31031d227a4 a oc:WorkflowStep ;
+    dcterms:description "**SNAPSHOT in Release** - Remove snapshots before release" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_596d1701de65bbcc a oc:WorkflowStep ;
+    dcterms:description "**Skipping Tests** - Don't skip tests in CI" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_700502e72833a89f a oc:WorkflowStep ;
+    dcterms:description "**Document Profiles** - Comment profile purposes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_9281823db4a170a3 a oc:WorkflowStep ;
+    dcterms:description "**Resource Filtering** - Accidentally filtering binaries" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_cb3157ebbbf8291c a oc:WorkflowStep ;
+    dcterms:description "**Parallel Builds** - Use `-T` for multi-module projects" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_cdb31470d1b9d934 a oc:WorkflowStep ;
+    dcterms:description "**Profile Conflicts** - Overlapping profile configurations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_cdc9d9cad427838c a oc:WorkflowStep ;
+    dcterms:description "**Reactor Order** - Module dependency issues" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_d5a8fa6dca69b220 a oc:WorkflowStep ;
+    dcterms:description "**Skip Wisely** - Know the difference between skip options" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_d9d1dbb1711f699c a oc:WorkflowStep ;
+    dcterms:description "**Profile Isolation** - Keep profiles focused" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_effe27ceb00a0c6d a oc:WorkflowStep ;
+    dcterms:description "**Fail Fast** - Use `-ff` in CI for quick feedback" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f6c27304deec569c a oc:WorkflowStep ;
+    dcterms:description "**Reproducible Builds** - Pin all plugin versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_fa9287aace498505 a oc:WorkflowStep ;
+    dcterms:description "**Missing Clean** - Stale files causing issues" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_278e9d2dec9433b4 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0ae005862ab8d231,
+        _:ref_1b4e17de8d4d3378,
+        _:ref_2ca8c5c6ce2f5525,
+        _:ref_2f82155c044fc96a,
+        _:ref_700502e72833a89f,
+        _:ref_cb3157ebbbf8291c,
+        _:ref_d5a8fa6dca69b220,
+        _:ref_d9d1dbb1711f699c,
+        _:ref_effe27ceb00a0c6d,
+        _:ref_f6c27304deec569c ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_6873be9586236bbb a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_3afb5a3e21fb9af9,
+        _:ref_42cb793031cb5a58,
+        _:ref_487ca31031d227a4,
+        _:ref_596d1701de65bbcc,
+        _:ref_9281823db4a170a3,
+        _:ref_cdb31470d1b9d934,
+        _:ref_cdc9d9cad427838c,
+        _:ref_fa9287aace498505 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

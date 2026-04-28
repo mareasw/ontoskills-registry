@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/software-dependency-audit",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "cvss-score-extraction/ontoskill.ttl",
+    "trivy-offline-vulnerability-scanning/ontoskill.ttl",
+    "vulnerability-csv-reporting/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "cvss-score-extraction/intents.json",
+    "trivy-offline-vulnerability-scanning/intents.json",
+    "vulnerability-csv-reporting/intents.json"
+  ],
+  "skills": []
+}

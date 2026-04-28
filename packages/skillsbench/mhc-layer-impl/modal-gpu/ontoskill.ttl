@@ -1,0 +1,317 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mhc_layer_impl_modal_gpu a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "modal-gpu" ;
+    skos:broader "Serverless compute platform" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mhc-layer-impl/modal-gpu" ;
+    oc:contentHash "feb37c60d9289f3afb4137ca538205d31ab01a5b008791969353ece2e07297d5" ;
+    oc:differentia "provides on-demand cloud GPU access for ML training via Modal's Python SDK" ;
+    oc:handlesFailure oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "script-path (e.g., train_modal.py)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Run Python code on cloud GPUs using Modal serverless platform. Use when you need A100/T4/A10G GPU access for training ML models. Covers Modal app setup, GPU selection, data downloading inside functions, and result handling." ;
+    oc:hasName "modal-gpu" ;
+    oc:hasRequirement oc:req_123683e4,
+        oc:req_2e23c7c0,
+        oc:req_6c402529 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install modal
+modal token set --token-id <id> --token-secret <secret>
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 33-36" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Run script
+modal run train_modal.py
+
+# Run in background
+modal run --detach train_modal.py
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 91-97" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Running" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 6 ;
+                            oc:tableCaption "## When to Use What" ;
+                            oc:tableMarkdown """| Scenario | Approach |
+|----------|----------|
+| Quick GPU experiments | `gpu="T4"` (16GB, cheapest) |
+| Medium training jobs | `gpu="A10G"` (24GB) |
+| Large-scale training | `gpu="A100"` (40/80GB, fastest) |
+| Long-running jobs | Set `timeout=3600` or higher |
+| Data from HuggingFace | Download inside function with `hf_hub_download` |
+| Return metrics | Return dict from function |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "When to Use What" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Single Function**: Simple script with `@app.function` decorator" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Multi-Function**: Complex workflows with multiple remote calls" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Modal is a serverless platform for running Python code on cloud GPUs. It provides:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Remote Execution**: Run functions on cloud infrastructure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Result Handling**: Return Python objects from remote functions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Serverless GPUs**: On-demand access to T4, A10G, A100 GPUs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Container Images**: Define dependencies declaratively with pip" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Two patterns:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Modal Documentation: https://modal.com/docs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Modal Examples: https://github.com/modal-labs/modal-examples" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "External Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import modal
+
+app = modal.App("my-training-app")
+
+image = modal.Image.debian_slim(python_version="3.11").pip_install(
+    "torch",
+    "einops",
+    "numpy",
+)
+
+@app.function(gpu="A100", image=image, timeout=3600)
+def train():
+    import torch
+    device = torch.device("cuda")
+    print(f"Using GPU: {torch.cuda.get_device_name(0)}")
+
+    # Training code here
+    return {"loss": 0.5}
+
+@app.local_entrypoint()
+def main():
+    results = train.remote()
+    print(results)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 40-64" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Minimal Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import modal
+from modal import Image, App
+
+# Inside remote function
+import torch
+import torch.nn as nn
+from huggingface_hub import hf_hub_download
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 68-76" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Imports" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| Topic | Reference |
+|-------|-----------|
+| Basic Structure | [Getting Started](references/getting-started.md) |
+| GPU Options | [GPU Selection](references/gpu-selection.md) |
+| Data Handling | [Data Download](references/data-download.md) |
+| Results & Outputs | [Results](references/results.md) |
+| Troubleshooting | [Common Issues](references/common-issues.md) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Reference" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Modal GPU Training" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: modal-gpu
+description: Run Python code on cloud GPUs using Modal serverless platform. Use when you need A100/T4/A10G GPU access for training ML models. Covers Modal app setup, GPU selection, data downloading inside functions, and result handling.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for setting up and executing a GPU training job on Modal" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run the script with 'modal run train_modal.py' (or --detach for background)" ;
+                    oc:expectedOutcome "Training job executes on remote GPU and returns results" ;
+                    oc:stepDependsOn _:ref_7834f20896e24828 ;
+                    oc:stepId "run" ],
+                _:ref_7834f20896e24828,
+                _:ref_b28972e26b9f3181 ;
+            oc:workflowId "modal-gpu-train" ;
+            oc:workflowName "Run ML Training on Modal GPU" ] ;
+    oc:impartsKnowledge oc:kn_1d8cd175,
+        oc:kn_2ce26edc,
+        oc:kn_583f625f,
+        oc:kn_df5a7057,
+        oc:kn_e43a8f24,
+        oc:kn_fc4f7fb3,
+        oc:kn_fdfc586a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "execute serverless GPU workload",
+        "run code on cloud GPU",
+        "set up Modal training script",
+        "train ML model on A100/T4/A10G" ;
+    oc:yieldsState oc:EnvironmentReady .
+
+oc:kn_1d8cd175 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before first Modal usage" ;
+    oc:directiveContent "1. pip install modal  2. modal token set --token-id <id> --token-secret <secret>" ;
+    oc:hasRationale "Modal CLI must be installed and authenticated to submit jobs to the cloud platform" .
+
+oc:kn_2ce26edc a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating any Modal GPU training script" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import modal
+
+app = modal.App("my-training-app")
+image = modal.Image.debian_slim(python_version="3.11").pip_install("torch", "numpy")
+
+@app.function(gpu="A100", image=image, timeout=3600)
+def train():
+    import torch
+    device = torch.device("cuda")
+    return {"loss": 0.5}
+
+@app.local_entrypoint()
+def main():
+    results = train.remote()""" ;
+    oc:hasRationale "This is the minimal viable pattern for Modal GPU execution: define app, build image with deps, decorate function with GPU + image + timeout, call .remote() from local_entrypoint" .
+
+oc:kn_583f625f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When handling data and results in Modal functions" ;
+    oc:directiveContent "Download data (e.g., from HuggingFace) inside the remote function using hf_hub_download, not in the local entrypoint. Return results as Python dicts from remote functions." ;
+    oc:hasRationale "Remote functions run on cloud infrastructure where data must be available; downloading locally and transferring is inefficient or impossible. Dicts serialize cleanly from remote to local." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df5a7057 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When structuring Modal scripts" ;
+    oc:directiveContent "Do not import heavy ML libraries (torch, transformers) at the top level of the script outside of remote functions. Instead, install them via image.pip_install() and import inside the decorated function." ;
+    oc:hasRationale "The local entrypoint runs on your machine without GPU; importing CUDA-dependent libraries locally will fail. Image.pip_install ensures deps are in the container, and imports inside functions load them on the remote." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e43a8f24 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing GPU type and timeout for a training job" ;
+    oc:directiveContent "Select GPU tier by workload size: T4 (16GB) for quick experiments, A10G (24GB) for medium jobs, A100 (40/80GB) for large-scale training. Set timeout=3600 or higher for long-running jobs." ;
+    oc:hasRationale "Over-provisioning GPU wastes cost; under-provisioning causes OOM. Timeout prevents runaway costs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fc4f7fb3 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When architecting a Modal application" ;
+    oc:directiveContent "Use the Single Function pattern (one @app.function) for simple scripts and the Multi-Function pattern (multiple @app.function decorators calling .remote() between them) for complex workflows." ;
+    oc:hasRationale "Single Function minimizes complexity; Multi-Function enables composition for data pipelines or multi-stage training" .
+
+oc:kn_fdfc586a a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running a Modal training script" ;
+    oc:directiveContent """modal run train_modal.py       # foreground execution
+modal run --detach train_modal.py  # background execution""" ;
+    oc:hasRationale "Use --detach for long-running jobs to avoid blocking the terminal" .
+
+oc:req_123683e4 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "Modal API token (modal token set)" .
+
+oc:req_2e23c7c0 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "modal (pip install modal)" .
+
+oc:req_6c402529 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Python and PyTorch basics" .
+
+_:ref_7834f20896e24828 a oc:WorkflowStep ;
+    dcterms:description "Create training script with App, Image (pip_install deps), @app.function(gpu=..., image=..., timeout=...), and @app.local_entrypoint" ;
+    oc:expectedOutcome "Complete Modal training script ready to run" ;
+    oc:stepDependsOn _:ref_b28972e26b9f3181 ;
+    oc:stepId "create-script" .
+
+_:ref_b28972e26b9f3181 a oc:WorkflowStep ;
+    dcterms:description "Install modal (pip install modal) and authenticate (modal token set)" ;
+    oc:expectedOutcome "Modal CLI installed and authenticated" ;
+    oc:stepId "install" .
+

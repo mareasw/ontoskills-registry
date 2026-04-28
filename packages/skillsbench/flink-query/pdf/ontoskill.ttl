@@ -1,0 +1,719 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_flink_query_pdf a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf" ;
+    skos:broader "PDF manipulation toolkit" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/flink-query/pdf" ;
+    oc:contentHash "4e1fcd0516dfb7ad6d0ce8ae3669be2de839ce1077aa5e1834eb84fe47afacc4" ;
+    oc:differentia "provides Python and CLI operations for extracting text/tables, creating, merging, splitting, and encrypting PDF documents" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "file-path or operation description" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Comprehensive PDF manipulation toolkit for extracting text and tables, creating new PDFs, merging/splitting documents, and handling forms. When Claude needs to fill in a PDF form or programmatically process, generate, or analyze PDF documents at scale." ;
+    oc:hasName "pdf" ;
+    oc:hasRequirement oc:req_060db269,
+        oc:req_3b2e1010,
+        oc:req_746aacc9,
+        oc:req_7cf00395,
+        oc:req_7ec70d19,
+        oc:req_d87817a6,
+        oc:req_f08bdea9,
+        oc:req_fd635a4a ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pdf
+description: Comprehensive PDF manipulation toolkit for extracting text and tables, creating new PDFs, merging/splitting documents, and handling forms. When Claude needs to fill in a PDF form or programmatically process, generate, or analyze PDF documents at scale.
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This guide covers essential PDF processing operations using Python libraries and command-line tools. For advanced features, JavaScript libraries, and detailed examples, see reference.md. If you need to fill out a PDF form, read forms.md and follow its instructions." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 8 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| Task | Best Tool | Command/Code |
+|------|-----------|--------------|
+| Merge PDFs | pypdf | `writer.add_page(page)` |
+| Split PDFs | pypdf | One page per file |
+| Extract text | pdfplumber | `page.extract_text()` |
+| Extract tables | pdfplumber | `page.extract_tables()` |
+| Create PDFs | reportlab | Canvas or Platypus |
+| Command line merge | qpdf | `qpdf --empty --pages ...` |
+| OCR scanned PDFs | pytesseract | Convert to image first |
+| Fill PDF forms | pdf-lib or pypdf (see forms.md) | See forms.md |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Quick Reference" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Requires: pip install pytesseract pdf2image
+import pytesseract
+from pdf2image import convert_from_path
+
+# Convert PDF to images
+images = convert_from_path('scanned.pdf')
+
+# OCR each page
+text = ""
+for i, image in enumerate(images):
+    text += f"Page {i+1}:\\n"
+    text += pytesseract.image_to_string(image)
+    text += "\\n\\n"
+
+print(text)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 214-230" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Extract Text from Scanned PDFs" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from pypdf import PdfReader, PdfWriter
+
+reader = PdfReader("input.pdf")
+writer = PdfWriter()
+
+for page in reader.pages:
+    writer.add_page(page)
+
+# Add password
+writer.encrypt("userpassword", "ownerpassword")
+
+with open("encrypted.pdf", "wb") as output:
+    writer.write(output)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 260-274" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Password Protection" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from pypdf import PdfReader, PdfWriter
+
+# Create watermark (or load existing)
+watermark = PdfReader("watermark.pdf").pages[0]
+
+# Apply to all pages
+reader = PdfReader("document.pdf")
+writer = PdfWriter()
+
+for page in reader.pages:
+    page.merge_page(watermark)
+    writer.add_page(page)
+
+with open("watermarked.pdf", "wb") as output:
+    writer.write(output)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 233-249" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Add Watermark" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Using pdfimages (poppler-utils)
+pdfimages -j input.pdf output_prefix
+
+# This extracts all images as output_prefix-000.jpg, output_prefix-001.jpg, etc.
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 252-257" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Extract Images" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Tasks" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "If you need to fill out a PDF form, follow the instructions in forms.md" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "For troubleshooting guides, see reference.md" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "For JavaScript libraries (pdf-lib), see reference.md" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "For advanced pypdfium2 usage, see reference.md" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Next Steps" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """reader = PdfReader("document.pdf")
+meta = reader.metadata
+print(f"Title: {meta.title}")
+print(f"Author: {meta.author}")
+print(f"Subject: {meta.subject}")
+print(f"Creator: {meta.creator}")
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 57-64" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "Extract Metadata" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from pypdf import PdfWriter, PdfReader
+
+writer = PdfWriter()
+for pdf_file in ["doc1.pdf", "doc2.pdf", "doc3.pdf"]:
+    reader = PdfReader(pdf_file)
+    for page in reader.pages:
+        writer.add_page(page)
+
+with open("merged.pdf", "wb") as output:
+    writer.write(output)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 33-44" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Merge PDFs" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """reader = PdfReader("input.pdf")
+for i, page in enumerate(reader.pages):
+    writer = PdfWriter()
+    writer.add_page(page)
+    with open(f"page_{i+1}.pdf", "wb") as output:
+        writer.write(output)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 47-54" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Split PDF" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """reader = PdfReader("input.pdf")
+writer = PdfWriter()
+
+page = reader.pages[0]
+page.rotate(90)  # Rotate 90 degrees clockwise
+writer.add_page(page)
+
+with open("rotated.pdf", "wb") as output:
+    writer.write(output)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 67-77" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 4 ;
+                                    oc:sectionTitle "Rotate Pages" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "pypdf - Basic Operations" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """import pdfplumber
+
+with pdfplumber.open("document.pdf") as pdf:
+    for page in pdf.pages:
+        text = page.extract_text()
+        print(text)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 82-89" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Extract Text with Layout" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """import pandas as pd
+
+with pdfplumber.open("document.pdf") as pdf:
+    all_tables = []
+    for page in pdf.pages:
+        tables = page.extract_tables()
+        for table in tables:
+            if table:  # Check if table is not empty
+                df = pd.DataFrame(table[1:], columns=table[0])
+                all_tables.append(df)
+
+# Combine all tables
+if all_tables:
+    combined_df = pd.concat(all_tables, ignore_index=True)
+    combined_df.to_excel("extracted_tables.xlsx", index=False)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 103-119" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "Advanced Table Extraction" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """with pdfplumber.open("document.pdf") as pdf:
+    for i, page in enumerate(pdf.pages):
+        tables = page.extract_tables()
+        for j, table in enumerate(tables):
+            print(f"Table {j+1} on page {i+1}:")
+            for row in table:
+                print(row)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 92-100" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Extract Tables" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "pdfplumber - Text and Table Extraction" ],
+                        [ a oc:Section ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet
+
+doc = SimpleDocTemplate("report.pdf", pagesize=letter)
+styles = getSampleStyleSheet()
+story = []
+
+# Add content
+title = Paragraph("Report Title", styles['Title'])
+story.append(title)
+story.append(Spacer(1, 12))
+
+body = Paragraph("This is the body of the report. " * 20, styles['Normal'])
+story.append(body)
+story.append(PageBreak())
+
+# Page 2
+story.append(Paragraph("Page 2", styles['Heading1']))
+story.append(Paragraph("Content for page 2", styles['Normal']))
+
+# Build PDF
+doc.build(story)
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 143-167" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Create PDF with Multiple Pages" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
+c = canvas.Canvas("hello.pdf", pagesize=letter)
+width, height = letter
+
+# Add text
+c.drawString(100, height - 100, "Hello World!")
+c.drawString(100, height - 120, "This is a PDF created with reportlab")
+
+# Add a line
+c.line(100, height - 140, 400, height - 140)
+
+# Save
+c.save()
+""" ;
+                                            oc:codeLanguage "python" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 124-140" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Basic PDF Creation" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "reportlab - Create PDFs" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Python Libraries" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Extract text
+pdftotext input.pdf output.txt
+
+# Extract text preserving layout
+pdftotext -layout input.pdf output.txt
+
+# Extract specific pages
+pdftotext -f 1 -l 5 input.pdf output.txt  # Pages 1-5
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 172-181" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "pdftotext (poppler-utils)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Merge PDFs
+qpdf --empty --pages file1.pdf file2.pdf -- merged.pdf
+
+# Split pages
+qpdf input.pdf --pages . 1-5 -- pages1-5.pdf
+qpdf input.pdf --pages . 6-10 -- pages6-10.pdf
+
+# Rotate pages
+qpdf input.pdf output.pdf --rotate=+90:1  # Rotate page 1 by 90 degrees
+
+# Remove password
+qpdf --password=mypassword --decrypt encrypted.pdf decrypted.pdf
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 184-197" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "qpdf" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Merge
+pdftk file1.pdf file2.pdf cat output merged.pdf
+
+# Split
+pdftk input.pdf burst
+
+# Rotate
+pdftk input.pdf rotate 1east output rotated.pdf
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 200-209" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "pdftk (if available)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Command-Line Tools" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pypdf import PdfReader, PdfWriter
+
+# Read a PDF
+reader = PdfReader("document.pdf")
+print(f"Pages: {len(reader.pages)}")
+
+# Extract text
+text = ""
+for page in reader.pages:
+    text += page.extract_text()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 15-26" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PDF Processing Guide" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract text content from a PDF file, handling both text-based and scanned documents" ;
+            oc:hasStep _:ref_39aa25934fa658a0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Clean and structure extracted text as needed" ;
+                    oc:expectedOutcome "Clean text ready for use" ;
+                    oc:stepDependsOn _:ref_39aa25934fa658a0 ;
+                    oc:stepId "process-output" ],
+                _:ref_6c149a862f1bc728 ;
+            oc:workflowId "pdf-text-extraction" ;
+            oc:workflowName "PDF Text Extraction" ],
+        [ a oc:Workflow ;
+            dcterms:description "Merge multiple PDF files into a single document" ;
+            oc:hasStep _:ref_1bf164ee0cf116aa,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Write merged output to a new PDF file using 'wb' mode" ;
+                    oc:expectedOutcome "Merged PDF file created" ;
+                    oc:stepDependsOn _:ref_1bf164ee0cf116aa ;
+                    oc:stepId "write-output" ],
+                _:ref_e325374c346db529 ;
+            oc:workflowId "pdf-merge" ;
+            oc:workflowName "PDF Merge" ],
+        [ a oc:Workflow ;
+            dcterms:description "Extract structured table data from PDF and optionally export to Excel" ;
+            oc:hasStep _:ref_2bb9ca02f56f564c,
+                _:ref_79be24e9eb9e3891,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Concatenate and export to Excel or other format" ;
+                    oc:expectedOutcome "Tables exported to structured file" ;
+                    oc:stepDependsOn _:ref_e2cdbb585210880a ;
+                    oc:stepId "export" ],
+                _:ref_e2cdbb585210880a ;
+            oc:workflowId "pdf-table-extraction" ;
+            oc:workflowName "PDF Table Extraction" ] ;
+    oc:impartsKnowledge oc:kn_04006f91,
+        oc:kn_15371e59,
+        oc:kn_214d7714,
+        oc:kn_38396eb4,
+        oc:kn_7e1a3a83,
+        oc:kn_966f3470,
+        oc:kn_99689684,
+        oc:kn_9f066b8c,
+        oc:kn_9fb7bbc2,
+        oc:kn_a2f539c1,
+        oc:kn_c3920f5a,
+        oc:kn_e6c89b57,
+        oc:kn_ea6561b6,
+        oc:kn_f2a11ed6,
+        oc:kn_fb3517af ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "add watermark to pdf",
+        "create pdf document",
+        "extract images from pdf",
+        "extract pdf metadata",
+        "extract tables from pdf",
+        "extract text from pdf",
+        "fill pdf forms",
+        "merge pdfs",
+        "ocr scanned pdf",
+        "password protect pdf",
+        "rotate pdf pages",
+        "split pdf" ;
+    oc:yieldsState oc:DocumentCreated,
+        oc:FileDownloaded .
+
+oc:kn_04006f91 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any PDF processing" ;
+    oc:directiveContent "Install required Python packages: pip install pypdf pdfplumber reportlab. Optional: pip install pytesseract pdf2image pandas." ;
+    oc:hasRationale "These libraries provide the core PDF manipulation capabilities." .
+
+oc:kn_15371e59 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Identify PDF type (text-based vs scanned). 2. For text-based: use pdfplumber for extraction. 3. For scanned: convert with pdf2image then OCR with pytesseract. 4. For table extraction: use pdfplumber.extract_tables() and convert to DataFrame. 5. For merge/split/rotate: use pypdf. 6. For creation: use reportlab." ;
+    oc:stepOrder 1 .
+
+oc:kn_214d7714 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting tables from PDFs" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import pdfplumber
+with pdfplumber.open("document.pdf") as pdf:
+    for page in pdf.pages:
+        tables = page.extract_tables()
+        for table in tables:
+            # process table rows""" .
+
+oc:kn_38396eb4 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading and writing PDFs with pypdf" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from pypdf import PdfReader, PdfWriter
+reader = PdfReader("input.pdf")
+writer = PdfWriter()
+for page in reader.pages:
+    writer.add_page(page)
+with open("output.pdf", "wb") as f:
+    writer.write(f)""" .
+
+oc:kn_7e1a3a83 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting images from PDFs via command line" ;
+    oc:directiveContent "pdfimages -j input.pdf output_prefix" .
+
+oc:kn_966f3470 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When text extraction returns empty results" ;
+    oc:directiveContent "If pypdf fails to extract text, fall back to pdfplumber. If both fail, the PDF may be scanned — use OCR pipeline (pdf2image + pytesseract)." ;
+    oc:hasRationale "A layered fallback strategy handles the three main PDF types: text-based, layout-complex, and scanned images." .
+
+oc:kn_99689684 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating multi-page PDF documents with reportlab Platypus" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+
+doc = SimpleDocTemplate("output.pdf", pagesize=letter)
+styles = getSampleStyleSheet()
+story = [Paragraph("Title", styles['Title']), Spacer(1, 12), Paragraph("Body", styles['Normal'])]
+doc.build(story)""" .
+
+oc:kn_9f066b8c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting a library for a PDF task" ;
+    oc:directiveContent "Use pypdf for merge/split/rotate/encrypt operations, pdfplumber for text and table extraction, and reportlab for PDF creation." ;
+    oc:hasRationale "Each library is optimized for its domain: pypdf for page-level manipulation, pdfplumber for content extraction with layout awareness, reportlab for rich document generation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9fb7bbc2 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting text preserving layout via command line" ;
+    oc:directiveContent "pdftotext -layout input.pdf output.txt" .
+
+oc:kn_a2f539c1 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When merging PDFs" ;
+    oc:directiveContent "1. Read source PDFs with PdfReader. 2. Create PdfWriter. 3. Add pages in desired order. 4. Write to output file with 'wb' mode." ;
+    oc:stepOrder 2 .
+
+oc:kn_c3920f5a a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When performing merge, split, watermark, or encrypt operations" ;
+    oc:directiveContent "PDF merge and watermark operations create new files; they do not modify originals. Always write to a new output file." ;
+    oc:hasRationale "pypdf's writer pattern always creates new output, preserving source files as a safety mechanism." .
+
+oc:kn_e6c89b57 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filling interactive PDF forms" ;
+    oc:directiveContent "For PDF form filling, consult forms.md and consider pdf-lib (JavaScript) or pypdf — do not attempt form filling with reportlab." ;
+    oc:hasRationale "Form filling requires specific AcroForm field manipulation that reportlab's Canvas API does not support." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ea6561b6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting text from image-based or scanned PDFs" ;
+    oc:directiveContent "Scanned PDFs require OCR (pytesseract + pdf2image) — standard text extraction will return empty or garbage results." ;
+    oc:hasRationale "Scanned PDFs contain images, not text layers. OCR is the only way to extract readable text from them." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f2a11ed6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting structured content from PDFs" ;
+    oc:directiveContent "Do not use pypdf's extract_text() for complex layouts or table extraction; use pdfplumber instead." ;
+    oc:hasRationale "pypdf's text extraction is basic and loses layout information; pdfplumber preserves spatial relationships needed for tables and formatted text." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fb3517af a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When merging PDFs via command line" ;
+    oc:directiveContent "qpdf --empty --pages file1.pdf file2.pdf -- merged.pdf" .
+
+oc:req_060db269 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pypdf" .
+
+oc:req_3b2e1010 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pytesseract" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pandas" .
+
+oc:req_7cf00395 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "poppler-utils" .
+
+oc:req_7ec70d19 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "qpdf" .
+
+oc:req_d87817a6 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pdf2image" .
+
+oc:req_f08bdea9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdfplumber" .
+
+oc:req_fd635a4a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "reportlab" .
+
+_:ref_1bf164ee0cf116aa a oc:WorkflowStep ;
+    dcterms:description "Read each input PDF and add all its pages to the writer in order" ;
+    oc:expectedOutcome "All pages added" ;
+    oc:stepDependsOn _:ref_e325374c346db529 ;
+    oc:stepId "add-pages" .
+
+_:ref_2bb9ca02f56f564c a oc:WorkflowStep ;
+    dcterms:description "Iterate pages and call extract_tables() on each" ;
+    oc:expectedOutcome "Raw table data extracted" ;
+    oc:stepDependsOn _:ref_79be24e9eb9e3891 ;
+    oc:stepId "extract-tables" .
+
+_:ref_39aa25934fa658a0 a oc:WorkflowStep ;
+    dcterms:description "If text-based, use pdfplumber for extraction. If scanned, use pdf2image + pytesseract OCR" ;
+    oc:expectedOutcome "Raw text content extracted" ;
+    oc:stepDependsOn _:ref_6c149a862f1bc728 ;
+    oc:stepId "extract-text" .
+
+_:ref_6c149a862f1bc728 a oc:WorkflowStep ;
+    dcterms:description "Determine if PDF is text-based or scanned (try pypdf extract_text first)" ;
+    oc:expectedOutcome "PDF type identified" ;
+    oc:stepId "identify-type" .
+
+_:ref_79be24e9eb9e3891 a oc:WorkflowStep ;
+    dcterms:description "Open PDF with pdfplumber" ;
+    oc:expectedOutcome "PDF file opened and ready for processing" ;
+    oc:stepId "open-pdf" .
+
+_:ref_e2cdbb585210880a a oc:WorkflowStep ;
+    dcterms:description "Convert tables to pandas DataFrames using first row as headers" ;
+    oc:expectedOutcome "Structured DataFrames" ;
+    oc:stepDependsOn _:ref_2bb9ca02f56f564c ;
+    oc:stepId "to-dataframe" .
+
+_:ref_e325374c346db529 a oc:WorkflowStep ;
+    dcterms:description "Initialize PdfWriter object" ;
+    oc:expectedOutcome "Writer ready to accept pages" ;
+    oc:stepId "create-writer" .
+

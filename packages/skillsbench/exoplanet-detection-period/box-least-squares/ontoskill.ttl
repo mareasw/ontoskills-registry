@@ -1,0 +1,1033 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_exoplanet_detection_period_box_least_squares a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "box-least-squares" ;
+    skos:broader "Periodogram method" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/exoplanet-detection-period/box-least-squares" ;
+    oc:contentHash "e6a3b17b0b31cc9d163836473b58148ee597c6aa03a69cd140c951ba1c489f86" ;
+    oc:dependsOnSkill oc:skill_ontoskills_light_curve_preprocessing ;
+    oc:differentia "detects periodic box-shaped transit dips in photometric light curves using the Box Least Squares algorithm from astropy.timeseries" ;
+    oc:handlesFailure oc:HighOddEvenMismatch,
+        oc:NoClearPeakFound,
+        oc:PeriodAliasingDetected ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "light-curve-data-with-time-and-flux-columns" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Box Least Squares (BLS) periodogram for detecting transiting exoplanets and eclipsing binaries. Use when searching for periodic box-shaped dips in light curves. Alternative to Transit Least Squares, available in astropy.timeseries. Based on Kovács et al. (2002)." ;
+    oc:hasName "box-least-squares" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_f32b3847,
+        oc:req_fe6b6a53 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "The Box Least Squares (BLS) periodogram is a statistical tool for detecting transiting exoplanets and eclipsing binaries in photometric time series data. BLS models a transit as a periodic upside-down top hat (box shape) and finds the period, duration, depth, and reference time that best fit the data." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "BLS is built into Astropy and provides an alternative to Transit Least Squares (TLS). Both search for transits, but with different implementations and performance characteristics." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Key parameters BLS searches for:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Duration (transit duration)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Depth (how much flux drops during transit)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Reference time (mid-transit time of first transit)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Period (orbital period)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "BLS is part of Astropy:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install astropy
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 24-26" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install astropy numpy matplotlib
+# Optional: lightkurve for preprocessing
+pip install lightkurve
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 320-324" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 25 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Recommended for initial searches. Automatically determines appropriate period grid:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Specify duration (or multiple durations)
+duration = 0.2 * u.day
+periodogram = model.autopower(duration)
+
+# Or search multiple durations
+durations = [0.1, 0.15, 0.2, 0.25] * u.day
+periodogram = model.autopower(durations)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 59-67" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "autopower: Automatic Period Grid" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Warning**: Period grid quality matters! Too coarse and you'll miss the true period." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Define custom period grid
+periods = np.linspace(2.0, 10.0, 1000) * u.day
+duration = 0.2 * u.day
+
+periodogram = model.power(periods, duration)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 73-79" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For more control over the search:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "power: Custom Period Grid" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Using autopower vs power" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Both methods search for transits, but differ in implementation:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Requires careful period grid setup" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Simpler transit model (box shape)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "May be less sensitive to grazing transits" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Cons:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "compute_stats() provides detailed validation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Good statistical framework" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Built into Astropy (no extra install)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Fast for targeted searches" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Pros:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Box Least Squares (BLS)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Recommendation**: Try both! TLS is often more sensitive, but BLS is faster and built-in." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Slower for very long time series" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Requires separate package" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Less control over transit shape" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Pros:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Generally more sensitive" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Better handles grazing transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "More sophisticated transit models" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Automatic period grid is more robust" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Cons:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "Transit Least Squares (TLS)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "BLS vs Transit Least Squares (TLS)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[Astropy Time Series Guide](https://docs.astropy.org/en/stable/timeseries/)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[Astropy BLS Documentation](https://docs.astropy.org/en/stable/timeseries/bls.html)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 27 ;
+                            oc:sectionTitle "Official Documentation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Hartman & Bakos (2016)**: VARTOOLS implementation - [A&C 17, 1](https://arxiv.org/abs/1605.06811)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Kovács, Zucker, & Mazeh (2002)**: Original BLS paper - [A&A 391, 369](https://arxiv.org/abs/astro-ph/0206099)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 28 ;
+                            oc:sectionTitle "Key Papers" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[Lightkurve Tutorials](https://lightkurve.github.io/lightkurve/tutorials/)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[TLS GitHub](https://github.com/hippke/tls) - Alternative transit detection method" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 29 ;
+                            oc:sectionTitle "Related Resources" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 26 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The BLS periodogram is sensitive to period grid spacing. The `autoperiod()` method provides a conservative grid:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use finer grids around promising candidates" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Period grid quality matters more for BLS than for Lomb-Scargle" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `autopower()` for initial searches" ] ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get automatic period grid
+periods = model.autoperiod(durations, minimum_period=1*u.day, maximum_period=10*u.day)
+print(f"Period grid has {len(periods)} points")
+
+# Use this grid with power()
+periodogram = model.power(periods, durations)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 181-188" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Tips:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Period Grid Sensitivity" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import numpy as np
+import matplotlib.pyplot as plt
+import astropy.units as u
+from astropy.timeseries import BoxLeastSquares
+
+# Load and prepare data
+data = np.loadtxt('light_curve.txt')
+time = data[:, 0] * u.day
+flux = data[:, 1]
+flux_err = data[:, 3]
+
+# Create BLS model
+model = BoxLeastSquares(time, flux, dy=flux_err)
+
+# Run BLS with automatic period grid
+# Try multiple durations to find best fit
+durations = np.linspace(0.05, 0.3, 10) * u.day
+periodogram = model.autopower(durations, objective='likelihood')
+
+# Find peak
+max_power_idx = np.argmax(periodogram.power)
+best_period = periodogram.period[max_power_idx]
+best_duration = periodogram.duration[max_power_idx]
+best_t0 = periodogram.transit_time[max_power_idx]
+max_power = periodogram.power[max_power_idx]
+
+print(f"Period: {best_period:.5f}")
+print(f"Duration: {best_duration:.5f}")
+print(f"T0: {best_t0:.5f}")
+print(f"Power: {max_power:.2f}")
+
+# Plot periodogram
+import matplotlib.pyplot as plt
+plt.plot(periodogram.period, periodogram.power)
+plt.xlabel('Period [days]')
+plt.ylabel('BLS Power')
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 107-145" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Complete Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Use TLS when:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Use Lomb-Scargle when:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "For exoplanet detection, both BLS and TLS are valid choices. Try both and compare results!" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "You want a fast, built-in solution" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "You want fine control over period grid" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Working within the Astropy ecosystem" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "You need detailed validation statistics (`compute_stats`)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Use BLS when:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Maximum sensitivity is critical" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Prefer more sophisticated transit models" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Dealing with grazing or partial transits" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Want automatic robust period grid" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Initial exploration of periodicity" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Detecting stellar rotation, pulsation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Searching for general periodic signals (not specifically transits)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 30 ;
+                    oc:sectionTitle "When to Use BLS" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_9ac215fe585241c1,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "BLS works best with preprocessed data. Consider this pipeline:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Always validate with multiple metrics (power, SNR, odd-even)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "BLS needs reasonable period and duration ranges" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Don't over-process - too aggressive cleaning removes real signals" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Preprocessing should **preserve transit shapes** (use gentle methods like `flatten()`)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 20 ;
+                            oc:sectionTitle "Key Considerations" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 19 ;
+                    oc:sectionTitle "Integration with Preprocessing" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Fold the light curve at the best period
+phase = ((time.value - best_t0.value) % best_period.value) / best_period.value
+
+# Plot to verify transit shape
+import matplotlib.pyplot as plt
+plt.plot(phase, flux, '.')
+plt.xlabel('Phase')
+plt.ylabel('Flux')
+plt.show()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 223-233" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After finding a candidate, phase-fold to visualize the transit:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Phase-Folded Light Curve" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Find top 5 peaks
+sorted_idx = np.argsort(periodogram.power)[::-1]
+top_5 = sorted_idx[:5]
+
+print("Top 5 candidates:")
+for i, idx in enumerate(top_5):
+    period = periodogram.period[idx]
+    power = periodogram.power[idx]
+    duration = periodogram.duration[idx]
+
+    stats = model.compute_stats(period, duration, periodogram.transit_time[idx])
+
+    print(f"\\n{i+1}. Period: {period:.5f}")
+    print(f"   Power: {power:.2f}")
+    print(f"   Duration: {duration:.5f}")
+    print(f"   SNR: {stats['depth_snr']:.2f}")
+    print(f"   Transits: {stats['transit_count']}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 199-217" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To compare multiple peaks:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Comparing BLS Results" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "May not be a transiting planet" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Check `stats['depth_odd']` vs `stats['depth_even']`" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Eclipsing binary" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Instrumental artifact" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Not a planetary transit" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Solution:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Cause:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 24 ;
+                            oc:sectionTitle "Issue: High odd-even mismatch" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Period outside search range" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Wrong duration range" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Over-aggressive preprocessing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Transits too shallow" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Check raw data for transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Extend period search range" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Try wider duration range" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Use less aggressive `flatten()` window" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Causes:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Solutions:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 22 ;
+                            oc:sectionTitle "Issue: No clear peak" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Causes:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Data gaps" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Missing alternating transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Period aliasing" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Solutions:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Look at phase-folded plots for both periods" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Check both periods manually" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Examine odd-even statistics" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 23 ;
+                            oc:sectionTitle "Issue: Period is 2× or 0.5× expected" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "BLS supports two objective functions:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "The SNR objective can improve reliability in the presence of correlated noise." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """periodogram = model.autopower(0.2 * u.day, objective='snr')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 99-101" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Uses the SNR with which the transit depth is measured:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "2. Signal-to-Noise Ratio (SNR)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """periodogram = model.autopower(0.2 * u.day, objective='likelihood')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 91-93" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Maximizes the statistical likelihood of the model fit:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "1. Log Likelihood (default)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Objective Functions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Validation criteria:**" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get statistics for the best period
+stats = model.compute_stats(
+    periodogram.period[max_power_idx],
+    periodogram.duration[max_power_idx],
+    periodogram.transit_time[max_power_idx]
+)
+
+# Key statistics for validation
+print(f"Depth: {stats['depth']:.6f}")
+print(f"Depth uncertainty: {stats['depth_err']:.6f}")
+print(f"SNR: {stats['depth_snr']:.2f}")
+print(f"Odd/Even mismatch: {stats['depth_odd'] - stats['depth_even']:.6f}")
+print(f"Number of transits: {stats['transit_count']}")
+
+# Check for false positives
+if abs(stats['depth_odd'] - stats['depth_even']) > 3 * stats['depth_err']:
+    print("Warning: Significant odd-even mismatch - may not be planetary")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 151-169" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**High depth SNR (>7)**: Strong signal" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Low odd-even mismatch**: Consistent transit depth" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Multiple transits observed**: More reliable" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Reasonable duration**: Not too long or too short for orbit" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use `compute_stats()` to calculate detailed statistics about a candidate transit:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Peak Statistics for Validation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import numpy as np
+import astropy.units as u
+from astropy.timeseries import BoxLeastSquares
+
+# Prepare data
+# time, flux, and flux_err should be numpy arrays or Quantities
+t = time * u.day  # Add units if not already present
+y = flux
+dy = flux_err  # Optional but recommended
+
+# Create BLS object
+model = BoxLeastSquares(t, y, dy=dy)
+
+# Automatic period search with specified duration
+duration = 0.2 * u.day  # Expected transit duration
+periodogram = model.autopower(duration)
+
+# Extract results
+best_period = periodogram.period[np.argmax(periodogram.power)]
+print(f"Best period: {best_period:.5f}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 30-51" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Basic Usage" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Box Least Squares (BLS) Periodogram" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: box-least-squares
+description: Box Least Squares (BLS) periodogram for detecting transiting exoplanets and eclipsing binaries. Use when searching for periodic box-shaped dips in light curves. Alternative to Transit Least Squares, available in astropy.timeseries. Based on Kovács et al. (2002).
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for running BLS periodogram analysis on preprocessed light curve data" ;
+            oc:hasStep _:ref_0a155f959121123a,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Phase-fold the light curve at the best period and plot to visually verify transit shape" ;
+                    oc:expectedOutcome "Phase-folded light curve showing box-shaped transit dip" ;
+                    oc:stepDependsOn _:ref_0a155f959121123a ;
+                    oc:stepId "bls-phase-fold" ],
+                _:ref_70dc369a21385d9e,
+                _:ref_994d8765a5dcaf5a,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Apply validation criteria: depth SNR > 7, low odd-even mismatch, multiple transits, reasonable duration" ;
+                    oc:expectedOutcome "Candidate validated or flagged as false positive" ;
+                    oc:stepDependsOn _:ref_fd72f363a4d701af ;
+                    oc:stepId "bls-validate" ],
+                _:ref_fd72f363a4d701af ;
+            oc:workflowId "bls-transit-search" ;
+            oc:workflowName "BLS Transit Detection Pipeline" ],
+        _:ref_9ac215fe585241c1 ;
+    oc:impartsKnowledge oc:kn_00136446,
+        oc:kn_0464a1af,
+        oc:kn_13608d08,
+        oc:kn_33ee698f,
+        oc:kn_366c2eb0,
+        oc:kn_3fad9f90,
+        oc:kn_44d0432d,
+        oc:kn_47ec0556,
+        oc:kn_6a4484a7,
+        oc:kn_936311c5,
+        oc:kn_99e89897,
+        oc:kn_9c4672ff,
+        oc:kn_a6226880,
+        oc:kn_f1d8fe5b ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:LightCurvePreprocessed ;
+    oc:resolvesIntent "detect eclipsing binaries",
+        "detect transiting exoplanets",
+        "find transit period and depth",
+        "search for periodic box-shaped dips in light curves",
+        "validate transit candidates" ;
+    oc:yieldsState oc:PeriodogramComputed,
+        oc:TransitCandidateDetected .
+
+oc:kn_00136446 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preprocessing light curves for BLS" ;
+    oc:directiveContent "Do not over-process light curves before BLS. Too-aggressive detrending or outlier removal can remove real transit signals." ;
+    oc:hasRationale "BLS detects shallow dips; any filtering that suppresses brief flux drops will reduce detection sensitivity." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_0464a1af a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Validating BLS transit candidate" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """stats = model.compute_stats(
+    periodogram.period[max_power_idx],
+    periodogram.duration[max_power_idx],
+    periodogram.transit_time[max_power_idx]
+)
+print(f"Depth SNR: {stats['depth_snr']:.2f}")
+print(f"Transits: {stats['transit_count']}")""" .
+
+oc:kn_13608d08 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When period aliasing is suspected" ;
+    oc:directiveContent "If detected period is 2× or 0.5× expected: check both periods manually, examine odd-even statistics, and inspect phase-folded plots for both periods." ;
+    oc:hasRationale "Missing alternating transits, data gaps, or true period aliasing can produce harmonics or sub-harmonics." .
+
+oc:kn_33ee698f a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When evaluating BLS candidates with compute_stats()" ;
+    oc:directiveContent "Validate transit candidates with: depth SNR > 7, low odd-even depth mismatch, multiple transits observed, and physically reasonable duration for the orbit." ;
+    oc:hasRationale "These criteria distinguish true planetary transits from eclipsing binaries and instrumental artifacts." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_366c2eb0 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Full BLS analysis pipeline" ;
+    oc:directiveContent "1. Quality filter flagged data → 2. Remove outliers → 3. Detrend stellar variability (gentle methods like flatten()) → 4. Run BLS search → 5. Validate with compute_stats()" ;
+    oc:hasRationale "Preprocessing must preserve transit shapes; aggressive cleaning removes real signals." ;
+    oc:stepOrder 1 .
+
+oc:kn_3fad9f90 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When validating BLS candidates" ;
+    oc:directiveContent "A high odd-even depth mismatch (> 3× depth_err) suggests the signal is not a planetary transit — likely an eclipsing binary or instrumental artifact." ;
+    oc:hasRationale "Planetary transits should have consistent depth at every epoch; alternating depths indicate two bodies of different sizes (binary star)." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_44d0432d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining custom period grids with power()" ;
+    oc:directiveContent "Period grid quality matters more for BLS than for Lomb-Scargle. A too-coarse grid will miss the true period entirely." ;
+    oc:hasRationale "BLS evaluates a box model at each grid point; narrow transit features require dense sampling to capture." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_47ec0556 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When transit duration is unknown" ;
+    oc:directiveContent "Search multiple transit durations (e.g., np.linspace(0.05, 0.3, 10) * u.day) to find the best fit rather than guessing a single duration." ;
+    oc:hasRationale "The true transit duration is often uncertain; scanning a range ensures the model matches the data." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6a4484a7 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Phase-folding light curve at detected period" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """phase = ((time.value - best_t0.value) % best_period.value) / best_period.value
+plt.plot(phase, flux, '.')
+plt.xlabel('Phase')
+plt.ylabel('Flux')""" .
+
+oc:kn_936311c5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting BLS objective function" ;
+    oc:directiveContent "Use objective='snr' when correlated noise is present; use objective='likelihood' (default) for general cases." ;
+    oc:hasRationale "The SNR objective weights transit depth by its measurement uncertainty, improving reliability in noisy data." .
+
+oc:kn_99e89897 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When BLS returns no significant peak" ;
+    oc:directiveContent "If no clear BLS peak: try wider duration range, extend period search range, use less aggressive flatten() window, or check raw data directly." ;
+    oc:hasRationale "Multiple factors can suppress the BLS signal; systematic troubleshooting covers the most common causes." .
+
+oc:kn_9c4672ff a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running BLS period search" ;
+    oc:directiveContent "Use autopower() for initial searches (automatic period grid), then use finer grids with power() around promising candidates for refinement." ;
+    oc:hasRationale "autopower provides a conservative grid suitable for discovery; custom grids allow focused sensitivity around candidates." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a6226880 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Core BLS search pattern" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """model = BoxLeastSquares(time * u.day, flux, dy=flux_err)
+durations = np.linspace(0.05, 0.3, 10) * u.day
+periodogram = model.autopower(durations, objective='likelihood')
+max_power_idx = np.argmax(periodogram.power)
+best_period = periodogram.period[max_power_idx]
+best_duration = periodogram.duration[max_power_idx]
+best_t0 = periodogram.transit_time[max_power_idx]""" .
+
+oc:kn_f1d8fe5b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running BLS" ;
+    oc:directiveContent "astropy must be installed (pip install astropy). Input light curve must have time, flux, and optionally flux_err arrays." .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_f32b3847 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "astropy" .
+
+oc:req_fe6b6a53 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "matplotlib" .
+
+_:ref_170bebad2f1d8c4c a oc:WorkflowStep ;
+    dcterms:description "**BLS search**: Run period search on cleaned data" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_28225ef1b72da62c a oc:WorkflowStep ;
+    dcterms:description "**Quality filtering**: Remove flagged data points" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_39a9a2364abae703 a oc:WorkflowStep ;
+    dcterms:description "**Detrending**: Remove stellar variability (rotation, trends)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d9c7b4e17954be97 a oc:WorkflowStep ;
+    dcterms:description "**Validation**: Use `compute_stats()` to check candidate quality" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_da9d3e9075109ff0 a oc:WorkflowStep ;
+    dcterms:description "**Outlier removal**: Clean obvious artifacts" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_70dc369a21385d9e a oc:WorkflowStep ;
+    dcterms:description "Create BoxLeastSquares model from time, flux, and flux_err arrays with astropy units" ;
+    oc:expectedOutcome "BLS model object initialized" ;
+    oc:stepId "bls-create-model" .
+
+_:ref_994d8765a5dcaf5a a oc:WorkflowStep ;
+    dcterms:description "Run autopower() with appropriate duration range and objective function to compute BLS periodogram" ;
+    oc:expectedOutcome "Periodogram with power values across period grid" ;
+    oc:stepDependsOn _:ref_70dc369a21385d9e ;
+    oc:stepId "bls-run-periodogram" .
+
+_:ref_9ac215fe585241c1 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_170bebad2f1d8c4c,
+        _:ref_28225ef1b72da62c,
+        _:ref_39a9a2364abae703,
+        _:ref_d9c7b4e17954be97,
+        _:ref_da9d3e9075109ff0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_fd72f363a4d701af a oc:WorkflowStep ;
+    dcterms:description "Run compute_stats() on best candidate to get depth, depth_snr, odd/even mismatch, transit_count" ;
+    oc:expectedOutcome "Validation statistics computed for candidate transit" ;
+    oc:stepDependsOn _:ref_0a155f959121123a ;
+    oc:stepId "bls-compute-stats" .
+
+_:ref_0a155f959121123a a oc:WorkflowStep ;
+    dcterms:description "Identify best period from argmax of periodogram power, extract period, duration, transit_time" ;
+    oc:expectedOutcome "Best candidate period and associated parameters identified" ;
+    oc:stepDependsOn _:ref_994d8765a5dcaf5a ;
+    oc:stepId "bls-find-peak" .
+

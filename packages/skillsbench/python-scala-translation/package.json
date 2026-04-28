@@ -1,0 +1,23 @@
+{
+  "package_id": "skillsbench/python-scala-translation",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "python-scala-collections/ontoskill.ttl",
+    "python-scala-functional/ontoskill.ttl",
+    "python-scala-idioms/ontoskill.ttl",
+    "python-scala-libraries/ontoskill.ttl",
+    "python-scala-oop/ontoskill.ttl",
+    "python-scala-syntax-mapping/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "python-scala-collections/intents.json",
+    "python-scala-functional/intents.json",
+    "python-scala-idioms/intents.json",
+    "python-scala-libraries/intents.json",
+    "python-scala-oop/intents.json",
+    "python-scala-syntax-mapping/intents.json"
+  ],
+  "skills": []
+}

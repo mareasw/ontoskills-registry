@@ -1,0 +1,235 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_druid_loophole_cve_jackson_security a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "jackson-security" ;
+    skos:broader "Security knowledge resource" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-druid-loophole-cve/jackson-security" ;
+    oc:contentHash "47c5587159a7375d024d12c2fb565dc0ade4220d39a266e20074c0b45320a2b0" ;
+    oc:differentia "covers Jackson JSON deserialization attack vectors and the fundamental limitation of post-deserialization validation" ;
+    oc:extends oc:skill_ontoskills_senior_java ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:SecurityVulnerabilityDetected ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Security considerations for Jackson JSON deserialization in Java applications. Covers timing of validation, raw input interception, and common deserialization attack patterns." ;
+    oc:hasName "jackson-security" ;
+    oc:hasRequirement oc:req_a0b90cfd,
+        oc:req_efff9fb9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Consider the lifecycle of a typical JSON endpoint:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Validation at step 4 examines the **result** of deserialization, not the **process**. Any malicious behavior triggered during step 2 has already executed. The Java object you're validating may appear completely normal while the attack has already succeeded." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "This creates a fundamental blind spot: attacks that exploit Jackson's parsing behavior—rather than the final object state—cannot be detected by examining the deserialized object." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Why Post-Deserialization Validation Is Insufficient" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Deeply nested structures can bypass depth-limited validation:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Simple string checks might miss patterns buried in nested structures." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Nested Injection" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Jackson will attempt to instantiate whatever class is named. If the classpath contains exploitable \"gadget\" classes, arbitrary code execution may occur during deserialization—before your code ever runs." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "The resulting object might be the expected type (if the attack class is a subtype), or deserialization might succeed partially before the damage is done." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "When Jackson is configured with `@JsonTypeInfo`, JSON can specify which class to instantiate:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Polymorphic Type Handling" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Jackson produces an object where `role` equals `\"admin\"`." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "If upstream validation (like a WAF or input filter) checks only the first occurrence while Jackson uses the last, the validation and processing see different values." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "JSON does not prohibit duplicate keys. Jackson's default behavior: **last value wins**." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Duplicate Keys" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Other Structural Attack Patterns" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "This is valid JSON per RFC 8259. Jackson parses it without error." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "JSON permits empty strings as object keys:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "What Is It?" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "The attack's effectiveness depends on the specific Jackson configuration and target class—but the defender examining only the resulting object cannot determine whether `\"\"` was used." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "After deserialization, there is no standard way to know an empty key was present:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "The Visibility Problem" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Property override**: Empty keys may interact unexpectedly with `@JsonAnySetter` or custom deserializers" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Injection points**: Certain Jackson configurations use `\"\"` to set values on the root object or trigger special handling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Framework behaviors**: Some frameworks interpret `\"\"` as \"apply to parent\" or \"default target\"" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Some applications and frameworks assign special meaning to empty keys:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Why Does It Matter?" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "The Empty Key (`\"\"`) Attack Vector" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Jackson transforms JSON text into Java objects during a single `readValue()` call. This transformation is **not** a simple data copy—Jackson interprets JSON structure, resolves types, handles special keys, and instantiates objects all within this operation." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Once deserialization completes, the resulting Java object contains no trace of how it was constructed. Any special JSON structures, unusual keys, or type directives that influenced object creation are no longer visible." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Key Concept: Deserialization Timing" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Jackson Deserialization Security" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: jackson-security
+description: Security considerations for Jackson JSON deserialization in Java applications. Covers timing of validation, raw input interception, and common deserialization attack patterns.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_31b90296,
+        oc:kn_4b81d8cc,
+        oc:kn_553243ed,
+        oc:kn_c533307a,
+        oc:kn_cb14a924,
+        oc:kn_e88aa6db,
+        oc:kn_e8c38d64 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "identify JSON deserialization vulnerabilities",
+        "prevent empty key injection attacks",
+        "secure Jackson deserialization",
+        "understand deserialization timing blind spots" ;
+    oc:yieldsState oc:JacksonDeserializationSecured .
+
+oc:kn_31b90296 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When using Jackson polymorphic deserialization with user-controlled input" ;
+    oc:directiveContent "Polymorphic type handling via @JsonTypeInfo allows JSON to specify arbitrary class names for instantiation. If exploitable gadget classes exist on the classpath, this can lead to arbitrary code execution during deserialization." ;
+    oc:hasRationale "Jackson will attempt to instantiate the named class before any application code runs, making post-hoc checks ineffective." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4b81d8cc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When architecting security layers for JSON deserialization" ;
+    oc:directiveContent "Validate raw JSON input before it reaches Jackson's readValue(). Interception must happen at the raw string or stream level, not on the deserialized object." ;
+    oc:hasRationale "The attack surface is the parsing process itself, so defense must precede parsing, not follow it." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_553243ed a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing input validation for JSON payloads" ;
+    oc:directiveContent "Deeply nested JSON structures can bury malicious patterns (like empty keys) beyond the reach of simple string-based or depth-limited validation checks." ;
+    oc:hasRationale "Validation that does not fully traverse the JSON tree structure will miss payloads hidden at deeper nesting levels." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c533307a a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing untrusted JSON input with Jackson" ;
+    oc:directiveContent "Empty string keys (\"\") in JSON are valid per RFC 8259 and are parsed by Jackson without error, but can interact dangerously with @JsonAnySetter, custom deserializers, or framework-specific behaviors." ;
+    oc:hasRationale "After deserialization, there is no standard way to determine whether an empty key was present—the resulting object gives no visibility into this attack vector." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cb14a924 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing validation strategies for Jackson-deserialized JSON" ;
+    oc:directiveContent "Post-deserialization validation on the Java object cannot detect attacks that exploit Jackson's parsing behavior—malicious behavior executes during readValue() before validation runs." ;
+    oc:hasRationale "The deserialization process itself is the attack surface; examining only the resulting object creates a fundamental blind spot." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e88aa6db a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When WAF or input filters validate JSON before Jackson deserialization" ;
+    oc:directiveContent "JSON duplicate keys are not prohibited and Jackson's default behavior is 'last value wins', creating a divergence between what upstream validators (checking first occurrence) and Jackson (using last) observe." ;
+    oc:hasRationale "This allows attackers to bypass input validation by placing a legitimate value first and a malicious value second under the same key." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e8c38d64 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building REST endpoints that accept JSON bodies deserialized by Jackson" ;
+    oc:directiveContent "Never rely solely on validating the deserialized Java object for security. Raw JSON input must be validated or sanitized before Jackson processes it." ;
+    oc:hasRationale "Attacks like empty key injection, polymorphic type abuse, and duplicate key overwriting execute during the deserialization phase, before application code sees the object." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_a0b90cfd a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "JSON specification (RFC 8259)" .
+
+oc:req_efff9fb9 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Java Jackson deserialization API (ObjectMapper, readValue)" .
+

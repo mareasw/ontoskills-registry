@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/find-topk-similiar-chemicals",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "pdf/ontoskill.ttl",
+    "pubchem-database/ontoskill.ttl",
+    "rdkit/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "pdf/intents.json",
+    "pubchem-database/intents.json",
+    "rdkit/intents.json"
+  ],
+  "skills": []
+}

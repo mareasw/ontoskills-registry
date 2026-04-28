@@ -1,0 +1,152 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_travel_planning_search_flights a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "search-flights" ;
+    skos:broader "Data lookup service" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/travel-planning/search-flights" ;
+    oc:contentHash "f1e25c926d4dedbfdf833896d52cb7b1e0e4f806b5bdb560893f7e4ec4400abe" ;
+    oc:dependsOnSkill oc:skill_ontoskills_search_cities ;
+    oc:differentia "filters a bundled flights CSV dataset by origin city, destination city, and departure date to return matching flight records" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "origin_city, destination_city, departure_date (YYYY-MM-DD)" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Search flights by origin, destination, and departure date using the bundled flights dataset. Use this skill when proposing flight options or checking whether a route/date combination exists." ;
+    oc:hasName "search-flights" ;
+    oc:hasRequirement oc:req_1405193b,
+        oc:req_746aacc9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Filter the cleaned flights CSV for specific routes and dates." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from search_flights import Flights
+
+flights = Flights()
+print(flights.run("New York", "Los Angeles", "2022-01-15"))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-23" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pandas
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Installation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Search Flights" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: search-flights
+description: Search flights by origin, destination, and departure date using the bundled flights dataset. Use this skill when proposing flight options or checking whether a route/date combination exists.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Query the bundled flights dataset for matching routes and dates" ;
+            oc:hasStep _:ref_93ace46ef78bac24,
+                _:ref_c787f0f2452993cb,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Instantiate Flights() and call run(origin, destination, date) to retrieve matching flight records" ;
+                    oc:expectedOutcome "List of flight records matching the specified route and date" ;
+                    oc:stepDependsOn _:ref_93ace46ef78bac24,
+                        _:ref_c787f0f2452993cb ;
+                    oc:stepId "query-flights" ] ;
+            oc:workflowId "search-flights-workflow" ;
+            oc:workflowName "Search Flights" ] ;
+    oc:impartsKnowledge oc:kn_598cf4b7,
+        oc:kn_62b69fc8,
+        oc:kn_68910cca,
+        oc:kn_85ba0741,
+        oc:kn_e64f08eb,
+        oc:kn_f797f470 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "check if a flight route exists on a specific date",
+        "find available flights between cities",
+        "propose flight options for travel planning",
+        "search flights by route and date" ;
+    oc:yieldsState oc:FlightResultsAvailable .
+
+oc:kn_598cf4b7 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "before execution" ;
+    oc:directiveContent "pandas must be installed: pip install pandas" ;
+    oc:hasRationale "The Flights class depends on pandas to parse and filter the CSV dataset" .
+
+oc:kn_62b69fc8 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When querying flights for a specific route and date" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from search_flights import Flights
+
+flights = Flights()
+print(flights.run("New York", "Los Angeles", "2022-01-15"))""" ;
+    oc:hasRationale "Canonical usage pattern: instantiate Flights(), call run() with origin, destination, and YYYY-MM-DD date string" .
+
+oc:kn_68910cca a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying the departure_date argument" ;
+    oc:directiveContent "Date parameter must be in YYYY-MM-DD format (e.g., \"2022-01-15\")" ;
+    oc:hasRationale "The bundled dataset uses ISO date format; other formats will not match records" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_85ba0741 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "This skill performs read-only queries against a bundled static CSV dataset; no external API calls or state mutations occur" ;
+    oc:hasRationale "Agents can safely call this skill multiple times without side effects" .
+
+oc:kn_e64f08eb a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "Calling Flights.run() multiple times with the same parameters returns identical results" ;
+    oc:hasRationale "The dataset is static and bundled; results are deterministic for the same inputs" .
+
+oc:kn_f797f470 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When specifying origin and destination" ;
+    oc:directiveContent "Origin and destination city names must match the city names stored in the bundled flights CSV" ;
+    oc:hasRationale "City name mismatches will return no results; use search-cities skill to validate city names first" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_1405193b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Flights CSV dataset bundled with the skill" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+_:ref_93ace46ef78bac24 a oc:WorkflowStep ;
+    dcterms:description "Validate origin and destination city names against known cities, and confirm date is in YYYY-MM-DD format" ;
+    oc:expectedOutcome "Confirmed valid city names and date format" ;
+    oc:stepId "validate-inputs" .
+
+_:ref_c787f0f2452993cb a oc:WorkflowStep ;
+    dcterms:description "Install pandas dependency via pip install pandas" ;
+    oc:expectedOutcome "pandas is available in the Python environment" ;
+    oc:stepId "install-deps" .
+

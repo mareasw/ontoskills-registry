@@ -1,0 +1,212 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_sec_financial_report_13f_analyzer a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "13f-analyzer" ;
+    skos:broader "Data analyzer" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/sec-financial-report/13f-analyzer" ;
+    oc:contentHash "6a8fd997761400e66d416415618ea6803b400afd9b67853d76ee34e739cfafbb" ;
+    oc:differentia "operates on SEC 13-F filings to extract fund activity insights such as holdings summaries, AUM, and quarter-over-quarter changes" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasArgumentHint "--accession_number, --quarter, --baseline_quarter, --baseline_accession_number, --cusip, --topk" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Perform various data analysis on SEC 13-F and obtain some insights of fund activities such as number of holdings, AUM, and change of holdings between two quarters." ;
+    oc:hasName "13f-analyzer" ;
+    oc:hasPayload oc:payload_6a8fd997761400e6 ;
+    oc:hasRequirement oc:req_3fcf652e,
+        oc:req_50d6bc3e,
+        oc:req_89093d00,
+        oc:req_b28ae9ac ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: 13f-analyzer
+description: Perform various data analysis on SEC 13-F and obtain some insights of fund activities such as number of holdings, AUM, and change of holdings between two quarters.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "This script will print out several basic information of a given fund on 2025-q2, including total number of holdings, AUM, total number of stock holdings, etc." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 scripts/one_fund_analysis.py \\
+    --accession_number ... \\
+    --quarter 2025-q2 \\
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 10-14" ] ;
+                    oc:sectionLevel 3 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Analyze the holding summary of a particular fund in one quarter:" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python scripts/holding_analysis.py \\
+    --cusip <stock cusip> \\
+    --quarter 2025-q3 \\
+    --topk 10
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 34-39" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "This script will print out the top 10 hedge funds who hold a particular stock with highest notional value." ] ;
+                    oc:sectionLevel 3 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Analyze which funds hold a stock to the most extent" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "This script will print out the dynamic changes of holdings from 2025-q2 to 2025-q3. Such as newly purchased stocks ranked by notional value, and newly sold stocks ranked by notional value." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python scripts/one_fund_analysis.py \\
+    --quarter 2025-q3 \\
+    --accession_number <accession number assigned in q3> \\
+    --baseline_quarter 2025-q2 \\
+    --baseline_accession_number <accession number assigned in q2>
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 21-27" ] ;
+                    oc:sectionLevel 3 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Analyze the change of holdings of a particular fund in between two quarters:" ] ;
+            oc:sectionLevel 2 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Overview" ] ;
+    oc:impartsKnowledge oc:kn_074538e4,
+        oc:kn_1e6b59b4,
+        oc:kn_1e84d174,
+        oc:kn_6c282f9a,
+        oc:kn_8197a674,
+        oc:kn_897c5172,
+        oc:kn_93388c09,
+        oc:kn_a2cbbb5b,
+        oc:kn_cb5c69c2,
+        oc:kn_cb802cfe ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze fund holdings for a quarter",
+        "compare fund holdings between two quarters",
+        "find top fund holders of a stock" ;
+    oc:yieldsState oc:AnalysisComplete .
+
+oc:kn_074538e4 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Finding top fund holders of a stock" ;
+    oc:directiveContent "python3 scripts/holding_analysis.py --cusip {cusip} --quarter {quarter} --topk {topk}" .
+
+oc:kn_1e6b59b4 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When analyzing a single fund for one quarter" ;
+    oc:directiveContent "1. Obtain accession number and target quarter → 2. Run one_fund_analysis.py with --accession_number and --quarter → 3. Review holdings summary (total holdings, AUM, stock count)" ;
+    oc:hasRationale "Provides baseline understanding of a fund's portfolio composition" ;
+    oc:stepOrder 1 .
+
+oc:kn_1e84d174 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Output of one_fund_analysis.py" ;
+    oc:directiveContent """## Fund Holdings Summary
+- Total Holdings: {count}
+- AUM: ${amount}
+- Stock Holdings: {count}
+
+## Holdings Change (Q{q1} → Q{q2})
+### New Purchases (by notional value)
+1. {ticker} - ${notional}
+### New Sales (by notional value)
+1. {ticker} - ${notional}""" ;
+    oc:templateVariables "amount",
+        "count",
+        "notional",
+        "q1",
+        "q2",
+        "ticker" .
+
+oc:kn_6c282f9a a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Output of holding_analysis.py" ;
+    oc:directiveContent """## Top {topk} Fund Holders of {cusip}
+1. {fund_name} - ${notional_value}
+2. {fund_name} - ${notional_value}""" ;
+    oc:templateVariables "cusip",
+        "fund_name",
+        "notional_value",
+        "topk" .
+
+oc:kn_8197a674 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Quarter-over-quarter fund comparison" ;
+    oc:directiveContent "python3 scripts/one_fund_analysis.py --quarter {quarter} --accession_number {accession_number} --baseline_quarter {baseline_quarter} --baseline_accession_number {baseline_accession_number}" .
+
+oc:kn_897c5172 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When comparing fund holdings across two quarters" ;
+    oc:directiveContent "1. Obtain accession numbers for both quarters → 2. Run one_fund_analysis.py with --quarter, --accession_number, --baseline_quarter, --baseline_accession_number → 3. Review new purchases and sales ranked by notional value" ;
+    oc:hasRationale "Quarter-over-quarter comparison reveals fund manager conviction shifts" ;
+    oc:stepOrder 2 .
+
+oc:kn_93388c09 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Single quarter fund summary analysis" ;
+    oc:directiveContent "python3 scripts/one_fund_analysis.py --accession_number {accession_number} --quarter {quarter}" .
+
+oc:kn_a2cbbb5b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running any one_fund_analysis.py command" ;
+    oc:directiveContent "Accession numbers must be obtained prior to running analysis scripts (from SEC EDGAR or fuzzy-name-search skill)" ;
+    oc:hasRationale "Accession numbers uniquely identify a fund's 13-F filing in a given quarter" .
+
+oc:kn_cb5c69c2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying any --quarter or --baseline_quarter parameter" ;
+    oc:directiveContent "Quarter format must follow the pattern YYYY-qN (e.g., 2025-q2, 2025-q3)" ;
+    oc:hasRationale "The scripts expect a specific quarter format for data retrieval" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_cb802cfe a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When finding which funds hold a stock the most" ;
+    oc:directiveContent "1. Obtain stock CUSIP → 2. Run holding_analysis.py with --cusip, --quarter, --topk → 3. Review top fund holders ranked by notional value" ;
+    oc:hasRationale "Identifies institutional interest concentration in a specific stock" ;
+    oc:stepOrder 3 .
+
+oc:payload_6a8fd997761400e6 a oc:ExecutionPayload ;
+    oc:code "python3 scripts/one_fund_analysis.py --accession_number {accession_number} --quarter {quarter}" ;
+    oc:executor "python" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_50d6bc3e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scripts/holding_analysis.py" .
+
+oc:req_89093d00 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "SEC EDGAR 13-F data" .
+
+oc:req_b28ae9ac a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scripts/one_fund_analysis.py" .
+

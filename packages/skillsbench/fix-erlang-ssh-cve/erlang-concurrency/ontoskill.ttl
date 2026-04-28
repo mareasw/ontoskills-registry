@@ -1,0 +1,578 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_erlang_ssh_cve_erlang_concurrency a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "erlang-concurrency" ;
+    skos:broader "Concurrency framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-erlang-ssh-cve/erlang-concurrency" ;
+    oc:contentHash "bd327d697551893acf3ca4c3f8be363209094565b577e6cebbd8d24374285b5c" ;
+    oc:differentia "based on lightweight isolated processes, asynchronous message passing, links, monitors, and selective receive on the BEAM VM for building massively concurrent fault-tolerant systems" ;
+    oc:handlesFailure oc:MailboxOverflow,
+        oc:MessageTimeout,
+        oc:ProcessCrash ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when erlang's concurrency model including lightweight processes, message passing, process links and monitors, error handling patterns, selective receive, and building massively concurrent systems on the BEAM VM." ;
+    oc:hasName "erlang-concurrency" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_42313cdc19ffb65f ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Create lightweight processes for concurrent task execution." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Lightweight processes enable massive concurrency with minimal overhead." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Basic process spawning
+simple_spawn() ->
+    Pid = spawn(fun() ->
+        io:format("Hello from process ~p~n", [self()])
+    end),
+    Pid.
+
+%% Spawn with arguments
+spawn_with_args(Message) ->
+    spawn(fun() ->
+        io:format("Message: ~p~n", [Message])
+    end).
+
+%% Spawn and register
+spawn_registered() ->
+    Pid = spawn(fun() -> loop() end),
+    register(my_process, Pid),
+    Pid.
+
+loop() ->
+    receive
+        stop -> ok;
+        Msg ->
+            io:format("Received: ~p~n", [Msg]),
+            loop()
+    end.
+
+%% Spawn link (linked processes)
+spawn_linked() ->
+    spawn_link(fun() ->
+        timer:sleep(1000),
+        io:format("Linked process done~n")
+    end).
+
+%% Spawn monitor
+spawn_monitored() ->
+    {Pid, Ref} = spawn_monitor(fun() ->
+        timer:sleep(500),
+        exit(normal)
+    end),
+    {Pid, Ref}.
+
+%% Process pools
+create_pool(N) ->
+    [spawn(fun() -> worker_loop() end) || _ <- lists:seq(1, N)].
+
+worker_loop() ->
+    receive
+        {work, Data, From} ->
+            Result = process_data(Data),
+            From ! {result, Result},
+            worker_loop();
+        stop ->
+            ok
+    end.
+
+process_data(Data) -> Data * 2.
+
+%% Parallel map
+pmap(F, List) ->
+    Parent = self(),
+    Pids = [spawn(fun() ->
+        Parent ! {self(), F(X)}
+    end) || X <- List],
+    [receive {Pid, Result} -> Result end || Pid <- Pids].
+
+
+%% Fork-join pattern
+fork_join(Tasks) ->
+    Self = self(),
+    Pids = [spawn(fun() ->
+        Result = Task(),
+        Self ! {self(), Result}
+    end) || Task <- Tasks],
+    [receive {Pid, Result} -> Result end || Pid <- Pids].
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 28-104" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Process Creation and Spawning" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Message passing enables safe concurrent communication without locks." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Send and receive
+send_message() ->
+    Pid = spawn(fun() ->
+        receive
+            {From, Msg} ->
+                io:format("Received: ~p~n", [Msg]),
+                From ! {reply, "Acknowledged"}
+        end
+    end),
+    Pid ! {self(), "Hello"},
+    receive
+        {reply, Response} ->
+            io:format("Response: ~p~n", [Response])
+    after 5000 ->
+        io:format("Timeout~n")
+    end.
+
+%% Request-response pattern
+request(Pid, Request) ->
+    Ref = make_ref(),
+    Pid ! {self(), Ref, Request},
+    receive
+        {Ref, Response} -> {ok, Response}
+    after 5000 ->
+        {error, timeout}
+    end.
+
+server_loop() ->
+    receive
+        {From, Ref, {add, A, B}} ->
+            From ! {Ref, A + B},
+            server_loop();
+        {From, Ref, {multiply, A, B}} ->
+            From ! {Ref, A * B},
+            server_loop();
+        stop -> ok
+    end.
+
+%% Publish-subscribe
+start_pubsub() ->
+    spawn(fun() -> pubsub_loop([]) end).
+
+pubsub_loop(Subscribers) ->
+    receive
+        {subscribe, Pid} ->
+            pubsub_loop([Pid | Subscribers]);
+        {unsubscribe, Pid} ->
+            pubsub_loop(lists:delete(Pid, Subscribers));
+        {publish, Message} ->
+            [Pid ! {message, Message} || Pid <- Subscribers],
+            pubsub_loop(Subscribers)
+    end.
+
+%% Pipeline pattern
+pipeline(Data, Functions) ->
+    lists:foldl(fun(F, Acc) -> F(Acc) end, Data, Functions).
+
+concurrent_pipeline(Data, Stages) ->
+    Self = self(),
+    lists:foldl(fun(Stage, AccData) ->
+        Pid = spawn(fun() ->
+            Result = Stage(AccData),
+            Self ! {result, Result}
+        end),
+        receive {result, R} -> R end
+    end, Data, Stages).
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 112-179" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Processes communicate through asynchronous message passing without shared memory." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Message Passing Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use message passing for all inter-process communication in distributed systems." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Leverage links and monitors to build fault-tolerant supervision hierarchies." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Apply processes for concurrent tasks requiring isolation and independent state." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Use selective receive for complex message handling protocols." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Create process pools for concurrent request handling and parallel computation." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Erlang Concurrency Tutorial](<https://www.erlang.org/doc/getting_started/conc_prog.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[Programming Erlang](<https://pragprog.com/titles/jaerlang2/programming-erlang-2nd-edition/>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[Designing for Scalability with Erlang/OTP](<https://www.oreilly.com/library/view/designing-for-scalability/9781449361556/>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Learn You Some Erlang - Concurrency](<https://learnyousomeerlang.com/the-hitchhikers-guide-to-concurrency>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[Erlang Process Manual](<https://www.erlang.org/doc/reference_manual/processes.html>)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_c78d4731483e46b5 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Links bidirectionally connect processes while monitors provide one-way observation." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """Links and monitors enable building fault-tolerant systems with automatic
+failure detection.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Process linking
+link_example() ->
+    process_flag(trap_exit, true),
+    Pid = spawn_link(fun() ->
+        timer:sleep(1000),
+        exit(normal)
+    end),
+    receive
+        {'EXIT', Pid, Reason} ->
+            io:format("Process exited: ~p~n", [Reason])
+    end.
+
+%% Monitoring
+monitor_example() ->
+    Pid = spawn(fun() ->
+        timer:sleep(500),
+        exit(normal)
+    end),
+    Ref = monitor(process, Pid),
+    receive
+        {'DOWN', Ref, process, Pid, Reason} ->
+            io:format("Process down: ~p~n", [Reason])
+    end.
+
+%% Supervisor pattern
+supervisor() ->
+    process_flag(trap_exit, true),
+    Worker = spawn_link(fun() -> worker() end),
+    supervisor_loop(Worker).
+
+supervisor_loop(Worker) ->
+    receive
+        {'EXIT', Worker, _Reason} ->
+            NewWorker = spawn_link(fun() -> worker() end),
+            supervisor_loop(NewWorker)
+    end.
+
+worker() ->
+    receive
+        crash -> exit(crashed);
+        work -> worker()
+    end.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 187-230" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Links and Monitors" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """This skill covers process creation and spawning, message passing patterns,
+process links and monitors, selective receive, error propagation, concurrent
+design patterns, and building scalable concurrent systems.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Erlang's concurrency model based on lightweight processes and message passing
+enables building massively scalable systems. Processes are isolated with no shared
+memory, communicating asynchronously through messages. This model eliminates
+concurrency bugs common in shared-memory systems.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """The BEAM VM efficiently schedules millions of processes, each with its own heap
+and mailbox. Process creation is fast and cheap, enabling "process per entity"
+designs. Links and monitors provide failure detection, while selective receive
+enables flexible message handling patterns.""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Introduction" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Erlang Concurrency" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: erlang-concurrency
+description: Use when erlang's concurrency model including lightweight processes, message passing, process links and monitors, error handling patterns, selective receive, and building massively concurrent systems on the BEAM VM.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_42313cdc19ffb65f,
+        _:ref_c78d4731483e46b5 ;
+    oc:impartsKnowledge oc:kn_0a91afde,
+        oc:kn_220e5ed7,
+        oc:kn_4ebf59b6,
+        oc:kn_93b8e673,
+        oc:kn_c6631687,
+        oc:kn_d5929fc6,
+        oc:kn_fe80d4bb ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build concurrent erlang systems",
+        "create process pools and parallel computation",
+        "design fault-tolerant supervision hierarchies",
+        "implement links and monitors for failure detection",
+        "implement message passing between processes",
+        "use selective receive for message handling" ;
+    oc:yieldsState oc:ErlangConcurrentSystemDesigned .
+
+oc:kn_0a91afde a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing concurrent Erlang systems" ;
+    oc:directiveContent "Create processes liberally — each BEAM process is lightweight with its own heap and mailbox. Favor 'process per entity' designs to maximize isolation and scalability." ;
+    oc:hasRationale "Process creation on the BEAM is extremely cheap (~1-3μs), enabling fine-grained concurrency without OS thread overhead." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_220e5ed7 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "All inter-process communication in Erlang" ;
+    oc:directiveContent "Use message passing exclusively for inter-process communication. Never share state between processes." ;
+    oc:hasRationale "Shared memory introduces race conditions and locks; message passing preserves isolation guarantees and eliminates concurrency bugs." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4ebf59b6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing between links and monitors for failure detection" ;
+    oc:directiveContent "Use monitors for one-way observation of processes; use bidirectional links only when processes should share fate (e.g., supervisor-worker pairs). Trap exits in supervisor processes." ;
+    oc:hasRationale "Monitors are composable and don't affect the observed process. Links create bidirectional dependencies that require careful exit trapping to handle correctly." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_93b8e673 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When optimizing concurrent Erlang applications" ;
+    oc:directiveContent "Profile concurrent systems to identify bottlenecks and optimize hot paths. Keep process state minimal to reduce per-process memory usage." ;
+    oc:hasRationale "BEAM can schedule millions of processes, but mailbox size and message passing frequency dominate performance characteristics." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c6631687 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing process coordination" ;
+    oc:directiveContent "Avoid using shared ETS tables as mutex replacements and overusing registered process names — these create contention points and defeat isolation." ;
+    oc:hasRationale "ETS as mutex introduces lock contention. Registered names are global singletons that limit scalability and create single points of failure." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d5929fc6 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing receive blocks" ;
+    oc:directiveContent "Never accumulate unhandled messages in mailboxes — every message type must be matched in a receive clause. Use timeouts to prevent indefinite blocking." ;
+    oc:hasRationale "Unmatched messages accumulate in mailboxes causing memory leaks and performance degradation. Missing timeouts cause processes to hang indefinitely." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fe80d4bb a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to spawn processes for parallel work" ;
+    oc:directiveContent "Use processes for coarse-grained concurrency tasks. Avoid spawning processes for fine-grained parallelism where the overhead exceeds the benefit." ;
+    oc:hasRationale "While BEAM processes are cheap, each still has overhead (heap allocation, scheduling). Very fine-grained tasks are better handled sequentially or with NIFs." ;
+    oc:severityLevel "LOW" .
+
+_:ref_0ae1850346f6172a a oc:WorkflowStep ;
+    dcterms:description "**Not using timeouts** in receive causes indefinite blocking on failure" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1f01b6db11417a7f a oc:WorkflowStep ;
+    dcterms:description "**Not monitoring spawned processes** loses track of failures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_242834e9dab129cb a oc:WorkflowStep ;
+    dcterms:description "**Use registered names sparingly** as global names limit scalability" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_399fde4d9577b72c a oc:WorkflowStep ;
+    dcterms:description "**Forgetting to trap exits** in supervisors prevents proper error handling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_486e8d6629d6cd74 a oc:WorkflowStep ;
+    dcterms:description "**Create processes liberally** as they are lightweight and cheap to spawn" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4a9b9e690a9322db a oc:WorkflowStep ;
+    dcterms:description "**Avoid message accumulation** by handling all message patterns in receive clauses" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_51bb8d54a5481bb9 a oc:WorkflowStep ;
+    dcterms:description "**Not handling all message types** causes mailbox overflow with unmatched messages" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_5c071884ef5eac54 a oc:WorkflowStep ;
+    dcterms:description "**Implement proper timeouts** on receives to prevent indefinite blocking" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_67cd6a3bfc5c840c a oc:WorkflowStep ;
+    dcterms:description "**Using shared ETS tables** as mutex replacement defeats isolation benefits" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_6cecec93608506ba a oc:WorkflowStep ;
+    dcterms:description "**Creating circular links** causes cascading failures without proper supervision" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_6efadac0024c8d1e a oc:WorkflowStep ;
+    dcterms:description "**Accumulating messages** in mailboxes causes memory leaks and performance degradation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_7cabc76bff931dec a oc:WorkflowStep ;
+    dcterms:description "**Keep process state minimal** to reduce memory usage per process" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_8224bc5ccdb1584a a oc:WorkflowStep ;
+    dcterms:description """**Use message passing exclusively** for inter-process communication
+without shared state""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_93f79e97079256e4 a oc:WorkflowStep ;
+    dcterms:description "**Profile concurrent systems** to identify bottlenecks and optimize hot paths" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_b388e83db0610670 a oc:WorkflowStep ;
+    dcterms:description "**Using processes for fine-grained parallelism** adds overhead without benefits" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_b847547fab5d474a a oc:WorkflowStep ;
+    dcterms:description "**Implement proper error handling** with links and monitors for fault tolerance" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_b9bb70f778ec219e a oc:WorkflowStep ;
+    dcterms:description "**Use monitors for one-way observation** when bidirectional linking unnecessary" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_bb40bfd2dc6ba73a a oc:WorkflowStep ;
+    dcterms:description "**Use selective receive** to handle specific messages while leaving others queued" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_f5fe29caa0b10365 a oc:WorkflowStep ;
+    dcterms:description "**Overusing registered names** creates single points of failure and contention" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_f92f2a7653949f1b a oc:WorkflowStep ;
+    dcterms:description "**Creating too few processes** underutilizes Erlang's concurrency model" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_42313cdc19ffb65f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0ae1850346f6172a,
+        _:ref_1f01b6db11417a7f,
+        _:ref_399fde4d9577b72c,
+        _:ref_51bb8d54a5481bb9,
+        _:ref_67cd6a3bfc5c840c,
+        _:ref_6cecec93608506ba,
+        _:ref_6efadac0024c8d1e,
+        _:ref_b388e83db0610670,
+        _:ref_f5fe29caa0b10365,
+        _:ref_f92f2a7653949f1b ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_c78d4731483e46b5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_242834e9dab129cb,
+        _:ref_486e8d6629d6cd74,
+        _:ref_4a9b9e690a9322db,
+        _:ref_5c071884ef5eac54,
+        _:ref_7cabc76bff931dec,
+        _:ref_8224bc5ccdb1584a,
+        _:ref_93f79e97079256e4,
+        _:ref_b847547fab5d474a,
+        _:ref_b9bb70f778ec219e,
+        _:ref_bb40bfd2dc6ba73a ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

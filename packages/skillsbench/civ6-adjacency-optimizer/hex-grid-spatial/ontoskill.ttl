@@ -1,0 +1,229 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_civ6_adjacency_optimizer_hex_grid_spatial a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "hex-grid-spatial" ;
+    skos:broader "Spatial utility library" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-civ6-adjacency-optimizer/hex-grid-spatial" ;
+    oc:contentHash "81bc7bceb10c6bc296e34e87cd5c7207477528df0292207a5b273fb5acbf7be0" ;
+    oc:differentia "operates on hexagonal grids using odd-r offset coordinates for neighbor finding, distance calculation, and range queries" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Hex grid spatial utilities for offset coordinate systems. Use when working with hexagonal grids, calculating distances, finding neighbors, or spatial queries on hex maps." ;
+    oc:hasName "hex-grid-spatial" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: hex-grid-spatial
+description: Hex grid spatial utilities for offset coordinate systems. Use when working with hexagonal grids, calculating distances, finding neighbors, or spatial queries on hex maps.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Utilities for hexagonal grid coordinate systems using **odd-r offset coordinates** (odd rows shifted right)." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """     2   1
+      \\ /
+   3 - * - 0
+      / \\
+     4   5
+
+0=East, 1=NE, 2=NW, 3=West, 4=SW, 5=SE
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 19-27" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Direction Indices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def hex_distance(x1: int, y1: int, x2: int, y2: int) -> int:
+    \"\"\"Calculate hex distance using cube coordinate conversion.\"\"\"
+    def offset_to_cube(col, row):
+        cx = col - (row - (row & 1)) // 2
+        cz = row
+        cy = -cx - cz
+        return cx, cy, cz
+
+    cx1, cy1, cz1 = offset_to_cube(x1, y1)
+    cx2, cy2, cz2 = offset_to_cube(x2, y2)
+    return (abs(cx1-cx2) + abs(cy1-cy2) + abs(cz1-cz2)) // 2
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 45-57" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Hex Distance" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_neighbors(x: int, y: int) -> List[Tuple[int, int]]:
+    \"\"\"Get all 6 neighboring hex coordinates.\"\"\"
+    if y % 2 == 0:  # even row
+        directions = [(1,0), (0,-1), (-1,-1), (-1,0), (-1,1), (0,1)]
+    else:  # odd row - shifted right
+        directions = [(1,0), (1,-1), (0,-1), (-1,0), (0,1), (1,1)]
+    return [(x + dx, y + dy) for dx, dy in directions]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 33-41" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Get Neighbors" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_tiles_in_range(x: int, y: int, radius: int) -> List[Tuple[int, int]]:
+    \"\"\"Get all tiles within radius (excluding center).\"\"\"
+    tiles = []
+    for dx in range(-radius, radius + 1):
+        for dy in range(-radius, radius + 1):
+            nx, ny = x + dx, y + dy
+            if (nx, ny) != (x, y) and hex_distance(x, y, nx, ny) <= radius:
+                tiles.append((nx, ny))
+    return tiles
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 61-71" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Tiles in Range" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Core Functions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Find neighbors of tile (21, 13)
+neighbors = get_neighbors(21, 13)
+# For odd row: [(22,13), (22,12), (21,12), (20,13), (21,14), (22,14)]
+
+# Calculate distance
+dist = hex_distance(21, 13, 24, 13)  # Returns 3
+
+# Check adjacency
+is_adj = hex_distance(21, 13, 21, 14) == 1  # True
+
+# Get all tiles within 3 of city center
+workable = get_tiles_in_range(21, 13, 3)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 75-88" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Usage Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "The critical difference is in directions 1, 2, 4, 5 (the diagonal directions)" ;
+                            oc:tableMarkdown """| Direction | Even Row (y%2==0) | Odd Row (y%2==1) |
+|-----------|-------------------|------------------|
+| NE (1) | (0, -1) | (1, -1) |
+| NW (2) | (-1, -1) | (0, -1) |
+| SW (4) | (-1, +1) | (0, +1) |
+| SE (5) | (0, +1) | (1, +1) |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The critical difference is in directions 1, 2, 4, 5 (the diagonal directions):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "East (0) and West (3) are always (1, 0) and (-1, 0)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Key Insight: Even vs Odd Row" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Tile 0 is at bottom-left" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "X increases rightward (columns)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Odd rows (y % 2 == 1) are shifted right by half a hex" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Y increases upward (rows)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Coordinate System" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Hex Grid Spatial Utilities" ] ;
+    oc:impartsKnowledge oc:kn_7850b7fd,
+        oc:kn_78e37eb0,
+        oc:kn_962f0a58,
+        oc:kn_b8bb838d,
+        oc:kn_f4d129a3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "calculate hex grid distances",
+        "check adjacency between hex tiles",
+        "find hex tile neighbors",
+        "perform spatial queries on hexagonal grids",
+        "query tiles within radius on hex map" ;
+    oc:yieldsState oc:HexDistanceCalculated,
+        oc:HexNeighborsComputed .
+
+oc:kn_7850b7fd a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When querying large hex ranges" ;
+    oc:directiveContent "get_tiles_in_range has O(radius²) complexity. For large radii, consider pre-filtering candidates before distance checks." ;
+    oc:hasRationale "The brute-force scan over all dx/dy combinations can be slow for large radii on big maps" .
+
+oc:kn_78e37eb0 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating hex distances" ;
+    oc:directiveContent "Convert offset coordinates to cube coordinates (cx, cy, cz where cy = -cx - cz) before computing distances. Distance = (|Δcx| + |Δcy| + |Δcz|) / 2." ;
+    oc:hasRationale "Cube coordinates make distance calculation a simple max/sum operation rather than a complex offset-aware formula" .
+
+oc:kn_962f0a58 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up any hex grid coordinate system" ;
+    oc:directiveContent "Use odd-r offset coordinates where odd rows (y % 2 == 1) are shifted right by half a hex. Tile 0 is at bottom-left, X increases rightward, Y increases upward." ;
+    oc:hasRationale "Consistent coordinate convention prevents offset parity errors in neighbor and distance calculations" .
+
+oc:kn_b8bb838d a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "All functions (get_neighbors, hex_distance, get_tiles_in_range) are pure functions with no side effects. They can be called repeatedly with identical results." ;
+    oc:hasRationale "Pure functions are safe to call in optimization loops and constraint solvers without risk of state corruption" .
+
+oc:kn_f4d129a3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When computing hex neighbors" ;
+    oc:directiveContent "The even/odd row parity determines diagonal neighbor offsets. Directions NE, NW, SW, SE differ between even and odd rows, while East (0) and West (3) are always (1,0) and (-1,0)." ;
+    oc:hasRationale "Using wrong parity produces incorrect neighbor coordinates, leading to broken spatial logic" ;
+    oc:severityLevel "CRITICAL" .
+

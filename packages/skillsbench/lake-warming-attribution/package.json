@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/lake-warming-attribution",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "contribution-analysis/ontoskill.ttl",
+    "meteorology-driver-classification/ontoskill.ttl",
+    "pca-decomposition/ontoskill.ttl",
+    "trend-analysis/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "contribution-analysis/intents.json",
+    "meteorology-driver-classification/intents.json",
+    "pca-decomposition/intents.json",
+    "trend-analysis/intents.json"
+  ],
+  "skills": []
+}

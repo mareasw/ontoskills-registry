@@ -1,0 +1,523 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_energy_ac_branch_pi_model a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ac-branch-pi-model" ;
+    skos:broader "Power flow equation framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-energy/ac-branch-pi-model" ;
+    oc:contentHash "73133b1bba4c68d93cfeb181d31d18d35200f4548554ce542920a7df2447145d" ;
+    oc:dependsOnSkill oc:skill_ontoskills_power_flow_data ;
+    oc:differentia "that implements the AC branch pi-model with transformer tap ratio and phase shift for computing bidirectional branch P/Q/|S| flows in per-unit using MATPOWER branch data conventions" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "network data with buses, branches, and baseMVA" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "AC branch pi-model power flow equations (P/Q and |S|) with transformer tap ratio and phase shift, matching `acopf-math-model.md` and MATPOWER branch fields. Use when computing branch flows in either direction, aggregating bus injections for nodal balance, checking MVA (rateA) limits, computing branch loading %, or debugging sign/units issues in AC power flow." ;
+    oc:hasName "ac-branch-pi-model" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: ac-branch-pi-model
+description: "AC branch pi-model power flow equations (P/Q and |S|) with transformer tap ratio and phase shift, matching `acopf-math-model.md` and MATPOWER branch fields. Use when computing branch flows in either direction, aggregating bus injections for nodal balance, checking MVA (rateA) limits, computing branch loading %, or debugging sign/units issues in AC power flow."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Implement the exact branch power flow equations in `acopf-math-model.md` using MATPOWER branch data:" ],
+                [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """[F_BUS, T_BUS, BR_R, BR_X, BR_B, RATE_A, RATE_B, RATE_C, TAP, SHIFT, BR_STATUS, ANGMIN, ANGMAX]
+""" ;
+                    oc:codeLanguage "" ;
+                    oc:contentOrder 2 ;
+                    oc:sourceLocation "lines 10-12" ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "\\(|S_{ij}| \\le RATE_A\\)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "\\(|S_{ji}| \\le RATE_A\\)" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Enforce in both directions:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`RATE_A` is an MVA limit (may be 0 meaning “no limit”)." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "Enforce MVA limits (rateA)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For reporting “most loaded branches”:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`loading_pct = 100 * max(|S_ij|, |S_ji|) / RATE_A` if `RATE_A > 0`, else 0." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Compute branch loading %" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Add \\(P_{ij}, Q_{ij}\\) to bus i" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Add \\(P_{ji}, Q_{ji}\\) to bus j" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "\\(P^g - P^d - G^s|V|^2 = P_{out}\\)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "\\(Q^g - Q^d + B^s|V|^2 = Q_{out}\\)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "To build the branch flow sum for each bus \\(i\\):" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "This yields arrays `P_out[i]`, `Q_out[i]` such that the nodal balance can be written as:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Aggregate bus injections for nodal balance" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common uses" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Work in per-unit internally." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "\\(P_{pu} = P_{MW} / baseMVA\\)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "\\(|S|_{MVA} = |S|_{pu} \\cdot baseMVA\\)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "\\(Q_{pu} = Q_{MVAr} / baseMVA\\)" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Convert with `baseMVA`:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Per-unit conventions" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Given `BR_R = r`, `BR_X = x`:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "If `r == 0 and x == 0`, set `g = 0`, `b = 0` (avoid divide-by-zero)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "\\(g = r/(r^2 + x^2)\\)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "\\(b = -x/(r^2 + x^2)\\)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "\\(y = 1/(r + jx) = g + jb\\)" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Else:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Series admittance" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Use \\(T_{ij} = tap \\cdot e^{j \\cdot shift}\\)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "Convert `SHIFT` from degrees to radians." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "If `abs(TAP) < 1e-12`, treat `tap = 1.0` (no transformer)." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:hasChild [ a oc:BulletList ;
+                                                                    oc:blockType "bullet_list" ;
+                                                                    oc:contentOrder 1 ;
+                                                                    oc:hasItem [ a oc:BulletItem ;
+                                                                            oc:blockType "bullet_item" ;
+                                                                            oc:itemOrder 1 ;
+                                                                            oc:itemText "\\(\\delta_{ij} = \\theta_i - \\theta_j - shift\\)" ],
+                                                                        [ a oc:BulletItem ;
+                                                                            oc:blockType "bullet_item" ;
+                                                                            oc:itemOrder 2 ;
+                                                                            oc:itemText "\\(\\delta_{ji} = \\theta_j - \\theta_i + shift\\)" ] ] ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "Use the angle shift by modifying the angle difference:" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Implementation shortcut (real tap + phase shift):**" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Transformer handling (MATPOWER TAP + SHIFT)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`BR_B` is the **total** line charging susceptance \\(b_c\\) (per unit)." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Each end gets \\(b_c/2\\) in the standard pi model." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Line charging susceptance" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Model details (match the task formulation)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "\\(V_i = |V_i| e^{j\\theta_i}\\), \\(V_j = |V_j| e^{j\\theta_j}\\)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`tap` is real, `shift` is radians" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`inv_t = 1/tap`, `inv_t2 = inv_t^2`" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "Compute apparent power:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 8 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "\\(|S_{ij}| = \\sqrt{P_{ij}^2 + Q_{ij}^2}\\)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "\\(|S_{ji}| = \\sqrt{P_{ji}^2 + Q_{ji}^2}\\)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Then the real/reactive power flow from i→j is:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "\\(Q_{ij} = -(b + b_c/2)|V_i|^2 inv\\_t2 - |V_i||V_j| inv\\_t (g\\sin\\delta_{ij} - b\\cos\\delta_{ij})\\)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "\\(P_{ij} = g |V_i|^2 inv\\_t2 - |V_i||V_j| inv\\_t (g\\cos\\delta_{ij} + b\\sin\\delta_{ij})\\)" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "\\(P_{ji} = g |V_j|^2 - |V_i||V_j| inv\\_t (g\\cos\\delta_{ji} + b\\sin\\delta_{ji})\\)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "\\(Q_{ji} = -(b + b_c/2)|V_j|^2 - |V_i||V_j| inv\\_t (g\\sin\\delta_{ji} - b\\cos\\delta_{ji})\\)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Let:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "And from j→i is:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Power flow equations (use these exactly)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "For a pure transformer (`r=x=0`) you should not get meaningful flows; treat as `g=b=0` (no series element)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "With `SHIFT=0` and `TAP=1`, if \\(V_i = V_j\\) and \\(\\theta_i=\\theta_j\\), then \\(P_{ij}\\approx 0\\) and \\(P_{ji}\\approx 0\\) (lossless only if r=0)." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Sanity checks (fast debug)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Example:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import json
+import numpy as np
+
+from scripts.branch_flows import compute_branch_flows_pu, build_bus_id_to_idx
+
+data = json.load(open("/root/network.json"))
+baseMVA = float(data["baseMVA"])
+buses = np.array(data["bus"], dtype=float)
+branches = np.array(data["branch"], dtype=float)
+
+bus_id_to_idx = build_bus_id_to_idx(buses)
+
+Vm = buses[:, 7]  # initial guess VM
+Va = np.deg2rad(buses[:, 8])  # initial guess VA
+
+br = branches[0]
+P_ij, Q_ij, P_ji, Q_ji = compute_branch_flows_pu(Vm, Va, br, bus_id_to_idx)
+
+S_ij_MVA = (P_ij**2 + Q_ij**2) ** 0.5 * baseMVA
+S_ji_MVA = (P_ji**2 + Q_ji**2) ** 0.5 * baseMVA
+print(S_ij_MVA, S_ji_MVA)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 21-43" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Treat the results as **power leaving** the “from” bus and **power leaving** the “to” bus (i.e., compute both directions explicitly)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `scripts/branch_flows.py` to compute per-unit branch flows." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick start" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "AC Branch Pi-Model + Transformer Handling" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Full procedure for computing bidirectional AC branch pi-model flows from network data" ;
+            oc:hasStep _:ref_00782f3496d20f25,
+                _:ref_112235146ed6b84c,
+                _:ref_25b48d2ff4435f51,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Compute |S_ij| and |S_ji| apparent power, multiply by baseMVA to get MVA; check against RATE_A limits" ;
+                    oc:expectedOutcome "MVA flow values and loading percentages for all branches" ;
+                    oc:stepDependsOn _:ref_112235146ed6b84c ;
+                    oc:stepId "convert-mva" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Build bus_id_to_idx mapping from bus data" ;
+                    oc:expectedOutcome "Dictionary mapping external bus IDs to internal array indices" ;
+                    oc:stepDependsOn _:ref_eb3960a90b84e7d6 ;
+                    oc:stepId "build-index" ],
+                _:ref_eb3960a90b84e7d6 ;
+            oc:workflowId "compute-branch-flows" ;
+            oc:workflowName "Compute Branch Power Flows" ] ;
+    oc:impartsKnowledge oc:kn_2f7e0baa,
+        oc:kn_372c56be,
+        oc:kn_507a2783,
+        oc:kn_6792cc7f,
+        oc:kn_79a630e3,
+        oc:kn_84e46d81,
+        oc:kn_ccadeed1,
+        oc:kn_cdc7773d,
+        oc:kn_cf44a265,
+        oc:kn_f69f81af ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "aggregate bus injections for nodal balance",
+        "check MVA line limits (rateA)",
+        "compute branch loading percentage",
+        "compute branch power flows",
+        "debug sign and units issues in AC power flow" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2f7e0baa a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when checking thermal limits or reporting branch loading" ;
+    oc:directiveContent "RATE_A = 0 means no MVA limit; enforce |S_ij| ≤ RATE_A and |S_ji| ≤ RATE_A in both directions. Branch loading % = 100 * max(|S_ij|, |S_ji|) / RATE_A when RATE_A > 0" ;
+    oc:hasRationale "The limiting flow direction may differ from the dominant power transfer direction, so both must be checked independently" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_372c56be a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when computing AC branch pi-model power flow equations" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """P_ij = g * |V_i|² * inv_t2 - |V_i||V_j| * inv_t * (g*cos(δ_ij) + b*sin(δ_ij))
+Q_ij = -(b + b_c/2) * |V_i|² * inv_t2 - |V_i||V_j| * inv_t * (g*sin(δ_ij) - b*cos(δ_ij))
+P_ji = g * |V_j|² - |V_i||V_j| * inv_t * (g*cos(δ_ji) + b*sin(δ_ji))
+Q_ji = -(b + b_c/2) * |V_j|² - |V_i||V_j| * inv_t * (g*sin(δ_ji) - b*cos(δ_ji))
+|S_ij| = sqrt(P_ij² + Q_ij²)
+|S_ji| = sqrt(P_ji² + Q_ji²)""" ;
+    oc:hasRationale "These are the exact equations from the task formulation that must be matched precisely" .
+
+oc:kn_507a2783 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "when computing per-unit branch flows for any network" ;
+    oc:directiveContent "1. Parse branch data using MATPOWER field order 2. Compute series admittance g,b from BR_R,BR_X (guard r=x=0) 3. Handle transformer: tap and shift (deg→rad) 4. Compute δ_ij and δ_ji angle differences 5. Evaluate P_ij, Q_ij, P_ji, Q_ji using exact pi-model equations 6. Compute |S| in both directions 7. Convert to MVA using baseMVA" ;
+    oc:hasRationale "Ordered procedure ensures no step is missed and transformer/admittance special cases are handled before flow evaluation" ;
+    oc:stepOrder 1 .
+
+oc:kn_6792cc7f a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "when aggregating branch flows into bus injections for nodal balance" ;
+    oc:directiveContent """P_out[i] = Σ P_ij for all branches from bus i
+Q_out[i] = Σ Q_ij for all branches from bus i
+Nodal balance: P^g − P^d − G^s|V|² = P_out, Q^g − Q^d + B^s|V|² = Q_out""" ;
+    oc:hasRationale "This format connects branch-level flow results to the bus-level nodal balance equations used in ACOPF" ;
+    oc:templateVariables "B^s",
+        "G^s",
+        "P^d",
+        "P^g",
+        "P_out",
+        "Q^d",
+        "Q^g",
+        "Q_out" .
+
+oc:kn_79a630e3 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "when handling transformer tap and phase shift in branch data" ;
+    oc:directiveContent "If abs(TAP) < 1e-12, treat tap = 1.0 (no transformer). Convert SHIFT from degrees to radians. Modify angle difference: δ_ij = θ_i − θ_j − shift, δ_ji = θ_j − θ_i + shift" ;
+    oc:hasRationale "MATPOWER encodes zero-tap as absent transformer; proper angle shift handling is essential for phase-shifting transformers and off-nominal tap ratios" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_84e46d81 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always when computing branch flows" ;
+    oc:directiveContent "Work in per-unit internally; convert to MVA only at output using baseMVA: |S|_MVA = |S|_pu * baseMVA" ;
+    oc:hasRationale "Per-unit normalization removes baseMVA scaling from all equations, preventing numerical errors and ensuring consistency with MATPOWER conventions" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ccadeed1 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "always when computing branch flows" ;
+    oc:directiveContent "Compute flows in BOTH directions explicitly (P_ij, Q_ij, P_ji, Q_ji). Treat results as power LEAVING the from-bus and power LEAVING the to-bus respectively" ;
+    oc:hasRationale "Branch losses mean S_ij ≠ −S_ji; both directions must be computed independently for correct nodal balance and limit checking" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cdc7773d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when debugging unexpected branch flow values" ;
+    oc:directiveContent "Sanity check: with SHIFT=0, TAP=1, if V_i = V_j and θ_i = θ_j, then P_ij ≈ 0 and P_ji ≈ 0 (lossless only if r=0)" ;
+    oc:hasRationale "This zero-state check quickly reveals sign errors, incorrect admittance computation, or unit mismatches without needing a full power flow solution" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_cf44a265 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "when computing series admittance from BR_R and BR_X" ;
+    oc:directiveContent "Never divide by r+jx when both r=0 and x=0; instead set g=0, b=0 to avoid divide-by-zero. A pure transformer (r=x=0) should not produce meaningful series flows" ;
+    oc:hasRationale "Zero impedance would produce infinite admittance, corrupting all downstream power flow calculations" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_f69f81af a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "when constructing the pi-model shunt elements" ;
+    oc:directiveContent "BR_B is the TOTAL line charging susceptance b_c (per unit). Each end of the pi-model gets b_c/2" ;
+    oc:hasRationale "The pi-model splits total charging equally to both ends; using full b_c on one side would double the shunt admittance" ;
+    oc:severityLevel "HIGH" .
+
+_:ref_00782f3496d20f25 a oc:WorkflowStep ;
+    dcterms:description "For each branch, compute series admittance g, b from BR_R, BR_X (guard against r=x=0), extract b_c=BR_B, tap, shift" ;
+    oc:expectedOutcome "Per-branch admittance and transformer parameters" ;
+    oc:stepDependsOn _:ref_eb3960a90b84e7d6 ;
+    oc:stepId "compute-admittance" .
+
+_:ref_112235146ed6b84c a oc:WorkflowStep ;
+    dcterms:description "For each branch, compute P_ij, Q_ij, P_ji, Q_ji using the exact pi-model equations with transformer handling" ;
+    oc:expectedOutcome "Per-branch bidirectional active and reactive power flows in per-unit" ;
+    oc:stepDependsOn _:ref_00782f3496d20f25,
+        _:ref_25b48d2ff4435f51 ;
+    oc:stepId "compute-flows" .
+
+_:ref_25b48d2ff4435f51 a oc:WorkflowStep ;
+    dcterms:description "Extract Vm (col 7) and Va (col 8) from bus array; convert Va from degrees to radians" ;
+    oc:expectedOutcome "Voltage magnitude and angle arrays in per-unit and radians" ;
+    oc:stepDependsOn _:ref_eb3960a90b84e7d6 ;
+    oc:stepId "extract-voltages" .
+
+_:ref_eb3960a90b84e7d6 a oc:WorkflowStep ;
+    dcterms:description "Load network data (JSON) and parse buses and branches arrays with MATPOWER field ordering" ;
+    oc:expectedOutcome "numpy arrays of bus and branch data ready for computation" ;
+    oc:stepId "parse-data" .
+

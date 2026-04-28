@@ -1,0 +1,22 @@
+{
+  "package_id": "skillsbench/azure-bgp-oscillation-route-leak",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "azure-bgp/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "azure-bgp/intents.json"
+  ],
+  "skills": [
+    {
+      "id": "azure-bgp",
+      "path": "azure-bgp/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "networking",
+      "is_user_invocable": true
+    }
+  ]
+}

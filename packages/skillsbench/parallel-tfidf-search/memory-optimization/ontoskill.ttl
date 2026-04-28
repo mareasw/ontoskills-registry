@@ -1,0 +1,601 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_parallel_tfidf_search_memory_optimization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "memory-optimization" ;
+    skos:broader "Optimization technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/parallel-tfidf-search/memory-optimization" ;
+    oc:contentHash "46c669356a139ef7a6f8255e41da65de89b41b37e1c4ea0bca6b78efe4c6f673" ;
+    oc:differentia "minimizes Python memory usage through profiling, data structure transformation, and lifecycle management" ;
+    oc:handlesFailure oc:MemoryProfileFailed,
+        oc:OptimizationBrokeFunctionality ;
+    oc:hasArgumentHint "Python code or module to optimize for memory" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Optimize Python code for reduced memory usage and improved memory efficiency. Use when asked to reduce memory footprint, fix memory leaks, optimize data structures for memory, handle large datasets efficiently, or diagnose memory issues. Covers object sizing, generator patterns, efficient data structures, and memory profiling strategies." ;
+    oc:hasName "memory-optimization" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Transform Python code to minimize memory usage while maintaining functionality." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def process_large_csv(filepath, chunksize=10000):
+    results = []
+    for chunk in pd.read_csv(filepath, chunksize=chunksize):
+        result = process_chunk(chunk)
+        results.append(result)
+        del chunk  # Explicit cleanup
+    return pd.concat(results)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 159-167" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Pattern 6: Chunked DataFrame Processing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Process files larger than RAM:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import mmap
+import numpy as np
+
+# For binary data
+with open('large_file.bin', 'rb') as f:
+    mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+    # Process chunks without loading entire file
+
+# For NumPy arrays
+arr = np.memmap('large_array.dat', dtype='float32', mode='r', shape=(1000000, 100))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 144-155" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Pattern 5: Memory-Mapped File Processing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """df = pd.read_csv('data.csv')  # Default int64, float64
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 100-102" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def optimize_dtypes(df):
+    for col in df.select_dtypes(include=['int']):
+        df[col] = pd.to_numeric(df[col], downcast='integer')
+    for col in df.select_dtypes(include=['float']):
+        df[col] = pd.to_numeric(df[col], downcast='float')
+    return df
+
+df = optimize_dtypes(pd.read_csv('data.csv'))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 105-114" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Before:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**After:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Reduce NumPy/Pandas memory by 2-8x:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 3: Downcast Numeric Types" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_all_records(files):
+    for f in files:
+        yield from parse_file(f)
+
+for record in get_all_records(files):
+    process(record)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 86-93" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Before:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Avoid materializing entire sequences:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_all_records(files):
+    records = []
+    for f in files:
+        records.extend(parse_file(f))
+    return records
+
+all_data = get_all_records(files)
+for record in all_data:
+    process(record)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 73-83" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**After:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 2: List to Generator" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Before:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "Or with Pandas:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import sys
+
+STATUS_ACTIVE = sys.intern('active')
+TYPE_USER = sys.intern('user')
+
+records = [{'status': STATUS_ACTIVE, 'type': TYPE_USER} for _ in range(1000000)]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 126-133" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For repeated strings:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """records = [{'status': 'active', 'type': 'user'} for _ in range(1000000)]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 121-123" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """df['status'] = df['status'].astype('category')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 136-138" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**After:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Pattern 4: String Deduplication" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """class Point:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 49-55" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """class Point:
+    __slots__ = ('x', 'y', 'z')
+
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 58-66" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**After:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Before:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Reduces per-instance memory by 40-60%:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 1: Class to __slots__" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Transformation Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """What's consuming memory?
+
+Large collections:
+├── List of objects → __slots__, namedtuple, or dataclass(slots=True)
+├── List built all at once → Generator/iterator pattern
+├── Storing strings → String interning, categorical encoding
+└── Numeric data → NumPy arrays instead of lists
+
+Data processing:
+├── Loading full file → Chunked reading, memory-mapped files
+├── Intermediate copies → In-place operations, views
+├── Keeping processed data → Process-and-discard pattern
+└── DataFrame operations → Downcast dtypes, sparse arrays
+
+Object lifecycle:
+├── Objects never freed → Check circular refs, use weakref
+├── Cache growing unbounded → LRU cache with maxsize
+├── Global accumulation → Explicit cleanup, context managers
+└── Large temporary objects → Delete explicitly, gc.collect()
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-40" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Memory Optimization Decision Tree" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Common leak patterns and fixes:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "Common leak patterns and fixes" ;
+                            oc:tableMarkdown """| Pattern | Cause | Fix |
+|---------|-------|-----|
+| Growing cache | No eviction policy | `@lru_cache(maxsize=1000)` |
+| Event listeners | Not unregistered | Weak references or explicit removal |
+| Circular references | Objects reference each other | `weakref`, break cycles |
+| Global lists | Append without cleanup | Bounded deque, periodic clear |
+| Closures | Capture large objects | Capture only needed values |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Memory Leak Detection" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Object size
+import sys
+sys.getsizeof(obj)  # Shallow size only
+
+# Deep size with pympler
+from pympler import asizeof
+asizeof.asizeof(obj)  # Includes referenced objects
+
+# Memory profiler decorator
+from memory_profiler import profile
+@profile
+def my_function():
+    pass
+
+# Tracemalloc for allocation tracking
+import tracemalloc
+tracemalloc.start()
+# ... code ...
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('lineno')
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 194-215" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Profiling Commands" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 6 ;
+                            oc:tableCaption "## Data Structure Memory Comparison" ;
+                            oc:tableMarkdown """| Structure | Memory per item | Use case |
+|-----------|----------------|----------|
+| `list` of `dict` | ~400+ bytes | Flexible, small datasets |
+| `list` of `class` | ~300 bytes | Object-oriented, small |
+| `list` of `__slots__` class | ~120 bytes | Many similar objects |
+| `namedtuple` | ~80 bytes | Immutable records |
+| `numpy.ndarray` | 8 bytes (float64) | Numeric, vectorized ops |
+| `pandas.DataFrame` | ~10-50 bytes/cell | Tabular, analysis |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Data Structure Memory Comparison" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Code remains readable and maintainable" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] Functionality preserved (same outputs)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Performance acceptable (generators may add iteration overhead)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Memory usage reduced (measure with profiler)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] No new memory leaks introduced" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before finalizing optimized code:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Verification Checklist" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_7fd3c21e027c4d33 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Workflow" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Memory Optimization Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: memory-optimization
+description: Optimize Python code for reduced memory usage and improved memory efficiency. Use when asked to reduce memory footprint, fix memory leaks, optimize data structures for memory, handle large datasets efficiently, or diagnose memory issues. Covers object sizing, generator patterns, efficient data structures, and memory profiling strategies.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Sequential workflow for identifying and resolving Python memory issues" ;
+            oc:hasStep _:ref_3f903293f9475d43,
+                _:ref_4d79009afec00821,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify memory reduction without correctness loss using profiler and functional tests" ;
+                    oc:expectedOutcome "Confirmed memory reduction with identical functional outputs" ;
+                    oc:stepDependsOn _:ref_4d79009afec00821 ;
+                    oc:stepId "verify" ],
+                _:ref_e1c844b63c058e36,
+                _:ref_eb58a0947130ca58 ;
+            oc:workflowId "memory-optimization-workflow" ;
+            oc:workflowName "Memory Optimization Workflow" ],
+        _:ref_7fd3c21e027c4d33 ;
+    oc:impartsKnowledge oc:kn_20dd44a1,
+        oc:kn_28072224,
+        oc:kn_2ab501ed,
+        oc:kn_2bd28596,
+        oc:kn_314acd7f,
+        oc:kn_51110291,
+        oc:kn_51aeae8a,
+        oc:kn_65e55863,
+        oc:kn_811f16c7,
+        oc:kn_a5e22e37,
+        oc:kn_b1fb7d19,
+        oc:kn_c0c1c1e5,
+        oc:kn_da91c25a,
+        oc:kn_e47a4912,
+        oc:kn_fa497a95 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:CodebaseAvailable ;
+    oc:resolvesIntent "diagnose memory bottlenecks in Python",
+        "fix memory leaks in Python applications",
+        "handle large datasets without exceeding RAM",
+        "optimize data structures for memory efficiency",
+        "reduce memory footprint of Python code" ;
+    oc:yieldsState oc:MemoryOptimized .
+
+oc:kn_20dd44a1 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reducing Pandas DataFrame memory usage" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def optimize_dtypes(df):
+    for col in df.select_dtypes(include=['int']):
+        df[col] = pd.to_numeric(df[col], downcast='integer')
+    for col in df.select_dtypes(include=['float']):
+        df[col] = pd.to_numeric(df[col], downcast='float')
+    return df""" .
+
+oc:kn_28072224 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "When measuring object memory consumption" ;
+    oc:directiveContent "sys.getsizeof() returns shallow size only; use pympler.asizeof for deep size including referenced objects" .
+
+oc:kn_2ab501ed a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When storing many records with repeated string values" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import sys
+STATUS_ACTIVE = sys.intern('active')
+records = [{'status': STATUS_ACTIVE} for _ in range(1000000)]
+# Or with Pandas: df['status'] = df['status'].astype('category')""" .
+
+oc:kn_2bd28596 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting lists to generators" ;
+    oc:directiveContent "Generators add iteration overhead — always verify that performance remains acceptable after switching from materialized collections" ;
+    oc:hasRationale "Memory savings from generators can come at the cost of CPU time due to repeated iteration" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_314acd7f a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing optimized code" ;
+    oc:directiveContent "Verify memory usage reduced (measure with profiler), functionality preserved (same outputs), no new leaks introduced, performance acceptable, code remains readable" ;
+    oc:hasRationale "Memory optimization must not sacrifice correctness or maintainability" .
+
+oc:kn_51110291 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating large collections of similar objects" ;
+    oc:directiveContent "Use __slots__ on classes with many instances to eliminate per-instance __dict__ overhead, reducing memory by 40-60%" ;
+    oc:hasRationale "Per-instance dictionaries dominate memory for large collections of simple objects" .
+
+oc:kn_51aeae8a a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When optimizing any Python code for memory" ;
+    oc:directiveContent "1. Profile to identify memory bottlenecks (largest allocations, leak patterns) 2. Analyze data structures and object lifecycles 3. Select optimization strategies based on access patterns 4. Transform code with memory-efficient alternatives 5. Verify memory reduction without correctness loss" ;
+    oc:stepOrder 1 .
+
+oc:kn_65e55863 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before starting any memory optimization" ;
+    oc:directiveContent "Never skip profiling before optimizing — guessing memory bottlenecks leads to wasted effort optimizing the wrong data structures" ;
+    oc:hasRationale "Memory bottlenecks are often non-obvious; profiler data reveals the true hotspots" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_811f16c7 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When diagnosing memory leaks" ;
+    oc:directiveContent "Common leak patterns: growing caches without eviction, unregistered event listeners, circular references, global list accumulation, closures capturing large objects" ;
+    oc:hasRationale "These five patterns account for the majority of Python memory leaks" .
+
+oc:kn_a5e22e37 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting which transformation pattern to apply" ;
+    oc:directiveContent "Match the optimization strategy to the consumption pattern: large collections → __slots__/generators, data processing → chunking/mmap, object lifecycle → weakref/explicit cleanup" ;
+    oc:hasRationale "Different memory problems require fundamentally different solutions; applying the wrong pattern wastes time and may hurt performance" .
+
+oc:kn_b1fb7d19 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When many instances of a class are held in memory simultaneously" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """class Point:
+    __slots__ = ('x', 'y', 'z')
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z""" .
+
+oc:kn_c0c1c1e5 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing files larger than available RAM" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import mmap, numpy as np
+# Binary data
+with open('large_file.bin', 'rb') as f:
+    mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+# NumPy arrays
+arr = np.memmap('large_array.dat', dtype='float32', mode='r', shape=(1000000, 100))""" .
+
+oc:kn_da91c25a a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building a list that is only iterated once" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def get_all_records(files):
+    for f in files:
+        yield from parse_file(f)""" .
+
+oc:kn_e47a4912 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When choosing data structures for memory-sensitive code" ;
+    oc:directiveContent "Data structure memory hierarchy from highest to lowest: list of dict (~400+ bytes/item) > list of class (~300) > list of __slots__ class (~120) > namedtuple (~80) > numpy ndarray (8 bytes/float64) > pandas DataFrame (~10-50 bytes/cell)" .
+
+oc:kn_fa497a95 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When processing CSV files too large for RAM" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def process_large_csv(filepath, chunksize=10000):
+    results = []
+    for chunk in pd.read_csv(filepath, chunksize=chunksize):
+        result = process_chunk(chunk)
+        results.append(result)
+        del chunk
+    return pd.concat(results)""" .
+
+_:ref_1cd47d18573bacb5 a oc:WorkflowStep ;
+    dcterms:description "**Analyze** data structures and object lifecycles" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_66f298bb1f07936a a oc:WorkflowStep ;
+    dcterms:description "**Profile** to identify memory bottlenecks (largest allocations, leak patterns)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_6d907ae4ae0e8326 a oc:WorkflowStep ;
+    dcterms:description "**Transform** code with memory-efficient alternatives" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_7a5357a9b47386ba a oc:WorkflowStep ;
+    dcterms:description "**Select** optimization strategies based on access patterns" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_93c52bdfdcb53fb7 a oc:WorkflowStep ;
+    dcterms:description "**Verify** memory reduction without correctness loss" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_3f903293f9475d43 a oc:WorkflowStep ;
+    dcterms:description "Profile code to identify memory bottlenecks — largest allocations and leak patterns" ;
+    oc:expectedOutcome "Hotspot data showing which objects/functions consume the most memory" ;
+    oc:stepId "profile" .
+
+_:ref_4d79009afec00821 a oc:WorkflowStep ;
+    dcterms:description "Transform code using the selected memory-efficient alternative pattern" ;
+    oc:expectedOutcome "Refactored code using memory-optimized structures or patterns" ;
+    oc:stepDependsOn _:ref_eb58a0947130ca58 ;
+    oc:stepId "transform" .
+
+_:ref_7fd3c21e027c4d33 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1cd47d18573bacb5,
+        _:ref_66f298bb1f07936a,
+        _:ref_6d907ae4ae0e8326,
+        _:ref_7a5357a9b47386ba,
+        _:ref_93c52bdfdcb53fb7 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_e1c844b63c058e36 a oc:WorkflowStep ;
+    dcterms:description "Analyze data structures and object lifecycles to understand why memory is high" ;
+    oc:expectedOutcome "Understanding of which structures/patterns cause excessive memory use" ;
+    oc:stepDependsOn _:ref_3f903293f9475d43 ;
+    oc:stepId "analyze" .
+
+_:ref_eb58a0947130ca58 a oc:WorkflowStep ;
+    dcterms:description "Select optimization strategy based on access patterns and memory consumption type" ;
+    oc:expectedOutcome "Chosen transformation pattern matched to the identified problem" ;
+    oc:stepDependsOn _:ref_e1c844b63c058e36 ;
+    oc:stepId "select-strategy" .
+

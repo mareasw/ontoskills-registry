@@ -1,0 +1,258 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_glm_lake_mendota_glm_output a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "glm-output" ;
+    skos:broader "Data processing pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/glm-lake-mendota/glm-output" ;
+    oc:contentHash "222058b8e58212056ab7e06892e0467091459b50f0ff2336301bc88ebf1ffe52" ;
+    oc:dependsOnSkill oc:skill_ontoskills_glm_basics ;
+    oc:differentia "reads GLM NetCDF output, converts height-to-depth coordinates, and computes RMSE against field observations" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Read and process GLM output files. Use when you need to extract temperature data from NetCDF output, convert depth coordinates, or calculate RMSE against observations." ;
+    oc:hasName "glm-output" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: glm-output
+description: Read and process GLM output files. Use when you need to extract temperature data from NetCDF output, convert depth coordinates, or calculate RMSE against observations.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from netCDF4 import Dataset
+import numpy as np
+import pandas as pd
+from datetime import datetime
+
+def read_glm_output(nc_path, lake_depth):
+    nc = Dataset(nc_path, 'r')
+    time = nc.variables['time'][:]
+    z = nc.variables['z'][:]
+    temp = nc.variables['temp'][:]
+    start_date = datetime(2009, 1, 1, 12, 0, 0)
+
+    records = []
+    for t_idx in range(len(time)):
+        hours = float(time[t_idx])
+        date = pd.Timestamp(start_date) + pd.Timedelta(hours=hours)
+        heights = z[t_idx, :, 0, 0]
+        temps = temp[t_idx, :, 0, 0]
+
+        for d_idx in range(len(heights)):
+            h_val = heights[d_idx]
+            t_val = temps[d_idx]
+            if not np.ma.is_masked(h_val) and not np.ma.is_masked(t_val):
+                depth = lake_depth - float(h_val)
+                if 0 <= depth <= lake_depth:
+                    records.append({
+                        'datetime': date,
+                        'depth': round(depth),
+                        'temp_sim': float(t_val)
+                    })
+    nc.close()
+
+    df = pd.DataFrame(records)
+    df = df.groupby(['datetime', 'depth']).agg({'temp_sim': 'mean'}).reset_index()
+    return df
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 48-84" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Complete Output Processing" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Important**: GLM `z` is height from lake bottom, not depth from surface." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Convert to depth from surface
+# Set LAKE_DEPTH based on lake_depth in &init_profiles section of glm3.nml
+LAKE_DEPTH = <lake_depth_from_nml>
+depth_from_surface = LAKE_DEPTH - z
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 40-45" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Coordinate Conversion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| RMSE very high | Wrong depth conversion | Use `lake_depth - z`, not `z` directly |
+| No matched observations | Datetime mismatch | Check datetime format consistency |
+| Empty merged dataframe | Depth rounding issues | Round depths to integers |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from netCDF4 import Dataset
+import numpy as np
+import pandas as pd
+from datetime import datetime
+
+nc = Dataset('output/output.nc', 'r')
+time = nc.variables['time'][:]
+z = nc.variables['z'][:]
+temp = nc.variables['temp'][:]
+nc.close()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 24-35" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Reading Output with Python" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "GLM produces NetCDF output containing simulated water temperature profiles. Processing this output requires understanding the coordinate system and matching with observations." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Always convert z to depth from surface before comparing with observations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Round depths to integers for matching" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Check `lake_depth` in `&init_profiles` section of `glm3.nml`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Group by datetime and depth to handle duplicate records" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Check number of matched observations after merge" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def read_observations(obs_path):
+    df = pd.read_csv(obs_path)
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    df['depth'] = df['depth'].round().astype(int)
+    df = df.rename(columns={'temp': 'temp_obs'})
+    return df[['datetime', 'depth', 'temp_obs']]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 87-94" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Reading Observations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "After running GLM, results are in `output/output.nc`:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "After running GLM, results are in `output/output.nc`" ;
+                            oc:tableMarkdown """| Variable | Description | Shape |
+|----------|-------------|-------|
+| `time` | Hours since simulation start | (n_times,) |
+| `z` | Height from lake bottom (not depth!) | (n_times, n_layers, 1, 1) |
+| `temp` | Water temperature (°C) | (n_times, n_layers, 1, 1) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Output File" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def calculate_rmse(sim_df, obs_df):
+    merged = pd.merge(obs_df, sim_df, on=['datetime', 'depth'], how='inner')
+    if len(merged) == 0:
+        return 999.0
+    rmse = np.sqrt(np.mean((merged['temp_sim'] - merged['temp_obs'])**2))
+    return rmse
+
+# Usage: get lake_depth from glm3.nml &init_profiles section
+sim_df = read_glm_output('output/output.nc', lake_depth=25)
+obs_df = read_observations('field_temp_oxy.csv')
+rmse = calculate_rmse(sim_df, obs_df)
+print(f"RMSE: {rmse:.2f}C")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 97-110" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Calculating RMSE" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "GLM Output Guide" ] ;
+    oc:impartsKnowledge oc:kn_516d11c9,
+        oc:kn_84676382,
+        oc:kn_910719bc ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "calculate RMSE between simulated and observed water temperatures",
+        "convert GLM height coordinates to depth from surface",
+        "extract temperature data from GLM NetCDF output",
+        "merge simulated and observed lake temperature data",
+        "read and process GLM output files" ;
+    oc:yieldsState oc:DataExtracted,
+        oc:RmseCalculated .
+
+oc:kn_516d11c9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading or analyzing GLM output variables" ;
+    oc:directiveContent "Never use GLM z values directly as depth. z is height from lake bottom, not depth from surface. Convert using: depth = lake_depth - z." ;
+    oc:hasRationale "Using z directly as depth produces inverted profiles and wildly incorrect RMSE values" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_84676382 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When merging simulated and observed dataframes" ;
+    oc:directiveContent "Round depths to integers and group by (datetime, depth) when preparing data for comparison to ensure reliable matching between simulated and observed values." ;
+    oc:hasRationale "Floating-point depth differences and duplicate layer records cause merge failures or inflated match counts" .
+
+oc:kn_910719bc a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before converting z coordinates to depth" ;
+    oc:directiveContent "The lake_depth value must be read from the &init_profiles section of glm3.nml to ensure correct coordinate conversion." ;
+    oc:hasRationale "Using an incorrect lake_depth value shifts all depth calculations, making comparison with observations invalid" ;
+    oc:severityLevel "HIGH" .
+

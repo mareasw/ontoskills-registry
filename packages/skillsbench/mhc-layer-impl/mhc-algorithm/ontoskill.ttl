@@ -1,0 +1,278 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mhc_layer_impl_mhc_algorithm a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "mhc-algorithm" ;
+    skos:broader "Neural network architecture component" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mhc-layer-impl/mhc-algorithm" ;
+    oc:contentHash "f274d0409ed9e73dce688df85f2113890d1256599c2a1d3502c140725f035b46" ;
+    oc:differentia "constrains residual mixing matrices to be doubly stochastic via Sinkhorn-Knopp projection for stable deep network training" ;
+    oc:handlesFailure oc:DimensionMismatch,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "num_streams, dim, branch (nn.Module), layer_idx" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Implement mHC (Manifold-Constrained Hyper-Connections) for stabilizing deep network training. Use when implementing residual connection improvements with doubly stochastic matrices via Sinkhorn-Knopp algorithm. Based on DeepSeek's 2025 paper (arXiv:2512.24880)." ;
+    oc:hasName "mhc-algorithm" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_0b1757c7,
+        oc:req_70d0caaa ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| Topic | Reference |
+|-------|-----------|
+| Core Concepts & Math | [Core Concepts](references/core-concepts.md) |
+| Sinkhorn Algorithm | [Sinkhorn-Knopp](references/sinkhorn-knopp.md) |
+| HyperConnections Module | [Module Implementation](references/module-implementation.md) |
+| GPT Integration | [GPT Integration](references/gpt-integration.md) |
+| Common Pitfalls | [Pitfalls](references/pitfalls.md) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Reference" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import torch
+import torch.nn as nn
+from einops import rearrange, einsum
+
+def sinkhorn_knopp(logits, num_iters=20, tau=0.05):
+    log_alpha = logits / tau
+    for _ in range(num_iters):
+        log_alpha = log_alpha - torch.logsumexp(log_alpha, dim=-1, keepdim=True)
+        log_alpha = log_alpha - torch.logsumexp(log_alpha, dim=-2, keepdim=True)
+    return torch.exp(log_alpha)
+
+class HyperConnections(nn.Module):
+    def __init__(self, num_streams, dim, branch=None, layer_idx=0):
+        super().__init__()
+        self.num_streams = num_streams
+        self.branch = branch
+
+        # Initialize H_res near identity (use small negative for gradient flow)
+        init_h_res = torch.full((num_streams, num_streams), -0.1)
+        init_h_res.fill_diagonal_(0.0)
+        self.H_res_logits = nn.Parameter(init_h_res)
+
+        # H_pre/H_post for depth connections
+        init_h_pre = torch.full((1, num_streams), -0.1)
+        init_h_pre[0, layer_idx % num_streams] = 0.0
+        self.H_pre_logits = nn.Parameter(init_h_pre)
+        self.H_post_logits = nn.Parameter(torch.zeros(1, num_streams))
+
+    def forward(self, x):
+        s = self.num_streams
+        x = rearrange(x, "(b s) t d -> b t s d", s=s)
+
+        h_res = sinkhorn_knopp(self.H_res_logits)
+        x_mixed = einsum(h_res, x, "s t, b n s d -> b n t d")
+
+        h_pre = self.H_pre_logits.softmax(dim=-1)
+        branch_in = einsum(h_pre, x, "v s, b n s d -> b n v d").squeeze(-2)
+
+        branch_out = self.branch(branch_in) if self.branch else branch_in
+
+        h_post = self.H_post_logits.softmax(dim=-1)
+        depth_out = einsum(branch_out, h_post, "b t d, v s -> b t s d")
+
+        output = x_mixed + depth_out
+        return rearrange(output, "b t s d -> (b s) t d")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 40-86" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Minimal Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Sinkhorn's Theorem: https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Hyper-Connections: https://arxiv.org/abs/2409.19606" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "mHC Paper: https://arxiv.org/abs/2512.24880" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "External Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Two components:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "mHC (Manifold-Constrained Hyper-Connections) stabilizes deep network training by constraining residual mixing matrices to be **doubly stochastic**. It provides:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**HyperConnections Module**: Core PyTorch module with H_res, H_pre, H_post matrices" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Sinkhorn-Knopp**: Log-space projection to doubly stochastic manifold" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Sinkhorn Projection**: Log-space Sinkhorn-Knopp algorithm for doubly stochastic projection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Stable Training**: Lower gradient norm variance via doubly stochastic constraints" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**GPT Integration**: Pattern for wrapping attention and MLP layers" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Multiple Streams**: Hyper-Connections with learnable mixing across residual streams" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from einops import rearrange, einsum, repeat, reduce
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 90-95" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Imports" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Required packages
+pip install torch einops numpy
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 33-36" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## When to Use What" ;
+                            oc:tableMarkdown """| Scenario | Approach |
+|----------|----------|
+| Standard residual connection | No mHC needed |
+| Deep networks (>12 layers) with stability issues | Use mHC with num_streams=4 |
+| GPT/Transformer training | Wrap both attention and MLP with HyperConnections |
+| Custom Sinkhorn iterations | Adjust num_iters (20 default) and tau (0.05 default) |
+| Memory-constrained training | Reduce num_streams or batch size |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "When to Use What" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "mHC: Manifold-Constrained Hyper-Connections" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: mhc-algorithm
+description: Implement mHC (Manifold-Constrained Hyper-Connections) for stabilizing deep network training. Use when implementing residual connection improvements with doubly stochastic matrices via Sinkhorn-Knopp algorithm. Based on DeepSeek's 2025 paper (arXiv:2512.24880).
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_13442c46,
+        oc:kn_4cf560a2,
+        oc:kn_59b8e9bc,
+        oc:kn_5b6c6af4,
+        oc:kn_5d6ed1a3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "apply Sinkhorn-Knopp algorithm for doubly stochastic projection",
+        "implement hyper-connections for residual networks",
+        "integrate mHC into GPT/Transformer architectures",
+        "stabilize deep network training with doubly stochastic matrices" ;
+    oc:yieldsState oc:HyperConnectionsInitialized,
+        oc:ModuleDefined .
+
+oc:kn_13442c46 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When integrating mHC into Transformer models" ;
+    oc:directiveContent "Wrap both attention AND MLP layers with HyperConnections in GPT/Transformer architectures for consistent residual stream mixing." ;
+    oc:hasRationale "Mixing only one sublayer type creates asymmetric gradient flow; wrapping both ensures uniform stability improvements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4cf560a2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to apply mHC" ;
+    oc:directiveContent "Do not use mHC for standard shallow networks (≤12 layers) with no stability issues — it adds unnecessary overhead." ;
+    oc:hasRationale "mHC is designed for deep networks where gradient variance destabilizes training; shallow networks benefit negligibly." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_59b8e9bc a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initializing HyperConnections parameters" ;
+    oc:directiveContent "Initialize H_res logits with small negative values (-0.1) and zero on the diagonal to start near identity, ensuring good gradient flow at training start." ;
+    oc:hasRationale "Near-identity initialization preserves the skip connection behavior initially, allowing the network to gradually learn optimal mixing." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5b6c6af4 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When configuring HyperConnections for resource-limited environments" ;
+    oc:directiveContent "num_streams parameter controls memory and compute cost quadratically (O(s²) for mixing matrices). Use num_streams=4 as default; reduce for memory-constrained training." ;
+    oc:hasRationale "More streams increase mixing capacity but scale quadratically in parameter count and matrix operations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5d6ed1a3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring the Sinkhorn-Knopp algorithm" ;
+    oc:directiveContent "Sinkhorn-Knopp iteration count (default 20) and temperature τ (default 0.05) control projection accuracy vs. compute cost. Adjust for memory-constrained scenarios." ;
+    oc:hasRationale "Lower iteration counts reduce compute but may produce matrices that are less doubly stochastic; temperature controls sharpness of the projection." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_0b1757c7 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "einops" .
+
+oc:req_70d0caaa a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "torch" .
+

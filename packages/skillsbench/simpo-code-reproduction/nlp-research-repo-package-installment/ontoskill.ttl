@@ -1,0 +1,259 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_simpo_code_reproduction_nlp_research_repo_package_installment a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "nlp-research-repo-package-installment" ;
+    skos:broader "environment alignment procedure" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/simpo-code-reproduction/nlp-research-repo-package-installment" ;
+    oc:contentHash "cba62c9091bd405515255a9156d63ca69282919f5feacb41a735e8b10a287eb9" ;
+    oc:differentia "that matches Python version and repo-declared dependencies before installing packages for NLP research code reproduction" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "repo-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Align Python version and repo-declared dependencies (requirements.txt / environment.yml) before installing packages for NLP research code reproduction." ;
+    oc:hasName "nlp-research-repo-package-installment" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "When reproducing an NLP research repo, **always align the environment to the repo’s declared dependencies first**. Most failures come from **Python version mismatch** or installing packages without following `requirements.txt` / `environment.yml`." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`python -VV` *(required; Python version is often the root cause)*" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`python -m pip --version`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`python -m pip freeze`" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText """If the repo expects a specific Python major/minor and the current Python does not match, it’s usually best to **set up a matching environment**  before installing dependencies.
+      Example: set up a fresh Python 3.11 environment (Docker / Ubuntu) with uv
+      # Install uv
+      apt-get update
+      apt-get install -y --no-install-recommends curl ca-certificates
+      rm -rf /var/lib/apt/lists/*
+      curl -LsSf https://astral.sh/uv/0.9.7/install.sh | sh
+      export PATH="/root/.local/bin:$PATH\"""" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Prefer installing from the repo’s dependency files (avoid random upgrades), then run a quick import/smoke test." ] ],
+                        _:ref_5e3169d684563f5e,
+                        _:ref_672b5238e882a2c4,
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Prefer `environment.yml` / `environment.yaml` (often pins **Python** + channels + non-pip deps)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Otherwise use `requirements.txt` (pip deps)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "If both exist, treat `environment.yml` as the base, `requirements.txt` as supplemental unless README says otherwise" ] ],
+                        _:ref_e26b0dd1b8ee413a ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "What to do (must run before any install)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "NLP Research Repo Package Installment" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: nlp-research-repo-package-installment
+version: "1.0"
+description: Align Python version and repo-declared dependencies (requirements.txt / environment.yml) before installing packages for NLP research code reproduction.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_5e3169d684563f5e,
+        _:ref_672b5238e882a2c4,
+        [ a oc:Workflow ;
+            dcterms:description "Align Python version and install dependencies from an NLP research repo's declared files" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run a quick import/smoke test to verify the environment works" ;
+                    oc:expectedOutcome "Key packages import successfully without errors" ;
+                    oc:stepDependsOn _:ref_921db4958052152a ;
+                    oc:stepId "smoke-test" ],
+                _:ref_65a9389457f84563,
+                _:ref_921db4958052152a,
+                _:ref_c3b42fec32accf24,
+                _:ref_c4b1b45996259fbc ;
+            oc:workflowId "repo-env-setup" ;
+            oc:workflowName "NLP Research Repo Environment Setup" ],
+        _:ref_e26b0dd1b8ee413a ;
+    oc:impartsKnowledge oc:kn_3d18b9fb,
+        oc:kn_3de96b19,
+        oc:kn_5ec7c2d2,
+        oc:kn_759bda75,
+        oc:kn_ae94a06a,
+        oc:kn_c7113ba0,
+        oc:kn_df789d64,
+        oc:kn_fa7764c4 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "align Python environment to repo requirements",
+        "install dependencies from NLP research repo",
+        "resolve dependency conflicts in NLP research repos",
+        "set up matching Python version for research reproduction" ;
+    oc:yieldsState oc:EnvironmentReady .
+
+oc:kn_3d18b9fb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading repo dependency files" ;
+    oc:directiveContent "Prefer environment.yml/environment.yaml over requirements.txt when both exist. Treat environment.yml as the base and requirements.txt as supplemental unless README says otherwise." ;
+    oc:hasRationale "environment.yml often pins Python version, channels, and non-pip dependencies, providing a more complete environment specification." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3de96b19 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When logging current environment state" ;
+    oc:directiveContent """/root/python_int.txt containing:
+{python_vv_output}
+{pip_version_output}
+{pip_freeze_output}""" ;
+    oc:templateVariables "pip_freeze_output",
+        "pip_version_output",
+        "python_vv_output" .
+
+oc:kn_5ec7c2d2 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Always, before any environment modification" ;
+    oc:directiveContent "Log the current environment state to /root/python_int.txt before making changes: python -VV, python -m pip --version, python -m pip freeze." ;
+    oc:hasRationale "Recording the baseline environment enables debugging and rollback if the reproduction environment fails." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_759bda75 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "NLP research repo environment setup" ;
+    oc:directiveContent "1. Read repo dependency files (prefer environment.yml, fallback to requirements.txt) 2. Log current environment to /root/python_int.txt (python -VV, pip --version, pip freeze) 3. Compare Python version — if mismatched, set up matching Python via uv 4. Install from repo's dependency files 5. Run import/smoke test" ;
+    oc:stepOrder 1 .
+
+oc:kn_ae94a06a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When comparing current environment to repo requirements" ;
+    oc:directiveContent "Python major/minor version must match the repo's declared version before installing dependencies. If mismatched, set up a fresh matching Python environment first." ;
+    oc:hasRationale "Python version mismatch is the most common root cause of package incompatibility and runtime errors in reproduced research code." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c7113ba0 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When installing packages for research reproduction" ;
+    oc:directiveContent "Never randomly upgrade packages or install without referencing the repo's dependency files. Prefer installing exactly what the repo declares." ;
+    oc:hasRationale "Random upgrades introduce dependency conflicts and break reproducibility guarantees the authors intended." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_df789d64 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any package installation in NLP research reproduction" ;
+    oc:directiveContent "Always align the environment to the repo's declared dependencies before installing any packages. Most reproduction failures stem from Python version mismatch or ignoring requirements.txt/environment.yml." ;
+    oc:hasRationale "Installing packages without matching declared dependencies is the primary cause of reproduction failures in NLP research repos." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_fa7764c4 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up a fresh matching Python environment on Docker/Ubuntu" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent """# Install uv
+apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
+curl -LsSf https://astral.sh/uv/0.9.7/install.sh | sh
+export PATH="/root/.local/bin:$PATH"
+
+# Install specific Python + create venv
+uv python install {PYTHON_VERSION}
+uv venv --python {PYTHON_VERSION} {VENV_PATH}
+
+# Use new Python
+{VENV_PATH}/bin/python -m pip install -U pip setuptools wheel""" .
+
+_:ref_9feaab6c2e5c190c a oc:WorkflowStep ;
+    dcterms:description "**Compare & decide**" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_aaf42c18a22c898f a oc:WorkflowStep ;
+    dcterms:description "**Read the repo dependency files**" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_fc47f459d40cfb7c a oc:WorkflowStep ;
+    dcterms:description """**Log the current environment (Python version is critical)**  
+Write `/root/python_int.txt` containing:""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_5e3169d684563f5e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_fc47f459d40cfb7c ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_65a9389457f84563 a oc:WorkflowStep ;
+    dcterms:description "Compare repo's expected Python version with current environment; if mismatched, set up matching Python via uv" ;
+    oc:expectedOutcome "Python environment matches repo requirements" ;
+    oc:stepDependsOn _:ref_c3b42fec32accf24,
+        _:ref_c4b1b45996259fbc ;
+    oc:stepId "compare-decide" .
+
+_:ref_672b5238e882a2c4 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 5 ;
+    oc:hasStep _:ref_9feaab6c2e5c190c ;
+    oc:workflowId "procedure_5" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_921db4958052152a a oc:WorkflowStep ;
+    dcterms:description "Install packages from repo's dependency files (environment.yml or requirements.txt), avoid random upgrades" ;
+    oc:expectedOutcome "All declared dependencies installed at specified versions" ;
+    oc:stepDependsOn _:ref_65a9389457f84563 ;
+    oc:stepId "install-deps" .
+
+_:ref_c3b42fec32accf24 a oc:WorkflowStep ;
+    dcterms:description "Log current environment to /root/python_int.txt: python -VV, pip --version, pip freeze" ;
+    oc:expectedOutcome "Baseline environment state recorded to /root/python_int.txt" ;
+    oc:stepId "log-env" .
+
+_:ref_c4b1b45996259fbc a oc:WorkflowStep ;
+    dcterms:description "Read repo dependency files — prefer environment.yml/environment.yaml, fallback to requirements.txt" ;
+    oc:expectedOutcome "Identified Python version requirement and all package dependencies" ;
+    oc:stepId "read-deps" .
+
+_:ref_e26b0dd1b8ee413a a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_aaf42c18a22c898f ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

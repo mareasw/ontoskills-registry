@@ -1,0 +1,416 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_taxonomy_tree_merge_hierarchical_taxonomy_clustering a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "hierarchical-taxonomy-clustering" ;
+    skos:broader "Data pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/taxonomy-tree-merge/hierarchical-taxonomy-clustering" ;
+    oc:contentHash "b80810a01e5a598d34c5cd7916b329527ba2d81b9fe46ed611825c6130149769" ;
+    oc:differentia "that builds unified multi-level category taxonomies from hierarchical product category paths using embedding-based recursive clustering with intelligent naming" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout ;
+    oc:hasAllowedTool "Bash",
+        "Python" ;
+    oc:hasArgumentHint "list of (DataFrame, source_name) tuples each with category_path column" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Build unified multi-level category taxonomy from hierarchical product category paths from any e-commerce companies using embedding-based recursive clustering with intelligent category naming via weighted word frequency analysis." ;
+    oc:hasName "hierarchical-taxonomy-clustering" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_23e81934,
+        oc:req_607f9638,
+        oc:req_746aacc9,
+        oc:req_811530db,
+        oc:req_c3e5f433,
+        oc:req_f63e1722,
+        oc:req_fac2045c ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: hierarchical-taxonomy-clustering
+description: Build unified multi-level category taxonomy from hierarchical product category paths from any e-commerce companies using embedding-based recursive clustering with intelligent category naming via weighted word frequency analysis.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Create a unified multi-level taxonomy from hierarchical category paths by clustering similar paths and automatically generating meaningful category names." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Example code for processing multiple sources" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Command-line interface" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Individual step usage (for advanced control)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Complete implementation of all 4 steps" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "See `scripts/pipeline.py` for:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Use `scripts/pipeline.py` to run the complete 4-step workflow.**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pandas numpy scipy sentence-transformers nltk tqdm
+python -c "import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')"
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 32-35" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Given category paths from multiple sources (e.g., \"electronics -> computers -> laptops\"), create a unified taxonomy that groups similar paths across sources, generates meaningful category names, and produces a clean N-level hierarchy (typically 5 levels). The unified category taxonomy could be used to do analysis or metric tracking on products from different platform." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Problem" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_67aa0a3637a08668 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Methodology" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "`unified_taxonomy_hierarchy.csv` - unique taxonomy structure" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`unified_taxonomy_full.csv` - all records with unified categories" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Output**:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Input**: DataFrame + assignments from Step 3" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Step 4: Export Results (`step4_result_assignments.py`)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Output**: Merged DataFrame with `category_path`, `source`, `depth`, `source_level_1` through `source_level_N`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Input**: List of (DataFrame, source_name) tuples, each of the  with `category_path` column" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Process**: Per-source deduplication, text cleaning (remove &/,/'/-/quotes,'and' or \"&\", \",\" and so on, lemmatize words as nouns), normalize delimiter to ` > `, depth filtering, prefix removal, then merge all sources. source_level should reflect the processed version of the source level name" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Step 1: Load, Standardize, Filter and Merge (`step1_preprocessing_and_merge.py`)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Performance**: For ~10,000 records, expect 1-3 minutes for hierarchical clustering and naming. Be patient - the system is working through recursive levels." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Input**: DataFrame + embeddings from Step 2" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Output**: Assignments dict {index → {level_1: ..., level_5: ...}}" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Word-based naming: weighted frequency + lemmatization + coverage ≥70%" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Average linkage + cosine distance, 10-20 clusters at L1, 3-20 at L2-L5" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Step 3: Recursive Clustering (`step3_recursive_clustering_naming.py`)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Input**: DataFrame from Step 1" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Weights: L1=1.0, L2=0.6, L3=0.36, L4=0.216, L5=0.1296 (exponential decay 0.6^(n-1))" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Output**: Numpy embedding matrix (n_records × 384)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Performance**: For ~10,000 records, expect 2-5 minutes. Progress bar will show encoding status." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Step 2: Weighted Embeddings (`step2_weighted_embedding_generation.py`)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "4-Step Pipeline" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Category names use ` | ` separator, max 5 words, covering 70%+ of records in each cluster." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`unified_level_3` through `unified_level_N`: Deeper levels" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`unified_level_1`: Top-level category (e.g., \"electronic | device\")" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`unified_level_2`: Second-level category (e.g., \"computer | laptop\")" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "DataFrame with added columns:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Output" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Hierarchical Taxonomy Clustering" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete pipeline to transform raw category paths from multiple e-commerce sources into a unified multi-level taxonomy" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Export unified_taxonomy_full.csv (all records with unified categories) and unified_taxonomy_hierarchy.csv (unique taxonomy structure)" ;
+                    oc:expectedOutcome "Two CSV files with the unified taxonomy mapping and hierarchy" ;
+                    oc:stepDependsOn _:ref_50e5243c91bd756f ;
+                    oc:stepId "export-results" ],
+                _:ref_50e5243c91bd756f,
+                _:ref_aaf255eee276baaa,
+                _:ref_e69b44df606e579a ;
+            oc:workflowId "taxonomy-pipeline" ;
+            oc:workflowName "4-Step Hierarchical Taxonomy Pipeline" ],
+        _:ref_67aa0a3637a08668 ;
+    oc:impartsKnowledge oc:kn_04b8bfc8,
+        oc:kn_294b8b14,
+        oc:kn_2be225a4,
+        oc:kn_454c606d,
+        oc:kn_5156307a,
+        oc:kn_58b06b41,
+        oc:kn_838067f2,
+        oc:kn_baa2160b,
+        oc:kn_c2a9ea91,
+        oc:kn_efabaf45 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "build unified taxonomy from product categories",
+        "cluster similar category paths across e-commerce sources",
+        "create multi-level hierarchy from flat category data",
+        "generate meaningful category names automatically" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_04b8bfc8 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tempted to skip Step 1 preprocessing" ;
+    oc:directiveContent "Do not skip text preprocessing (cleaning special chars, lemmatizing as nouns, normalizing delimiters). Raw category text creates noisy embeddings and poor clustering." ;
+    oc:hasRationale "Preprocessing quality directly determines embedding quality and clustering accuracy" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_294b8b14 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When installing dependencies before first run" ;
+    oc:directiveContent "pip install pandas numpy scipy sentence-transformers nltk tqdm && python -c \"import nltk; nltk.download('wordnet'); nltk.download('omw-1.4')\"" .
+
+oc:kn_2be225a4 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running the pipeline" ;
+    oc:directiveContent "Requires pandas, numpy, scipy, sentence-transformers, nltk, tqdm. NLTK data (wordnet, omw-1.4) must be downloaded." ;
+    oc:hasRationale "Missing dependencies cause immediate failure at pipeline startup" .
+
+oc:kn_454c606d a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When running the complete taxonomy pipeline" ;
+    oc:directiveContent """1. Preprocess & merge: per-source dedup, text cleaning, normalize delimiter to ` > `, depth filter, prefix removal → merged DataFrame
+2. Generate weighted embeddings: exponential decay weights, 384-dim vectors
+3. Recursive clustering: average linkage + cosine distance, assign clusters at each level with auto-naming
+4. Export: unified_taxonomy_full.csv + unified_taxonomy_hierarchy.csv""" ;
+    oc:stepOrder 1 .
+
+oc:kn_5156307a a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting the pipeline" ;
+    oc:directiveContent "Verify each input DataFrame has a `category_path` column and that category paths use a consistent hierarchical delimiter before passing to the pipeline." ;
+    oc:hasRationale "Missing or inconsistent category_path columns cause silent failures or meaningless clusters" .
+
+oc:kn_58b06b41 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing recursive clustering in Step 3" ;
+    oc:directiveContent "Use average linkage hierarchical clustering with cosine distance. Cluster count: 10-20 at L1, 3-20 at L2-L5." ;
+    oc:hasRationale "Average linkage balances cluster compactness and avoids chaining artifacts of single linkage" .
+
+oc:kn_838067f2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating weighted embeddings in Step 2" ;
+    oc:directiveContent "Exponential decay weight 0.6^(i-1) per level: L1=1.0, L2=0.6, L3=0.36, L4=0.216, L5=0.1296. This ensures higher-level categories dominate embedding similarity." ;
+    oc:hasRationale "Higher taxonomy levels carry more semantic weight because broader category distinctions matter more than fine-grained ones" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_baa2160b a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When exporting results in Step 4" ;
+    oc:directiveContent """unified_taxonomy_full.csv: all records with unified_level_1..unified_level_N columns
+unified_taxonomy_hierarchy.csv: unique taxonomy structure rows
+Category names: word1 | word2 | ... (max 5 words, 70%+ coverage)""" ;
+    oc:templateVariables "unified_level_1",
+        "unified_level_2",
+        "unified_level_3",
+        "unified_level_4",
+        "unified_level_5" .
+
+oc:kn_c2a9ea91 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating category names via weighted word frequency" ;
+    oc:directiveContent "Category names: max 5 words, use ` | ` separator, must cover ≥70% of records in each cluster. Exclude all ancestor words (parent, grandparent, etc.) to avoid redundancy." ;
+    oc:hasRationale "Coverage threshold ensures names are representative; ancestor exclusion prevents redundant naming across levels" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_efabaf45 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When estimating pipeline runtime" ;
+    oc:directiveContent "For ~10,000 records: Step 2 embedding generation takes 2-5 minutes; Step 3 clustering and naming takes 1-3 minutes." ;
+    oc:hasRationale "Helps set user expectations and detect hung processes" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_23e81934 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Understanding of hierarchical clustering and cosine distance" .
+
+oc:req_607f9638 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scipy" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_811530db a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "tqdm" .
+
+oc:req_c3e5f433 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "nltk" .
+
+oc:req_f63e1722 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "sentence-transformers" .
+
+oc:req_fac2045c a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Familiarity with embedding models and sentence-transformers" .
+
+_:ref_beac199580e8d0e4 a oc:WorkflowStep ;
+    dcterms:description "**Intelligent Naming**: Generate category names via weighted word frequency + lemmatization + bundle word logic" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_dbee755a20e4b90e a oc:WorkflowStep ;
+    dcterms:description "**Quality Control**: Exclude all ancestor words (parent, grandparent, etc.), avoid ancestor path duplicates, clean special characters" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_e5b16d73d6ab6462 a oc:WorkflowStep ;
+    dcterms:description "**Recursive Clustering**: Hierarchically cluster at each level (10-20 clusters at L1, 3-20 at L2-L5) using cosine distance" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_f3b5f9260cc6c4a0 a oc:WorkflowStep ;
+    dcterms:description "**Hierarchical Weighting**: Convert paths to embeddings with exponentially decaying weights (Level i gets weight 0.6^(i-1)) to signify the importance of category granularity" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_50e5243c91bd756f a oc:WorkflowStep ;
+    dcterms:description "Hierarchical clustering at each level using average linkage + cosine distance, generate category names via weighted word frequency with ≥70% coverage" ;
+    oc:expectedOutcome "Assignments dict mapping each index to {level_1..level_5} cluster names" ;
+    oc:stepDependsOn _:ref_aaf255eee276baaa ;
+    oc:stepId "recursive-clustering" .
+
+_:ref_67aa0a3637a08668 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_beac199580e8d0e4,
+        _:ref_dbee755a20e4b90e,
+        _:ref_e5b16d73d6ab6462,
+        _:ref_f3b5f9260cc6c4a0 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_aaf255eee276baaa a oc:WorkflowStep ;
+    dcterms:description "Generate 384-dim embeddings with exponential decay weights (0.6^(i-1)) per hierarchy level" ;
+    oc:expectedOutcome "Numpy embedding matrix (n_records × 384)" ;
+    oc:stepDependsOn _:ref_e69b44df606e579a ;
+    oc:stepId "weighted-embeddings" .
+
+_:ref_e69b44df606e579a a oc:WorkflowStep ;
+    dcterms:description "Per-source deduplication, text cleaning, delimiter normalization to ` > `, depth filtering, prefix removal, then merge all sources" ;
+    oc:expectedOutcome "Merged DataFrame with category_path, source, depth, source_level_1..source_level_N columns" ;
+    oc:stepId "preprocess-merge" .
+

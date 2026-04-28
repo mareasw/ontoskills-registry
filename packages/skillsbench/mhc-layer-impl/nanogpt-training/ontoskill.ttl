@@ -1,0 +1,355 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mhc_layer_impl_nanogpt_training a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "nanogpt-training" ;
+    skos:broader "Training pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mhc-layer-impl/nanogpt-training" ;
+    oc:contentHash "4af90b5db9eca4336069fbb8569d027967aa06e43c0236fb24f0d4715a038848" ;
+    oc:dependsOnSkill oc:skill_ontoskills_modal_gpu ;
+    oc:differentia "that trains GPT-2 scale transformer language models (~124M parameters) on a single GPU using modern optimizers and mixed precision" ;
+    oc:handlesFailure oc:CUDAOutOfMemory,
+        oc:TrainingDivergence ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Train GPT-2 scale models (~124M parameters) efficiently on a single GPU. Covers GPT-124M architecture, tokenized dataset loading (e.g., HuggingFace Hub shards), modern optimizers (Muon, AdamW), mixed precision training, and training loop implementation." ;
+    oc:hasName "nanogpt-training" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_0b1757c7,
+        oc:req_6eb36eb1,
+        oc:req_af80c3df,
+        oc:req_d0850a3f,
+        oc:req_f9292acb ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Training GPT-2 scale models (~124M parameters) efficiently on a single GPU. It provides:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Modern Optimizers**: Muon optimizer with Newton-Schulz orthogonalization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Tokenized Datasets**: Loading pre-tokenized shards from HuggingFace Hub or local files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**GPT-124M Architecture**: Standard transformer with RoPE and modern optimizations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Mixed Precision**: bfloat16 training on A100 for 2x speedup" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Training options:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Experimental residual variants**: Optional alternative residual schemes for stability/efficiency" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Baseline GPT**: Standard residual connections" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.cuda.amp import autocast, GradScaler
+from dataclasses import dataclass
+from einops import rearrange, repeat, reduce
+import numpy as np
+import math
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 76-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Imports" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install torch einops numpy huggingface_hub
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 33-35" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 6 ;
+                            oc:tableCaption "## When to Use What" ;
+                            oc:tableMarkdown """| Scenario | Approach |
+|----------|----------|
+| Standard GPT training | Use baseline model with standard residuals |
+| Stability experiments | Try alternative residual variants or extra streams |
+| Small experiments | Use T4/A10G GPU |
+| Full training | Use A100 with bfloat16 |
+| Custom data | Modify the dataset loader class |
+| Different model size | Adjust GPTConfig parameters |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "When to Use What" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "modded-nanogpt: https://github.com/KellerJordan/modded-nanogpt" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "FineWeb-Edu token shards: https://huggingface.co/datasets/karpathy/fineweb-edu-100B-gpt2-token-shards" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "build-nanogpt: https://github.com/karpathy/build-nanogpt" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "nanoGPT: https://github.com/karpathy/nanoGPT" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "External Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| Topic | Reference |
+|-------|-----------|
+| Model Architecture | [GPT Architecture](references/gpt-architecture.md) |
+| Data Loading | [Tokenized Data](references/tokenized-data.md) |
+| Optimizers | [Optimizers](references/optimizers.md) |
+| Training Loop | [Training Loop](references/training-loop.md) |
+| Hyperparameters | [Hyperparameters](references/hyperparameters.md) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Reference" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import modal
+
+app = modal.App("gpt-training")
+
+image = modal.Image.debian_slim(python_version="3.11").pip_install(
+    "torch", "einops", "numpy", "huggingface_hub"
+)
+
+@app.function(gpu="A100", image=image, timeout=3600)
+def train():
+    import torch
+    from dataclasses import dataclass
+
+    @dataclass
+    class GPTConfig:
+        block_size: int = 1024
+        vocab_size: int = 50257
+        n_layer: int = 12
+        n_head: int = 12
+        n_embd: int = 768
+        dropout: float = 0.0
+        bias: bool = False
+
+    # Download data, build model, train
+    # ... (see references for full implementation)
+
+    return {"final_loss": final_loss}
+
+@app.local_entrypoint()
+def main():
+    results = train.remote()
+    print(results)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 39-72" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Minimal Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Metrics to Monitor" ;
+                            oc:tableMarkdown """| Metric | Typical Signal | Notes |
+|--------|----------------|-------|
+| Validation loss | Steady decrease | Absolute value depends on dataset/tokenizer |
+| Grad norm | Moderate, stable range | Large spikes indicate instability |
+| Training stability | Smooth curves | Frequent spikes suggest LR/batch issues |
+| Throughput | Consistent tokens/sec | Use for comparing configs |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Metrics to Monitor" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "NanoGPT Training" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: nanogpt-training
+description: Train GPT-2 scale models (~124M parameters) efficiently on a single GPU. Covers GPT-124M architecture, tokenized dataset loading (e.g., HuggingFace Hub shards), modern optimizers (Muon, AdamW), mixed precision training, and training loop implementation.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for training a GPT-2 scale model on a single GPU" ;
+            oc:hasStep _:ref_1182748d9e3d48e9,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Evaluate final model on validation set and save checkpoint" ;
+                    oc:expectedOutcome "Final metrics reported and checkpoint saved" ;
+                    oc:stepDependsOn _:ref_f0d05104a52f2e6e ;
+                    oc:stepId "evaluate" ],
+                _:ref_3770688135e40820,
+                _:ref_81e0c36a87d3f66a,
+                _:ref_f0d05104a52f2e6e,
+                _:ref_f54901bbf2b45487 ;
+            oc:workflowId "gpt-training-workflow" ;
+            oc:workflowName "GPT Training Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_39d8f6f3,
+        oc:kn_3e4c4988,
+        oc:kn_45269f06,
+        oc:kn_55f71200,
+        oc:kn_724bb0dc,
+        oc:kn_7363fb20,
+        oc:kn_c5908c23 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "fine-tune GPT-2 scale model",
+        "implement GPT training loop with Muon optimizer",
+        "set up GPT training with mixed precision",
+        "train GPT-2 model",
+        "train small language model on single GPU" ;
+    oc:yieldsState oc:CheckpointCreated,
+        oc:ModelTrained .
+
+oc:kn_39d8f6f3 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When benchmarking training runs" ;
+    oc:directiveContent "Track throughput in tokens/sec as a consistent metric for comparing configurations" ;
+    oc:hasRationale "Tokens/sec normalizes across different batch sizes and sequence lengths" .
+
+oc:kn_3e4c4988 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before launching training" ;
+    oc:directiveContent "Verify GPU availability and CUDA compatibility before starting training; ensure sufficient VRAM for model + optimizer states + batch" ;
+    oc:hasRationale "OOM errors mid-training waste time and may corrupt checkpoints" .
+
+oc:kn_45269f06 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When training on A100 GPUs" ;
+    oc:directiveContent "Use bfloat16 mixed precision training on A100 for ~2x speedup without significant accuracy loss" ;
+    oc:hasRationale "bfloat16 provides the dynamic range of float32 with the memory savings of float16, avoiding overflow issues" .
+
+oc:kn_55f71200 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting GPU type" ;
+    oc:directiveContent "Use A100 for full training runs, T4/A10G for small experiments and debugging" ;
+    oc:hasRationale "Larger GPU memory and compute enable larger batch sizes and faster iteration" .
+
+oc:kn_724bb0dc a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring model architecture" ;
+    oc:directiveContent "GPTConfig defaults define the 124M parameter model: 12 layers, 12 heads, 768 embedding dim, 1024 block size, 50257 vocab size" ;
+    oc:hasRationale "These parameters produce the standard GPT-2 Small configuration used as the baseline" .
+
+oc:kn_7363fb20 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During training loop execution" ;
+    oc:directiveContent "Monitor grad norm for large spikes — these indicate training instability and suggest learning rate or batch size issues" ;
+    oc:hasRationale "Grad norm spikes can cascade into divergence, wasting compute resources" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c5908c23 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating training progress" ;
+    oc:directiveContent "Use validation loss as the primary metric; its absolute value depends on dataset/tokenizer so focus on steady decrease rather than raw numbers" ;
+    oc:hasRationale "Cross-dataset loss values are not directly comparable, but the trend is universally meaningful" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_0b1757c7 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "einops" .
+
+oc:req_6eb36eb1 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "huggingface_hub" .
+
+oc:req_af80c3df a oc:RequirementHardware ;
+    oc:isOptional false ;
+    oc:requirementValue "NVIDIA GPU (T4, A10G, or A100)" .
+
+oc:req_d0850a3f a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "PyTorch (pip install torch)" .
+
+oc:req_f9292acb a oc:RequirementAPI ;
+    oc:isOptional true ;
+    oc:requirementValue "HuggingFace Hub (for tokenized dataset shards)" .
+
+_:ref_1182748d9e3d48e9 a oc:WorkflowStep ;
+    dcterms:description "Instantiate GPT model with RoPE, modern residual connections, and desired configuration" ;
+    oc:expectedOutcome "Model initialized on GPU with correct parameter count" ;
+    oc:stepDependsOn _:ref_f54901bbf2b45487 ;
+    oc:stepId "build-model" .
+
+_:ref_3770688135e40820 a oc:WorkflowStep ;
+    dcterms:description "Load pre-tokenized dataset shards from HuggingFace Hub or local files" ;
+    oc:expectedOutcome "Tokenized training and validation data loaders ready" ;
+    oc:stepDependsOn _:ref_81e0c36a87d3f66a ;
+    oc:stepId "load-data" .
+
+_:ref_f0d05104a52f2e6e a oc:WorkflowStep ;
+    dcterms:description "Run training loop with Muon/AdamW optimizer, bfloat16 mixed precision, monitoring loss and grad norm" ;
+    oc:expectedOutcome "Model converges with steadily decreasing validation loss" ;
+    oc:stepDependsOn _:ref_1182748d9e3d48e9,
+        _:ref_3770688135e40820 ;
+    oc:stepId "train-loop" .
+
+_:ref_f54901bbf2b45487 a oc:WorkflowStep ;
+    dcterms:description "Define GPTConfig with desired architecture parameters (layers, heads, embedding dim, block size)" ;
+    oc:expectedOutcome "GPTConfig dataclass configured for target model size" ;
+    oc:stepDependsOn _:ref_81e0c36a87d3f66a ;
+    oc:stepId "configure-model" .
+
+_:ref_81e0c36a87d3f66a a oc:WorkflowStep ;
+    dcterms:description "Install dependencies (torch, einops, numpy, huggingface_hub) and provision GPU via Modal" ;
+    oc:expectedOutcome "GPU environment ready with all packages installed" ;
+    oc:stepId "setup-env" .
+

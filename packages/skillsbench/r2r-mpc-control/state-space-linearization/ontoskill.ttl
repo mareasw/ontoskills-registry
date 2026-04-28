@@ -1,0 +1,199 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_r2r_mpc_control_state_space_linearization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "state-space-linearization" ;
+    skos:broader "Control design technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/r2r-mpc-control/state-space-linearization" ;
+    oc:contentHash "38fbc9e816262cd0def4c76aa9d54dd5757a00b3cc4ee668d2d19e4aaea1c0a3" ;
+    oc:differentia "that linearizes nonlinear dynamics around operating points to obtain state-space matrices for MPC formulation" ;
+    oc:handlesFailure oc:InvalidLinearizationPoint,
+        oc:UnstableEigenvalues ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Linearizing nonlinear dynamics around operating points for control design." ;
+    oc:hasName "state-space-linearization" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """A_d = I + dt * A_c
+B_d = dt * B_c
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 22-25" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Matrix exponential** (exact for LTI):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For discrete-time control with timestep dt:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """A_d = expm(A_c * dt)
+B_d = inv(A_c) @ (A_d - I) @ B_c
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 5 ;
+                            oc:sourceLocation "lines 28-31" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Euler method** (simple, first-order accurate):" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Discretization" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """∂(dT_i/dt)/∂T_i = -v_i / L
+∂(dT_i/dt)/∂v_i = EA/L - T_i/L
+∂(dv_i/dt)/∂T_i = -R²/J
+∂(dv_i/dt)/∂u_i = R/J
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 37-42" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The Jacobian depends on current tensions and velocities. Key partial derivatives:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "For R2R Systems" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Update linearization if operating point changes significantly" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Check stability via eigenvalue analysis" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Linearize around the reference operating point" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Template ;
+                            oc:blockType "template" ;
+                            oc:contentOrder 2 ;
+                            oc:templateContent """A = ∂f/∂x |_{x_ref}  (n×n matrix)
+B = ∂f/∂u |_{x_ref}  (n×m matrix)
+""" ;
+                            oc:templateVariables "x_ref" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For nonlinear dynamics dx/dt = f(x, u), linearize around (x_ref, u_ref):" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Jacobian Computation" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "State-Space Linearization" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: state-space-linearization
+description: Linearizing nonlinear dynamics around operating points for control design.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Sequence for linearizing nonlinear R2R dynamics into discrete-time state-space form." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Check eigenvalues of A_d to verify stability of the linearized discrete-time model." ;
+                    oc:expectedOutcome "All eigenvalues within the unit circle confirming stability." ;
+                    oc:stepDependsOn _:ref_a7f000713892e68b ;
+                    oc:stepId "verify-stability" ],
+                _:ref_891c49f4fe7f5633,
+                _:ref_a7f000713892e68b,
+                _:ref_a9960ecdb06249b7,
+                _:ref_d01fb718d1b23109 ;
+            oc:workflowId "linearization-workflow" ;
+            oc:workflowName "State-Space Linearization for R2R Systems" ] ;
+    oc:impartsKnowledge oc:kn_13fe4300,
+        oc:kn_34c56596,
+        oc:kn_3a77cdca,
+        oc:kn_3c1daeb8,
+        oc:kn_9d1478ce ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NonlinearDynamicsDefined ;
+    oc:resolvesIntent "compute Jacobian matrices for R2R systems",
+        "derive state-space matrices from nonlinear equations",
+        "discretize continuous-time state-space models",
+        "linearize nonlinear dynamics for control design" ;
+    oc:yieldsState oc:DiscreteTimeMatrices,
+        oc:LinearizedStateSpaceModel .
+
+oc:kn_13fe4300 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when using linearized models for control" ;
+    oc:directiveContent "Linearization is only valid near the chosen operating point (x_ref, u_ref). If the system deviates significantly, the linear model becomes inaccurate and must be re-linearized." ;
+    oc:hasRationale "Linearization is a first-order Taylor approximation; its accuracy degrades with distance from the expansion point." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_34c56596 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deriving state-space matrices for R2R tension-velocity dynamics" ;
+    oc:directiveContent "For R2R web handling, the Jacobian entries depend on current tensions and velocities, meaning the linearization is operating-point-dependent and changes with system state." ;
+    oc:hasRationale "R2R dynamics are inherently nonlinear; the Jacobian captures how tension and velocity states couple at a specific operating point." .
+
+oc:kn_3a77cdca a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "After linearization and discretization are complete" ;
+    oc:directiveContent "After computing A and B matrices, verify closed-loop stability by performing eigenvalue analysis of the discretized system." ;
+    oc:hasRationale "Eigenvalue analysis confirms the linearized model is stable and suitable for controller design." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3c1daeb8 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing a discretization method" ;
+    oc:directiveContent "Prefer the matrix exponential discretization over Euler when the continuous-time system is LTI and accuracy matters. Use Euler only for simplicity or when dt is very small relative to system dynamics." ;
+    oc:hasRationale "Matrix exponential is exact for LTI systems; Euler is only first-order accurate and can introduce instability if dt is too large." .
+
+oc:kn_9d1478ce a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When using Euler discretization method" ;
+    oc:directiveContent "Euler discretization can introduce artificial instability if the timestep dt is not sufficiently small relative to the fastest system dynamics." ;
+    oc:hasRationale "Euler method is first-order accurate and approximates the matrix exponential poorly for large dt values." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_891c49f4fe7f5633 a oc:WorkflowStep ;
+    dcterms:description "Define the nonlinear dynamics dx/dt = f(x, u) for the R2R system." ;
+    oc:expectedOutcome "Nonlinear equations of motion in standard form." ;
+    oc:stepId "define-nonlinear" .
+
+_:ref_a7f000713892e68b a oc:WorkflowStep ;
+    dcterms:description "Discretize the continuous-time model using Euler or matrix exponential method with chosen timestep dt." ;
+    oc:expectedOutcome "Discrete-time A_d and B_d matrices." ;
+    oc:stepDependsOn _:ref_d01fb718d1b23109 ;
+    oc:stepId "discretize" .
+
+_:ref_a9960ecdb06249b7 a oc:WorkflowStep ;
+    dcterms:description "Select the reference operating point (x_ref, u_ref) around which to linearize." ;
+    oc:stepDependsOn _:ref_891c49f4fe7f5633 ;
+    oc:stepId "choose-operating-point" .
+
+_:ref_d01fb718d1b23109 a oc:WorkflowStep ;
+    dcterms:description "Compute Jacobian matrices A = ∂f/∂x and B = ∂f/∂u evaluated at the operating point." ;
+    oc:expectedOutcome "Continuous-time A_c and B_c matrices." ;
+    oc:stepDependsOn _:ref_a9960ecdb06249b7 ;
+    oc:stepId "compute-jacobian" .
+

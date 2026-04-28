@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/latex-formula-extraction",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "marker/ontoskill.ttl",
+    "pdf/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "marker/intents.json",
+    "pdf/intents.json"
+  ],
+  "skills": []
+}

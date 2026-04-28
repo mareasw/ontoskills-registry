@@ -1,0 +1,235 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_suricata_custom_exfil_suricata_offline_evejson a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "suricata-offline-evejson" ;
+    skos:broader "offline IDS analysis workflow" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/suricata-custom-exfil/suricata-offline-evejson" ;
+    oc:contentHash "3f8b67828221849935a7501e8379306e8b72ff105e56baf1f93b62029b408efe" ;
+    oc:dependsOnSkill oc:skill_ontoskills_suricata_rules_basics ;
+    oc:differentia "replays PCAPs through Suricata with custom rules and validates detections via eve.json alerts" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:RuleParseError ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "pcap-path and rules-path" ;
+    oc:hasCategory "security" ;
+    oc:hasDescription "Running Suricata against PCAPs offline and validating results via eve.json" ;
+    oc:hasName "suricata-offline-evejson" ;
+    oc:hasRequirement oc:req_0a9bac8b,
+        oc:req_55e82463,
+        oc:req_b70a1fd3 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: suricata-offline-evejson
+description: Running Suricata against PCAPs offline and validating results via eve.json
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill covers running Suricata against PCAPs offline and validating results via `eve.json`." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "If you prefer a one-command summary, see `scripts/run_suricata_offline.sh` in this skill folder." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# 1) Validate rule syntax
+suricata -T -c /root/suricata.yaml -S /root/local.rules
+
+# 2) Run on known-positive traffic
+suricata -c /root/suricata.yaml -S /root/local.rules -k none -r /root/pcaps/train_pos.pcap -l /tmp/suri-pos
+jq -r 'select(.event_type=="alert") | .alert.signature_id' /tmp/suri-pos/eve.json | sort -n | uniq -c
+
+# 3) Run on known-negative traffic
+suricata -c /root/suricata.yaml -S /root/local.rules -k none -r /root/pcaps/train_neg.pcap -l /tmp/suri-neg
+jq -r 'select(.event_type=="alert") | .alert.signature_id' /tmp/suri-neg/eve.json | sort -n | uniq -c
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 44-55" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When iterating on `/root/local.rules`, use this loop:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Tight feedback loop (recommended)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Count alerts:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """jq -r 'select(.event_type=="alert") | .alert.signature_id' /tmp/suri/eve.json | wc -l
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 26-28" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "See alert ids and messages:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """jq -r 'select(.event_type=="alert") | [.alert.signature_id,.alert.signature] | @tsv' /tmp/suri/eve.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 32-34" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Inspect alerts in EVE JSON" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """suricata -c /root/suricata.yaml -S /root/local.rules -k none -r /root/sample.pcap -l /tmp/suri
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 13-15" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Flags:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Typical offline invocation:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`-r <pcap>`: replay a PCAP offline" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-l <dir>`: log directory (will contain `eve.json`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`-k none`: ignore checksum issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-S <rules>`: load only the specified rules file" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Run Suricata on a PCAP" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Always check Suricata exits cleanly (no rule parse errors)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use a fresh `-l` directory per run to avoid mixing logs." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Ensure your rule triggers only on the intended traffic by testing positive and negative PCAPs." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Practical tips" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Suricata Offline Mode + EVE JSON" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Validate rule syntax, run Suricata on positive and negative PCAPs, and inspect alerts to confirm rule accuracy." ;
+            oc:hasStep _:ref_07608ebfc5478e1b,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run Suricata on known-negative PCAP and count alerts per signature ID." ;
+                    oc:expectedOutcome "No alerts on negative traffic (true negatives confirmed, no false positives)." ;
+                    oc:stepDependsOn _:ref_07608ebfc5478e1b ;
+                    oc:stepId "run-negative" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run Suricata on known-positive PCAP and count alerts per signature ID." ;
+                    oc:expectedOutcome "Expected rules fire on positive traffic (true positives confirmed)." ;
+                    oc:stepDependsOn _:ref_07608ebfc5478e1b ;
+                    oc:stepId "run-positive" ] ;
+            oc:workflowId "suricata-offline-validate" ;
+            oc:workflowName "Suricata Offline Validation Loop" ] ;
+    oc:impartsKnowledge oc:kn_3f14c2c6,
+        oc:kn_48a5c544,
+        oc:kn_843c5966,
+        oc:kn_9e68b10b,
+        oc:kn_dd77ee23 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "inspect Suricata alerts from eve.json",
+        "iterate on Suricata rules with a tight feedback loop",
+        "run Suricata offline against a PCAP",
+        "validate Suricata rule accuracy with positive and negative traffic" ;
+    oc:yieldsState oc:AlertsValidated .
+
+oc:kn_3f14c2c6 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When developing and iterating on Suricata rules" ;
+    oc:directiveContent "Use the tight feedback loop: 1) Validate syntax (-T), 2) Run on positive PCAP, 3) Check alerts, 4) Run on negative PCAP, 5) Check alerts. Iterate until rules are accurate." ;
+    oc:hasRationale "Rapid iteration with both positive and negative samples catches errors early and avoids wasted analysis time." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_48a5c544 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When running Suricata offline" ;
+    oc:directiveContent "Each Suricata run creates eve.json and other log files in the -l directory. These files accumulate if the directory is reused." ;
+    oc:hasRationale "Awareness of side effects prevents misinterpreting stale logs as current results." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_843c5966 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running Suricata offline" ;
+    oc:directiveContent "Always use a fresh -l log directory per Suricata run to avoid mixing logs from different runs." ;
+    oc:hasRationale "Mixed logs from different runs produce false confidence or missed detections." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9e68b10b a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running Suricata offline analysis" ;
+    oc:directiveContent "Always validate rule syntax with `suricata -T` before running against PCAPs. Check that Suricata exits cleanly with no rule parse errors." ;
+    oc:hasRationale "Rule parse errors cause Suricata to silently skip invalid rules, leading to missed detections." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_dd77ee23 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating Suricata rule accuracy" ;
+    oc:directiveContent "Test rules against both known-positive and known-negative PCAPs to confirm true positives and true negatives." ;
+    oc:hasRationale "A rule that fires on negative traffic is a false positive; a rule that misses positive traffic is a false negative. Both must be checked." ;
+    oc:severityLevel "HIGH" .
+
+oc:req_0a9bac8b a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Suricata rule syntax (suricata-rules-basics)" .
+
+oc:req_55e82463 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "jq" .
+
+oc:req_b70a1fd3 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "suricata" .
+
+_:ref_07608ebfc5478e1b a oc:WorkflowStep ;
+    dcterms:description "Run `suricata -T -c suricata.yaml -S local.rules` to validate rule syntax." ;
+    oc:expectedOutcome "Suricata exits cleanly with no rule parse errors." ;
+    oc:stepId "validate-syntax" .
+

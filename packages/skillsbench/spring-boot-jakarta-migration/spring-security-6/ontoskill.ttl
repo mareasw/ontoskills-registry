@@ -1,0 +1,838 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_spring_boot_jakarta_migration_spring_security_6 a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "spring-security-6" ;
+    skos:broader "Migration guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/spring-boot-jakarta-migration/spring-security-6" ;
+    oc:contentHash "39d8f3fd7a202e84e35dc91c69ac5b92a7d7d7dda9bdf149f185d7260846bf7b" ;
+    oc:dependsOnSkill oc:skill_ontoskills_jakarta_namespace,
+        oc:skill_ontoskills_spring_boot_migration ;
+    oc:differentia "that transforms Spring Security 5 class-based configuration into Spring Security 6 component-based SecurityFilterChain bean configuration" ;
+    oc:handlesFailure oc:CompilationError,
+        oc:DeprecatedPatternRemaining,
+        oc:MissingConfiguration ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "path to Spring Boot project with Spring Security configuration" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Migrate Spring Security 5 to Spring Security 6 configuration. Use when removing WebSecurityConfigurerAdapter, replacing @EnableGlobalMethodSecurity with @EnableMethodSecurity, converting antMatchers to requestMatchers, or updating to lambda DSL configuration style. Covers SecurityFilterChain beans and authentication manager changes." ;
+    oc:hasName "spring-security-6" ;
+    oc:hasRequirement oc:req_242f7137,
+        oc:req_60f4f1d4,
+        oc:req_68b8f8fe ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Don't forget the servlet import change:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Before
+import javax.servlet.http.HttpServletResponse;
+
+// After
+import jakarta.servlet.http.HttpServletResponse;
+""" ;
+                            oc:codeLanguage "java" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 325-331" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Servlet Namespace Change" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Replace @EnableGlobalMethodSecurity with @EnableMethodSecurity
+find . -name "*.java" -type f -exec sed -i 's/@EnableGlobalMethodSecurity/@EnableMethodSecurity/g' {} +
+
+# Update import
+find . -name "*.java" -type f -exec sed -i 's/import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity/import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity/g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 363-369" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Step 2: Replace Method Security Annotation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Find classes extending WebSecurityConfigurerAdapter
+grep -r "extends WebSecurityConfigurerAdapter" --include="*.java" .
+
+# The class must be refactored - cannot be automated with sed
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 354-359" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Step 1: Remove WebSecurityConfigurerAdapter" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Replace antMatchers
+find . -name "*.java" -type f -exec sed -i 's/\\.antMatchers(/.requestMatchers(/g' {} +
+
+# Replace mvcMatchers
+find . -name "*.java" -type f -exec sed -i 's/\\.mvcMatchers(/.requestMatchers(/g' {} +
+
+# Replace regexMatchers
+find . -name "*.java" -type f -exec sed -i 's/\\.regexMatchers(/.requestMatchers(/g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 373-382" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Step 3: Replace antMatchers with requestMatchers" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """find . -name "*.java" -type f -exec sed -i 's/\\.authorizeRequests(/.authorizeHttpRequests(/g' {} +
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 386-388" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Step 4: Replace authorizeRequests with authorizeHttpRequests" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Migration Commands Summary" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Should return results
+grep -r "@EnableMethodSecurity" --include="*.java" .
+grep -r "SecurityFilterChain" --include="*.java" .
+grep -r "\\.requestMatchers(" --include="*.java" .
+grep -r "\\.authorizeHttpRequests(" --include="*.java" .
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 404-410" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Verify New Patterns Are Present" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Should return NO results
+grep -r "WebSecurityConfigurerAdapter" --include="*.java" .
+grep -r "@EnableGlobalMethodSecurity" --include="*.java" .
+grep -r "\\.antMatchers(" --include="*.java" .
+grep -r "\\.authorizeRequests(" --include="*.java" .
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 394-400" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Verify No Deprecated Patterns Remain" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Verification Commands" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Update security test annotations if needed:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """@SpringBootTest
+@AutoConfigureMockMvc
+class SecurityTests {
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void adminEndpoint_withAdminUser_shouldSucceed() {
+        // Test implementation
+    }
+}
+""" ;
+                            oc:codeLanguage "java" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 337-348" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Testing Security" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[Spring Security 6 Reference](https://docs.spring.io/spring-security/reference/)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Baeldung - Upgrading Deprecated WebSecurityConfigurerAdapter](https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Baeldung - Migrate from Spring Security 5 to 6](https://www.baeldung.com/spring-security-migrate-5-to-6)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Sources" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// The UserDetailsService bean is auto-detected
+// No need to explicitly configure in AuthenticationManagerBuilder
+
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        // Implementation
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 206-218" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "7. UserDetailsService Configuration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "The biggest change is moving from class extension to bean configuration." ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated()
+            );
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 57-87" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "After (Spring Security 6 / Spring Boot 3)" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+                .antMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+}
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 20-53" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Before (Spring Security 5 / Spring Boot 2)" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Remove WebSecurityConfigurerAdapter" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "`antMatchers()` is replaced with `requestMatchers()`:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before
+.antMatchers("/api/**").authenticated()
+.antMatchers(HttpMethod.POST, "/api/users").permitAll()
+
+// After
+.requestMatchers("/api/**").authenticated()
+.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 163-171" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. URL Matching Changes" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before (chained methods)
+http
+    .csrf().disable()
+    .cors().and()
+    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    .and()
+    .authorizeRequests()
+        .antMatchers("/public/**").permitAll()
+        .anyRequest().authenticated();
+
+// After (lambda DSL)
+http
+    .csrf(csrf -> csrf.disable())
+    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+    .sessionManagement(session ->
+        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/public/**").permitAll()
+        .anyRequest().authenticated()
+    );
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 136-157" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Spring Security 6 uses lambda-based configuration:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Lambda DSL Configuration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before
+.headers().frameOptions().disable()
+
+// After
+.headers(headers -> headers
+    .frameOptions(frame -> frame.disable())
+)
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 194-202" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "6. Headers Configuration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**This is a required change.** The `@EnableGlobalMethodSecurity` annotation is **removed** in Spring Security 6 and must be replaced with `@EnableMethodSecurity`." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// BEFORE (Spring Security 5 / Spring Boot 2) - WILL NOT COMPILE in Spring Boot 3
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+
+// AFTER (Spring Security 6 / Spring Boot 3) - REQUIRED
+@EnableMethodSecurity(prePostEnabled = true)
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 93-99" ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """// BEFORE
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+// AFTER
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+""" ;
+                                            oc:codeLanguage "java" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 103-109" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 1 ;
+                                    oc:sectionTitle "Import Change" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 3 ;
+                                            oc:textContent "If this returns no results but you're using method-level security (`@PreAuthorize`, `@PostAuthorize`, etc.), the migration is incomplete." ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "After migration, confirm the new annotation exists:" ],
+                                        [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """# This should return results showing your security config class
+grep -r "@EnableMethodSecurity" --include="*.java" .
+""" ;
+                                            oc:codeLanguage "bash" ;
+                                            oc:contentOrder 2 ;
+                                            oc:sourceLocation "lines 125-128" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 3 ;
+                                    oc:sectionTitle "Verify @EnableMethodSecurity Is Present" ],
+                                [ a oc:Section ;
+                                    oc:hasContent [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """# Replace the annotation in all Java files
+find . -name "*.java" -type f -exec sed -i 's/@EnableGlobalMethodSecurity/@EnableMethodSecurity/g' {} +
+
+# Also update the import statement
+find . -name "*.java" -type f -exec sed -i 's/EnableGlobalMethodSecurity/EnableMethodSecurity/g' {} +
+""" ;
+                                            oc:codeLanguage "bash" ;
+                                            oc:contentOrder 1 ;
+                                            oc:sourceLocation "lines 113-119" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 2 ;
+                                    oc:sectionTitle "Quick Migration Command" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Method Security Annotation Change (CRITICAL)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Before
+.exceptionHandling()
+    .authenticationEntryPoint((request, response, ex) -> {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    })
+.and()
+
+// After
+.exceptionHandling(ex -> ex
+    .authenticationEntryPoint((request, response, authException) -> {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+            authException.getMessage());
+    })
+)
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 175-190" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Exception Handling" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key Changes" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .exceptionHandling()
+                .authenticationEntryPoint((request, response, ex) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+                })
+            .and()
+            .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/actuator/health").permitAll()
+                .anyRequest().authenticated()
+            .and()
+            .headers().frameOptions().disable();
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 224-272" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Before (Spring Boot 2.x)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
+public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                        authException.getMessage());
+                })
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/actuator/health").permitAll()
+                .anyRequest().authenticated()
+            )
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.disable())
+            );
+
+        return http.build();
+    }
+}
+""" ;
+                                    oc:codeLanguage "java" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 276-319" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "After (Spring Boot 3.x)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Complete Migration Example" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_e2ee694756b134e0 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Common Migration Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Spring Security 6 (included in Spring Boot 3) removes the deprecated `WebSecurityConfigurerAdapter` and introduces a component-based configuration approach using `SecurityFilterChain` beans." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Spring Security 6 Migration Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: spring-security-6
+description: Migrate Spring Security 5 to Spring Security 6 configuration. Use when removing WebSecurityConfigurerAdapter, replacing @EnableGlobalMethodSecurity with @EnableMethodSecurity, converting antMatchers to requestMatchers, or updating to lambda DSL configuration style. Covers SecurityFilterChain beans and authentication manager changes.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete migration of Spring Security configuration from the 5.x adapter pattern to the 6.x component-based pattern." ;
+            oc:hasStep _:ref_00bfab2ff92d2649,
+                _:ref_23188b026034480d,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run verification grep commands to confirm zero deprecated patterns and presence of all new patterns" ;
+                    oc:expectedOutcome "All deprecated pattern greps return empty; all new pattern greps return results" ;
+                    oc:stepDependsOn _:ref_23188b026034480d ;
+                    oc:stepId "verify-migration" ],
+                _:ref_ad8a1172e67e7361,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Replace @EnableGlobalMethodSecurity with @EnableMethodSecurity and update the corresponding import statement" ;
+                    oc:expectedOutcome "grep -r '@EnableGlobalMethodSecurity' returns no results; @EnableMethodSecurity is present" ;
+                    oc:stepDependsOn _:ref_ad8a1172e67e7361 ;
+                    oc:stepId "replace-method-security" ],
+                _:ref_eba9c95a82d67d64 ;
+            oc:workflowId "spring-security-6-migration" ;
+            oc:workflowName "Spring Security 5 to 6 Migration" ],
+        _:ref_e2ee694756b134e0 ;
+    oc:impartsKnowledge oc:kn_01299648,
+        oc:kn_32c07445,
+        oc:kn_357c297b,
+        oc:kn_3e9a6ce8,
+        oc:kn_484a2220,
+        oc:kn_597f2c6c,
+        oc:kn_97c6f773,
+        oc:kn_afc72c24,
+        oc:kn_c58b79c1,
+        oc:kn_cf3320b0,
+        oc:kn_dbcc46a1,
+        oc:kn_e3bd4e2d,
+        oc:kn_eb515254 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SpringBoot2Codebase,
+        oc:SpringSecurity5ConfigPresent ;
+    oc:resolvesIntent "convert to lambda DSL security configuration",
+        "migrate spring security 5 to spring security 6",
+        "remove WebSecurityConfigurerAdapter",
+        "replace EnableGlobalMethodSecurity with EnableMethodSecurity",
+        "replace antMatchers with requestMatchers" ;
+    oc:yieldsState oc:LambdaDSLApplied,
+        oc:SecurityFilterChainMigrated,
+        oc:WebSecurityConfigurerAdapterRemoved .
+
+oc:kn_01299648 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating any class that extends WebSecurityConfigurerAdapter" ;
+    oc:directiveContent "Never extend WebSecurityConfigurerAdapter in Spring Security 6 — it is fully removed. Use SecurityFilterChain @Bean methods instead." ;
+    oc:hasRationale "WebSecurityConfigurerAdapter was deprecated in Spring Security 5.7 and removed in 6.0; continued use causes compilation failure." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_32c07445 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "When verifying migration completeness" ;
+    oc:directiveContent "After migration, grep for deprecated patterns should return zero results: WebSecurityConfigurerAdapter, @EnableGlobalMethodSecurity, .antMatchers(, .authorizeRequests(" ;
+    oc:hasRationale "Any remaining deprecated patterns indicate incomplete migration that will cause runtime or compilation errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_357c297b a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When refactoring classes that previously relied on @EnableWebSecurity providing @Configuration" ;
+    oc:directiveContent "@Configuration must be added explicitly to security config classes in Spring Security 6 — it is no longer inherited from @EnableWebSecurity." ;
+    oc:hasRationale "The @Configuration meta-annotation was removed from @EnableWebSecurity, so omitting it means the bean definitions are not recognized." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3e9a6ce8 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing automated bulk migration of Spring Security API renames" ;
+    oc:directiveContent """find . -name "*.java" -type f -exec sed -i 's/@EnableGlobalMethodSecurity/@EnableMethodSecurity/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/EnableGlobalMethodSecurity/EnableMethodSecurity/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/\\.antMatchers(/.requestMatchers(/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/\\.mvcMatchers(/.requestMatchers(/g' {} +
+find . -name "*.java" -type f -exec sed -i 's/\\.authorizeRequests(/.authorizeHttpRequests(/g' {} +""" .
+
+oc:kn_484a2220 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When exposing AuthenticationManager as a bean" ;
+    oc:codeLanguage "java" ;
+    oc:directiveContent """@Bean
+public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authConfig) throws Exception {
+    return authConfig.getAuthenticationManager();
+}""" ;
+    oc:hasRationale "Replaces the deprecated authenticationManagerBean() override from WebSecurityConfigurerAdapter." .
+
+oc:kn_597f2c6c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring authentication manager" ;
+    oc:directiveContent "Use AuthenticationConfiguration.getAuthenticationManager() to obtain the AuthenticationManager instead of overriding authenticationManagerBean()." ;
+    oc:hasRationale "The adapter pattern for exposing AuthenticationManager is gone; injection via AuthenticationConfiguration is the canonical approach." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_97c6f773 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When migrating method-level security annotations" ;
+    oc:directiveContent "@EnableGlobalMethodSecurity is removed and MUST be replaced with @EnableMethodSecurity — the application will not compile otherwise." ;
+    oc:hasRationale "The annotation class was physically removed from the Spring Security 6 API; this is a non-optional breaking change." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_afc72c24 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When migrating URL authorization rules" ;
+    oc:directiveContent "Replace .antMatchers(), .mvcMatchers(), and .regexMatchers() with .requestMatchers() and .authorizeRequests() with .authorizeHttpRequests()." ;
+    oc:hasRationale "The AntPathRequestMatcher-based methods were consolidated into a single requestMatchers() API for consistency." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c58b79c1 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating the canonical Spring Security 6 SecurityFilterChain bean" ;
+    oc:codeLanguage "java" ;
+    oc:directiveContent """@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/public/**").permitAll()
+            .anyRequest().authenticated()
+        );
+    return http.build();
+}""" ;
+    oc:hasRationale "This is the fundamental replacement pattern for all WebSecurityConfigurerAdapter.configure(HttpSecurity) overrides." .
+
+oc:kn_cf3320b0 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When verifying no deprecated Spring Security 5 patterns remain after migration" ;
+    oc:directiveContent """grep -r "WebSecurityConfigurerAdapter" --include="*.java" .
+grep -r "@EnableGlobalMethodSecurity" --include="*.java" .
+grep -r "\\.antMatchers(" --include="*.java" .
+grep -r "\\.authorizeRequests(" --include="*.java" .""" .
+
+oc:kn_dbcc46a1 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When performing a complete Spring Security 5→6 migration" ;
+    oc:directiveContent "1. Remove WebSecurityConfigurerAdapter extension — refactor class to use @Bean methods. 2. Replace @EnableGlobalMethodSecurity with @EnableMethodSecurity (update import). 3. Replace .antMatchers()/.mvcMatchers()/.regexMatchers() with .requestMatchers(). 4. Replace .authorizeRequests() with .authorizeHttpRequests(). 5. Convert chained HttpSecurity config to lambda DSL. 6. Move AuthenticationManager to @Bean using AuthenticationConfiguration. 7. Run verification grep commands to confirm no deprecated patterns remain." ;
+    oc:hasRationale "This order minimizes compilation errors — structural changes first, then API renames, then verification." ;
+    oc:stepOrder 1 .
+
+oc:kn_e3bd4e2d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing HttpSecurity configuration" ;
+    oc:directiveContent "Lambda DSL is mandatory in Spring Security 6. The chained method style (http.csrf().disable().and()...) is deprecated and removed." ;
+    oc:hasRationale "The non-lambda configuration methods were removed to improve type safety and IDE support." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_eb515254 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring custom UserDetailsService" ;
+    oc:directiveContent "Spring Security 6 auto-detects UserDetailsService beans — no explicit AuthenticationManagerBuilder wiring is needed." ;
+    oc:hasRationale "Removing boilerplate reduces configuration errors and aligns with Spring Boot auto-configuration conventions." ;
+    oc:severityLevel "LOW" .
+
+oc:req_242f7137 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Spring Security 5 configuration patterns (WebSecurityConfigurerAdapter, antMatchers)" .
+
+oc:req_60f4f1d4 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "grep, find, sed for automated migration commands" .
+
+oc:req_68b8f8fe a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Spring Boot 3 / Spring Security 6 API" .
+
+_:ref_225abd97f018ff08 a oc:WorkflowStep ;
+    dcterms:description "**Lambda DSL is mandatory** - The old chained method style (`http.csrf().disable().and()...`) is deprecated and must be converted to lambda style." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_84a38f99b578c131 a oc:WorkflowStep ;
+    dcterms:description "**AuthenticationManager injection changed** - Use `AuthenticationConfiguration.getAuthenticationManager()` instead of overriding `authenticationManagerBean()`." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_a13432e221bfddfc a oc:WorkflowStep ;
+    dcterms:description "**UserDetailsService auto-detection** - Spring Security 6 automatically detects `UserDetailsService` beans; no need for explicit configuration." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_a6d55e735ae190b7 a oc:WorkflowStep ;
+    dcterms:description "**Method security default changes** - `@EnableMethodSecurity` enables `@PreAuthorize` and `@PostAuthorize` by default (unlike the old annotation)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_a89c059418599da8 a oc:WorkflowStep ;
+    dcterms:description "**@Configuration is now required separately** - Before Spring Security 6, `@Configuration` was part of `@EnableWebSecurity`. Now you must add it explicitly." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_00bfab2ff92d2649 a oc:WorkflowStep ;
+    dcterms:description "Replace .antMatchers(), .mvcMatchers(), .regexMatchers() with .requestMatchers() across all Java files" ;
+    oc:expectedOutcome "grep -r '.antMatchers(' returns no results" ;
+    oc:stepDependsOn _:ref_ad8a1172e67e7361 ;
+    oc:stepId "replace-url-matchers" .
+
+_:ref_23188b026034480d a oc:WorkflowStep ;
+    dcterms:description "Convert all HttpSecurity chained method configuration to lambda DSL style (e.g., http.csrf().disable() → http.csrf(csrf -> csrf.disable()))" ;
+    oc:expectedOutcome "All HttpSecurity configuration uses lambda DSL; http.build() is called and SecurityFilterChain is returned" ;
+    oc:stepDependsOn _:ref_eba9c95a82d67d64 ;
+    oc:stepId "convert-lambda-dsl" .
+
+_:ref_e2ee694756b134e0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_225abd97f018ff08,
+        _:ref_84a38f99b578c131,
+        _:ref_a13432e221bfddfc,
+        _:ref_a6d55e735ae190b7,
+        _:ref_a89c059418599da8 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_eba9c95a82d67d64 a oc:WorkflowStep ;
+    dcterms:description "Replace .authorizeRequests() with .authorizeHttpRequests() across all Java files" ;
+    oc:expectedOutcome "grep -r '.authorizeRequests(' returns no results" ;
+    oc:stepDependsOn _:ref_00bfab2ff92d2649 ;
+    oc:stepId "replace-authorize-requests" .
+
+_:ref_ad8a1172e67e7361 a oc:WorkflowStep ;
+    dcterms:description "Find and refactor all classes extending WebSecurityConfigurerAdapter — remove extends clause, convert configure() overrides to @Bean methods" ;
+    oc:expectedOutcome "No class extends WebSecurityConfigurerAdapter; SecurityFilterChain @Bean created" ;
+    oc:stepId "remove-adapter" .
+

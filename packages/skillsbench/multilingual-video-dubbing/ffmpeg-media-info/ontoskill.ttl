@@ -1,0 +1,300 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_ffmpeg_media_info a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-media-info" ;
+    skos:broader "Media analysis utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/ffmpeg-media-info" ;
+    oc:contentHash "cd16c100feb3a2cd5023beb0a6a880ac022cafbd1e4888528da79464367681f7" ;
+    oc:differentia "Extracts and inspects metadata properties (duration, resolution, bitrate, codecs, streams) from media files using ffprobe and ffmpeg" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "media-file-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Analyze media file properties - duration, resolution, bitrate, codecs, and stream information" ;
+    oc:hasName "ffmpeg-media-info" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Extract and analyze media file metadata using ffprobe and ffmpeg." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Count video streams
+ffprobe -v error -select_streams v -show_entries stream=index \\
+  -of csv=p=0 input.mp4 | wc -l
+
+# Count audio streams
+ffprobe -v error -select_streams a -show_entries stream=index \\
+  -of csv=p=0 input.mp4 | wc -l
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 100-108" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Stream Count" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get duration in seconds
+ffprobe -v error -show_entries format=duration \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+
+# Duration with timestamp format
+ffprobe -v error -show_entries format=duration \\
+  -of default=noprint_wrappers=1:nokey=1 -sexagesimal input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 33-41" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Duration" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Show all file info
+ffmpeg -i input.mp4
+
+# JSON format (detailed)
+ffprobe -v quiet -print_format json -show_format -show_streams input.mp4
+
+# Simple format
+ffprobe -v quiet -print_format json -show_format input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-29" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Basic Info Commands" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Video codec
+ffprobe -v error -select_streams v:0 \\
+  -show_entries stream=codec_name,codec_long_name \\
+  -of default=noprint_wrappers=1 input.mp4
+
+# Audio codec
+ffprobe -v error -select_streams a:0 \\
+  -show_entries stream=codec_name,codec_long_name \\
+  -of default=noprint_wrappers=1 input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 72-82" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Codec Information" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get overall bitrate
+ffprobe -v error -show_entries format=bit_rate \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+
+# Get video bitrate
+ffprobe -v error -select_streams v:0 \\
+  -show_entries stream=bit_rate \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 59-68" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Bitrate" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get video resolution
+ffprobe -v error -select_streams v:0 \\
+  -show_entries stream=width,height \\
+  -of csv=s=x:p=0 input.mp4
+
+# Get resolution as JSON
+ffprobe -v error -select_streams v:0 \\
+  -show_entries stream=width,height \\
+  -of json input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 45-55" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Resolution" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Audio sample rate
+ffprobe -v error -select_streams a:0 \\
+  -show_entries stream=sample_rate \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+
+# Audio channels
+ffprobe -v error -select_streams a:0 \\
+  -show_entries stream=channels \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 86-96" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Sample Rate and Channels" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-v error` to suppress warnings" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-select_streams` to target specific streams (v:0 for first video, a:0 for first audio)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-of json` for structured output" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Debug media file issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Verify resolution and bitrate" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Check codec information" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Analyze stream details" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Get video/audio file properties" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Get frame rate
+ffprobe -v error -select_streams v:0 \\
+  -show_entries stream=r_frame_rate \\
+  -of default=noprint_wrappers=1:nokey=1 input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 112-117" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Frame Rate" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Media Info Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: FFmpeg Media Info
+description: Analyze media file properties - duration, resolution, bitrate, codecs, and stream information
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract comprehensive metadata from a media file" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Query video and audio codec names for compatibility assessment" ;
+                    oc:expectedOutcome "Codec names for first video and audio streams" ;
+                    oc:stepDependsOn _:ref_9e539a798233e36f ;
+                    oc:stepId "check-codecs" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Count video and audio streams to understand file structure" ;
+                    oc:expectedOutcome "Integer counts of video and audio streams" ;
+                    oc:stepDependsOn _:ref_9e539a798233e36f ;
+                    oc:stepId "count-streams" ],
+                _:ref_9e539a798233e36f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Extract resolution, bitrate, and frame rate for quality verification" ;
+                    oc:expectedOutcome "Numeric values for width, height, bitrate, and frame rate" ;
+                    oc:stepDependsOn _:ref_9e539a798233e36f ;
+                    oc:stepId "verify-resolution-bitrate" ] ;
+            oc:workflowId "analyze-media-file" ;
+            oc:workflowName "Analyze Media File Properties" ] ;
+    oc:impartsKnowledge oc:kn_1b44119e,
+        oc:kn_3fdfc50e,
+        oc:kn_79a5522e,
+        oc:kn_8e9dbfdd,
+        oc:kn_eac674a0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze media file properties",
+        "check codec information",
+        "count audio and video streams",
+        "debug media file issues",
+        "get video duration",
+        "verify resolution and bitrate" ;
+    oc:yieldsState oc:MediaInfoExtracted .
+
+oc:kn_1b44119e a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When running any ffprobe command" ;
+    oc:directiveContent "Always use -v error flag with ffprobe to suppress warnings and produce clean output." ;
+    oc:hasRationale "Suppressed warnings prevent noisy output that complicates parsing of results" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_3fdfc50e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting media metadata programmatically" ;
+    oc:directiveContent "Do not parse the stderr output of ffmpeg -i for reliable metadata extraction; use ffprobe with structured output flags instead." ;
+    oc:hasRationale "ffmpeg -i output is human-readable but not designed for parsing; ffprobe provides structured, reliable output" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_79a5522e a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "All ffprobe/ffmpeg info commands are read-only and can be safely run multiple times without side effects." ;
+    oc:hasRationale "Info commands only read file headers and metadata, never modify files" .
+
+oc:kn_8e9dbfdd a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing ffprobe output format" ;
+    oc:directiveContent "Use -of json output format for structured, machine-parseable results; use -of default or -of csv for simple single-value extraction." ;
+    oc:hasRationale "JSON is best for programmatic consumption; plain text is best for single-value lookups" .
+
+oc:kn_eac674a0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When querying stream-specific properties like codec, bitrate, resolution, or sample rate" ;
+    oc:directiveContent "Use -select_streams to target specific streams: v:0 for first video, a:0 for first audio, v for all video, a for all audio." ;
+    oc:hasRationale "Without stream selection, properties from all streams are mixed together, making results ambiguous" ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_9e539a798233e36f a oc:WorkflowStep ;
+    dcterms:description "Run ffprobe JSON output to get full file info (format + streams)" ;
+    oc:expectedOutcome "Complete metadata JSON with duration, format, and all stream details" ;
+    oc:stepId "get-overview" .
+

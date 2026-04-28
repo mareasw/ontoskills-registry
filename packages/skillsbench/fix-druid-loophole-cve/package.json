@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/fix-druid-loophole-cve",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "jackson-security/ontoskill.ttl",
+    "senior-java/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "jackson-security/intents.json",
+    "senior-java/intents.json"
+  ],
+  "skills": []
+}

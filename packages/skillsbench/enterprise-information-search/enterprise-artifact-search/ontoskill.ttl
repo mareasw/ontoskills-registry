@@ -1,0 +1,833 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_enterprise_information_search_enterprise_artifact_search a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "enterprise-artifact-search" ;
+    skos:broader "Multi-hop evidence retrieval skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/enterprise-information-search/enterprise-artifact-search" ;
+    oc:contentHash "fb001d86de41352696a66a361795231411397e96e963a5fc8f799feca81f8455" ;
+    oc:differentia "performs structured entity extraction over enterprise artifact datasets with product-grounded disambiguation and anti-distractor filtering" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "question about enterprise artifacts (e.g., 'Find employee IDs of authors and key reviewers of the Market Research Report for CoachForce')" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Multi-hop evidence search + structured extraction over enterprise artifact datasets (docs/chats/meetings/PRs/URLs). Strong disambiguation to prevent cross-product leakage; returns JSON-ready entities plus evidence pointers." ;
+    oc:hasName "enterprise-artifact-search" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 3 ;
+                    oc:textContent "This version adds two critical upgrades:" ],
+                _:ref_862cdfbacb3f3eda,
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill delegates **multi-hop artifact retrieval + structured entity extraction** to a lightweight subagent, keeping the main agent’s context lean." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "It is designed for datasets where a workspace contains many interlinked artifacts (documents, chat logs, meeting transcripts, PRs, URLs) plus reference metadata (employee/customer directories)." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Task(subagent_type="enterprise-artifact-search", prompt=\"\"\"
+Dataset root: /root/DATA
+Question: <paste the question verbatim>
+
+Output requirements:
+- Return JSON-ready extracted entities (employee IDs, doc IDs, etc.).
+- Provide evidence pointers: artifact_id(s) + short supporting snippets.
+
+Constraints:
+- Avoid oracle/label fields (ground_truth, gold answers).
+- Prefer primary artifacts (docs/chat/meetings/PRs/URLs) over metadata-only shortcuts.
+- MUST enforce product grounding: only accept artifacts proven to be about the target product.
+\"\"\")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 49-63" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use this format:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Invocation" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_26961bbb8eacdac2 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Common Failure Modes (This skill prevents them)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Reject any report whose content/links are clearly about CoFoAIX unless it also passes 2+ CoachForce grounding signals." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Key reviewers from explicit `reviewers/key_reviewers` if present; else from transcript turns or slack replies showing concrete feedback." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Select CoachForce’s final/latest report." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Author from doc field `author`." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Correct behavior:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Question:  
+“Find employee IDs of the authors and key reviewers of the Market Research Report for the CoachForce product?”""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Mini Example (Your case)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Return:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "target_product": "<ProductName>",
+  "report_doc_id": "<doc_id>",
+  "author_employee_ids": ["eid_..."],
+  "key_reviewer_employee_ids": ["eid_..."],
+  "all_employee_ids_union": ["eid_..."]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 174-182" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1) Final Answer Object" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "employee_id": "eid_xxx",
+  "role": "key_reviewer",
+  "evidence": [
+    {
+      "artifact_type": "meeting_transcript",
+      "artifact_id": "CoachForce_planning_2",
+      "snippet": "…Alex: We should add a section comparing CoachForce to competitor X…"
+    }
+  ]
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 190-202" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For each extracted ID, include:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "artifact type + artifact id (doc_id / meeting_id / slack_message_id / pr_id)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "a short snippet that directly supports the mapping" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Example evidence record:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2) Evidence Map (pointers + minimal snippets)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Output Format (Strict, JSON-ready)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Invoke when ANY of the following is true:" ],
+                        _:ref_eefc9ab40c7270be ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Invoke This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**AMBIGUOUS** — conflicting product signals or multiple equally valid reports" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**USE_EVIDENCE** — evidence sufficient and product-grounded" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**NEED_MORE_SEARCH** — missing reviewer signals; must expand search (PRs, slack replies, other meetings)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Return one of:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Recommendation Types" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "The task is a trivial one-hop lookup and product scope is unambiguous." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "The answer is in a single small known file and location with no cross-references." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Do NOT Invoke When" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_724d787ae1e0d07b,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Keep the selected report’s doc_id and link as the anchor." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "If multiple VALID reports exist, choose the “final/latest” by this precedence:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Step 3 — Select the correct report version" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "If the report content repeatedly names a different product (e.g., “CoFoAIX”) and lacks CoachForce grounding → mark as DISTRACTOR and discard, even if it is found in the same file or near similar wording." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """**Grounding signals (choose any 2+):**
+A) Located under the correct product artifact container (e.g., inside `products/CoachForce.json` *and* associated with that product’s planning channels/meetings).
+B) Document content/title explicitly mentions the target product name (“CoachForce”) or a canonical alias list you derive from artifacts.
+C) Shared in a channel whose name is clearly for the target product (e.g., `planning-CoachForce`, `#coachforce-*`) OR a product-specific meeting series (e.g., `CoachForce_planning_*`).
+D) The document id/link path contains a product-specific identifier consistent with the target product (not another product).
+E) A meeting transcript discussing the report includes the target product context in the meeting title/series/channel reference.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Why:** Benchmarks intentionally insert same doc type across products; “first hit wins” is a common failure." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "A candidate report is **VALID** only if it passes **at least 2 independent grounding signals**:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Reject rule (very important):**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Step 2 — HARD Product Grounding (Anti-distractor gate)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "Use this priority order:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent "**Critical rule:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Tier 1 (best): explicit reviewer fields**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**Tier 3: slack thread replies to the report-share message**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 10 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "OR they appear in explicit reviewer fields." ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "Only count someone as a key reviewer if the transcript shows they contributed feedback" ] ] ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Meeting `participants` list alone is NOT sufficient." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 11 ;
+                                    oc:textContent "If the benchmark expects “key reviewers” to be “the people who reviewed in the review meeting”, then your evidence must cite the transcript lines/turns that contain their suggestions." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "PR fields: `reviewers`, `approvers`, `requested_reviewers`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Document fields: `reviewers`, `key_reviewers`, `approvers`, `requested_reviewers`" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Document `feedback` sections that attribute feedback to specific people/IDs" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Meeting transcripts where turns are attributable to people AND those people provide concrete suggestions/edits" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Key reviewers must be **evidence-based contributors**, not simply attendees." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Only include users who reply with substantive feedback/suggestions/questions tied to the report." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "the author (unless question explicitly wants them included as reviewer too)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "pure acknowledgements (“looks good”, “thanks”) unless no other reviewers exist" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Exclude:" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Tier 2: explicit feedback authors**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Step 5 — Extract key reviewers (DO NOT equate “participants” with reviewers)" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_2701dc3231f7fee0,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Extract authors in this priority order:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "If only a name appears, resolve via employee directory metadata (name → employee_id) but only after you have product-grounded evidence." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "If already an `eid_*`, keep it." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Normalize into **employee IDs**:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Step 4 — Extract author(s)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Collect all candidates matching:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "OR doc links/slack text contains “Market Research Report”" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "type/document_type/title contains “Market Research Report” (case-insensitive)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "OR meeting transcripts tagged document_type “Market Research Report”" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Search in this order:" ],
+                                _:ref_a66b0960f2991eaf ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Step 1 — Build candidate set (wide recall, then filter)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "All outputs must be valid employee IDs (pattern `eid_...`) and exist in the employee directory if provided." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent "2) key reviewers next" ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:textContent "1) authors first" ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Remove duplicates while preserving order:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Step 6 — Validate IDs & de-duplicate" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "If product name is missing in question, infer cautiously from nearby context ONLY if explicitly supported by artifacts; otherwise mark AMBIGUOUS." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "target product name (e.g., “CoachForce”)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "artifact types likely relevant (“Market Research Report”, docs, review threads)" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "entity types needed (e.g., author employee IDs, key reviewer employee IDs)" ] ] ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Extract:" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Step 0 — Parse intent + target product" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Core Procedure (Must Follow)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Without this skill:** you manually grep many files, risk missing cross-links, and often accept the first “looks right” report (common failure: wrong product)." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Typical context savings: **70–95%**." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "extracts structured entities (employee IDs, doc IDs)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "returns a compact evidence map with artifact pointers" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**verifies product scope** to reject distractors" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "follows references across channels/meetings/docs/PRs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "locates candidate artifacts fast" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**With this skill:** a subagent:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Why Use This Skill?" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Enterprise Artifact Search Skill (Robust)" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: enterprise-artifact-search
+description: Multi-hop evidence search + structured extraction over enterprise artifact datasets (docs/chats/meetings/PRs/URLs). Strong disambiguation to prevent cross-product leakage; returns JSON-ready entities plus evidence pointers.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_26961bbb8eacdac2,
+        _:ref_2701dc3231f7fee0,
+        _:ref_724d787ae1e0d07b,
+        [ a oc:Workflow ;
+            dcterms:description "Complete procedure for searching enterprise artifacts with product grounding, entity extraction, and structured output." ;
+            oc:hasStep _:ref_0f26c7a8ad1a16d2,
+                _:ref_0fa33f69b1619446,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Validate all IDs match eid_* pattern and exist in directory. De-duplicate preserving order: authors first, then reviewers." ;
+                    oc:expectedOutcome "Clean, validated, de-duplicated ID lists" ;
+                    oc:stepDependsOn _:ref_730f62ba71cca3b1,
+                        _:ref_ee84d0470f6a93ee ;
+                    oc:stepId "step6-validate-deduplicate" ],
+                _:ref_730f62ba71cca3b1,
+                _:ref_8db362d6a6930c68,
+                _:ref_ee84d0470f6a93ee,
+                _:ref_fcdea3ed69bf29f9 ;
+            oc:workflowId "enterprise-artifact-search-main" ;
+            oc:workflowName "Multi-hop Artifact Search & Extraction" ],
+        _:ref_862cdfbacb3f3eda,
+        _:ref_a66b0960f2991eaf,
+        _:ref_eefc9ab40c7270be ;
+    oc:impartsKnowledge oc:kn_0ff43b5e,
+        oc:kn_31a46be5,
+        oc:kn_4d52abfa,
+        oc:kn_accf57cf,
+        oc:kn_b0a65b76,
+        oc:kn_bec26c88,
+        oc:kn_c67b128a,
+        oc:kn_e9b66777 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "extract employee IDs from documents",
+        "find authors and reviewers of reports",
+        "multi-hop evidence gathering across artifact types",
+        "prevent cross-product leakage in artifact search",
+        "retrieve structured entities with evidence pointers",
+        "search enterprise artifacts" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0ff43b5e a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During Step 6 validation and de-duplication" ;
+    oc:directiveContent "All output employee IDs must match pattern eid_... and exist in the employee directory if provided. Remove duplicates preserving order (authors first, then key reviewers)." ;
+    oc:hasRationale "Invalid or duplicate IDs cause schema mismatch errors in downstream evaluators." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_31a46be5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating candidate artifacts during Step 2 product grounding" ;
+    oc:directiveContent "A candidate artifact is valid only if it passes at least 2 independent product grounding signals from: (A) correct product artifact container, (B) content/title mentions target product, (C) product-specific channel/meeting, (D) product-specific doc path, (E) meeting transcript with product context." ;
+    oc:hasRationale "Single-signal grounding is insufficient because distractor artifacts may share one signal with the target product." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4d52abfa a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting candidate artifacts during multi-product dataset search" ;
+    oc:directiveContent "Never accept the first search hit as the correct artifact without verifying product grounding with at least 2 independent signals." ;
+    oc:hasRationale "Benchmarks intentionally insert same doc types across products; 'first hit wins' causes cross-product leakage." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_accf57cf a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to invoke this skill vs manual file searching" ;
+    oc:directiveContent "Delegate multi-hop retrieval to a lightweight subagent to keep the main agent's context lean, achieving 70-95% context savings." ;
+    oc:hasRationale "Loading large artifact files into context is wasteful and risks exceeding context windows." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b0a65b76 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When target product cannot be determined from the question (Step 0)" ;
+    oc:directiveContent "If product name is missing from the question, infer cautiously from nearby context ONLY if explicitly supported by artifacts; otherwise mark AMBIGUOUS and return recommendation type AMBIGUOUS." ;
+    oc:hasRationale "Guessing the product without evidence causes cross-product leakage failures." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_bec26c88 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When multiple valid grounded reports exist (Step 3)" ;
+    oc:directiveContent "When selecting the correct report version, prefer: (1) explicit 'latest' marker, (2) explicit 'final' marker, (3) most recent date field, (4) most frequently referenced in follow-up discussions." ;
+    oc:hasRationale "Choosing drafts over final versions is a common error; this precedence order maximizes selection accuracy." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c67b128a a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When evaluating whether to invoke the skill" ;
+    oc:directiveContent "Do not invoke this skill when the answer is in a single small known file with no cross-references, or when the task is a trivial one-hop lookup with unambiguous product scope." ;
+    oc:hasRationale "Overhead of subagent delegation is not justified for simple lookups." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e9b66777 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting key reviewers from meeting transcripts" ;
+    oc:directiveContent "Never equate meeting participants with key reviewers. Only count someone as a key reviewer if the transcript shows they contributed feedback or they appear in explicit reviewer fields." ;
+    oc:hasRationale "Over-inclusive reviewer extraction is a common failure mode that conflates attendance with substantive review contribution." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_0cf945648211d63c a oc:WorkflowStep ;
+    dcterms:description """**Wrong version**  
+Choosing draft over final/latest.  
+→ Fixed by Step 3.""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_20739c00e47969cf a oc:WorkflowStep ;
+    dcterms:description "Explicit “latest” marker (id/title/link contains `latest`, or most recent date field)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_20f7d9baeda1c4a1 a oc:WorkflowStep ;
+    dcterms:description """**Cross-product leakage**  
+Picking “Market Research Report” for another product (e.g., CoFoAIX) because it appears first.  
+→ Fixed by Step 2 (2-signal product grounding).""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3194f132e95dff0c a oc:WorkflowStep ;
+    dcterms:description "Slack: the user who posted “Here is the report…” message (only if it clearly links to the report doc_id and is product-grounded)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_42463b713c9f0b1f a oc:WorkflowStep ;
+    dcterms:description "The answer must be **retrieved** from artifacts (IDs/names/dates/roles), not inferred." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_425af2cd5da4f86a a oc:WorkflowStep ;
+    dcterms:description "Within found channels/meetings: follow doc links (e.g., `/archives/docs/<doc_id>`), referenced meeting chats, PR mentions." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_45a3094fcec03479 a oc:WorkflowStep ;
+    dcterms:description "**Product grounding & anti-distractor filtering** (prevents mixing CoFoAIX/other products when asked about CoachForce)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_55e855bfb02f1540 a oc:WorkflowStep ;
+    dcterms:description "Explicit “final” marker" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_5af3f5b47dbe1e79 a oc:WorkflowStep ;
+    dcterms:description "If dates missing, choose the one most frequently referenced in follow-up discussions (slack replies/meeting chats)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_77aded2b10a37602 a oc:WorkflowStep ;
+    dcterms:description "Otherwise, pick the most recent by `date` field" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_8474d6ade739f61e a oc:WorkflowStep ;
+    dcterms:description "Evidence is scattered across multiple artifact types (docs + slack + meetings + PRs + URLs)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_89727d97a92970b9 a oc:WorkflowStep ;
+    dcterms:description "Product artifact file(s): `/root/DATA/products/<Product>.json` if exists." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_98c8a8196daa3437 a oc:WorkflowStep ;
+    dcterms:description "**Key reviewer extraction rules** (prevents “meeting participants == reviewers” mistake; prefers explicit reviewers, then evidence-based contributors)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_9dff6bf340fc264d a oc:WorkflowStep ;
+    dcterms:description "You need **precise pointers** (doc_id/message_id/meeting_id/pr_id) to justify outputs." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_a3f4c151982d467a a oc:WorkflowStep ;
+    dcterms:description "PR fields if the report is introduced via PR: `author`, `created_by`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_aac1e1360966cc6e a oc:WorkflowStep ;
+    dcterms:description """**Schema mismatch**  
+Returning a flat list when evaluator expects split fields.  
+→ Fixed by Output Format.""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_ab405c279bdb3f7c a oc:WorkflowStep ;
+    dcterms:description "You must keep context lean and avoid loading large files into context." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_cfd5450e14f80b6d a oc:WorkflowStep ;
+    dcterms:description """**Over-inclusive reviewers**  
+Treating all meeting participants as reviewers.  
+→ Fixed by Step 5 (evidence-based reviewer definition).""" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_f046ba5b611be67f a oc:WorkflowStep ;
+    dcterms:description "The question requires **multi-hop** evidence gathering (artifact → references → other artifacts)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_f50ba4b74328fbcb a oc:WorkflowStep ;
+    dcterms:description "Document fields: `author`, `authors`, `created_by`, `owner`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_fe80acbc81d2b235 a oc:WorkflowStep ;
+    dcterms:description "Global sweep (if needed): other product files and docs that mention the product name." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_0f26c7a8ad1a16d2 a oc:WorkflowStep ;
+    dcterms:description "Search product artifact files first, then global sweep, then follow cross-references (doc links, meeting chats, PR mentions). Collect all matching candidates." ;
+    oc:expectedOutcome "Raw candidate set of potentially relevant artifacts" ;
+    oc:stepDependsOn _:ref_fcdea3ed69bf29f9 ;
+    oc:stepId "step1-build-candidates" .
+
+_:ref_26961bbb8eacdac2 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0cf945648211d63c,
+        _:ref_20f7d9baeda1c4a1,
+        _:ref_aac1e1360966cc6e,
+        _:ref_cfd5450e14f80b6d ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_2701dc3231f7fee0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_3194f132e95dff0c,
+        _:ref_a3f4c151982d467a,
+        _:ref_f50ba4b74328fbcb ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_724d787ae1e0d07b a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_20739c00e47969cf,
+        _:ref_55e855bfb02f1540,
+        _:ref_5af3f5b47dbe1e79,
+        _:ref_77aded2b10a37602 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_730f62ba71cca3b1 a oc:WorkflowStep ;
+    dcterms:description "Extract authors from doc fields (author/authors/created_by/owner), then PR fields, then Slack share messages. Normalize to employee IDs (eid_*)." ;
+    oc:expectedOutcome "List of author employee IDs" ;
+    oc:stepDependsOn _:ref_0fa33f69b1619446 ;
+    oc:stepId "step4-extract-authors" .
+
+_:ref_862cdfbacb3f3eda a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_45a3094fcec03479,
+        _:ref_98c8a8196daa3437 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8db362d6a6930c68 a oc:WorkflowStep ;
+    dcterms:description "Validate each candidate requires 2+ independent grounding signals (product container, content mention, channel name, doc path, transcript context). Reject distractors." ;
+    oc:expectedOutcome "Filtered set of product-grounded valid artifacts" ;
+    oc:stepDependsOn _:ref_0f26c7a8ad1a16d2 ;
+    oc:stepId "step2-product-grounding" .
+
+_:ref_a66b0960f2991eaf a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_425af2cd5da4f86a,
+        _:ref_89727d97a92970b9,
+        _:ref_fe80acbc81d2b235 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ee84d0470f6a93ee a oc:WorkflowStep ;
+    dcterms:description "Extract key reviewers using tiered priority: Tier 1 explicit reviewer fields, Tier 2 feedback authors in docs/meetings, Tier 3 substantive Slack replies. Exclude pure acknowledgements and author self-reviews." ;
+    oc:expectedOutcome "List of key reviewer employee IDs with evidence citations" ;
+    oc:stepDependsOn _:ref_0fa33f69b1619446 ;
+    oc:stepId "step5-extract-reviewers" .
+
+_:ref_eefc9ab40c7270be a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_42463b713c9f0b1f,
+        _:ref_8474d6ade739f61e,
+        _:ref_9dff6bf340fc264d,
+        _:ref_ab405c279bdb3f7c,
+        _:ref_f046ba5b611be67f ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_fcdea3ed69bf29f9 a oc:WorkflowStep ;
+    dcterms:description "Parse question to extract target product name, entity types needed, and likely relevant artifact types. Mark AMBIGUOUS if product unclear." ;
+    oc:expectedOutcome "Target product, entity types, and artifact types identified" ;
+    oc:stepId "step0-parse-intent" .
+
+_:ref_0fa33f69b1619446 a oc:WorkflowStep ;
+    dcterms:description "If multiple valid artifacts exist, select final/latest by precedence: explicit latest marker > explicit final marker > most recent date > most referenced." ;
+    oc:expectedOutcome "Single anchored report with doc_id and link" ;
+    oc:stepDependsOn _:ref_8db362d6a6930c68 ;
+    oc:stepId "step3-select-version" .
+

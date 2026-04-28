@@ -1,0 +1,402 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_python_scala_translation_python_scala_syntax_mapping a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "python-scala-syntax-mapping" ;
+    skos:broader "Syntax mapping guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/python-scala-translation/python-scala-syntax-mapping" ;
+    oc:contentHash "153b40821553cfcec83c7f8b4d9b7b4e0e0a986cc5b019b11aa5d09930cccf60" ;
+    oc:differentia "translates Python syntax constructs to Scala equivalents including variables, types, control flow, comprehensions, functions, string formatting, operators, exception handling, and null handling" ;
+    oc:hasArgumentHint "Python syntax construct or code snippet to translate" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Reference guide for translating Python syntax constructs to Scala equivalents. Use when converting Python code to Scala and need mappings for basic syntax elements like variable declarations, control flow, comprehensions, string formatting, and common operators." ;
+    oc:hasName "python-scala-syntax-mapping" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## String Formatting" ;
+                            oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `f"Hello, {name}!"` | `s"Hello, $name!"` |
+| `f"Value: {x:.2f}"` | `f"Value: $x%.2f"` |
+| `f"{x + y}"` | `s"${x + y}"` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "String Formatting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 10 ;
+                            oc:tableCaption "## Type Mappings" ;
+                            oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `int` | `Int` |
+| `float` | `Double` |
+| `str` | `String` |
+| `bool` | `Boolean` |
+| `None` | `None` (of type `Option`) or `null` |
+| `list[T]` | `List[T]` or `Seq[T]` |
+| `dict[K, V]` | `Map[K, V]` |
+| `set[T]` | `Set[T]` |
+| `tuple[A, B]` | `(A, B)` or `Tuple2[A, B]` |
+| `Optional[T]` | `Option[T]` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Type Mappings" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 7 ;
+                            oc:tableCaption "## Common Operators" ;
+                            oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `**` (power) | `math.pow(x, y)` or use `scala.math.pow` |
+| `//` (floor div) | `x / y` (for Int) or `math.floor(x / y)` |
+| `%` (modulo) | `%` |
+| `and`, `or`, `not` | `&&`, `||`, `!` |
+| `in` | `.contains()` |
+| `is` | `eq` (reference equality) |
+| `==` | `==` (value equality) |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Common Operators" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Prefer `val` over `var` unless mutation is required." ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Variable Declarations" ;
+                            oc:tableMarkdown """| Python | Scala |
+|--------|-------|
+| `x = 5` | `val x = 5` (immutable) or `var x = 5` (mutable) |
+| `x: int = 5` | `val x: Int = 5` |
+| `x, y = 1, 2` | `val (x, y) = (1, 2)` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Variable Declarations" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+if x > 0:
+    result = "positive"
+elif x < 0:
+    result = "negative"
+else:
+    result = "zero"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 37-45" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala - if is an expression
+val result = if (x > 0) "positive"
+             else if (x < 0) "negative"
+             else "zero"
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 47-52" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Conditionals" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala
+while (condition) {
+  doSomething()
+}
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 85-90" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python
+while condition:
+    do_something()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 79-83" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "While loops" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Python for loop
+for i in range(10):
+    print(i)
+
+for item in items:
+    process(item)
+
+for i, item in enumerate(items):
+    print(f"{i}: {item}")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 56-66" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// Scala equivalents
+for (i <- 0 until 10) println(i)
+
+for (item <- items) process(item)
+
+for ((item, i) <- items.zipWithIndex) println(s"$i: $item")
+""" ;
+                                    oc:codeLanguage "scala" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 68-75" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Loops" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Control Flow" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala - use Option
+val result = optionValue match {
+  case Some(v) => process(v)
+  case None => default
+}
+
+// Or more concisely
+val result = optionValue.map(process).getOrElse(default)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 200-209" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+if value is None:
+    return default
+return process(value)
+
+# Or
+result = value if value is not None else default
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 190-198" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "None/Null Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python list comprehension
+squares = [x ** 2 for x in range(10)]
+evens = [x for x in numbers if x % 2 == 0]
+pairs = [(x, y) for x in xs for y in ys]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 94-99" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala for-comprehensions or map/filter
+val squares = (0 until 10).map(x => x * x).toList
+val evens = numbers.filter(_ % 2 == 0)
+val pairs = for { x <- xs; y <- ys } yield (x, y)
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 101-106" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Comprehensions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala
+def add(a: Int, b: Int): Int = a + b
+
+// Lambda
+val square: Int => Int = x => x * x
+// or shorter: val square = (x: Int) => x * x
+
+// Default arguments
+def greet(name: String, greeting: String = "Hello"): String =
+  s"$greeting, $name!"
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 123-134" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+def add(a: int, b: int) -> int:
+    return a + b
+
+# Lambda
+square = lambda x: x ** 2
+
+# Default arguments
+def greet(name: str, greeting: str = "Hello") -> str:
+    return f"{greeting}, {name}!"
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 110-121" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Functions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Python
+try:
+    result = risky_operation()
+except ValueError as e:
+    handle_error(e)
+finally:
+    cleanup()
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 158-166" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """// Scala
+import scala.util.{Try, Success, Failure}
+
+// Pattern 1: try-catch
+try {
+  val result = riskyOperation()
+} catch {
+  case e: IllegalArgumentException => handleError(e)
+} finally {
+  cleanup()
+}
+
+// Pattern 2: Try monad (preferred for functional style)
+val result = Try(riskyOperation()) match {
+  case Success(value) => value
+  case Failure(e) => handleError(e)
+}
+""" ;
+                            oc:codeLanguage "scala" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 168-186" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Exception Handling" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python to Scala Syntax Mapping" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: python-scala-syntax-mapping
+description: Reference guide for translating Python syntax constructs to Scala equivalents. Use when converting Python code to Scala and need mappings for basic syntax elements like variable declarations, control flow, comprehensions, string formatting, and common operators.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_0330dbd7,
+        oc:kn_1134a2a5,
+        oc:kn_4c6a3150,
+        oc:kn_55c86def,
+        oc:kn_a78e03c1,
+        oc:kn_df7c94fd,
+        oc:kn_e1ed16fc,
+        oc:kn_e9bdb2cf ;
+    oc:isUserInvocable true ;
+    oc:nature "Reference" ;
+    oc:resolvesIntent "convert Python None/null handling to Scala Option",
+        "convert Python control flow to Scala",
+        "convert Python functions to Scala",
+        "map Python operators to Scala equivalents",
+        "map Python types to Scala types",
+        "translate Python comprehensions to Scala",
+        "translate Python exception handling to Scala",
+        "translate Python syntax to Scala" .
+
+oc:kn_0330dbd7 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python boolean expressions and membership tests" ;
+    oc:directiveContent "Python logical operators `and`, `or`, `not` map to Scala `&&`, `||`, `!` respectively. Python's `in` operator maps to `.contains()` method, and `is` maps to `eq` (reference equality)." ;
+    oc:hasRationale "Scala does not have keyword-based logical or membership operators; using the wrong mapping causes compilation errors." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1134a2a5 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When declaring variables in Scala translated from Python" ;
+    oc:directiveContent "Prefer `val` over `var` when translating Python variable declarations to Scala. Use `val` (immutable) by default; only use `var` (mutable) when mutation is explicitly required." ;
+    oc:hasRationale "Scala idiomatic style favors immutability for safer, more predictable code." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_4c6a3150 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python f-string formatting to Scala" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """// Python f-string → Scala string interpolation
+// f"Hello, {name}!"        →  s"Hello, $name!"
+// f"Value: {x:.2f}"       →  f"Value: $x%.2f"
+// f"{x + y}"              →  s"${x + y}\"""" ;
+    oc:hasRationale "Scala uses `s` interpolator for simple substitution and `f` interpolator for formatted output, mirroring Python's f-string capabilities." .
+
+oc:kn_55c86def a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When translating any Python syntax to Scala" ;
+    oc:directiveContent "1. Identify the Python syntax construct (variable, type, control flow, comprehension, function, operator, exception, null-handling). 2. Look up the corresponding Scala equivalent from the mapping tables. 3. Apply Scala-idiomatic patterns (val over var, if-as-expression, Option over null, Try monad for exceptions). 4. Verify the translated code compiles and preserves semantics." ;
+    oc:stepOrder 1 .
+
+oc:kn_a78e03c1 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python list comprehensions to Scala" ;
+    oc:codeLanguage "scala" ;
+    oc:directiveContent """// Python list comprehension → Scala map/filter or for-comprehension
+// [x**2 for x in range(10)]  →  (0 until 10).map(x => x * x).toList
+// [x for x in nums if x%2==0] →  numbers.filter(_ % 2 == 0)
+// [(x,y) for x in xs for y in ys] →  for { x <- xs; y <- ys } yield (x, y)""" ;
+    oc:hasRationale "Python comprehensions have direct Scala equivalents but use different syntax; map/filter is more common for simple cases, for-comprehensions for nested generators." .
+
+oc:kn_df7c94fd a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When translating Python None/null handling patterns" ;
+    oc:directiveContent "Prefer Scala's `Option[T]` with pattern matching or `map/getOrElse` over direct null handling when translating Python's None checks." ;
+    oc:hasRationale "Option is Scala's idiomatic way to represent optional values and avoids null pointer exceptions." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e1ed16fc a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python exception handling to Scala" ;
+    oc:directiveContent "Translate Python try/except to either Scala try/catch/finally (imperative style) or `scala.util.Try` monad with Success/Failure pattern matching (functional style, preferred)." ;
+    oc:hasRationale "The Try monad integrates exception handling into Scala's functional composition model, enabling safer chained operations." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_e9bdb2cf a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting Python conditional assignment patterns" ;
+    oc:directiveContent "Scala `if/else` is an expression that returns a value. Translate Python if/elif/else blocks that assign to a variable into a single `val result = if (...) ... else if (...) ... else ...` expression." ;
+    oc:hasRationale "Using if-as-expression is idiomatic Scala and eliminates mutable intermediate variables." ;
+    oc:severityLevel "MEDIUM" .
+

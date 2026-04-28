@@ -1,0 +1,360 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_ffmpeg_video_editing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-video-editing" ;
+    skos:broader "FFmpeg skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/ffmpeg-video-editing" ;
+    oc:contentHash "ab2d26e343983c92c5010dd9822ffee542e04368df999cce03a5ea2f3167e829" ;
+    oc:dependsOnSkill oc:skill_ontoskills_ffmpeg_media_info ;
+    oc:differentia "provides cut, trim, concatenate, and split operations on video files" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "input-file [time-range|segment-list|file-list]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Cut, trim, concatenate, and split video files - basic video editing operations" ;
+    oc:hasName "ffmpeg-video-editing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Basic video editing operations: cutting, trimming, concatenating, and splitting videos." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# With re-encoding (more precise)
+ffmpeg -ss 00:00:10 -i input.mp4 -t 20 -c:v libx264 -c:a aac output.mp4
+
+# Keyframe-accurate (faster, may be less precise)
+ffmpeg -ss 00:00:10 -i input.mp4 -t 20 -c copy output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 36-42" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Precise Cutting" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create list.txt file:
+# file 'video1.mp4'
+# file 'video2.mp4'
+# file 'video3.mp4'
+
+ffmpeg -f concat -safe 0 -i list.txt -c copy output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 48-55" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Method 1: File List (Recommended)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Re-encode for compatibility
+ffmpeg -f concat -safe 0 -i list.txt -c:v libx264 -c:a aac output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 66-69" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Method 3: Re-encode (Different Codecs)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# If all videos have same codec/format
+ffmpeg -i "concat:video1.mp4|video2.mp4|video3.mp4" -c copy output.mp4
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 59-62" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Method 2: Same Codec Files" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Concatenation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-c copy` for speed (no re-encoding)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-ss` after `-i` is more precise but slower" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Use file list method for best concatenation results" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Concatenation requires same codec/format for `-c copy`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-ss` before `-i` is faster but less precise" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Trim video length" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Cut segments from video" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Extract specific time ranges" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Concatenate multiple videos" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Split video into parts" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Extract multiple segments
+ffmpeg -i input.mp4 \\
+  -ss 00:00:10 -t 00:00:05 -c copy segment1.mp4 \\
+  -ss 00:01:00 -t 00:00:10 -c copy segment2.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 93-98" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Multiple Segments" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Cut from 10s to 30s (using -ss and -to)
+ffmpeg -ss 00:00:10 -to 00:00:30 -i input.mp4 -c copy output.mp4
+
+# Cut from 10s for 20 seconds duration
+ffmpeg -ss 00:00:10 -t 20 -i input.mp4 -c copy output.mp4
+
+# First 60 seconds
+ffmpeg -t 60 -i input.mp4 -c copy output.mp4
+
+# Last 30 seconds (need duration first)
+ffmpeg -sseof -30 -i input.mp4 -c copy output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-32" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Cutting and Trimming" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Split into 60-second segments
+ffmpeg -i input.mp4 -c copy -f segment -segment_time 60 \\
+  -reset_timestamps 1 output_%03d.mp4
+
+# Split at specific timestamps
+ffmpeg -i input.mp4 -ss 00:00:00 -t 00:01:00 -c copy part1.mp4
+ffmpeg -i input.mp4 -ss 00:01:00 -t 00:01:00 -c copy part2.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 73-81" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Splitting Video" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# When you need to change quality/codec
+ffmpeg -ss 00:00:10 -i input.mp4 -t 20 \\
+  -c:v libx264 -crf 23 -c:a aac -b:a 192k output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 85-89" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Extract Segment with Re-encoding" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Video Editing Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: FFmpeg Video Editing
+description: Cut, trim, concatenate, and split video files - basic video editing operations
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract a specific time range from a video file" ;
+            oc:hasStep _:ref_bf52a855a83798d1,
+                _:ref_dc8cbe8d0aa669ce,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg with -c copy for speed or re-encode for precision" ;
+                    oc:expectedOutcome "Output video file created with correct time range" ;
+                    oc:stepDependsOn _:ref_bf52a855a83798d1 ;
+                    oc:stepId "cut-3" ] ;
+            oc:workflowId "cut-video-segment" ;
+            oc:workflowName "Cut Video Segment" ],
+        [ a oc:Workflow ;
+            dcterms:description "Divide a video into multiple segments" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg segment muxer or individual cut commands" ;
+                    oc:expectedOutcome "Multiple output video parts created" ;
+                    oc:stepDependsOn _:ref_cd7fe4d2a5d4cc33 ;
+                    oc:stepId "split-2" ],
+                _:ref_cd7fe4d2a5d4cc33 ;
+            oc:workflowId "split-video" ;
+            oc:workflowName "Split Video into Parts" ],
+        [ a oc:Workflow ;
+            dcterms:description "Join multiple video files into one" ;
+            oc:hasStep _:ref_19b41c6ea6cc2a5e,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run ffmpeg -f concat -safe 0 -i list.txt -c copy output.mp4" ;
+                    oc:expectedOutcome "Concatenated output video created" ;
+                    oc:stepDependsOn _:ref_b286a248162349ac ;
+                    oc:stepId "concat-3" ],
+                _:ref_b286a248162349ac ;
+            oc:workflowId "concatenate-videos" ;
+            oc:workflowName "Concatenate Videos" ] ;
+    oc:impartsKnowledge oc:kn_0d06c167,
+        oc:kn_36255c6f,
+        oc:kn_41aba6b5,
+        oc:kn_47c6e774,
+        oc:kn_7280bc7b,
+        oc:kn_7f74ea52,
+        oc:kn_a17838da,
+        oc:kn_b0b9f764,
+        oc:kn_bd5a256e,
+        oc:kn_d2649fd3 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "concatenate multiple videos",
+        "cut video segment",
+        "extract specific time range from video",
+        "split video into parts",
+        "trim video length" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0d06c167 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When concatenating videos using the recommended file list method" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -f concat -safe 0 -i list.txt -c copy output.mp4" .
+
+oc:kn_36255c6f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When concatenating multiple video files" ;
+    oc:directiveContent "Use the file list method (concat demuxer with -f concat -safe 0 -i list.txt) for concatenation; it is the most reliable approach." ;
+    oc:hasRationale "The file list method handles varied inputs better than the pipe concat protocol." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_41aba6b5 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When cutting a specific time range from a video" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -ss 00:00:10 -to 00:00:30 -i input.mp4 -c copy output.mp4" .
+
+oc:kn_47c6e774 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When using -ss for time-based cutting" ;
+    oc:directiveContent "Place -ss BEFORE -i for fast seeking (keyframe-level); place -ss AFTER -i for precise frame-accurate seeking." ;
+    oc:hasRationale "Input seeking (-ss before -i) seeks to nearest keyframe; output seeking (-ss after -i) decodes from start for precision." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_7280bc7b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any video editing operation" ;
+    oc:directiveContent "ffmpeg must be installed and available in PATH" .
+
+oc:kn_7f74ea52 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When performing any video editing operation" ;
+    oc:directiveContent "1. Identify operation (cut/trim/concat/split) 2. Determine if re-encoding is needed 3. Place -ss before -i for speed or after -i for precision 4. Use -c copy unless codec change required 5. Verify output duration matches expectation" ;
+    oc:stepOrder 1 .
+
+oc:kn_a17838da a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing any cutting, trimming, or concatenation operation" ;
+    oc:directiveContent "Use -c copy for speed (no re-encoding); use re-encoding only when precision or codec change is needed." ;
+    oc:hasRationale "Re-encoding is slow and degrades quality; stream copy is near-instant and lossless." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b0b9f764 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When concatenating videos using -c copy or concat protocol" ;
+    oc:directiveContent "Concatenation with -c copy requires all input files to have the same codec, resolution, and format." ;
+    oc:hasRationale "Mismatched codecs/formats cause corruption or failure in the concatenated output." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bd5a256e a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When cutting from the end of a video" ;
+    oc:directiveContent "Using -sseof requires knowing the file duration beforehand; negative timestamps are relative to the end of file." ;
+    oc:hasRationale "Without knowing duration, -sseof estimates may be inaccurate for some containers." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_d2649fd3 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When splitting video into equal-duration segments" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i input.mp4 -c copy -f segment -segment_time 60 -reset_timestamps 1 output_%03d.mp4" .
+
+_:ref_19b41c6ea6cc2a5e a oc:WorkflowStep ;
+    dcterms:description "Verify all input videos have same codec/format (use ffmpeg-media-info)" ;
+    oc:expectedOutcome "Codec compatibility confirmed" ;
+    oc:stepId "concat-1" .
+
+_:ref_b286a248162349ac a oc:WorkflowStep ;
+    dcterms:description "Create file list (list.txt) with file references" ;
+    oc:expectedOutcome "Concat list file created" ;
+    oc:stepDependsOn _:ref_19b41c6ea6cc2a5e ;
+    oc:stepId "concat-2" .
+
+_:ref_bf52a855a83798d1 a oc:WorkflowStep ;
+    dcterms:description "Decide precision level: -ss before -i (fast) or after -i (precise)" ;
+    oc:expectedOutcome "Seeking strategy chosen" ;
+    oc:stepDependsOn _:ref_dc8cbe8d0aa669ce ;
+    oc:stepId "cut-2" .
+
+_:ref_cd7fe4d2a5d4cc33 a oc:WorkflowStep ;
+    dcterms:description "Determine segment duration or specific split timestamps" ;
+    oc:expectedOutcome "Segment boundaries defined" ;
+    oc:stepId "split-1" .
+
+_:ref_dc8cbe8d0aa669ce a oc:WorkflowStep ;
+    dcterms:description "Determine start time, end time/duration for the cut" ;
+    oc:expectedOutcome "Time parameters identified" ;
+    oc:stepId "cut-1" .
+

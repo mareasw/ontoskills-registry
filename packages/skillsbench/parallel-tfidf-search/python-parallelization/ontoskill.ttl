@@ -1,0 +1,555 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_parallel_tfidf_search_python_parallelization a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "python-parallelization" ;
+    skos:broader "Transformation methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/parallel-tfidf-search/python-parallelization" ;
+    oc:contentHash "7129abc3ac44b6b8a91a188a9993ef62e4e56f3645fe101717f278aa2eecadf6" ;
+    oc:differentia "classifies workload type and applies correct Python concurrency pattern (multiprocessing, asyncio, threading, vectorization)" ;
+    oc:handlesFailure oc:PickleFailure,
+        oc:RaceConditionDetected,
+        oc:ResourceExhaustion ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "Python code to parallelize" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Transform sequential Python code into parallel/concurrent implementations. Use when asked to parallelize Python code, improve code performance through concurrency, convert loops to parallel execution, or identify parallelization opportunities. Handles CPU-bound (multiprocessing), I/O-bound (asyncio, threading), and data-parallel (vectorization) scenarios." ;
+    oc:hasName "python-parallelization" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: python-parallelization
+description: Transform sequential Python code into parallel/concurrent implementations. Use when asked to parallelize Python code, improve code performance through concurrency, convert loops to parallel execution, or identify parallelization opportunities. Handles CPU-bound (multiprocessing), I/O-bound (asyncio, threading), and data-parallel (vectorization) scenarios.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Transform sequential Python code to leverage parallel and concurrent execution patterns." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Look for these patterns in code:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "Look for these patterns in code" ;
+                            oc:tableMarkdown """| Pattern | Indicator | Strategy |
+|---------|-----------|----------|
+| `for item in collection` with independent iterations | No shared mutation | `Pool.map` / `executor.map` |
+| Multiple `requests.get()` or file reads | Sequential I/O | `asyncio.gather()` |
+| Nested loops over arrays | Numerical computation | NumPy vectorization |
+| `time.sleep()` or blocking waits | Waiting on external | Threading or async |
+| Large list comprehensions | Independent transforms | `Pool.map` with chunking |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Parallelization Candidates" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_50253df3f512215d ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Workflow" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_306f99c839ac2a70,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always preserve correctness when parallelizing:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Safety Requirements" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] No race conditions (shared mutable state properly synchronized)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Resources are properly cleaned up (pools closed, connections released)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] Exceptions are caught and handled appropriately" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Worker count is bounded (default or explicit limit)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] Added appropriate imports" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Output matches sequential version for test inputs" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before finalizing transformed code:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Verification Checklist" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """result = []
+for i in range(len(a)):
+    row = []
+    for j in range(len(b)):
+        row.append(a[i] * b[j])
+    result.append(row)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 89-96" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import numpy as np
+result = np.outer(a, b)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 99-102" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**After:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Before:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 3: Nested Loops to Vectorization" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**After:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """results = []
+for item in items:
+    results.append(expensive_computation(item))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 47-51" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Before:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from concurrent.futures import ProcessPoolExecutor
+
+with ProcessPoolExecutor() as executor:
+    results = list(executor.map(expensive_computation, items))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 54-59" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 1: Loop to ProcessPoolExecutor (CPU-bound)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import asyncio
+import aiohttp
+
+async def fetch_all(urls):
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_one(session, url) for url in urls]
+        return await asyncio.gather(*tasks)
+
+async def fetch_one(session, url):
+    async with session.get(url) as response:
+        return await response.json()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 72-84" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**After:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import requests
+
+def fetch_all(urls):
+    return [requests.get(url).json() for url in urls]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 64-69" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Before:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 2: Sequential I/O to Async (I/O-bound)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import asyncio
+from concurrent.futures import ProcessPoolExecutor
+
+async def hybrid_pipeline(data, urls):
+    loop = asyncio.get_event_loop()
+
+    # CPU-bound in process pool
+    with ProcessPoolExecutor() as pool:
+        processed = await loop.run_in_executor(pool, cpu_heavy_fn, data)
+
+    # I/O-bound with async
+    results = await asyncio.gather(*[fetch(url) for url in urls])
+
+    return processed, results
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 106-121" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Pattern 4: Mixed CPU/IO with asyncio" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Transformation Patterns" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Pickle failures**: Lambda functions and nested classes can't be pickled for multiprocessing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Memory explosion**: ProcessPoolExecutor copies data to each process—use shared memory for large data" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**GIL trap**: Threading doesn't help CPU-bound Python code—use multiprocessing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Over-parallelization**: Parallel overhead exceeds gains for small workloads (<1000 items typically)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Async in sync**: Can't just add `async` to existing code—requires restructuring call chain" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """Is the bottleneck CPU-bound or I/O-bound?
+
+CPU-bound (computation-heavy):
+├── Independent iterations? → multiprocessing.Pool / ProcessPoolExecutor
+├── Shared state needed? → multiprocessing with Manager or shared memory
+├── NumPy/Pandas operations? → Vectorization first, then consider numba/dask
+└── Large data chunks? → chunked processing with Pool.map
+
+I/O-bound (network, disk, database):
+├── Many independent requests? → asyncio with aiohttp/aiofiles
+├── Legacy sync code? → ThreadPoolExecutor
+├── Mixed sync/async? → asyncio.to_thread()
+└── Database queries? → Connection pooling + async drivers
+
+Data-parallel (array/matrix ops):
+├── NumPy arrays? → Vectorize, avoid Python loops
+├── Pandas DataFrames? → Use built-in vectorized methods
+├── Large datasets? → Dask for out-of-core parallelism
+└── GPU available? → Consider CuPy or JAX
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 20-40" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Parallelization Decision Tree" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python Parallelization Skill" ] ;
+    oc:hasWorkflow _:ref_306f99c839ac2a70,
+        _:ref_50253df3f512215d,
+        [ a oc:Workflow ;
+            dcterms:description "Analyze, classify, select strategy, transform, and verify parallel code" ;
+            oc:hasStep _:ref_2987aa0ef363251a,
+                _:ref_681832257b09b758,
+                _:ref_b54cab7efec91b48,
+                _:ref_cd29eeec4fedf5e4,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify correctness (output matches sequential), check for race conditions, ensure resource cleanup" ;
+                    oc:expectedOutcome "Verified parallel code with no correctness regressions" ;
+                    oc:stepDependsOn _:ref_681832257b09b758 ;
+                    oc:stepId "verify" ] ;
+            oc:workflowId "parallelization-workflow" ;
+            oc:workflowName "Python Parallelization" ] ;
+    oc:impartsKnowledge oc:kn_0c918afc,
+        oc:kn_2a2ef7ec,
+        oc:kn_5780c3b5,
+        oc:kn_6b8a9b2a,
+        oc:kn_6cec9c3b,
+        oc:kn_6dd9fa28,
+        oc:kn_806d1c44,
+        oc:kn_8731afeb,
+        oc:kn_8a7489e5,
+        oc:kn_b4892226,
+        oc:kn_b4c5eb79,
+        oc:kn_c59193e6,
+        oc:kn_d54e5a02,
+        oc:kn_de22e019 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "convert sequential loops to parallel execution",
+        "identify parallelization opportunities in Python",
+        "improve code performance through concurrency",
+        "parallelize Python code",
+        "transform CPU-bound code to use multiprocessing",
+        "transform I/O-bound code to use asyncio" ;
+    oc:yieldsState oc:CodeParallelized,
+        oc:PerformanceVerified .
+
+oc:kn_0c918afc a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating whether to parallelize" ;
+    oc:directiveContent "Avoid parallelizing workloads with fewer than ~1000 items—parallel overhead will exceed gains" ;
+    oc:hasRationale "Process/thread creation and inter-process communication have fixed overhead costs that dominate small workloads" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_2a2ef7ec a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Python 3.7+ required for asyncio.run() and modern concurrent.futures API" .
+
+oc:kn_5780c3b5 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When parallelizing CPU-intensive computations" ;
+    oc:directiveContent "Never use threading for CPU-bound Python code—the GIL prevents true parallelism; use multiprocessing instead" ;
+    oc:hasRationale "Python's Global Interpreter Lock (GIL) allows only one thread to execute Python bytecode at a time, making threading ineffective for CPU-bound work" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_6b8a9b2a a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When parallel tasks may fail individually" ;
+    oc:directiveContent "Use executor.submit() instead of executor.map() for granular error handling—submit returns Future objects with per-task exception info" ;
+    oc:hasRationale "map() propagates exceptions on iteration, making it hard to handle partial failures; submit() + Future allows per-task error inspection" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6cec9c3b a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting independent CPU-bound loops to parallel execution" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from concurrent.futures import ProcessPoolExecutor
+
+with ProcessPoolExecutor() as executor:
+    results = list(executor.map(expensive_computation, items))""" .
+
+oc:kn_6dd9fa28 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting sequential HTTP requests to concurrent async I/O" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import asyncio
+import aiohttp
+
+async def fetch_all(urls):
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_one(session, url) for url in urls]
+        return await asyncio.gather(*tasks)""" .
+
+oc:kn_806d1c44 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When replacing nested loops over numerical arrays with vectorized operations" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import numpy as np
+result = np.outer(a, b)""" .
+
+oc:kn_8731afeb a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before finalizing parallelized code" ;
+    oc:directiveContent "Verify: output matches sequential version for test inputs, no race conditions, exceptions handled, resources cleaned up, worker count bounded, imports added" ;
+    oc:hasRationale "Parallelization introduces subtle correctness risks that must be explicitly validated against sequential baseline" .
+
+oc:kn_8a7489e5 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When analyzing code for parallelization candidates" ;
+    oc:directiveContent "Shared mutable state across iterations breaks parallelism—identify and synchronize or eliminate shared state before parallelizing" ;
+    oc:hasRationale "Race conditions from unsynchronized shared state produce incorrect, non-deterministic results" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b4892226 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When passing large data structures to multiprocessing" ;
+    oc:directiveContent "ProcessPoolExecutor copies data to each worker process—use shared memory (multiprocessing.shared_memory) for large datasets to avoid memory explosion" ;
+    oc:hasRationale "Each subprocess gets its own memory space; large data duplicated across workers can exhaust available memory" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b4c5eb79 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using multiprocessing.Pool or ProcessPoolExecutor" ;
+    oc:directiveContent "Do not pass lambda functions or nested classes to multiprocessing—they cannot be pickled and will raise exceptions at runtime" ;
+    oc:hasRationale "Multiprocessing serializes arguments and functions via pickle; lambdas and nested classes are not picklable" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c59193e6 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Always when parallelizing Python code" ;
+    oc:directiveContent "1. Analyze code for parallelization candidates 2. Classify workload type (CPU/IO/data-parallel) 3. Select strategy from decision tree 4. Transform with proper synchronization and error handling 5. Verify correctness against sequential baseline" ;
+    oc:stepOrder 1 .
+
+oc:kn_d54e5a02 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a parallelization strategy" ;
+    oc:directiveContent "Classify workload first: CPU-bound → multiprocessing, I/O-bound → asyncio/threading, data-parallel → vectorization (NumPy/Pandas)" ;
+    oc:hasRationale "Each workload type has an optimal concurrency mechanism; mismatching strategy to workload type yields poor or negative performance gains" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_de22e019 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When code has both CPU-bound and I/O-bound workloads requiring mixed parallelism" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import asyncio
+from concurrent.futures import ProcessPoolExecutor
+
+async def hybrid_pipeline(data, urls):
+    loop = asyncio.get_event_loop()
+    with ProcessPoolExecutor() as pool:
+        processed = await loop.run_in_executor(pool, cpu_heavy_fn, data)
+    results = await asyncio.gather(*[fetch(url) for url in urls])
+    return processed, results""" .
+
+_:ref_0d98f8b612c58abf a oc:WorkflowStep ;
+    dcterms:description "**Handle exceptions** - wrap parallel code in try/except, use `executor.submit()` for granular error handling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_15d113b4297b7127 a oc:WorkflowStep ;
+    dcterms:description "**Analyze** the code to identify parallelization candidates" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4a435989ee844e5b a oc:WorkflowStep ;
+    dcterms:description "**Identify shared state** - variables modified across iterations break parallelism" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_73a547f18358d0c8 a oc:WorkflowStep ;
+    dcterms:description "**Preserve ordering** - use `map()` over `submit()` when order matters" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_7a9efd4053789b38 a oc:WorkflowStep ;
+    dcterms:description "**Manage resources** - use context managers, limit worker count to avoid exhaustion" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_a65c8690bf302a19 a oc:WorkflowStep ;
+    dcterms:description "**Verify** correctness and measure expected speedup" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_c92dfd216a1baa7d a oc:WorkflowStep ;
+    dcterms:description "**Classify** the workload type (CPU-bound, I/O-bound, or data-parallel)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_cbc3dd675eeecf66 a oc:WorkflowStep ;
+    dcterms:description "**Select** the appropriate parallelization strategy" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_dc7592998ede2f31 a oc:WorkflowStep ;
+    dcterms:description "**Check dependencies** - iteration N depending on N-1 requires sequential execution" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_fc00af556dada7dc a oc:WorkflowStep ;
+    dcterms:description "**Transform** the code with proper synchronization and error handling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_2987aa0ef363251a a oc:WorkflowStep ;
+    dcterms:description "Classify workload type as CPU-bound, I/O-bound, or data-parallel" ;
+    oc:expectedOutcome "Workload classification with justification" ;
+    oc:stepDependsOn _:ref_cd29eeec4fedf5e4 ;
+    oc:stepId "classify" .
+
+_:ref_306f99c839ac2a70 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0d98f8b612c58abf,
+        _:ref_4a435989ee844e5b,
+        _:ref_73a547f18358d0c8,
+        _:ref_7a9efd4053789b38,
+        _:ref_dc7592998ede2f31 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_50253df3f512215d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_15d113b4297b7127,
+        _:ref_a65c8690bf302a19,
+        _:ref_c92dfd216a1baa7d,
+        _:ref_cbc3dd675eeecf66,
+        _:ref_fc00af556dada7dc ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_681832257b09b758 a oc:WorkflowStep ;
+    dcterms:description "Transform the code applying the selected pattern with proper synchronization and error handling" ;
+    oc:expectedOutcome "Parallelized code preserving original semantics" ;
+    oc:stepDependsOn _:ref_b54cab7efec91b48 ;
+    oc:stepId "transform" .
+
+_:ref_b54cab7efec91b48 a oc:WorkflowStep ;
+    dcterms:description "Select appropriate parallelization strategy based on classification (multiprocessing, asyncio, threading, vectorization)" ;
+    oc:expectedOutcome "Chosen strategy and Python APIs to use" ;
+    oc:stepDependsOn _:ref_2987aa0ef363251a ;
+    oc:stepId "select-strategy" .
+
+_:ref_cd29eeec4fedf5e4 a oc:WorkflowStep ;
+    dcterms:description "Analyze the code to identify parallelization candidates (loops, I/O calls, nested iterations)" ;
+    oc:expectedOutcome "List of code sections suitable for parallelization" ;
+    oc:stepId "analyze" .
+

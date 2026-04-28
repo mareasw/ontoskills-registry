@@ -1,0 +1,1000 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_google_auto_maven_dependency_management a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "maven-dependency-management" ;
+    skos:broader "Dependency management framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-google-auto/maven-dependency-management" ;
+    oc:contentHash "750ee7728e87e5f2d54a8fdef2e025033dd3d74623a3fe82239c166a8b453cc5" ;
+    oc:dependsOnSkill oc:skill_ontoskills_maven_build_lifecycle ;
+    oc:differentia "governs Maven dependency declaration, scope management, version resolution, BOM imports, conflict resolution, and dependency tree optimization for Java projects" ;
+    oc:handlesFailure oc:ArtifactNotFound,
+        oc:DependencyConflict,
+        oc:VersionMismatch ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "dependency-query or pom-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when managing Maven dependencies, resolving dependency conflicts, configuring BOMs, or optimizing dependency trees in Java projects." ;
+    oc:hasName "maven-dependency-management" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Master Maven dependency management including dependency declaration, scope management, version resolution, BOMs, and dependency tree optimization." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependency>
+    <groupId>com.google.code.findbugs</groupId>
+    <artifactId>jsr305</artifactId>
+    <version>3.0.2</version>
+    <optional>true</optional>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 39-46" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Optional Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>3.2.0</version>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 18-24" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Dependency" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>5.10.1</version>
+    <scope>test</scope>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 28-35" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Dependency with Scope" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Dependency Declaration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<properties>
+    <spring-boot.version>3.2.0</spring-boot.version>
+    <junit.version>5.10.1</junit.version>
+    <jackson.version>2.16.0</jackson.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+    </dependency>
+</dependencies>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 100-114" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Property-Based Versions" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- Avoid in production -->
+<version>LATEST</version>
+<version>RELEASE</version>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 137-141" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Latest Version (Not Recommended)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- Exact version -->
+<version>1.0.0</version>
+
+<!-- Greater than or equal -->
+<version>[1.0.0,)</version>
+
+<!-- Less than -->
+<version>(,1.0.0)</version>
+
+<!-- Range inclusive -->
+<version>[1.0.0,2.0.0]</version>
+
+<!-- Range exclusive -->
+<version>(1.0.0,2.0.0)</version>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 118-133" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Version Ranges" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Version Management" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<repositories>
+    <repository>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+</repositories>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 403-410" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Central Repository" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<repositories>
+    <repository>
+        <id>company-repo</id>
+        <url>https://nexus.company.com/repository/maven-public</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 414-427" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Private Repository" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- ~/.m2/settings.xml -->
+<settings>
+    <servers>
+        <server>
+            <id>company-repo</id>
+            <username>${env.REPO_USER}</username>
+            <password>${env.REPO_PASS}</password>
+        </server>
+    </servers>
+</settings>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 431-442" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Repository in Settings.xml" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Repository Configuration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Add alternative -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 219-236" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Excluding Transitive Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-log4j2</artifactId>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 240-256" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Excluding Logging Frameworks" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Exclusions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Resolving version conflicts" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Adding new dependencies to a project" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Excluding problematic transitive dependencies" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Troubleshooting classpath issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Setting up multi-module project dependencies" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Optimizing dependency trees" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Configuring BOM imports" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Upgrading dependency versions" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- Compile scope (default) - available everywhere -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.14.0</version>
+</dependency>
+
+<!-- Provided - available at compile, not packaged -->
+<dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>6.0.0</version>
+    <scope>provided</scope>
+</dependency>
+
+<!-- Runtime - only needed at runtime -->
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.1</version>
+    <scope>runtime</scope>
+</dependency>
+
+<!-- Test - only for testing -->
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>5.8.0</version>
+    <scope>test</scope>
+</dependency>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 63-94" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Scope Examples" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 6 ;
+                                    oc:tableCaption "### Available Scopes" ;
+                                    oc:tableMarkdown """| Scope | Compile CP | Test CP | Runtime CP | Transitive |
+|-------|-----------|---------|------------|------------|
+| compile | Yes | Yes | Yes | Yes |
+| provided | Yes | Yes | No | No |
+| runtime | No | Yes | Yes | Yes |
+| test | No | Yes | No | No |
+| system | Yes | Yes | No | No |
+| import | N/A | N/A | N/A | N/A |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Available Scopes" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Dependency Scopes" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Maven uses \"nearest definition wins\" for version conflicts:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Result: C 2.0 is used (nearest to root)" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """A -> B -> C 1.0
+A -> C 2.0
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 305-308" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Maven's Default Strategy" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.4.1</version>
+            <executions>
+                <execution>
+                    <id>enforce</id>
+                    <goals>
+                        <goal>enforce</goal>
+                    </goals>
+                    <configuration>
+                        <rules>
+                            <dependencyConvergence/>
+                            <requireUpperBoundDeps/>
+                            <banDuplicatePomDependencyVersions/>
+                        </rules>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 329-354" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Enforcer Plugin for Version Control" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependencyManagement>
+    <dependencies>
+        <!-- Force specific version across all modules -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 314-325" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Forcing Versions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Conflict Resolution" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependencyManagement>
+    <dependencies>
+        <!-- Spring Boot BOM -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>3.2.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <!-- AWS SDK BOM -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bom</artifactId>
+            <version>2.23.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <!-- JUnit BOM -->
+        <dependency>
+            <groupId>org.junit</groupId>
+            <artifactId>junit-bom</artifactId>
+            <version>5.10.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 182-213" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "BOM (Bill of Materials) Import" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>3.2.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-bom</artifactId>
+            <version>2.16.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+
+<!-- No version needed when declared in dependencyManagement -->
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+    </dependency>
+</dependencies>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 147-178" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Centralizing Versions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Dependency Management Section" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_3857fb84e7c0ccf5 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Find unused declared and used undeclared dependencies
+mvn dependency:analyze
+
+# Show only problems
+mvn dependency:analyze-only
+
+# Include test scope
+mvn dependency:analyze -DignoreNonCompile=false
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 278-287" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Analyze Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Full dependency tree
+mvn dependency:tree
+
+# Filter by artifact
+mvn dependency:tree -Dincludes=org.slf4j
+
+# Output to file
+mvn dependency:tree -DoutputFile=deps.txt
+
+# Verbose output showing conflict resolution
+mvn dependency:tree -Dverbose
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 262-274" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "View Dependency Tree" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# List all dependencies
+mvn dependency:list
+
+# List with scope
+mvn dependency:list -DincludeScope=runtime
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 291-297" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "List Dependencies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Dependency Analysis" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_445f64fd8a92ecee ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """<!-- parent/pom.xml -->
+<project>
+    <groupId>com.example</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
+
+<!-- module/pom.xml -->
+<project>
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>module</artifactId>
+
+    <dependencies>
+        <!-- Version inherited from parent -->
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+""" ;
+                                    oc:codeLanguage "xml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 360-397" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parent POM Dependency Management" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Multi-Module Projects" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Enable debug output
+mvn dependency:tree -X
+
+# Show conflict resolution
+mvn dependency:tree -Dverbose=true
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 472-478" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Debug Dependency Resolution" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# See resolved dependency versions
+mvn help:effective-pom
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 492-495" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Check Effective POM" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Clear local repository cache
+mvn dependency:purge-local-repository
+
+# Force update
+mvn -U clean install
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 482-488" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Force Re-download" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Maven's dependency management is a cornerstone of Java project build systems. It handles transitive dependencies, version conflicts, and provides mechanisms for controlling dependency resolution across multi-module projects." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Maven Dependency Management" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: maven-dependency-management
+description: Use when managing Maven dependencies, resolving dependency conflicts, configuring BOMs, or optimizing dependency trees in Java projects.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Systematic approach to diagnosing and fixing Maven dependency version conflicts." ;
+            oc:hasStep _:ref_604482c7bd601f28,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run 'mvn dependency:tree' and 'mvn dependency:analyze' to confirm the conflict is resolved and no new issues introduced." ;
+                    oc:expectedOutcome "Clean dependency tree with no unexpected version overrides" ;
+                    oc:stepDependsOn _:ref_604482c7bd601f28 ;
+                    oc:stepId "validate-fix" ],
+                _:ref_d730cc196681aeab,
+                _:ref_f2626ed8554ccbd2 ;
+            oc:workflowId "resolve-dependency-conflict" ;
+            oc:workflowName "Resolve Dependency Conflict" ],
+        _:ref_3857fb84e7c0ccf5,
+        _:ref_445f64fd8a92ecee,
+        [ a oc:Workflow ;
+            dcterms:description "Establish centralized dependency management for a Maven project using BOMs and property-based versions." ;
+            oc:hasStep _:ref_6dd1b6b4bc1631ec,
+                _:ref_9d8ae67ce2dae8e8,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run 'mvn dependency:tree' and 'mvn dependency:analyze' to verify correct resolution and no issues." ;
+                    oc:expectedOutcome "All dependencies resolve to expected versions with no warnings" ;
+                    oc:stepDependsOn _:ref_ff17870c2d1970e0 ;
+                    oc:stepId "verify-setup" ],
+                _:ref_ff17870c2d1970e0 ;
+            oc:workflowId "setup-dependency-management" ;
+            oc:workflowName "Set Up Dependency Management" ] ;
+    oc:impartsKnowledge oc:kn_35607fbf,
+        oc:kn_39bb0c5c,
+        oc:kn_5389c3de,
+        oc:kn_53ccbef4,
+        oc:kn_77ae58d2,
+        oc:kn_881fb749,
+        oc:kn_a2fbc7af,
+        oc:kn_e08bdf2c,
+        oc:kn_edf0740f,
+        oc:kn_f0f35b7b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:ProjectHasPom ;
+    oc:resolvesIntent "configure BOM imports",
+        "declare dependencies with proper scope",
+        "manage maven dependencies",
+        "optimize dependency tree",
+        "resolve dependency conflicts",
+        "set up multi-module project dependencies",
+        "troubleshoot classpath issues",
+        "upgrade dependency versions" ;
+    oc:yieldsState oc:DependenciesResolved,
+        oc:DependencyTreeOptimized .
+
+oc:kn_35607fbf a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When declaring dependency versions in pom.xml" ;
+    oc:directiveContent "Never use LATEST or RELEASE version specifiers in production POMs; always pin exact versions for reproducible builds." ;
+    oc:hasRationale "LATEST/RELEASE are resolved dynamically and can break builds non-deterministically at any time." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_39bb0c5c a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before releasing a project" ;
+    oc:directiveContent "Run 'mvn dependency:analyze' before releases to identify unused declared dependencies and used undeclared dependencies." ;
+    oc:hasRationale "Unused dependencies bloat the artifact; undeclared used dependencies can break at runtime when transitive paths change." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5389c3de a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When encountering dependency conflicts or ClassNotFoundException" ;
+    oc:directiveContent "When dependency resolution fails, use 'mvn dependency:tree -Dverbose' to see conflict resolution details, then force the correct version via dependencyManagement." ;
+    oc:hasRationale "Verbose tree output shows exactly which version was selected and why, enabling targeted fixes." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_53ccbef4 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When troubleshooting version conflicts in dependency tree" ;
+    oc:directiveContent "Maven resolves version conflicts using 'nearest definition wins' — the dependency closest to the root in the dependency tree takes precedence, not the highest version." ;
+    oc:hasRationale "Understanding this is essential for correctly diagnosing and fixing unexpected runtime behavior caused by wrong transitive versions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_77ae58d2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When declaring dependencies" ;
+    oc:directiveContent "Never use system scope with hardcoded paths; it breaks portability across machines and CI environments." ;
+    oc:hasRationale "System scope dependencies reference local file paths that won't exist on other machines or build servers." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_881fb749 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When managing framework or library ecosystem dependencies" ;
+    oc:directiveContent "Use well-maintained BOMs (Bill of Materials) such as spring-boot-dependencies, jackson-bom, or junit-bom via import scope to manage compatible version sets." ;
+    oc:hasRationale "BOMs ensure compatible versions across related artifacts without manually tracking each one." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a2fbc7af a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When using exclusion elements in dependency declarations" ;
+    oc:directiveContent "Excluding a transitive dependency affects the entire dependency subtree for that artifact; adding an alternative must be done explicitly." ;
+    oc:hasRationale "Exclusions don't just remove from one path — they remove the excluded artifact from all paths through that dependency." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e08bdf2c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up multi-module Maven projects" ;
+    oc:directiveContent "Centralize all dependency versions in the dependencyManagement section of the parent POM, and omit version tags in child module dependencies." ;
+    oc:hasRationale "Centralization prevents version drift, eliminates conflicts, and makes upgrading a single version change across all modules." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_edf0740f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When specifying dependency versions" ;
+    oc:directiveContent "Avoid version ranges in dependency declarations; use exact pinned versions combined with dependencyManagement for centralization." ;
+    oc:hasRationale "Version ranges introduce non-determinism and make builds non-reproducible across environments." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f0f35b7b a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring dependencies for release builds" ;
+    oc:directiveContent "Never use SNAPSHOT versions in production releases; they are mutable and can change at any time, breaking reproducibility." ;
+    oc:hasRationale "SNAPSHOT artifacts are development versions that can be overwritten, making production builds non-deterministic." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_02e42882656a4802 a oc:WorkflowStep ;
+    dcterms:description "**Use dependencyManagement** - Centralize versions in parent POMs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_11e65e0b1b676dc1 a oc:WorkflowStep ;
+    dcterms:description "**Exclude Unused** - Remove unused transitive dependencies" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_2d278020aa82486b a oc:WorkflowStep ;
+    dcterms:description "**Document Exclusions** - Comment why exclusions are needed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_39cb1fe33304a58c a oc:WorkflowStep ;
+    dcterms:description "**Version Conflicts** - Transitive dependency version mismatches" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3c044e7230b2a932 a oc:WorkflowStep ;
+    dcterms:description "**Wrong Scope** - Compile vs runtime vs provided confusion" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3ff786020d2be4e0 a oc:WorkflowStep ;
+    dcterms:description "**Missing Exclusions** - Duplicate classes from different artifacts" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_4d6ea7070815bc6b a oc:WorkflowStep ;
+    dcterms:description "**Regular Updates** - Keep dependencies current for security" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_798b2f9dfede00b5 a oc:WorkflowStep ;
+    dcterms:description "**Import BOMs** - Use well-maintained BOMs for framework dependencies" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_7c4df66d4d77417e a oc:WorkflowStep ;
+    dcterms:description "**Circular Dependencies** - Module A depends on B depends on A" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_7d6b3380d3c52943 a oc:WorkflowStep ;
+    dcterms:description "**Use Enforcer Plugin** - Ensure dependency convergence" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_80ace6581ef76b19 a oc:WorkflowStep ;
+    dcterms:description "**System Scope** - Hardcoded paths break portability" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_87299c1f3c0a9ddc a oc:WorkflowStep ;
+    dcterms:description "**Lock Versions** - Use versions-maven-plugin for updates" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_922f486a0956a820 a oc:WorkflowStep ;
+    dcterms:description "**Minimize Scopes** - Use appropriate scopes to reduce package size" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_9a2eaaadca32358f a oc:WorkflowStep ;
+    dcterms:description "**Avoid Version Ranges** - Pin exact versions for reproducibility" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_a3ac851e602809f8 a oc:WorkflowStep ;
+    dcterms:description "**Optional Misuse** - Marking required dependencies as optional" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_b597464f021ab9fa a oc:WorkflowStep ;
+    dcterms:description "**Run dependency:analyze** - Regularly check for issues" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_f06e74dac6fdd7c4 a oc:WorkflowStep ;
+    dcterms:description "**Outdated Dependencies** - Security vulnerabilities in old versions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f3bcb43f57ec8d4a a oc:WorkflowStep ;
+    dcterms:description "**Snapshot in Production** - Using SNAPSHOT versions in releases" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_3857fb84e7c0ccf5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_02e42882656a4802,
+        _:ref_11e65e0b1b676dc1,
+        _:ref_2d278020aa82486b,
+        _:ref_4d6ea7070815bc6b,
+        _:ref_798b2f9dfede00b5,
+        _:ref_7d6b3380d3c52943,
+        _:ref_87299c1f3c0a9ddc,
+        _:ref_922f486a0956a820,
+        _:ref_9a2eaaadca32358f,
+        _:ref_b597464f021ab9fa ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_445f64fd8a92ecee a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_39cb1fe33304a58c,
+        _:ref_3c044e7230b2a932,
+        _:ref_3ff786020d2be4e0,
+        _:ref_7c4df66d4d77417e,
+        _:ref_80ace6581ef76b19,
+        _:ref_a3ac851e602809f8,
+        _:ref_f06e74dac6fdd7c4,
+        _:ref_f3bcb43f57ec8d4a ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_604482c7bd601f28 a oc:WorkflowStep ;
+    dcterms:description "Force the correct version via dependencyManagement, add an exclusion, or use the enforcer plugin to prevent recurrence." ;
+    oc:expectedOutcome "Correct version is used across all dependency paths" ;
+    oc:stepDependsOn _:ref_d730cc196681aeab ;
+    oc:stepId "apply-fix" .
+
+_:ref_6dd1b6b4bc1631ec a oc:WorkflowStep ;
+    dcterms:description "Add dependencyManagement section with import-scope BOM entries for framework dependencies (Spring Boot, AWS SDK, JUnit, etc.)." ;
+    oc:expectedOutcome "BOM-managed versions available without explicit version tags" ;
+    oc:stepDependsOn _:ref_9d8ae67ce2dae8e8 ;
+    oc:stepId "import-boms" .
+
+_:ref_9d8ae67ce2dae8e8 a oc:WorkflowStep ;
+    dcterms:description "Declare version properties in the POM properties section for all major dependency groups." ;
+    oc:expectedOutcome "All key versions centralized as Maven properties" ;
+    oc:stepId "define-properties" .
+
+_:ref_d730cc196681aeab a oc:WorkflowStep ;
+    dcterms:description "Identify the conflicting artifact, the versions in play, and which dependency paths introduced them." ;
+    oc:expectedOutcome "Clear understanding of which transitive path brings the wrong version" ;
+    oc:stepDependsOn _:ref_f2626ed8554ccbd2 ;
+    oc:stepId "analyze-root-cause" .
+
+_:ref_f2626ed8554ccbd2 a oc:WorkflowStep ;
+    dcterms:description "Run 'mvn dependency:tree -Dverbose' to identify conflicting transitive dependencies and their resolution paths." ;
+    oc:expectedOutcome "Visibility into which version was selected and which were omitted" ;
+    oc:stepId "tree-inspect" .
+
+_:ref_ff17870c2d1970e0 a oc:WorkflowStep ;
+    dcterms:description "Add dependencies without version tags (inherited from dependencyManagement/BOMs) and with appropriate scopes." ;
+    oc:expectedOutcome "Clean dependency declarations with correct scopes" ;
+    oc:stepDependsOn _:ref_6dd1b6b4bc1631ec ;
+    oc:stepId "declare-dependencies" .
+

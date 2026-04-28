@@ -1,0 +1,945 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_exoplanet_detection_period_exoplanet_workflows a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "exoplanet-workflows" ;
+    skos:broader "Workflow orchestration guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/exoplanet-detection-period/exoplanet-workflows" ;
+    oc:contentHash "6e3ebc8407968eade65e39d0ad18446b1012da8dd71a78713e8f82ff05e525d6" ;
+    oc:dependsOnSkill oc:skill_ontoskills_box_least_squares,
+        oc:skill_ontoskills_light_curve_preprocessing,
+        oc:skill_ontoskills_lomb_scargle_periodogram,
+        oc:skill_ontoskills_transit_least_squares ;
+    oc:differentia "coordinates exoplanet detection pipeline stages including preprocessing, period search algorithm selection, signal validation, and multi-planet strategies" ;
+    oc:handlesFailure oc:LowSignalDetection,
+        oc:PeriodAliasing,
+        oc:PreprocessingArtifact ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "General workflows and best practices for exoplanet detection and characterization from light curve data. Use when planning an exoplanet analysis pipeline, understanding when to use different methods, or troubleshooting detection issues." ;
+    oc:hasName "exoplanet-workflows" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill provides general guidance on exoplanet detection workflows, helping you choose the right approach for your data and goals." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_a65642ca580d4832 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 22 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install lightkurve transitleastsquares numpy matplotlib scipy
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 201-203" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 27 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Detection difficulty increases dramatically for smaller planets." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For context:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Earth-sized**: 0.0001-0.001 (0.01-0.1% dip)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Hot Jupiters**: 0.01-0.03 (1-3% dip)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Super-Earths**: 0.001-0.003 (0.1-0.3% dip)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 20 ;
+                    oc:sectionTitle "Expected Transit Depths" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "You have flux uncertainties" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Searching for transiting exoplanets" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Signal has transit-like shape (box-shaped dips)" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Handles grazing transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Provides transit parameters" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Most sensitive for transits" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Only detects transits (not RV planets, eclipsing binaries with non-box shapes)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Slower than Lomb-Scargle" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Disadvantages:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Use when:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Transit Least Squares (TLS)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Exploring data for any periodic signal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Finding pulsation periods" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Quick period search" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Detecting stellar rotation" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Fast" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Works for any periodic signal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Good for initial exploration" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Use when:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Disadvantages:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Advantages:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "May confuse harmonics with true period" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Less sensitive to shallow transits" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Lomb-Scargle Periodogram" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Note**: TLS generally performs better than BLS for exoplanet detection." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Use when:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Available in astropy" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Alternative to TLS for transits" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Box Least Squares (BLS)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Choosing the Right Method" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Balance: wider range = more complete, but slower" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Hot Jupiters: short periods (0.5-10 days)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Habitable zone: longer periods (depends on star)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Consider target star type and expected planet types" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**BLS**: Alternative to TLS, built into Astropy" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**TLS**: Best for transit-shaped signals (box-like dips)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Lomb-Scargle**: Good for any periodic signal, fast exploration" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**What to preprocess?**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Remove outliers? Yes, but not too aggressively" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "How much? Balance noise removal vs. signal preservation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Remove trends? Yes, stellar rotation masks transits" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "After finding promising candidate" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Improves precision for final measurement" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Narrow search around candidate period" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**When to refine?**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**What period range to search?**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Which period search algorithm?**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Critical Decisions" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_75ec3295f613636d ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Key Stages" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Pipeline Design Principles" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Hippke & Heller (2019) - Transit Least Squares paper" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Kovács et al. (2002) - BLS algorithm" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 25 ;
+                            oc:sectionTitle "Key Papers" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Section 3.1: Identifying transiting exoplanet signals" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Section 2.3: Removing instrumental noise" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Section 3.2: Creating periodograms" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 26 ;
+                            oc:sectionTitle "Lightkurve Tutorial Sections" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "[Lightkurve Tutorials](https://lightkurve.github.io/lightkurve/tutorials/index.html)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "[TLS GitHub](https://github.com/hippke/tls)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "[TLS Tutorials](https://github.com/hippke/tls/tree/master/tutorials)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 24 ;
+                            oc:sectionTitle "Official Documentation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Some systems have multiple transiting planets. Strategy:" ],
+                        _:ref_4c65b7903c78e45f,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "See Transit Least Squares documentation for `transit_mask` function." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Multi-Planet Systems" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Visual inspection**: Phase-fold data at candidate period" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Multiple transits**: More transits = more confidence" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Signal strength metrics**: Check SDE, SNR against thresholds" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Odd-even consistency**: Do odd and even transits have same depth?" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "How to Validate" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Low SDE (<6)**: Weak signal, may be false positive" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Period exactly half/double expected**: Check for aliasing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**High odd-even mismatch**: May not be planetary transit" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Warning Signs" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**SDE > 9**: Very strong candidate" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**SNR > 7**: Reliable signal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**SDE > 6**: Strong candidate" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Strong Candidate (TLS)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Signal Validation" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Solutions:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Signal may be too shallow for detection" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Check preprocessing - may be removing signal" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Check for data gaps during transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Try less aggressive outlier removal" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 16 ;
+                            oc:sectionTitle "Issue: No significant detection (low SDE)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Compare results with different preprocessing" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Plot each preprocessing step" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Ensure you're not over-smoothing" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Diagnosis:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 19 ;
+                            oc:sectionTitle "Issue: Results vary with preprocessing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Check both periods manually" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Look at phase-folded light curves" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Check if one shows odd-even mismatch" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Solutions:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Missing alternate transits" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Period aliasing from data gaps" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Causes:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Issue: Period is 2x or 0.5x expected" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Solution:**
+TLS requires flux uncertainties as the third argument - they're not optional!""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "Issue: flux_err required error" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Common Issues and Solutions" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_310fd6d31b97e1bd,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Exoplanet detection from light curves typically involves:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Hot Jupiters**: 0.5-10 days" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Warm planets**: 10-100 days" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "M-dwarf: 10-50 days" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Sun-like star: 200-400 days" ] ] ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Habitable zone**:" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Based on target characteristics:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Adjust search ranges based on mission duration and expected planet types." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Period Range Guidelines" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Exoplanet Detection Workflows" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: exoplanet-workflows
+description: General workflows and best practices for exoplanet detection and characterization from light curve data. Use when planning an exoplanet analysis pipeline, understanding when to use different methods, or troubleshooting detection issues.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_310fd6d31b97e1bd,
+        _:ref_4c65b7903c78e45f,
+        _:ref_75ec3295f613636d,
+        [ a oc:Workflow ;
+            dcterms:description "Iterative workflow for finding multiple transiting planets in a single system" ;
+            oc:hasStep _:ref_611e9461acbccacd,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Repeat masking and searching until no more significant signals found" ;
+                    oc:expectedOutcome "Complete set of detected planets in the system" ;
+                    oc:stepDependsOn _:ref_cc1395c661f48c27 ;
+                    oc:stepId "repeat-or-stop" ],
+                _:ref_cc1395c661f48c27,
+                _:ref_e2d4415aa83e1e47 ;
+            oc:workflowId "multi-planet-detection" ;
+            oc:workflowName "Multi-Planet System Detection" ],
+        _:ref_a65642ca580d4832,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow from raw light curve data to validated planet candidate" ;
+            oc:hasStep _:ref_27ad61d1bc2c3c16,
+                _:ref_31b05374e7091cbe,
+                _:ref_8b24f28fd0b71230,
+                _:ref_90674f64973a0ea0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Narrow period search around candidate for improved precision if candidate is strong" ;
+                    oc:expectedOutcome "Refined period measurement with higher precision" ;
+                    oc:stepDependsOn _:ref_27ad61d1bc2c3c16 ;
+                    oc:stepId "refine-period" ],
+                _:ref_fdbe8a0b436126f6 ;
+            oc:workflowId "exoplanet-detection-pipeline" ;
+            oc:workflowName "Standard Exoplanet Detection Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_0e71df01,
+        oc:kn_1a67d92e,
+        oc:kn_8fa2b2a1,
+        oc:kn_be3fa006,
+        oc:kn_cd8197dd,
+        oc:kn_e499f485,
+        oc:kn_e7c14515,
+        oc:kn_efc16f02,
+        oc:kn_f2c28181 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:LightCurveDataLoaded ;
+    oc:resolvesIntent "choose period search algorithm",
+        "detect multi-planet systems",
+        "plan exoplanet analysis pipeline",
+        "troubleshoot detection issues",
+        "validate transit candidate signals" ;
+    oc:yieldsState oc:DetectionPipelinePlanned,
+        oc:ExoplanetCandidateIdentified .
+
+oc:kn_0e71df01 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When a detected period doesn't match expectations" ;
+    oc:directiveContent "Period aliasing can cause detected periods to be 2x or 0.5x the true period due to data gaps or missing alternate transits. Always check both period values and examine odd-even transit consistency." ;
+    oc:hasRationale "Uneven time sampling creates spectral aliases that masquerade as true periods" .
+
+oc:kn_1a67d92e a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When planning any exoplanet detection workflow" ;
+    oc:directiveContent "The exoplanet detection pipeline has six key stages: Data Loading → Quality Control → Preprocessing → Period Search → Validation → Refinement. Each stage depends on the previous being correctly completed." ;
+    oc:hasRationale "Skipping stages or executing them out of order leads to false positives or missed detections" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_8fa2b2a1 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When period search returns no significant candidates" ;
+    oc:directiveContent "If no significant detection (low SDE): check if preprocessing is removing signal, try less aggressive outlier removal, check for data gaps during expected transits, and consider signal may be below detection threshold." ;
+    oc:hasRationale "Most failed detections stem from over-preprocessing or data gaps rather than absence of a planet" .
+
+oc:kn_be3fa006 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When one or more planets are already detected and searching for additional planets" ;
+    oc:directiveContent "For multi-planet systems: find first candidate → mask its transits → search remaining data → repeat until no significant signals remain." ;
+    oc:hasRationale "Unmasked transits from known planets create spurious peaks that hide weaker additional planets" .
+
+oc:kn_cd8197dd a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running Transit Least Squares analysis" ;
+    oc:directiveContent "TLS requires flux uncertainties (flux_err) as the third argument — they are not optional. Always include flux uncertainties for proper weighting." ;
+    oc:hasRationale "Without uncertainties, TLS cannot properly weight data points, degrading detection sensitivity" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e499f485 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating transit candidates from TLS analysis" ;
+    oc:directiveContent "TLS SDE > 9 = very strong candidate, SDE > 6 = strong candidate, SNR > 7 = reliable signal. Low SDE (<6) is a weak signal and likely false positive." ;
+    oc:hasRationale "These thresholds are empirically established to separate genuine planetary transits from noise artifacts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e7c14515 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During quality control stage" ;
+    oc:directiveContent "Quality flag conventions vary — flag=0 may mean good OR bad depending on the mission. Always verify the convention before filtering." ;
+    oc:hasRationale "Incorrect flag interpretation can remove good data or keep bad data, both degrading detection" .
+
+oc:kn_efc16f02 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During preprocessing and trend removal" ;
+    oc:directiveContent "Do not preprocess too aggressively — over-smoothing removes the planetary signal along with the noise. Balance noise removal against signal preservation." ;
+    oc:hasRationale "Transit signals are shallow (0.01-3% dips) and can be accidentally removed by aggressive detrending or outlier rejection" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f2c28181 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a period search method" ;
+    oc:directiveContent "Choose period search algorithm based on signal type: TLS for transit-shaped (box-like) dips, Lomb-Scargle for general periodic signals and quick exploration, BLS as an astropy-integrated alternative to TLS." ;
+    oc:hasRationale "Algorithm choice directly impacts detection sensitivity — TLS is most sensitive for transits but slower; Lomb-Scargle is fast but less sensitive to shallow transits" .
+
+_:ref_184e1aa582c5967b a oc:WorkflowStep ;
+    dcterms:description "**Consider data gaps** - may cause period aliasing" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_3b76e189e1c1becc a oc:WorkflowStep ;
+    dcterms:description "**Quality Control**: Filter bad data points using quality flags" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_3d4b3210070cd641 a oc:WorkflowStep ;
+    dcterms:description "**Preprocessing**: Remove noise while preserving planetary signals" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_419a9002b8529ed2 a oc:WorkflowStep ;
+    dcterms:description "**Check quality flags** - verify convention (flag=0 may mean good OR bad)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_4f28ddb167d5d06f a oc:WorkflowStep ;
+    dcterms:description "Parameter estimation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_58265dc00eb5c873 a oc:WorkflowStep ;
+    dcterms:description "**Validate detections** - check SDE, SNR, phase-folded plots" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_61ec68bea1887927 a oc:WorkflowStep ;
+    dcterms:description "**Visualize each preprocessing step** - ensure you're improving data quality" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_6db3a54ea50cba0d a oc:WorkflowStep ;
+    dcterms:description "**Data Loading**: Understand your data format, columns, time system" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_88ae10e5e49923f4 a oc:WorkflowStep ;
+    dcterms:description "Data loading and quality control" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8f3df4d91f7d1bc1 a oc:WorkflowStep ;
+    dcterms:description "**Always include flux uncertainties** - critical for proper weighting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_92af4d1b6ec92f53 a oc:WorkflowStep ;
+    dcterms:description "Repeat until no more significant signals" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_94d0b4a3347f1299 a oc:WorkflowStep ;
+    dcterms:description "Search remaining data for additional periods" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_9824a79e7a59d9d7 a oc:WorkflowStep ;
+    dcterms:description "**Refinement**: Improve period precision if candidate is strong" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_983c9aa42baa1ae5 a oc:WorkflowStep ;
+    dcterms:description "Period search using appropriate algorithms" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_9ea64e8c616ec4e4 a oc:WorkflowStep ;
+    dcterms:description "Preprocessing to remove instrumental and stellar noise" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a550265d019f8989 a oc:WorkflowStep ;
+    dcterms:description "**Use appropriate sigma** - 3 for initial outliers, 5 after flattening" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_c39cb9daf573bc8a a oc:WorkflowStep ;
+    dcterms:description "Mask out first planet's transits" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_cf701da31a508c52 a oc:WorkflowStep ;
+    dcterms:description "**Document your workflow** - reproducibility is key" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_d458abd835203f24 a oc:WorkflowStep ;
+    dcterms:description "**Period Search**: Choose appropriate algorithm for signal type" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d579a4add7137273 a oc:WorkflowStep ;
+    dcterms:description "**Validation**: Verify candidate is real, not artifact" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_e997d68798ecc46c a oc:WorkflowStep ;
+    dcterms:description "**Refine promising candidates** - narrow period search for precision" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_ee686f748cca48a0 a oc:WorkflowStep ;
+    dcterms:description "Signal validation and characterization" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f21ee0eaa31a043c a oc:WorkflowStep ;
+    dcterms:description "Find first candidate" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_27ad61d1bc2c3c16 a oc:WorkflowStep ;
+    dcterms:description "Check SDE (>6 strong, >9 very strong), SNR (>7), phase-fold, verify odd-even consistency" ;
+    oc:expectedOutcome "Validated or rejected planet candidate" ;
+    oc:stepDependsOn _:ref_90674f64973a0ea0 ;
+    oc:stepId "validate-candidate" .
+
+_:ref_310fd6d31b97e1bd a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_4f28ddb167d5d06f,
+        _:ref_88ae10e5e49923f4,
+        _:ref_983c9aa42baa1ae5,
+        _:ref_9ea64e8c616ec4e4,
+        _:ref_ee686f748cca48a0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_31b05374e7091cbe a oc:WorkflowStep ;
+    dcterms:description "Remove outliers (sigma=3 initial, sigma=5 after flattening) and stellar trends while preserving planetary signals" ;
+    oc:expectedOutcome "Detrended, flattened light curve with noise removed" ;
+    oc:stepDependsOn _:ref_8b24f28fd0b71230 ;
+    oc:stepId "preprocessing" .
+
+_:ref_4c65b7903c78e45f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_92af4d1b6ec92f53,
+        _:ref_94d0b4a3347f1299,
+        _:ref_c39cb9daf573bc8a,
+        _:ref_f21ee0eaa31a043c ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_611e9461acbccacd a oc:WorkflowStep ;
+    dcterms:description "Mask out first planet's transits using transit_mask function" ;
+    oc:expectedOutcome "Light curve with first planet's transits removed" ;
+    oc:stepDependsOn _:ref_e2d4415aa83e1e47 ;
+    oc:stepId "mask-first-transits" .
+
+_:ref_75ec3295f613636d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_3b76e189e1c1becc,
+        _:ref_3d4b3210070cd641,
+        _:ref_6db3a54ea50cba0d,
+        _:ref_9824a79e7a59d9d7,
+        _:ref_d458abd835203f24,
+        _:ref_d579a4add7137273 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8b24f28fd0b71230 a oc:WorkflowStep ;
+    dcterms:description "Filter bad data points using quality flags (verify flag convention first)" ;
+    oc:expectedOutcome "Clean light curve with bad data points removed" ;
+    oc:stepDependsOn _:ref_fdbe8a0b436126f6 ;
+    oc:stepId "quality-control" .
+
+_:ref_90674f64973a0ea0 a oc:WorkflowStep ;
+    dcterms:description "Run appropriate period search algorithm (TLS for transits, Lomb-Scargle for exploration) over suitable period range" ;
+    oc:expectedOutcome "Periodogram with candidate periods identified" ;
+    oc:stepDependsOn _:ref_31b05374e7091cbe ;
+    oc:stepId "period-search" .
+
+_:ref_a65642ca580d4832 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_184e1aa582c5967b,
+        _:ref_419a9002b8529ed2,
+        _:ref_58265dc00eb5c873,
+        _:ref_61ec68bea1887927,
+        _:ref_8f3df4d91f7d1bc1,
+        _:ref_a550265d019f8989,
+        _:ref_cf701da31a508c52,
+        _:ref_e997d68798ecc46c ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_cc1395c661f48c27 a oc:WorkflowStep ;
+    dcterms:description "Search remaining data for additional significant periods" ;
+    oc:expectedOutcome "Additional planet candidate or confirmation of single-planet system" ;
+    oc:stepDependsOn _:ref_611e9461acbccacd ;
+    oc:stepId "search-for-additional" .
+
+_:ref_e2d4415aa83e1e47 a oc:WorkflowStep ;
+    dcterms:description "Run standard detection pipeline to find first planet candidate" ;
+    oc:expectedOutcome "First planet candidate with period and transit parameters" ;
+    oc:stepId "find-first-candidate" .
+
+_:ref_fdbe8a0b436126f6 a oc:WorkflowStep ;
+    dcterms:description "Load light curve data and understand format, columns, and time system" ;
+    oc:expectedOutcome "Light curve data loaded with time and flux columns identified" ;
+    oc:stepId "load-data" .
+

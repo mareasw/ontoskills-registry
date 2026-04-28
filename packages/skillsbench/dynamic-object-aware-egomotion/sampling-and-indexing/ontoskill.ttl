@@ -1,0 +1,191 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_dynamic_object_aware_egomotion_sampling_and_indexing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "sampling-and-indexing" ;
+    skos:broader "Standardization procedure" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/dynamic-object-aware-egomotion/sampling-and-indexing" ;
+    oc:contentHash "51d4dab9aa45113a249c60b34d1022c1c5a23aa945dc14693b13ede8813a9bee" ;
+    oc:differentia "aligns video frame sampling indices across all downstream outputs using a consistent key/index scheme" ;
+    oc:hasAllowedTool "Bash",
+        "python" ;
+    oc:hasArgumentHint "VIDEO_PATH" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Standardize video sampling and frame indexing so interval instructions and mask frames stay aligned with a valid key/index scheme." ;
+    oc:hasName "sampling-and-indexing" ;
+    oc:hasRequirement oc:req_5f711e16,
+        oc:req_f64b87fe ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "[ ] JSON keys are plain `start->end`, no extra text." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "[ ] Any per-frame artifact store (e.g., NPZ) contains exactly the sampled frames and no extras." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "[ ] Output coverage max index matches `sample_ids[-1]` (or matches your documented sampling policy)." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "[ ] `sample_ids` strictly increasing, all < total frame count." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 4 ;
+            oc:sectionTitle "Self-check list" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "You need to decide a sampling stride/FPS and ensure *all downstream outputs* (interval instructions, per-frame artifacts, etc.) cover the same frame range with consistent indices." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "When to use" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """import cv2
+VIDEO_PATH = "<path/to/video>"
+cap=cv2.VideoCapture(VIDEO_PATH)
+n=int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+fps=cap.get(cv2.CAP_PROP_FPS)
+step=10  # example
+sample_ids=list(range(0, n, step))
+if sample_ids[-1] != n-1:
+    sample_ids.append(n-1)
+# Generate all downstream outputs only for sample_ids
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 16-27" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 3 ;
+            oc:sectionTitle "Pseudocode" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: sampling-and-indexing
+description: "Standardize video sampling and frame indexing so interval instructions and mask frames stay aligned with a valid key/index scheme."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Read video metadata: frame count, fps, resolution." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Use a strict interval key format such as `\"{start}->{end}\"` (integers only). Decide (and document) whether `end` is inclusive or exclusive, and be consistent." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Only produce instructions and masks for `sample_ids`; the max index must be `< total_frames`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Choose a sampling strategy (e.g., every 10 frames or target ~10–15 fps) to produce `sample_ids`." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "Core steps" ] ;
+    oc:impartsKnowledge oc:kn_0e64718d,
+        oc:kn_45f61209,
+        oc:kn_57878bbd,
+        oc:kn_63e9b6e6,
+        oc:kn_83ee6c66,
+        oc:kn_9c78096a,
+        oc:kn_f6f19218,
+        oc:kn_fcf12a0c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "align interval instructions with sampled mask frames",
+        "generate consistent frame index schemes for video processing",
+        "standardize video sampling stride and frame indices" ;
+    oc:yieldsState oc:SamplingSchemeDefined .
+
+oc:kn_0e64718d a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running the sampling procedure" ;
+    oc:directiveContent "OpenCV (cv2) must be installed and a valid video file must exist at the specified path." .
+
+oc:kn_45f61209 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When generating sample_ids from video metadata" ;
+    oc:directiveContent "All sample_ids must be strictly increasing integers, each less than total frame count." ;
+    oc:hasRationale "Out-of-range indices cause index errors; non-increasing sequences break downstream interval logic." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_57878bbd a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When setting up video sampling for any pipeline run" ;
+    oc:directiveContent "1. Read video metadata (frame count, fps, resolution) via cv2.VideoCapture. 2. Choose sampling strategy (stride or target FPS) to produce sample_ids. 3. Ensure last frame (n-1) is in sample_ids. 4. Generate all downstream outputs only for sample_ids. 5. Run self-check list against all outputs." ;
+    oc:stepOrder 1 .
+
+oc:kn_63e9b6e6 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building the sample_ids list" ;
+    oc:directiveContent "Always append the last frame (n-1) to sample_ids if not already included by the stride step." ;
+    oc:hasRationale "Ensures the final frame of the video is always represented, preventing tail-end coverage gaps." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_83ee6c66 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When producing any artifact derived from the sampled frames" ;
+    oc:directiveContent "Every downstream output (interval instructions, per-frame masks, NPZ stores) must cover exactly the same set of sample_ids — no more, no fewer." ;
+    oc:hasRationale "Mismatches between instruction keys and mask frame indices cause silent data misalignment." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9c78096a a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After generating all downstream outputs" ;
+    oc:directiveContent "Verify: (1) sample_ids strictly increasing and all < total_frames, (2) output max index matches sample_ids[-1], (3) JSON keys are plain start->end, (4) per-frame artifact store contains exactly the sampled frames." ;
+    oc:hasRationale "Catches index misalignment, format drift, and coverage gaps before downstream consumption." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f6f19218 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When creating JSON keys for frame intervals" ;
+    oc:directiveContent "Use strict interval key format '{start}->{end}' with integers only. Document whether 'end' is inclusive or exclusive and stay consistent throughout the pipeline." ;
+    oc:hasRationale "Inconsistent key formats prevent reliable lookup and merging of interval-based data." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fcf12a0c a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initializing frame sampling from a video file" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import cv2
+cap = cv2.VideoCapture(VIDEO_PATH)
+n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+fps = cap.get(cv2.CAP_PROP_FPS)
+step = 10
+sample_ids = list(range(0, n, step))
+if sample_ids[-1] != n - 1:
+    sample_ids.append(n - 1)""" .
+
+oc:req_5f711e16 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Video frame indexing conventions" .
+
+oc:req_f64b87fe a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "OpenCV (cv2)" .
+

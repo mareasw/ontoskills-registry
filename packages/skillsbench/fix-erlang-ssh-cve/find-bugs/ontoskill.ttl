@@ -1,0 +1,373 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_erlang_ssh_cve_find_bugs a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "find-bugs" ;
+    skos:broader "Code review methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-erlang-ssh-cve/find-bugs" ;
+    oc:contentHash "2d88aada285a4272e022554943efad44400e6edbc859442e5adc0b4be69dad81" ;
+    oc:differentia "applies structured security checklist and attack surface mapping to git branch diffs to identify vulnerabilities, bugs, and quality issues" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Grep",
+        "Read" ;
+    oc:hasArgumentHint "none (operates on current git branch)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Find bugs, security vulnerabilities, and code quality issues in local branch changes. Use when asked to review changes, find bugs, security review, or audit code on the current branch." ;
+    oc:hasName "find-bugs" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Review changes on this branch for bugs, security vulnerabilities, and code quality issues." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "All cryptographic operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "All database queries" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "All authentication/authorization checks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "All user inputs (request params, headers, body, URL components)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "All external calls" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "All session/state operations" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each changed file, identify and list:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Phase 2: Attack Surface Mapping" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_4144668d23716313 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Phase 1: Complete Input Gathering" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0f39a98f2cf675c8,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before finalizing, you MUST:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Phase 5: Pre-Conclusion Audit" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Prioritize**: security vulnerabilities > bugs > code quality" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "For each issue:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "If you find nothing significant, say so - don't invent issues." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Skip**: stylistic/formatting issues" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "Do not make changes - just report findings. I'll decide what to address." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Severity**: Critical/High/Medium/Low" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Problem**: What's wrong" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Fix**: Concrete suggestion" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**File:Line** - Brief description" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**References**: OWASP, RFCs, or other standards if applicable" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Evidence**: Why this is real (not already fixed, no existing test, etc.)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Output Format" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Read surrounding context to verify the issue is real" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Check if it's already handled elsewhere in the changed code" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Search for existing tests covering the scenario" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For each potential issue:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Phase 4: Verification" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] **Authentication**: Auth checks on all protected operations?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 9 ;
+                                    oc:itemText "[ ] **Information disclosure**: Error messages, logs, timing attacks?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] **Race conditions**: TOCTOU in any read-then-write patterns?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 11 ;
+                                    oc:itemText "[ ] **Business logic**: Edge cases, state machine violations, numeric overflow?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "[ ] **Cryptography**: Secure random, proper algorithms, no secrets in logs?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "[ ] **Session**: Fixation, expiration, secure flags?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 10 ;
+                                    oc:itemText "[ ] **DoS**: Unbounded operations, missing rate limits, resource exhaustion?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] **Authorization/IDOR**: Access control verified, not just auth?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] **Injection**: SQL, command, template, header injection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] **CSRF**: State-changing operations protected?" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] **XSS**: All outputs in templates properly escaped?" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Phase 3: Security Checklist (check EVERY item for EVERY file)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Find Bugs" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: find-bugs
+description: Find bugs, security vulnerabilities, and code quality issues in local branch changes. Use when asked to review changes, find bugs, security review, or audit code on the current branch.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_0f39a98f2cf675c8,
+        _:ref_4144668d23716313 ;
+    oc:impartsKnowledge oc:kn_05dbc4af,
+        oc:kn_1a31c72f,
+        oc:kn_362eb867,
+        oc:kn_3b8d6d09,
+        oc:kn_49d5f04b,
+        oc:kn_55c7a164,
+        oc:kn_56222657,
+        oc:kn_90c241f7,
+        oc:kn_c5081a63,
+        oc:kn_ca6eb5c8 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SystemAuthenticated ;
+    oc:resolvesIntent "audit code for vulnerabilities",
+        "find bugs in code changes",
+        "review local branch diff for issues",
+        "security review of branch changes" ;
+    oc:yieldsState oc:BugReportGenerated .
+
+oc:kn_05dbc4af a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When filtering and ranking findings for output" ;
+    oc:directiveContent "Skip stylistic and formatting issues entirely. Prioritize: security vulnerabilities > bugs > code quality." ;
+    oc:hasRationale "Review focus must remain on substantive issues that affect correctness and security" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1a31c72f a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Phase 3 systematic security review" ;
+    oc:directiveContent "Security checklist items to check for EVERY file: Injection, XSS, Authentication, Authorization/IDOR, CSRF, Race conditions (TOCTOU), Session, Cryptography, Information disclosure, DoS, Business logic" ;
+    oc:stepOrder 3 .
+
+oc:kn_362eb867 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "Phase 5 pre-conclusion audit" ;
+    oc:directiveContent "Before finalizing: list every file reviewed, every checklist item with status, areas that could not be verified, and only then produce final findings." ;
+    oc:hasRationale "Systematic audit trail prevents premature conclusion and ensures completeness of the review" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3b8d6d09 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "After gathering full diff, before security analysis" ;
+    oc:directiveContent "Map attack surfaces first (user inputs, DB queries, auth checks, session ops, external calls, crypto) before running the security checklist." ;
+    oc:hasRationale "Attack surface mapping focuses the security checklist on relevant areas rather than mechanically scanning everything without context" .
+
+oc:kn_49d5f04b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Phase 4 verification of every potential finding" ;
+    oc:directiveContent "Never report an issue without verifying it against surrounding context, existing mitigations in changed code, and existing test coverage." ;
+    oc:hasRationale "False positives erode trust and waste developer time; verification ensures only real, actionable issues are reported" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_55c7a164 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any analysis" ;
+    oc:directiveContent "Must obtain the complete diff (git diff master...HEAD) and read every changed line, even if truncated output requires reading files individually." ;
+    oc:hasRationale "Incomplete diff review means potential vulnerabilities in unseen code are missed entirely" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_56222657 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When reporting findings" ;
+    oc:directiveContent """For each issue:
+* **{File}:{Line}** - {Brief description}
+* **Severity**: Critical/High/Medium/Low
+* **Problem**: {What's wrong}
+* **Evidence**: {Why this is real}
+* **Fix**: {Concrete suggestion}
+* **References**: {OWASP, RFCs, or standards}""" ;
+    oc:templateVariables "Brief description",
+        "Concrete suggestion",
+        "File",
+        "Line",
+        "OWASP/RFCs/standards",
+        "What's wrong",
+        "Why this is real" .
+
+oc:kn_90c241f7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, especially when findings are sparse" ;
+    oc:directiveContent "Never invent issues to justify the review. If no significant issues are found, explicitly say so." ;
+    oc:hasRationale "Fabricated issues undermine credibility and cause developers to ignore genuine findings in future reviews" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c5081a63 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always during execution of this skill" ;
+    oc:directiveContent "Do not make changes to code — only report findings. The user decides what to address." ;
+    oc:hasRationale "This is an audit/review skill, not a remediation skill; maintaining separation preserves user autonomy" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ca6eb5c8 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Get full diff (git diff master...HEAD), handle truncation by reading files individually 2. List all modified files 3. Map attack surfaces per file 4. Apply 11-item security checklist to every file 5. Verify each potential issue against surrounding code and tests 6. Audit completeness: list files reviewed, checklist items covered, unverifiable areas 7. Output prioritized findings" ;
+    oc:stepOrder 1 .
+
+_:ref_279a232bb529c97e a oc:WorkflowStep ;
+    dcterms:description "Get the FULL diff: `git diff master...HEAD`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3d15c3b263af2ec3 a oc:WorkflowStep ;
+    dcterms:description "If output is truncated, read each changed file individually until you have seen every changed line" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_402475fa40e4eb4a a oc:WorkflowStep ;
+    dcterms:description "Only then provide your final findings" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_7c3b65b30f890702 a oc:WorkflowStep ;
+    dcterms:description "List any areas you could NOT fully verify and why" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_87e9ee944fb5c350 a oc:WorkflowStep ;
+    dcterms:description "List every checklist item and note whether you found issues or confirmed it's clean" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_b1fc5bc1d7ed0ce0 a oc:WorkflowStep ;
+    dcterms:description "List every file you reviewed and confirm you read it completely" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_bc0b55d3891d0c07 a oc:WorkflowStep ;
+    dcterms:description "List all files modified in this branch before proceeding" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_0f39a98f2cf675c8 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_402475fa40e4eb4a,
+        _:ref_7c3b65b30f890702,
+        _:ref_87e9ee944fb5c350,
+        _:ref_b1fc5bc1d7ed0ce0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4144668d23716313 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_279a232bb529c97e,
+        _:ref_3d15c3b263af2ec3,
+        _:ref_bc0b55d3891d0c07 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

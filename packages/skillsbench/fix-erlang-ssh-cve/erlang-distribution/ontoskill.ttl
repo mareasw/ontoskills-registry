@@ -1,0 +1,814 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_erlang_ssh_cve_erlang_distribution a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "erlang-distribution" ;
+    skos:broader "Knowledge framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-erlang-ssh-cve/erlang-distribution" ;
+    oc:contentHash "a0da5311c56a8413ebd2d20d9d558a4614c56a6f3c77f8b89263284c1d636191" ;
+    oc:differentia "for building clustered, fault-tolerant distributed Erlang systems across multiple BEAM nodes with transparent message passing, global registration, and partition handling" ;
+    oc:extends oc:skill_ontoskills_erlang_concurrency ;
+    oc:handlesFailure oc:NetworkPartition,
+        oc:NetworkTimeout,
+        oc:NodeUnavailable ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Use when erlang distributed systems including node connectivity, distributed processes, global name registration, distributed supervision, network partitions, and building fault-tolerant multi-node applications on the BEAM VM." ;
+    oc:hasName "erlang-distribution" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Erlang's built-in distribution enables building clustered, fault-tolerant systems
+across multiple nodes. Processes on different nodes communicate transparently
+through the same message-passing primitives used locally. This location transparency
+makes distributed programming natural and straightforward.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent """This skill covers node connectivity and clustering, distributed message passing,
+global name registration, distributed supervision, handling network partitions,
+RPC patterns, and building production distributed applications.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """The distribution layer handles network communication, serialization, and node
+connectivity automatically. Nodes discover each other through naming, with processes
+addressable globally via registered names or pid references. Understanding distribution
+patterns is essential for building scalable, resilient systems.""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Introduction" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "RPC enables convenient remote execution with location transparency." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Execute function calls on remote nodes with various invocation patterns." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Basic RPC
+simple_rpc(Node, Module, Function, Args) ->
+    rpc:call(Node, Module, Function, Args).
+
+%% RPC with timeout
+timed_rpc(Node, Module, Function, Args, Timeout) ->
+    rpc:call(Node, Module, Function, Args, Timeout).
+
+%% Async RPC
+async_rpc(Node, Module, Function, Args) ->
+    Key = rpc:async_call(Node, Module, Function, Args),
+    %% Later retrieve result
+    rpc:yield(Key).
+
+%% Parallel RPC to multiple nodes
+parallel_rpc(Nodes, Module, Function, Args) ->
+    rpc:multicall(Nodes, Module, Function, Args).
+
+%% Parallel call with results
+parallel_rpc_results(Nodes, Module, Function, Args) ->
+    rpc:multicall(Nodes, Module, Function, Args, 5000).
+
+%% Cast (fire and forget)
+cast_rpc(Node, Module, Function, Args) ->
+    rpc:cast(Node, Module, Function, Args).
+
+%% Broadcast to all nodes
+broadcast_rpc(Module, Function, Args) ->
+    Nodes = [node() | nodes()],
+    rpc:multicall(Nodes, Module, Function, Args).
+
+%% Parallel map over nodes
+pmap_nodes(Fun, List) ->
+    Nodes = nodes(),
+    DistFun = fun(X) ->
+        Node = lists:nth((X rem length(Nodes)) + 1, Nodes),
+        rpc:call(Node, erlang, apply, [Fun, [X]])
+    end,
+    lists:map(DistFun, List).
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 284-324" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "RPC and Remote Execution" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Use clustering for load distribution across multiple servers." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "Use distributed supervision for critical services needing automatic failover." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Implement distributed systems when geographic distribution provides latency benefits." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Leverage multiple nodes for horizontal scalability beyond single machine limits." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "Apply distribution patterns for building resilient microservices architectures." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Apply distribution when building systems requiring high availability and fault tolerance." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Send to registered process on remote node
+send_remote(Node, Name, Message) ->
+    {Name, Node} ! Message.
+
+%% Spawn process on remote node
+spawn_on_remote(Node, Fun) ->
+    spawn(Node, Fun).
+
+spawn_on_remote(Node, Module, Function, Args) ->
+    spawn(Node, Module, Function, Args).
+
+%% Distributed request-response
+remote_call(Node, Module, Function, Args) ->
+    Pid = spawn(Node, fun() ->
+        Result = apply(Module, Function, Args),
+        receive
+            {From, Ref} -> From ! {Ref, Result}
+        end
+    end),
+    Ref = make_ref(),
+    Pid ! {self(), Ref},
+    receive
+        {Ref, Result} -> {ok, Result}
+    after 5000 ->
+        {error, timeout}
+    end.
+
+%% Distributed work distribution
+-module(work_dispatcher).
+-export([start/0, dispatch/1]).
+
+start() ->
+    register(?MODULE, spawn(fun() -> loop([]) end)).
+
+dispatch(Work) ->
+    ?MODULE ! {dispatch, Work}.
+
+loop(Workers) ->
+    receive
+        {dispatch, Work} ->
+            Node = select_node(nodes()),
+            Pid = spawn(Node, fun() -> do_work(Work) end),
+            loop([{Pid, Node} | Workers])
+    end.
+
+select_node(Nodes) ->
+    lists:nth(rand:uniform(length(Nodes)), Nodes).
+
+do_work(Work) ->
+    Result = process_work(Work),
+    io:format("Work done on ~p: ~p~n", [node(), Result]).
+
+process_work(Work) -> Work * 2.
+
+%% Remote group leader for output
+remote_process_with_io(Node) ->
+    spawn(Node, fun() ->
+        group_leader(self(), self()),
+        io:format("Output from ~p~n", [node()])
+    end).
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 81-142" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Send messages to processes on remote nodes using same syntax as local messaging." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Location-transparent messaging enables seamless distributed communication." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Distributed Message Passing" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_df5de388db005bfc ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Register process names globally across distributed clusters." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Global registration enables location-independent process discovery." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Global registration
+register_global(Name) ->
+    Pid = spawn(fun() -> global_loop() end),
+    global:register_name(Name, Pid),
+    Pid.
+
+global_loop() ->
+    receive
+        {From, Message} ->
+            From ! {reply, Message},
+            global_loop();
+        stop -> ok
+    end.
+
+%% Send to globally registered process
+send_global(Name, Message) ->
+    case global:whereis_name(Name) of
+        undefined ->
+            {error, not_found};
+        Pid ->
+            Pid ! Message,
+            ok
+    end.
+
+%% Global name with conflict resolution
+register_with_resolve(Name) ->
+    Pid = spawn(fun() -> server_loop() end),
+    ResolveFun = fun(Name, Pid1, Pid2) ->
+        %% Keep process on node with lower name
+        case node(Pid1) < node(Pid2) of
+            true -> Pid1;
+            false -> Pid2
+        end
+    end,
+    global:register_name(Name, Pid, ResolveFun).
+
+server_loop() ->
+    receive
+        Message ->
+            io:format("Received: ~p on ~p~n", [Message, node()]),
+            server_loop()
+    end.
+
+%% Global synchronization
+sync_global() ->
+    global:sync().
+
+%% List globally registered names
+list_global_names() ->
+    global:registered_names().
+
+%% Re-register after node reconnection
+ensure_global_registration(Name, Fun) ->
+    case global:whereis_name(Name) of
+        undefined ->
+            Pid = spawn(Fun),
+            global:register_name(Name, Pid),
+            Pid;
+        Pid ->
+            Pid
+    end.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 150-212" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Global Name Registration" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_26c7a820dd1931e5 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[Learn You Some Erlang - Distributed OTP](<https://learnyousomeerlang.com/distributed-otp-applications>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[Distributed Erlang](<https://www.erlang.org/doc/reference_manual/distributed.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[Erlang Distribution Protocol](<https://www.erlang.org/doc/apps/erts/erl_dist_protocol.html>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[Designing Distributed Systems](<https://www.oreilly.com/library/view/designing-distributed-systems/9781491983638/>)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[CAP Theorem Explained](<https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/>)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Detect network partition
+detect_partition() ->
+    ExpectedNodes = [node1@host, node2@host, node3@host],
+    CurrentNodes = nodes(),
+    Missing = ExpectedNodes -- CurrentNodes,
+    case Missing of
+        [] -> ok;
+        Nodes -> {partition, Nodes}
+    end.
+
+%% Partition healing strategy
+-module(partition_handler).
+-export([monitor_cluster/1]).
+
+monitor_cluster(ExpectedNodes) ->
+    net_kernel:monitor_nodes(true),
+    monitor_loop(ExpectedNodes, nodes()).
+
+monitor_loop(Expected, Current) ->
+    receive
+        {nodeup, Node} ->
+            NewCurrent = [Node | Current],
+            case length(NewCurrent) == length(Expected) of
+                true ->
+                    io:format("Cluster fully connected~n"),
+                    heal_partition();
+                false ->
+                    ok
+            end,
+            monitor_loop(Expected, NewCurrent);
+
+        {nodedown, Node} ->
+            NewCurrent = lists:delete(Node, Current),
+            io:format("Partition detected: ~p~n", [Node]),
+            monitor_loop(Expected, NewCurrent)
+    end.
+
+heal_partition() ->
+    %% Synchronize state after partition heals
+    global:sync(),
+    ok.
+
+%% Consensus with majority
+-module(consensus).
+-export([propose/2, vote/3]).
+
+propose(Nodes, Value) ->
+    Ref = make_ref(),
+    [Node ! {vote, self(), Ref, Value} || Node <- Nodes],
+    collect_votes(Ref, length(Nodes), 0).
+
+collect_votes(_Ref, Total, Votes) when Votes > Total div 2 ->
+    {ok, majority};
+collect_votes(_Ref, Total, Total) ->
+    {error, no_majority};
+collect_votes(Ref, Total, Votes) ->
+    receive
+        {vote, Ref, accept} ->
+            collect_votes(Ref, Total, Votes + 1);
+        {vote, Ref, reject} ->
+            collect_votes(Ref, Total, Votes)
+    after 5000 ->
+        {error, timeout}
+    end.
+
+vote(From, Ref, Value) ->
+    Decision = evaluate_proposal(Value),
+    From ! {vote, Ref, Decision}.
+
+evaluate_proposal(_Value) -> accept.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 332-403" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Partition handling strategies maintain system availability during network failures." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Handle network partitions and understand CAP theorem trade-offs." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Network Partitions and CAP" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Node connectivity enables building distributed clusters with automatic discovery." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """%% Starting named nodes
+%% erl -name node1@hostname -setcookie secret
+%% erl -sname node2 -setcookie secret
+
+%% Connecting nodes
+connect_nodes() ->
+    Node1 = 'node1@host',
+    Node2 = 'node2@host',
+    net_kernel:connect_node(Node2).
+
+%% Check connected nodes
+list_nodes() ->
+    Nodes = [node() | nodes()],
+    io:format("Connected nodes: ~p~n", [Nodes]).
+
+%% Monitor node connections
+monitor_nodes() ->
+    net_kernel:monitor_nodes(true),
+    receive
+        {nodeup, Node} ->
+            io:format("Node up: ~p~n", [Node]);
+        {nodedown, Node} ->
+            io:format("Node down: ~p~n", [Node])
+    end.
+
+%% Node configuration
+start_distributed() ->
+    {ok, _} = net_kernel:start([mynode, shortnames]),
+    erlang:set_cookie(node(), secret_cookie).
+
+%% Hidden nodes (for monitoring)
+connect_hidden(Node) ->
+    net_kernel:connect_node(Node),
+    erlang:disconnect_node(Node),
+    net_kernel:hidden_connect_node(Node).
+
+%% Get node information
+node_info() ->
+    #{
+        name => node(),
+        cookie => erlang:get_cookie(),
+        nodes => nodes(),
+        alive => is_alive()
+    }.
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 28-73" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Nodes connect to form clusters for distributed computation and fault tolerance." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Node Connectivity" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Distributed supervision maintains system health across node failures." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """-module(distributed_supervisor).
+-behaviour(supervisor).
+
+-export([start_link/0, start_worker/1]).
+-export([init/1]).
+
+start_link() ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+start_worker(Node) ->
+    ChildSpec = #{
+        id => make_ref(),
+        start => {worker, start_link, [Node]},
+        restart => permanent,
+        type => worker
+    },
+    supervisor:start_child(?MODULE, ChildSpec).
+
+init([]) ->
+    SupFlags = #{
+        strategy => one_for_one,
+        intensity => 5,
+        period => 60
+    },
+    {ok, {SupFlags, []}}.
+
+%% Worker module spawning on specific node
+-module(worker).
+-export([start_link/1, loop/0]).
+
+start_link(Node) ->
+    Pid = spawn_link(Node, ?MODULE, loop, []),
+    {ok, Pid}.
+
+loop() ->
+    receive
+        stop -> ok;
+        Msg ->
+            io:format("Worker on ~p: ~p~n", [node(), Msg]),
+            loop()
+    end.
+
+%% Distributed process groups
+-module(pg_example).
+-export([start/0, join/1, broadcast/1]).
+
+start() ->
+    pg:start_link().
+
+join(Group) ->
+    pg:join(Group, self()).
+
+broadcast(Group, Message) ->
+    Members = pg:get_members(Group),
+    [Pid ! Message || Pid <- Members].
+""" ;
+                            oc:codeLanguage "erlang" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 220-276" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Supervise processes across multiple nodes for cluster-wide fault tolerance." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Distributed Supervision" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Erlang Distribution" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: erlang-distribution
+description: Use when erlang distributed systems including node connectivity, distributed processes, global name registration, distributed supervision, network partitions, and building fault-tolerant multi-node applications on the BEAM VM.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_26c7a820dd1931e5,
+        _:ref_df5de388db005bfc ;
+    oc:impartsKnowledge oc:kn_095d8a74,
+        oc:kn_14afe3e4,
+        oc:kn_18b71208,
+        oc:kn_5de71077,
+        oc:kn_b7641828,
+        oc:kn_cc4593d7,
+        oc:kn_ce19b9cb,
+        oc:kn_ceae386d,
+        oc:kn_d2320eac,
+        oc:kn_eeb78510,
+        oc:kn_fb2b8996 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build distributed erlang clusters",
+        "connect erlang nodes",
+        "design fault-tolerant multi-node applications",
+        "execute remote procedure calls across nodes",
+        "handle network partitions in erlang",
+        "implement distributed supervision",
+        "register processes globally across nodes" ;
+    oc:yieldsState oc:ClusterConnected,
+        oc:DistributedProcessesRunning .
+
+oc:kn_095d8a74 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When naming Erlang nodes" ;
+    oc:directiveContent "Use short names (sname) for local clusters and long names for internet-wide distribution." ;
+    oc:hasRationale "Short names use local hostname resolution and are simpler for same-network clusters; long names use FQDNs needed for WAN deployment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_14afe3e4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing inter-node communication pattern" ;
+    oc:directiveContent "Prefer direct message passing over RPC for complex distributed protocols; use RPC only for simple request-response calls." ;
+    oc:hasRationale "Message passing provides better control over failure modes, backpressure, and protocol complexity than synchronous RPC." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_18b71208 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing process registration strategy" ;
+    oc:directiveContent "Never use the global registry everywhere — it creates a single point of failure and coordination bottleneck in distributed clusters." ;
+    oc:hasRationale "Global registration requires cluster-wide consensus on every registration change, degrading performance as cluster size grows." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_5de71077 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring node connectivity" ;
+    oc:directiveContent "All nodes in a trusted cluster must share the same magic cookie for authentication." ;
+    oc:hasRationale "Mismatched cookies prevent nodes from connecting, causing silent failures that are difficult to diagnose." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_b7641828 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When cluster connectivity changes" ;
+    oc:directiveContent "Implement partition detection with missing node comparison and healing with global:sync() after reconnection." ;
+    oc:hasRationale "Automatic partition healing restores cluster consistency without manual intervention." .
+
+oc:kn_cc4593d7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When architecting distributed state management" ;
+    oc:directiveContent "Design for eventual consistency in distributed systems, accepting CAP theorem limitations rather than requiring strict consistency." ;
+    oc:hasRationale "During network partitions, you cannot maintain both consistency and availability — choose based on application requirements." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ce19b9cb a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When registering processes globally" ;
+    oc:directiveContent "Global registration adds coordination overhead — use it sparingly and only when location-independent process discovery is essential." ;
+    oc:hasRationale "Every global registration change requires cluster-wide consensus, impacting latency and throughput." .
+
+oc:kn_ceae386d a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When building production distributed systems" ;
+    oc:directiveContent "Monitor node connections via net_kernel:monitor_nodes/1 to detect and handle network partitions proactively." ;
+    oc:hasRationale "Early partition detection enables automatic healing strategies and prevents stale state propagation." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_d2320eac a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When deploying distributed Erlang systems" ;
+    oc:directiveContent "The Erlang distribution cookie is the sole authentication mechanism between nodes — protect it as a shared secret." ;
+    oc:hasRationale "Any process with the correct cookie can fully control the cluster, making cookie leakage a critical security risk." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_eeb78510 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When healing from network partitions" ;
+    oc:directiveContent "Forgetting to call global:sync() after a network partition heals can leave the global registry in an inconsistent state." ;
+    oc:hasRationale "The global registry may have diverged during the partition and must be explicitly synchronized to resolve conflicts." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fb2b8996 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When making remote calls or sending messages to remote nodes" ;
+    oc:directiveContent "Never assume network reliability — always implement proper timeouts on distributed RPC calls and handle node disconnections explicitly." ;
+    oc:hasRationale "Network partitions and slow networks will occur in production; unhandled disconnections cause processes to hang indefinitely." ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_1c3fd265c28dcdb3 a oc:WorkflowStep ;
+    dcterms:description "**Monitor node connections** to detect and handle network partitions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_1ff6e928d443ba07 a oc:WorkflowStep ;
+    dcterms:description "**Using long timeouts** in RPC calls causes cascading delays during failures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_2a926356ed9a8cd2 a oc:WorkflowStep ;
+    dcterms:description "**Use global registration sparingly** as it adds coordination overhead" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_2b2126266eed4f6c a oc:WorkflowStep ;
+    dcterms:description "**Implement proper timeouts** on distributed calls to handle slow networks" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_38b8343eb8d3c9a9 a oc:WorkflowStep ;
+    dcterms:description "**Not setting cookies** prevents nodes from connecting causing silent failures" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4628f20a67e54c26 a oc:WorkflowStep ;
+    dcterms:description "**Not monitoring node health** prevents detecting degraded cluster state" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_4ccae51005d7a926 a oc:WorkflowStep ;
+    dcterms:description "**Assuming network reliability** leads to incorrect behavior during partitions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_6872d1e98ce0df7b a oc:WorkflowStep ;
+    dcterms:description "**Not handling node disconnection** causes processes to hang indefinitely" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_7252c5011577774a a oc:WorkflowStep ;
+    dcterms:description "**Use short names for local clusters** and long names for internet-wide distribution" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_835e1246e5c946ec a oc:WorkflowStep ;
+    dcterms:description "**Use RPC for simple calls** but prefer message passing for complex protocols" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_b29c1a24c955a187 a oc:WorkflowStep ;
+    dcterms:description "**Design for eventual consistency** in distributed systems accepting CAP limitations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_b41c275a0dc046d7 a oc:WorkflowStep ;
+    dcterms:description "**Forgetting to synchronize** global registry after partition heals" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_cc1065ef8d84c878 a oc:WorkflowStep ;
+    dcterms:description "**Test with network failures** using tools like toxiproxy or chaos engineering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_ce8b6e8dbb5cbb0c a oc:WorkflowStep ;
+    dcterms:description "**Using global registry everywhere** creates single point of failure and bottleneck" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d7f4800eff08423c a oc:WorkflowStep ;
+    dcterms:description "**Implement partition detection** and healing strategies for resilience" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_d9818b412fa76cb2 a oc:WorkflowStep ;
+    dcterms:description "**Using same node name** on multiple machines causes conflicts" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_dc496f97bc1c775d a oc:WorkflowStep ;
+    dcterms:description "**Set same cookie** on all nodes in trusted cluster for security" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e6bdb3f4816c4396 a oc:WorkflowStep ;
+    dcterms:description "**Not testing network partitions** misses critical failure modes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_ee67c425394796f8 a oc:WorkflowStep ;
+    dcterms:description "**Use distributed supervision** to maintain fault tolerance across nodes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_f750fbd2c00adacb a oc:WorkflowStep ;
+    dcterms:description "**Relying on strict consistency** in distributed setting violates CAP theorem" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_26c7a820dd1931e5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1ff6e928d443ba07,
+        _:ref_38b8343eb8d3c9a9,
+        _:ref_4628f20a67e54c26,
+        _:ref_4ccae51005d7a926,
+        _:ref_6872d1e98ce0df7b,
+        _:ref_b41c275a0dc046d7,
+        _:ref_ce8b6e8dbb5cbb0c,
+        _:ref_d9818b412fa76cb2,
+        _:ref_e6bdb3f4816c4396,
+        _:ref_f750fbd2c00adacb ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_df5de388db005bfc a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1c3fd265c28dcdb3,
+        _:ref_2a926356ed9a8cd2,
+        _:ref_2b2126266eed4f6c,
+        _:ref_7252c5011577774a,
+        _:ref_835e1246e5c946ec,
+        _:ref_b29c1a24c955a187,
+        _:ref_cc1065ef8d84c878,
+        _:ref_d7f4800eff08423c,
+        _:ref_dc496f97bc1c775d,
+        _:ref_ee67c425394796f8 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

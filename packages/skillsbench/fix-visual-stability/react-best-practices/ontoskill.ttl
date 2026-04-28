@@ -1,0 +1,507 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_visual_stability_react_best_practices a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "react-best-practices" ;
+    skos:broader "Performance optimization guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-visual-stability/react-best-practices" ;
+    oc:contentHash "c39e2b85d572baacca3777171f45dba532e4afdba3a50ac51e820f1b7b8e822c" ;
+    oc:differentia "organizes 45 Vercel-authored React/Next.js rules into 8 prioritized categories covering async waterfalls, bundle size, server/client rendering, re-renders, and JS performance" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "**IMPORTANT**: Any change to React or Next.js code must read through this skill first. React and Next.js guidelines from Vercel Engineering covering visual instability, layout shifts, CLS, flickering, hydration issues, and font loading." ;
+    oc:hasName "react-best-practices" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: react-best-practices
+description: "**IMPORTANT**: Any change to React or Next.js code must read through this skill first. React and Next.js guidelines from Vercel Engineering covering visual instability, layout shifts, CLS, flickering, hydration issues, and font loading."
+license: MIT
+metadata:
+  author: vercel
+  version: "1.0.0"
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 45 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Read individual rule files for detailed explanations and code examples:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Correct code example with explanation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Brief explanation of why it matters" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Additional context and references" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Incorrect code example with explanation" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Each rule file contains:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """rules/async-parallel.md
+rules/bundle-barrel-imports.md
+rules/_sections.md
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 114-118" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "How to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Writing new React components or Next.js pages" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Refactoring existing React/Next.js code" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Fixing visual instability or layout shift (CLS) issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Optimizing font loading (FOIT/FOUT prevention)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Preventing flickering when reading from localStorage or cookies" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Adding proper dimensions to images and dynamic content" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Handling hydration mismatches with client-only data" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Reference these guidelines when:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Apply" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 8 ;
+                            oc:tableCaption "## Rule Categories by Priority" ;
+                            oc:tableMarkdown """| Priority | Category | Impact | Prefix |
+|----------|----------|--------|--------|
+| 1 | Eliminating Waterfalls | CRITICAL | `async-` |
+| 2 | Bundle Size Optimization | CRITICAL | `bundle-` |
+| 3 | Server-Side Performance | HIGH | `server-` |
+| 4 | Client-Side Data Fetching | MEDIUM-HIGH | `client-` |
+| 5 | Re-render Optimization | MEDIUM | `rerender-` |
+| 6 | Rendering Performance | MEDIUM | `rendering-` |
+| 7 | JavaScript Performance | LOW-MEDIUM | `js-` |
+| 8 | Advanced Patterns | LOW | `advanced-` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Rule Categories by Priority" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`rerender-lazy-state-init` - Pass function to useState for expensive values" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`rerender-memo` - Extract expensive work into memoized components" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`rerender-defer-reads` - Don't subscribe to state only used in callbacks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`rerender-dependencies` - Use primitive dependencies in effects" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`rerender-derived-state` - Subscribe to derived booleans, not raw values" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`rerender-functional-setstate` - Use functional setState for stable callbacks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`rerender-transitions` - Use startTransition for non-urgent updates" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Re-render Optimization (MEDIUM)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 12 ;
+                                            oc:itemText "`js-tosorted-immutable` - Use toSorted() for immutability" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`js-length-check-first` - Check array length before expensive comparison" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "`js-early-exit` - Return early from functions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`js-cache-storage` - Cache localStorage/sessionStorage reads" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`js-cache-property-access` - Cache object properties in loops" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`js-cache-function-results` - Cache function results in module-level Map" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`js-batch-dom-css` - Group CSS changes via classes or cssText" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 11 ;
+                                            oc:itemText "`js-set-map-lookups` - Use Set/Map for O(1) lookups" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`js-combine-iterations` - Combine multiple filter/map into one loop" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 10 ;
+                                            oc:itemText "`js-min-max-loop` - Use loop for min/max instead of sort" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 9 ;
+                                            oc:itemText "`js-hoist-regexp` - Hoist RegExp creation outside loops" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`js-index-maps` - Build Map for repeated lookups" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "7. JavaScript Performance (LOW-MEDIUM)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`rendering-conditional-render` - Use ternary, not && for conditionals" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`rendering-animate-svg-wrapper` - Animate div wrapper, not SVG element" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`rendering-activity` - Use Activity component for show/hide" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`rendering-content-visibility` - Use content-visibility for long lists" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`rendering-hydration-no-flicker` - Use inline script for client-only data" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`rendering-svg-precision` - Reduce SVG coordinate precision" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`rendering-hoist-jsx` - Extract static JSX outside components" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "6. Rendering Performance (MEDIUM)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`client-event-listeners` - Deduplicate global event listeners" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`client-swr-dedup` - Use SWR for automatic request deduplication" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Client-Side Data Fetching (MEDIUM-HIGH)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`bundle-dynamic-imports` - Use next/dynamic for heavy components" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`bundle-conditional` - Load modules only when feature is activated" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`bundle-preload` - Preload on hover/focus for perceived speed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`bundle-defer-third-party` - Load analytics/logging after hydration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`bundle-barrel-imports` - Import directly, avoid barrel files" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Bundle Size Optimization (CRITICAL)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`advanced-event-handler-refs` - Store event handlers in refs" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`advanced-use-latest` - useLatest for stable callback refs" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "8. Advanced Patterns (LOW)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`server-parallel-fetching` - Restructure components to parallelize fetches" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`server-after-nonblocking` - Use after() for non-blocking operations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`server-cache-react` - Use React.cache() for per-request deduplication" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`server-serialization` - Minimize data passed to client components" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`server-cache-lru` - Use LRU cache for cross-request caching" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Server-Side Performance (HIGH)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`async-parallel` - Use Promise.all() for independent operations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`async-suspense-boundaries` - Use Suspense to stream content" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`async-api-routes` - Start promises early, await late in API routes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`async-dependencies` - Use better-all for partial dependencies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`async-defer-await` - Move await into branches where actually used" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Eliminating Waterfalls (CRITICAL)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Quick Reference" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Vercel React Best Practices" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Systematic approach to applying Vercel's performance rules in priority order" ;
+            oc:hasStep _:ref_25e00abe859e5863,
+                _:ref_40d5a1d73da65651,
+                _:ref_5cadc11f503e40f6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Apply JavaScript micro-optimizations: Map/Set lookups, early exits, cached property access, combined iterations" ;
+                    oc:expectedOutcome "JavaScript execution is optimized for hot paths" ;
+                    oc:stepDependsOn _:ref_25e00abe859e5863 ;
+                    oc:stepId "audit-js" ],
+                _:ref_874302004a3068cd,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Apply event handler refs and useLatest for stable callback refs where needed" ;
+                    oc:expectedOutcome "Event handlers maintain referential stability across renders" ;
+                    oc:stepDependsOn _:ref_ef837a1261d8fd62 ;
+                    oc:stepId "audit-advanced" ],
+                _:ref_eb193084ccdff2fb,
+                _:ref_ef837a1261d8fd62 ;
+            oc:workflowId "react-perf-audit" ;
+            oc:workflowName "React Performance Audit Workflow" ] ;
+    oc:impartsKnowledge oc:kn_06ae79ba,
+        oc:kn_12ccde93,
+        oc:kn_22834a48,
+        oc:kn_74ad81a2,
+        oc:kn_8ab94716,
+        oc:kn_99f02f6c,
+        oc:kn_b88f0b28,
+        oc:kn_c0f45504 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "eliminate async waterfalls",
+        "fix layout shifts and CLS",
+        "optimize React performance",
+        "prevent hydration flickering",
+        "reduce bundle size",
+        "write performant Next.js components" ;
+    oc:yieldsState oc:PerformanceOptimized .
+
+oc:kn_06ae79ba a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any async data fetching code" ;
+    oc:directiveContent "Always use Promise.all() for independent async operations; never await sequentially when operations don't depend on each other." ;
+    oc:hasRationale "Sequential awaits create unnecessary waterfalls that compound latency." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_12ccde93 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When prioritizing which performance rules to apply" ;
+    oc:directiveContent "Eliminating waterfalls and bundle size optimization are CRITICAL priority — apply these rules first before any other optimization." ;
+    oc:hasRationale "These two categories have the highest user-perceived impact on application performance." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_22834a48 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing React hooks and state management" ;
+    oc:directiveContent "Do not subscribe to state values that are only used inside callbacks; use refs or functional setState instead." ;
+    oc:hasRationale "Subscribing to state only needed in callbacks triggers unnecessary re-renders." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_74ad81a2 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When organizing imports in any React/Next.js file" ;
+    oc:directiveContent "Avoid barrel file imports (index.js re-exports) — import directly from the specific module path." ;
+    oc:hasRationale "Barrel files prevent tree-shaking and force bundlers to include unused code." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8ab94716 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any specific rule from the 45-rule set" ;
+    oc:directiveContent "The rule files in rules/ directory contain incorrect and correct code examples for each rule — always consult the specific rule file before applying changes." ;
+    oc:hasRationale "Each rule has nuanced context about when it applies and edge cases to watch for." .
+
+oc:kn_99f02f6c a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing initial page load bundle size" ;
+    oc:directiveContent "Use next/dynamic for heavy components, defer third-party scripts (analytics/logging) until after hydration, and preload on hover/focus." ;
+    oc:hasRationale "Reducing the critical path JavaScript improves Time to Interactive." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b88f0b28 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reading from localStorage or cookies in React components" ;
+    oc:directiveContent "Use inline script blocks for client-only data (localStorage, cookies) to prevent hydration mismatches and FOUC." ;
+    oc:hasRationale "Server-rendered HTML won't have client-only data, causing hydration mismatch flicker." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c0f45504 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing server component data flow in Next.js" ;
+    oc:directiveContent "Minimize data passed from server to client components; use React.cache() for per-request deduplication and LRU cache for cross-request caching." ;
+    oc:hasRationale "Excessive server-to-client serialization increases payload size and hydration cost." ;
+    oc:severityLevel "MEDIUM" .
+
+_:ref_25e00abe859e5863 a oc:WorkflowStep ;
+    dcterms:description "Fix hydration flicker, optimize SVGs, use content-visibility for long lists, use ternary conditionals" ;
+    oc:expectedOutcome "No hydration mismatches or visual flickering" ;
+    oc:stepDependsOn _:ref_ef837a1261d8fd62 ;
+    oc:stepId "audit-rendering" .
+
+_:ref_40d5a1d73da65651 a oc:WorkflowStep ;
+    dcterms:description "Apply React.cache(), minimize server-to-client serialization, parallelize server fetches" ;
+    oc:expectedOutcome "Server-side data fetching is deduplicated and parallelized" ;
+    oc:stepDependsOn _:ref_eb193084ccdff2fb ;
+    oc:stepId "audit-server" .
+
+_:ref_5cadc11f503e40f6 a oc:WorkflowStep ;
+    dcterms:description "Check for barrel imports, add dynamic imports for heavy components, defer third-party scripts" ;
+    oc:expectedOutcome "Bundle size reduced, no unnecessary barrel file imports" ;
+    oc:stepId "audit-bundle" .
+
+_:ref_874302004a3068cd a oc:WorkflowStep ;
+    dcterms:description "Implement SWR for client data fetching, deduplicate event listeners" ;
+    oc:expectedOutcome "Client-side requests are deduplicated and cached" ;
+    oc:stepDependsOn _:ref_5cadc11f503e40f6 ;
+    oc:stepId "audit-client" .
+
+_:ref_eb193084ccdff2fb a oc:WorkflowStep ;
+    dcterms:description "Check for sequential awaits and apply async-parallel, async-defer-await rules" ;
+    oc:expectedOutcome "All independent async operations run in parallel via Promise.all()" ;
+    oc:stepId "audit-waterfalls" .
+
+_:ref_ef837a1261d8fd62 a oc:WorkflowStep ;
+    dcterms:description "Fix unnecessary subscriptions, add memoization, use primitive dependencies in effects" ;
+    oc:expectedOutcome "Unnecessary re-renders eliminated" ;
+    oc:stepDependsOn _:ref_40d5a1d73da65651,
+        _:ref_874302004a3068cd ;
+    oc:stepId "audit-rerender" .
+

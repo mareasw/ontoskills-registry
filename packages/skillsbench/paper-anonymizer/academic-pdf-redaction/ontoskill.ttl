@@ -1,0 +1,350 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_paper_anonymizer_academic_pdf_redaction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "academic-pdf-redaction" ;
+    skos:broader "PDF manipulation tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/paper-anonymizer/academic-pdf-redaction" ;
+    oc:contentHash "de6e19de4d315d26fae5a5136a5eed59d611d9c4c2dc87d04c3f73b74077aad7" ;
+    oc:dependsOnSkill oc:skill_ontoskills_pdf ;
+    oc:differentia "redacts identifying information from academic papers for blind review while preserving references" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "input PDF path, output PDF path, list of patterns to redact" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Redact text from PDF documents for blind review anonymization" ;
+    oc:hasName "academic-pdf-redaction" ;
+    oc:hasRequirement oc:req_1cce9dfa,
+        oc:req_8c4270e2 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: academic-pdf-redaction
+description: Redact text from PDF documents for blind review anonymization
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Redact identifying information from academic papers for blind review." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# ❌ WRONG - This removes ALL text from the page:
+for block in page.get_text("blocks"):
+    page.add_redact_annot(fitz.Rect(block[:4]))
+
+# ❌ WRONG - Drawing rectangles over text:
+page.draw_rect(fitz.Rect(0, 0, 600, 100), fill=(0,0,0))
+
+# ✅ CORRECT - Only redact specific search matches:
+for rect in page.search_for("John Smith"):
+    page.add_redact_annot(rect)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-29" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Common Pitfalls to AVOID" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+import os
+
+def redact_with_pymupdf(input_path: str, output_path: str, patterns: list[str]):
+    \"\"\"Redact specific patterns from PDF using PyMuPDF.\"\"\"
+    doc = fitz.open(input_path)
+    original_len = sum(len(p.get_text()) for p in doc)
+
+    # Find References page - stop redacting there
+    references_page = None
+    for i, page in enumerate(doc):
+        if "references" in page.get_text().lower():
+            references_page = i
+            break
+
+    for page_num, page in enumerate(doc):
+        if references_page is not None and page_num >= references_page:
+            continue  # Skip References section
+
+        for pattern in patterns:
+            # ONLY redact exact search matches
+            for rect in page.search_for(pattern):
+                page.add_redact_annot(rect, fill=(0, 0, 0))
+        page.apply_redactions()
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    doc.save(output_path)
+    doc.close()
+
+    # MUST verify after saving
+    verify_redaction(input_path, output_path)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 48-80" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "PyMuPDF (fitz) - Recommended Approach" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import fitz
+
+def verify_redaction(original_path, output_path):
+    \"\"\"Verify redaction didn't corrupt the PDF.\"\"\"
+    orig = fitz.open(original_path)
+    redc = fitz.open(output_path)
+
+    orig_len = sum(len(p.get_text()) for p in orig)
+    redc_len = sum(len(p.get_text()) for p in redc)
+
+    print(f"Original: {len(orig)} pages, {orig_len} chars")
+    print(f"Redacted: {len(redc)} pages, {redc_len} chars")
+    print(f"Retained: {redc_len/orig_len:.1%}")
+
+    # DEFENSIVE CHECKS - fail fast if something went wrong
+    if len(redc) != len(orig):
+        raise ValueError(f"Page count changed: {len(orig)} -> {len(redc)}")
+    if redc_len < 1000:
+        raise ValueError(f"PDF corrupted: only {redc_len} chars remain!")
+    if redc_len < orig_len * 0.7:
+        raise ValueError(f"Too much removed: kept only {redc_len/orig_len:.0%}")
+
+    orig.close()
+    redc.close()
+    print("✓ Verification passed")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 86-112" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Always run this after ANY redaction to catch errors early:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "REQUIRED: Verification Function" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_783d1ab5f7fa9e37 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "CRITICAL RULES" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_487e03e40b84fa87,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**IMPORTANT: Use FULL names/phrases, not partial matches!**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "❌ \"Smith\" (partial - would incorrectly match \"Smith et al.\" citations in References)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "✅ \"John Smith\" (full name)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Patterns to Redact (Before References Only)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PDF Redaction for Blind Review" ] ;
+    oc:hasWorkflow _:ref_487e03e40b84fa87,
+        _:ref_783d1ab5f7fa9e37,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for anonymizing an academic paper PDF" ;
+            oc:hasStep _:ref_04b5c62d88a1dfd5,
+                _:ref_0b9b58ae6f665ab6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Save the redacted PDF and run verification: check page count unchanged, text retention >= 70%, total chars >= 1000" ;
+                    oc:expectedOutcome "Verified redacted PDF with integrity confirmed" ;
+                    oc:stepDependsOn _:ref_04b5c62d88a1dfd5 ;
+                    oc:stepId "save-and-verify" ],
+                _:ref_90e620c9f7a8e6fb ;
+            oc:workflowId "redact-academic-pdf" ;
+            oc:workflowName "Redact Academic PDF for Blind Review" ] ;
+    oc:impartsKnowledge oc:kn_0a1bb838,
+        oc:kn_22c3e3a5,
+        oc:kn_407c3cea,
+        oc:kn_6e86a115,
+        oc:kn_76557b02,
+        oc:kn_bcc89c32 ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "anonymize academic paper for blind review",
+        "prepare paper for anonymous submission",
+        "redact identifying text from PDF" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_0a1bb838 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building the patterns list for redaction" ;
+    oc:directiveContent "Redact 8 categories of identifying info before References: author full names, affiliations, emails, venue names, arXiv IDs, DOIs, acknowledgement names, equal-contribution footnotes." ;
+    oc:hasRationale "These are the standard identifying elements that peer reviewers would use to deanonymize a submission." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_22c3e3a5 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running redaction on previously processed files" ;
+    oc:directiveContent "Running redaction multiple times on already-redacted PDFs is not idempotent — each run applies to whatever text remains, which may be less than expected." ;
+    oc:hasRationale "Redaction permanently removes text; re-running may fail to find patterns that were already removed, or if the first run was wrong, damage compounds." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_407c3cea a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When defining patterns to redact" ;
+    oc:directiveContent "Use FULL names and phrases for pattern matching, never partial strings like just a surname." ;
+    oc:hasRationale "Partial matches like 'Smith' will incorrectly redact 'Smith et al.' citations in the references and other legitimate mentions." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6e86a115 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After every redaction operation" ;
+    oc:directiveContent "Always run verify_redaction() after saving. Check: page count unchanged, retained text >= 70% of original, total chars >= 1000." ;
+    oc:hasRationale "Catches catastrophic failures like corrupted PDFs, over-redaction, or page count changes before the file is distributed." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_76557b02 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying redactions to any page" ;
+    oc:directiveContent "Never redact entire pages, blocks, or rectangular regions. Only redact specific search matches for exact text strings." ;
+    oc:hasRationale "Blanket redaction removes non-identifying content and corrupts the paper's readability. Targeted redaction preserves 80%+ of original text." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bcc89c32 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always, when scanning pages for redaction" ;
+    oc:directiveContent "NEVER redact the References section. Self-citations and all references must remain fully intact. Stop redacting at the page where 'references' appears." ;
+    oc:hasRationale "References are critical for peer review and must be preserved; removing them violates academic norms and breaks citation integrity." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_1cce9dfa a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.10+" .
+
+oc:req_8c4270e2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "PyMuPDF (fitz)" .
+
+_:ref_1d332c50589a3435 a oc:WorkflowStep ;
+    dcterms:description "**VERIFY output** - Check that 80%+ of original text remains" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_1fd402baa179ef19 a oc:WorkflowStep ;
+    dcterms:description "**Venue names** - Conference/workshop names (e.g., \"ICML 2024\", \"ICML Workshop\")" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_43553d480c013252 a oc:WorkflowStep ;
+    dcterms:description "**arXiv identifiers** - Pattern: `arXiv:XXXX.XXXXX`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_737d38ee1acd4288 a oc:WorkflowStep ;
+    dcterms:description "**Author names** - FULL names only (e.g., \"John Smith\", not just \"Smith\")" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_94aa0819b7f0731e a oc:WorkflowStep ;
+    dcterms:description "**Equal contribution footnotes** - e.g., \"Equal contribution\", \"* Equal contribution\"" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_b59a6f3a0f7f2a01 a oc:WorkflowStep ;
+    dcterms:description "**DOIs** - Pattern: `10.XXXX/...`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_b66ae0484eb3940d a oc:WorkflowStep ;
+    dcterms:description "**PRESERVE References section** - Self-citations MUST remain intact" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c37fb0b31df0c179 a oc:WorkflowStep ;
+    dcterms:description "**ONLY redact specific text matches** - Never redact entire pages/regions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c70141a39c8b615f a oc:WorkflowStep ;
+    dcterms:description "**Acknowledgement names** - Names in \"Acknowledgements\" section" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_c9e05482fbeadc64 a oc:WorkflowStep ;
+    dcterms:description "**Affiliations** - Universities, companies (e.g., \"Duke University\")" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d7ae0f8a71945043 a oc:WorkflowStep ;
+    dcterms:description "**Email addresses** - Pattern: `*@*.edu`, `*@*.com`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_04b5c62d88a1dfd5 a oc:WorkflowStep ;
+    dcterms:description "For each page before References, search for each pattern and apply redact annotations only on exact matches" ;
+    oc:expectedOutcome "Redaction annotations applied to all matching text regions" ;
+    oc:stepDependsOn _:ref_0b9b58ae6f665ab6,
+        _:ref_90e620c9f7a8e6fb ;
+    oc:stepId "apply-targeted-redactions" .
+
+_:ref_0b9b58ae6f665ab6 a oc:WorkflowStep ;
+    dcterms:description "Identify all identifying patterns to redact: author full names, affiliations, emails, venue names, arXiv IDs, DOIs, acknowledgement names, equal-contribution footnotes" ;
+    oc:expectedOutcome "Complete list of full-name/phrase patterns to redact" ;
+    oc:stepId "identify-patterns" .
+
+_:ref_487e03e40b84fa87 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_1fd402baa179ef19,
+        _:ref_43553d480c013252,
+        _:ref_737d38ee1acd4288,
+        _:ref_94aa0819b7f0731e,
+        _:ref_b59a6f3a0f7f2a01,
+        _:ref_c70141a39c8b615f,
+        _:ref_c9e05482fbeadc64,
+        _:ref_d7ae0f8a71945043 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_783d1ab5f7fa9e37 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_1d332c50589a3435,
+        _:ref_b66ae0484eb3940d,
+        _:ref_c37fb0b31df0c179 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_90e620c9f7a8e6fb a oc:WorkflowStep ;
+    dcterms:description "Open the PDF and locate the page where the References section begins" ;
+    oc:expectedOutcome "Page index of References section identified, or None if not found" ;
+    oc:stepId "find-references-page" .
+

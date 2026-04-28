@@ -1,0 +1,317 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_energy_calculator a oc:ExecutableSkill,
+        oc:Skill ;
+    dcterms:identifier "energy-calculator" ;
+    skos:broader "Audio analyzer" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/energy-calculator" ;
+    oc:contentHash "d55ee19d70907939a416078a08eb8bf745fe96090d96b72f95f61b6bf043eb8b" ;
+    oc:dependsOnSkill oc:skill_ontoskills_audio_extractor ;
+    oc:differentia "calculates per-second RMS energy values from WAV files to produce an energy profile for silence and pause detection" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "--audio /path/to/audio.wav --output /path/to/energies.json [--window-seconds N]" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Calculate per-second RMS energy from audio files. Use when you need to analyze audio volume patterns, prepare data for silence/pause detection, or create an energy profile for audio analysis tasks." ;
+    oc:hasName "energy-calculator" ;
+    oc:hasPayload oc:payload_d55ee19d70907939 ;
+    oc:hasRequirement oc:req_00703909,
+        oc:req_02b3c31e,
+        oc:req_4f05be16 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Calculates per-second RMS (Root Mean Square) energy from audio files. Produces an energy profile that can be used for opening detection, pause detection, or other audio analysis tasks." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Python 3.11+" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "numpy" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_4dcc90aa1949afeb ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "How It Works" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Calculate energy from extracted audio
+python3 /root/.claude/skills/energy-calculator/scripts/calc_energy.py \\
+    --audio audio.wav \\
+    --output energies.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 61-66" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Calculating audio energy for silence detection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Analyzing audio volume patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Preparing data for opening/pause detection" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "RMS energy correlates with perceived loudness" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Output can be used by opening-detector and pause-detector skills" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Higher values = louder audio, lower values = quieter/silence" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/energy-calculator/scripts/calc_energy.py \\
+    --audio /path/to/audio.wav \\
+    --output /path/to/energies.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-22" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--audio`: Path to input WAV file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`--window-seconds`: Window size for energy calculation (default: 1 second)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--output`: Path to output JSON file" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "sample_rate": 16000,
+  "window_seconds": 1,
+  "total_seconds": 600,
+  "energies": [123.5, 456.7, 234.2, ...],
+  "stats": {
+    "min": 45.2,
+    "max": 892.3,
+    "mean": 234.5,
+    "std": 156.7
+  }
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 32-45" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Output Format" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Energy Calculator" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: energy-calculator
+description: Calculate per-second RMS energy from audio files. Use when you need to analyze audio volume patterns, prepare data for silence/pause detection, or create an energy profile for audio analysis tasks.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_4dcc90aa1949afeb,
+        [ a oc:Workflow ;
+            dcterms:description "Compute per-second RMS energy values from a WAV audio file and output a JSON energy profile" ;
+            oc:hasStep _:ref_01acc0c91cbf7082,
+                _:ref_bf6b70f42fc55e23,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify output JSON contains energies array and stats with expected fields" ;
+                    oc:expectedOutcome "Output confirmed valid with energies array, sample_rate, window_seconds, total_seconds, and stats" ;
+                    oc:stepDependsOn _:ref_bf6b70f42fc55e23 ;
+                    oc:stepId "validate-output" ] ;
+            oc:workflowId "energy-calculation" ;
+            oc:workflowName "Calculate Audio Energy Profile" ] ;
+    oc:impartsKnowledge oc:kn_7ad7976a,
+        oc:kn_809b781b,
+        oc:kn_82da3c0c,
+        oc:kn_8da00e94,
+        oc:kn_a6f0f1f4,
+        oc:kn_b198d26d,
+        oc:kn_f1f6dfda,
+        oc:kn_f3b04e96 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "analyze audio volume patterns",
+        "calculate RMS energy profile for audio",
+        "prepare energy data for pause detection",
+        "prepare energy data for silence detection" ;
+    oc:yieldsState oc:EnergyProfileCreated .
+
+oc:kn_7ad7976a a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Energy calculation output format" ;
+    oc:directiveContent """{
+  "sample_rate": 16000,
+  "window_seconds": 1,
+  "total_seconds": 600,
+  "energies": [123.5, 456.7, ...],
+  "stats": {"min": 45.2, "max": 892.3, "mean": 234.5, "std": 156.7}
+}""" ;
+    oc:templateVariables "energies",
+        "sample_rate",
+        "stats",
+        "total_seconds",
+        "window_seconds" .
+
+oc:kn_809b781b a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When calculating audio energy profile" ;
+    oc:directiveContent "1. Load audio WAV file 2. Split into window-sized segments (default 1 second) 3. Calculate RMS energy per window: sqrt(mean(samples^2)) 4. Output JSON with energies array and statistics" ;
+    oc:stepOrder 1 .
+
+oc:kn_82da3c0c a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "Running energy calculation multiple times on the same input produces identical output files" ;
+    oc:hasRationale "RMS calculation is deterministic given the same input audio and window size" .
+
+oc:kn_8da00e94 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before running energy calculation" ;
+    oc:directiveContent "Input must be a WAV file; other audio formats must be converted first (e.g., via audio-extractor skill)" ;
+    oc:hasRationale "The script reads raw WAV samples; compressed formats require decoding first" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a6f0f1f4 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Python 3.11+ and numpy must be installed" .
+
+oc:kn_b198d26d a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "On execution" ;
+    oc:directiveContent "Creates or overwrites the output JSON file at the specified --output path" ;
+    oc:hasRationale "Agent should be aware the output file will be created or replaced" .
+
+oc:kn_f1f6dfda a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running energy calculation on a WAV file" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "python3 /root/.claude/skills/energy-calculator/scripts/calc_energy.py --audio {audio_path} --output {output_path} [--window-seconds {window}]" .
+
+oc:kn_f3b04e96 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting energy values" ;
+    oc:directiveContent "RMS energy correlates with perceived loudness: higher values = louder audio, lower values = quieter/silence" ;
+    oc:hasRationale "RMS energy is a standard proxy for perceived loudness in audio signal processing" .
+
+oc:payload_d55ee19d70907939 a oc:ExecutionPayload ;
+    oc:code "python3 /root/.claude/skills/energy-calculator/scripts/calc_energy.py --audio {audio_path} --output {output_path} [--window-seconds {window}]" ;
+    oc:executor "python" ;
+    oc:timeout 120 .
+
+oc:req_00703909 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.11+" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_4f05be16 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "RMS (Root Mean Square) energy calculation" .
+
+_:ref_6a9c35f52b4cd421 a oc:WorkflowStep ;
+    dcterms:description "Load audio file" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8747974db7a1e0d2 a oc:WorkflowStep ;
+    dcterms:description "Calculate RMS energy for each window: `sqrt(mean(samples^2))`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_908fa0f98701a9cc a oc:WorkflowStep ;
+    dcterms:description "Split into 1-second windows" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_f23605ace4b27093 a oc:WorkflowStep ;
+    dcterms:description "Output array of energy values" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_01acc0c91cbf7082 a oc:WorkflowStep ;
+    dcterms:description "Verify input WAV file exists at the specified path" ;
+    oc:expectedOutcome "Input file confirmed present and readable" ;
+    oc:stepId "verify-input" .
+
+_:ref_4dcc90aa1949afeb a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_6a9c35f52b4cd421,
+        _:ref_8747974db7a1e0d2,
+        _:ref_908fa0f98701a9cc,
+        _:ref_f23605ace4b27093 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_bf6b70f42fc55e23 a oc:WorkflowStep ;
+    dcterms:description "Execute calc_energy.py with --audio and --output parameters" ;
+    oc:expectedOutcome "Energy profile JSON file generated at output path" ;
+    oc:stepDependsOn _:ref_01acc0c91cbf7082 ;
+    oc:stepId "run-calculation" .
+

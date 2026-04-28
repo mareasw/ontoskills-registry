@@ -1,0 +1,565 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_jax_computing_basics_jax_skills a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "jax-skills" ;
+    skos:broader "Numerical computing library" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/jax-computing-basics/jax-skills" ;
+    oc:contentHash "8bcb183461bf9a9457bd77bf4ccaaa155f72d46b4a663b64b2d4115b9d0efcae" ;
+    oc:differentia "provides JAX-native array operations, automatic differentiation, JIT compilation, and recurrent scan utilities for scientific computing and ML prototyping" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "operation-name with array/data arguments" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "High-performance numerical computing and machine learning workflows using JAX. Supports array operations, automatic differentiation, JIT compilation, RNN-style scans, map/reduce operations, and gradient computations. Ideal for scientific computing, ML models, and dynamic array transformations." ;
+    oc:hasName "jax-skills" ;
+    oc:hasRequirement oc:req_3c193451,
+        oc:req_4a7bff4c,
+        oc:req_b4682b66,
+        oc:req_ccee741d,
+        oc:req_e71c75fb ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "Save arrays using .npy or pickle/json to avoid system-specific issues." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Use JIT compilation (jit_run) for compute-heavy functions." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Avoid side effects inside functions passed to vmap or scan." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Validate input shapes for map_op, reduce_op, and rnn_scan." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Prefer JAX arrays (jnp.array) for all operations; convert to NumPy only when saving." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 3 ;
+            oc:sectionTitle "Best Practices" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: jax-skills
+description: "High-performance numerical computing and machine learning workflows using JAX. Supports array operations, automatic differentiation, JIT compilation, RNN-style scans, map/reduce operations, and gradient computations. Ideal for scientific computing, ML models, and dynamic array transformations."
+license: Proprietary. LICENSE.txt has complete terms
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "This skill set is designed for scientific computing, ML model prototyping, and dynamic array transformations." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Avoid unnecessary conversions to NumPy; only convert when interacting with external file formats." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Emphasizes JAX-native operations, automatic differentiation, and JIT compilation." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 5 ;
+            oc:sectionTitle "Notes" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """result = jx.jit_run(my_function, (arg1, arg2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 110-112" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "fn (callable): Function to compile." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "args (tuple): Arguments for the function." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: JIT compile and run a function using JAX.
+**Parameters**:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Speeds up repeated function calls." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Input shapes must be consistent across calls." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`jit_run(fn, args)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "5. JIT Compilation" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "path (str): File path to save." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "data (array): Array to save." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Save a JAX array or Python array to `.npy`.
+**Parameters**:""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """jx.save(arr, "output.npy")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 45-47" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "`save(data, path)`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`path` (str): Path to the input file." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Load a JAX-compatible array from a file. Supports `.npy` and `.npz`.  
+**Parameters**:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Returns**: JAX array or dict of arrays if `.npz`." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import jax_skills as jx
+
+arr = jx.load("data.npy")
+arr_dict = jx.load("data.npz")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 32-37" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`load(path)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "1. Loading and Saving Arrays" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """squared = jx.map_op(arr, "square")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 55-57" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "array (array): Input array." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "op (str): Operation name (\"square\" supported)." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Apply elementwise operations on an array using JAX vmap.
+**Parameters**:""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`map_op(array, op)`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "array (array): Input array." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "axis (int): Axis along which to reduce." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "op (str): Operation name (\"mean\" supported)." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Reduce array along a given axis.
+**Parameters**:""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """mean_vals = jx.reduce_op(arr, "mean", axis=0)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 66-68" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "`reduce_op(array, op, axis)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "2. Map and Reduce Operations" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "seq (array): Input sequence." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Wh (array): Hidden-to-hidden weight matrix." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Wx (array): Input-to-hidden weight matrix." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "b (array): Bias vector." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Apply an RNN-style scan over a sequence using JAX lax.scan.
+**Parameters**:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """hseq = jx.rnn_scan(sequence, Wx, Wh, b)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 95-97" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Uses tanh activation." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Returns sequence of hidden states." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`rnn_scan(seq, Wx, Wh, b)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "4. Recurrent Scan" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Notes**:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Uses jax.grad for automatic differentiation." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Logistic loss: mean(log(1 + exp(-y * (x @ w))))." ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """grad_w = jx.logistic_grad(X_train, y_train, w_init)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 78-80" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """**Description**: Compute the gradient of logistic loss with respect to weights.
+**Parameters**:""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "y (array): Labels." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "x (array): Input features." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "w (array): Weight vector." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "`logistic_grad(x, y, w)`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "3. Gradients and Optimization" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "JAX Skills" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """import jax.numpy as jnp
+import jax_skills as jx
+
+# Load array
+arr = jx.load("data.npy")
+
+# Square elements
+arr2 = jx.map_op(arr, "square")
+
+# Reduce along axis
+mean_arr = jx.reduce_op(arr2, "mean", axis=0)
+
+# Compute logistic gradient
+grad_w = jx.logistic_grad(X_train, y_train, w_init)
+
+# RNN scan
+hseq = jx.rnn_scan(sequence, Wx, Wh, b)
+
+# Save result
+jx.save(hseq, "hseq.npy")
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 125-146" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 4 ;
+            oc:sectionTitle "Example Workflow" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use `.npy`, `.npz`, JSON, or pickle for saving arrays." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "All arrays MUST be compatible with JAX (`jnp.array`) or convertible from Python lists." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Arrays" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Provide meaningful error messages for unsupported operations or invalid inputs." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Validate input types and shapes for all functions." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Maintain numerical stability for all operations." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Operations" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "General Guidelines" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Requirements for Outputs" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for loading data, performing transformations, computing gradients, running scans, and saving results." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Save output arrays to .npy using jx.save()" ;
+                    oc:expectedOutcome "Results persisted to disk in .npy format" ;
+                    oc:stepDependsOn _:ref_699fde305b0c4246,
+                        _:ref_bac29ae0d87c9f89,
+                        _:ref_e2d9564aad3cca70,
+                        _:ref_f1632a1e2e59b66c ;
+                    oc:stepId "save-results" ],
+                _:ref_699fde305b0c4246,
+                _:ref_bac29ae0d87c9f89,
+                _:ref_d7f57c28114c23c6,
+                _:ref_e2d9564aad3cca70,
+                _:ref_f1632a1e2e59b66c ;
+            oc:workflowId "jax-computation-pipeline" ;
+            oc:workflowName "JAX Computation Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_3b9ff976,
+        oc:kn_51424328,
+        oc:kn_84b15bbd,
+        oc:kn_9b984f2e,
+        oc:kn_9e3b6107,
+        oc:kn_a687e51e,
+        oc:kn_b3876c97 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "JIT compile and execute functions for performance",
+        "apply elementwise map and reduce operations on arrays",
+        "compute gradients for logistic loss optimization",
+        "load and save JAX arrays",
+        "perform high-performance numerical computing with JAX",
+        "run RNN-style scans over sequences" ;
+    oc:yieldsState oc:DataProcessed,
+        oc:FileSaved .
+
+oc:kn_3b9ff976 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When evaluating functions multiple times with same-shape inputs" ;
+    oc:directiveContent "Use JIT compilation (jit_run) for compute-heavy functions to speed up repeated calls; one-time calls may not benefit." ;
+    oc:hasRationale "JIT compilation has upfront cost; benefits only materialize on repeated invocations with stable input shapes." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_51424328 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Throughout all JAX workflows" ;
+    oc:directiveContent "Prefer JAX arrays (jnp.array) for all operations; convert to NumPy only when saving to external formats." ;
+    oc:hasRationale "Staying in JAX-native types preserves JIT compatibility, automatic differentiation, and GPU/TPU acceleration." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_84b15bbd a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using jit_run for JIT compilation" ;
+    oc:directiveContent "JIT-compiled functions must receive inputs with consistent shapes across calls." ;
+    oc:hasRationale "JAX JIT traces functions based on input shapes; changing shapes triggers recompilation and defeats performance gains." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9b984f2e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using map_op, reduce_op, rnn_scan, or any JAX transformation" ;
+    oc:directiveContent "Avoid side effects inside functions passed to vmap or scan; these functions must be pure." ;
+    oc:hasRationale "JAX transformations (vmap, scan, jit) require pure functions; side effects break functional guarantees and cause undefined behavior." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_9e3b6107 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before calling map_op, reduce_op, rnn_scan, or logistic_grad" ;
+    oc:directiveContent "Validate input types and shapes for all functions before execution; provide meaningful error messages for unsupported operations." ;
+    oc:hasRationale "Shape mismatches in JAX often produce cryptic tracing errors rather than clear messages; early validation improves debugging." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_a687e51e a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When reasoning about reproducibility of JAX computations" ;
+    oc:directiveContent "Array loading and saving operations are idempotent for the same data; gradient and scan operations are deterministic given identical inputs." ;
+    oc:hasRationale "JAX operations are functional and deterministic by default, supporting reproducible scientific computing." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_b3876c97 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating, loading, or saving any array" ;
+    oc:directiveContent "All arrays MUST be JAX-compatible (jnp.array) or convertible from Python lists; use .npy, .npz, JSON, or pickle for serialization." ;
+    oc:hasRationale "JAX operations require JAX-native arrays; mixing NumPy arrays can cause silent errors or performance degradation." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_3c193451 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "jax_skills Python package" .
+
+oc:req_4a7bff4c a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Automatic differentiation concepts" .
+
+oc:req_b4682b66 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "JAX (jax, jax.numpy, jax.lax, jax.grad)" .
+
+oc:req_ccee741d a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "JIT compilation constraints in JAX" .
+
+oc:req_e71c75fb a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "JAX array operations and functional programming model" .
+
+_:ref_699fde305b0c4246 a oc:WorkflowStep ;
+    dcterms:description "Compute logistic loss gradient using jx.logistic_grad()" ;
+    oc:expectedOutcome "Gradient vector with respect to weights" ;
+    oc:stepDependsOn _:ref_d7f57c28114c23c6 ;
+    oc:stepId "compute-gradients" .
+
+_:ref_e2d9564aad3cca70 a oc:WorkflowStep ;
+    dcterms:description "Run RNN-style scan over sequence using jx.rnn_scan()" ;
+    oc:expectedOutcome "Sequence of hidden states from RNN scan" ;
+    oc:stepDependsOn _:ref_d7f57c28114c23c6 ;
+    oc:stepId "rnn-scan" .
+
+_:ref_f1632a1e2e59b66c a oc:WorkflowStep ;
+    dcterms:description "Reduce array along specified axis using jx.reduce_op()" ;
+    oc:expectedOutcome "Reduced array (e.g., mean values along axis)" ;
+    oc:stepDependsOn _:ref_bac29ae0d87c9f89 ;
+    oc:stepId "reduce-data" .
+
+_:ref_bac29ae0d87c9f89 a oc:WorkflowStep ;
+    dcterms:description "Apply elementwise map operations (e.g., square) using jx.map_op()" ;
+    oc:expectedOutcome "Transformed JAX array with elementwise operation applied" ;
+    oc:stepDependsOn _:ref_d7f57c28114c23c6 ;
+    oc:stepId "transform-data" .
+
+_:ref_d7f57c28114c23c6 a oc:WorkflowStep ;
+    dcterms:description "Load input arrays from .npy or .npz files using jx.load()" ;
+    oc:expectedOutcome "JAX array or dict of arrays loaded into memory" ;
+    oc:stepId "load-data" .
+

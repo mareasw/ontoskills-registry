@@ -1,0 +1,319 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_pg_essay_to_audiobook_elevenlabs_tts a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "elevenlabs-tts" ;
+    skos:broader "Text-to-speech service" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/pg-essay-to-audiobook/elevenlabs-tts" ;
+    oc:contentHash "5fcd5c436cb62b36a8ee0c4f1941dccb6c571e00b78555ec4c3d093329a8cbab" ;
+    oc:differentia "Uses ElevenLabs API for high-quality speech synthesis with configurable voices and settings" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "text to synthesize and output audio path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "ElevenLabs Text-to-Speech API for high-quality speech synthesis." ;
+    oc:hasName "elevenlabs-tts" ;
+    oc:hasRequirement oc:req_49461b85,
+        oc:req_8f2ef958,
+        oc:req_f8bcb1c3 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Generate high-quality speech audio from text using the ElevenLabs API." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Template ;
+                                    oc:blockType "template" ;
+                                    oc:contentOrder 1 ;
+                                    oc:templateContent """POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id}
+""" ;
+                                    oc:templateVariables "voice_id" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Request Body:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Response:** Audio bytes (mp3 format by default)" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "text": "Your text here",
+  "model_id": "eleven_turbo_v2_5",
+  "voice_settings": {
+    "stability": 0.5,
+    "similarity_boost": 0.5
+  }
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 30-39" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Text-to-Speech" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "API Endpoints" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "ElevenLabs has a ~5000 character limit per request. For long documents:" ],
+                        _:ref_b5fb45594c525a91,
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Create file list
+echo "file 'chunk1.mp3'" > files.txt
+echo "file 'chunk2.mp3'" >> files.txt
+
+# Concatenate
+ffmpeg -f concat -safe 0 -i files.txt -c copy output.mp3
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 95-102" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Handling Long Text" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import os
+import requests
+
+ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
+VOICE_ID = "21m00Tcm4TlvDq8ikWAM"  # Rachel
+
+def text_to_speech(text, output_path):
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}"
+
+    headers = {
+        "xi-api-key": ELEVENLABS_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "text": text,
+        "model_id": "eleven_turbo_v2_5",
+        "voice_settings": {
+            "stability": 0.5,
+            "similarity_boost": 0.75
+        }
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 200:
+        with open(output_path, "wb") as f:
+            f.write(response.content)
+        return True
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return False
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 52-85" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Python Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """xi-api-key: $ELEVENLABS_API_KEY
+""" ;
+                            oc:codeLanguage "" ;
+                            oc:contentOrder 4 ;
+                            oc:sourceLocation "lines 18-20" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """ELEVENLABS_API_KEY
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 13-15" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Include in request header:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The API key is available as environment variable:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Authentication" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Cache generated audio to avoid redundant API calls" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Split at sentence boundaries to avoid cutting words" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Check rate limits (varies by subscription tier)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`EXAVITQu4vr4xnSDxMaL` - Bella (female, soft)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`21m00Tcm4TlvDq8ikWAM` - Rachel (female, calm)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`TxGEqnHWrfWFTfGW9XjX` - Josh (male, deep)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`ErXwobaYiN019PkySvjV` - Antoni (male, warm)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Popular Voice IDs" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "ElevenLabs Text-to-Speech" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: elevenlabs-tts
+description: "ElevenLabs Text-to-Speech API for high-quality speech synthesis."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Convert long text documents to audio by splitting, synthesizing chunks, and concatenating." ;
+            oc:hasStep _:ref_61b62af8c8aa4578,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Use ffmpeg or pydub to concatenate all chunk audio files into a single output MP3" ;
+                    oc:expectedOutcome "Single continuous audio file covering the full text" ;
+                    oc:stepDependsOn _:ref_61b62af8c8aa4578 ;
+                    oc:stepId "concatenate-audio" ],
+                _:ref_ef0fb6fa3a78ee07 ;
+            oc:workflowId "elevenlabs-tts-long-text" ;
+            oc:workflowName "Long Text to Speech Synthesis" ],
+        _:ref_b5fb45594c525a91 ;
+    oc:impartsKnowledge oc:kn_0bcd53c9,
+        oc:kn_2b35176d,
+        oc:kn_d25b0de7,
+        oc:kn_d59bd769,
+        oc:kn_d67da6e5 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "convert text to audio using ElevenLabs",
+        "create audiobook audio with premium voices",
+        "generate speech audio from text",
+        "synthesize natural-sounding speech" ;
+    oc:yieldsState oc:AudioGenerated .
+
+oc:kn_0bcd53c9 a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When authenticating with the ElevenLabs API" ;
+    oc:directiveContent "The ELEVENLABS_API_KEY must be kept secure and passed via the xi-api-key header, never hardcoded." ;
+    oc:hasRationale "Exposed API keys can lead to unauthorized usage and credit exhaustion" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_2b35176d a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When synthesizing text longer than ~5000 characters" ;
+    oc:directiveContent "ElevenLabs has a ~5000 character limit per request. Text exceeding this must be split into chunks at sentence boundaries." ;
+    oc:hasRationale "Exceeding the character limit causes API errors; splitting at sentence boundaries avoids cutting words mid-speech" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d25b0de7 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "On every text-to-speech API call" ;
+    oc:directiveContent "Each API call consumes ElevenLabs API credits and produces an MP3 audio file on disk." ;
+    oc:hasRationale "Agents should be aware of credit consumption and disk space usage to avoid unexpected costs" .
+
+oc:kn_d59bd769 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When making repeated TTS requests" ;
+    oc:directiveContent "Cache generated audio to avoid redundant API calls. Rate limits vary by subscription tier." ;
+    oc:hasRationale "Caching reduces API costs and avoids hitting rate limits that vary by subscription tier" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d67da6e5 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When handling long documents for TTS conversion" ;
+    oc:directiveContent "Split long text at sentence boundaries, generate audio per chunk, then concatenate with ffmpeg or pydub." ;
+    oc:hasRationale "Sentence-boundary splitting preserves natural speech cadence and avoids garbled audio at chunk boundaries" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_49461b85 a oc:RequirementEnvVar ;
+    oc:isOptional false ;
+    oc:requirementValue "ELEVENLABS_API_KEY" .
+
+oc:req_8f2ef958 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "ffmpeg" .
+
+oc:req_f8bcb1c3 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "ElevenLabs Text-to-Speech API" .
+
+_:ref_050f1ffe8757d33b a oc:WorkflowStep ;
+    dcterms:description "Generate audio for each chunk" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c0c4ee1339afbe5f a oc:WorkflowStep ;
+    dcterms:description "Concatenate using ffmpeg or pydub:" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ea327bce719341ef a oc:WorkflowStep ;
+    dcterms:description "Split text into chunks at sentence boundaries" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_61b62af8c8aa4578 a oc:WorkflowStep ;
+    dcterms:description "Send each text chunk to ElevenLabs TTS API and save resulting audio as individual MP3 files" ;
+    oc:expectedOutcome "One MP3 file per text chunk" ;
+    oc:stepDependsOn _:ref_ef0fb6fa3a78ee07 ;
+    oc:stepId "synthesize-chunks" .
+
+_:ref_b5fb45594c525a91 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_050f1ffe8757d33b,
+        _:ref_c0c4ee1339afbe5f,
+        _:ref_ea327bce719341ef ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ef0fb6fa3a78ee07 a oc:WorkflowStep ;
+    dcterms:description "Split input text into chunks at sentence boundaries, each under ~5000 characters" ;
+    oc:expectedOutcome "Array of text chunks ready for API submission" ;
+    oc:stepId "split-text" .
+

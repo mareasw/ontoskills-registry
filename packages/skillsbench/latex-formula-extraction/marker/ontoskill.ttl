@@ -1,0 +1,254 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_latex_formula_extraction_marker a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "marker" ;
+    skos:broader "PDF converter" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/latex-formula-extraction/marker" ;
+    oc:contentHash "226d9d20375ab0f16fddb26b17a102b4fad275fdd92df77e9c41297d3c4f50b6" ;
+    oc:differentia "that preserves LaTeX formulas and document structure when converting to Markdown" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "pdf-path" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Convert PDF documents to Markdown using marker_single. Use when Claude needs to extract text content from PDFs while preserving LaTeX formulas, equations, and document structure. Ideal for academic papers and technical documents containing mathematical notation." ;
+    oc:hasName "marker" ;
+    oc:hasRequirement oc:req_1cce9dfa,
+        oc:req_f7fa3ca9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Convert PDFs to Markdown while preserving LaTeX formulas and document structure. Uses the `marker_single` CLI from the marker-pdf package." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`cleanup=True`: outputs stored in a temporary directory and removed automatically" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`cleanup=False`: outputs saved to `<pdf_stem>_marker/`; markdown lives at `<pdf_stem>_marker/<pdf_stem>/<pdf_stem>.md` when present (otherwise the first `.md` file is used)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Output Locations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`marker_single` on PATH (`pip install marker-pdf` if missing)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Python 3.10+ (available in the task image)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Basic conversion (prints markdown to stdout)
+python scripts/marker_to_markdown.py paper.pdf
+
+# Keep temporary files
+python scripts/marker_to_markdown.py paper.pdf --keep-temp
+
+# Custom timeout
+python scripts/marker_to_markdown.py paper.pdf --timeout 600
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 34-43" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Command-Line Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Tips: bump `timeout` for large PDFs; set `cleanup=False` to inspect intermediate files" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:hasChild [ a oc:BulletList ;
+                                            oc:blockType "bullet_list" ;
+                                            oc:contentOrder 1 ;
+                                            oc:hasItem [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 1 ;
+                                                    oc:itemText "Runs `marker_single --output_format markdown --disable_image_extraction`" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 2 ;
+                                                    oc:itemText "`cleanup=True`: use a temp directory and delete after reading the Markdown" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 3 ;
+                                                    oc:itemText "`cleanup=False`: keep outputs in `<pdf_stem>_marker/` next to the PDF" ],
+                                                [ a oc:BulletItem ;
+                                                    oc:blockType "bullet_item" ;
+                                                    oc:itemOrder 4 ;
+                                                    oc:itemText "Exceptions: `FileNotFoundError` if the PDF is missing, `RuntimeError` for marker failures, `TimeoutError` if it exceeds the timeout" ] ] ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`pdf_to_markdown(pdf_path, *, timeout=600, cleanup=True) -> str`" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Python API" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from scripts.marker_to_markdown import pdf_to_markdown
+
+markdown_text = pdf_to_markdown("paper.pdf")
+print(markdown_text)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 16-21" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "`marker_single` not found: install `marker-pdf` or ensure the CLI is on PATH" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "No Markdown output: re-run with `--keep-temp`/`cleanup=False` and check `stdout`/`stderr` saved in the output folder" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Troubleshooting" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Marker PDF-to-Markdown Converter" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: marker
+description: Convert PDF documents to Markdown using marker_single. Use when Claude needs to extract text content from PDFs while preserving LaTeX formulas, equations, and document structure. Ideal for academic papers and technical documents containing mathematical notation.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_2d29f570,
+        oc:kn_3133e62d,
+        oc:kn_442a2e09,
+        oc:kn_48221da5,
+        oc:kn_705e3c49,
+        oc:kn_88d3f39f,
+        oc:kn_89fc7a95,
+        oc:kn_b407de3b,
+        oc:kn_b59930f8,
+        oc:kn_d93b7d97,
+        oc:kn_ec51820b ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "convert PDF to markdown",
+        "convert academic papers to markdown",
+        "extract text from PDF with LaTeX",
+        "preserve mathematical notation from PDF" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_2d29f570 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When retrying or re-running conversions" ;
+    oc:directiveContent "Re-running on the same PDF produces the same markdown output (deterministic conversion)" ;
+    oc:hasRationale "Safe to re-run without side effects when cleanup=True" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_3133e62d a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When receiving conversion output" ;
+    oc:directiveContent "Markdown string containing extracted text with preserved LaTeX formulas and document structure (headings, paragraphs, equations)" ;
+    oc:templateVariables "markdown_text" .
+
+oc:kn_442a2e09 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running marker conversion from CLI" ;
+    oc:directiveContent "python scripts/marker_to_markdown.py paper.pdf [--keep-temp] [--timeout 600]" .
+
+oc:kn_48221da5 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting large or complex PDF documents" ;
+    oc:directiveContent "Bump timeout for large PDFs; default is 600 seconds" ;
+    oc:hasRationale "Complex academic papers with many formulas can exceed default timeout" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_705e3c49 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any PDF conversion" ;
+    oc:directiveContent "Requires marker_single on PATH (install via pip install marker-pdf) and Python 3.10+" ;
+    oc:hasRationale "The marker_single CLI is the core engine; without it, conversion cannot proceed" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_88d3f39f a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting a PDF to markdown programmatically" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from scripts.marker_to_markdown import pdf_to_markdown
+
+markdown_text = pdf_to_markdown("paper.pdf")
+print(markdown_text)""" .
+
+oc:kn_89fc7a95 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When choosing cleanup parameter" ;
+    oc:directiveContent "cleanup=True uses a temp directory deleted after reading; cleanup=False creates <pdf_stem>_marker/ directory next to the PDF" ;
+    oc:hasRationale "Awareness of file system side effects prevents unexpected disk usage or missing files" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b407de3b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Python 3.10+ must be installed and marker_single must be on PATH (pip install marker-pdf)" .
+
+oc:kn_b59930f8 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running marker_single conversion" ;
+    oc:directiveContent "Runs with --disable_image_extraction to focus on text and LaTeX preservation, not images" ;
+    oc:hasRationale "The skill's purpose is text and formula extraction; image extraction would add noise and processing time" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d93b7d97 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When marker_single produces no output or fails silently" ;
+    oc:directiveContent "If no markdown output is produced, re-run with cleanup=False (or --keep-temp) and inspect stdout/stderr saved in the output folder" ;
+    oc:hasRationale "Retaining intermediate files enables diagnosis of conversion failures" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_ec51820b a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Verify PDF file exists 2. Call pdf_to_markdown(pdf_path) or run python scripts/marker_to_markdown.py <pdf_path> 3. Retrieve markdown string output 4. If failed, re-run with cleanup=False to diagnose" ;
+    oc:stepOrder 1 .
+
+oc:req_1cce9dfa a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.10+" .
+
+oc:req_f7fa3ca9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "marker_single CLI on PATH (pip install marker-pdf)" .
+

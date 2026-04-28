@@ -1,0 +1,316 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_pause_detector a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pause-detector" ;
+    skos:broader "Audio segment detector" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/pause-detector" ;
+    oc:contentHash "5f63ecc8ae826e053f228c07618a42007d257146be76638cb6c96ccb86cab423" ;
+    oc:dependsOnSkill oc:skill_ontoskills_energy_calculator ;
+    oc:differentia "uses local dynamic thresholds on pre-computed energy data to find pause and silence segments without false positives from volume variation" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "--energies /path/to/energies.json --output /path/to/pauses.json [--start-time SECONDS] [--threshold-ratio RATIO] [--min-duration SECONDS] [--window-size SECONDS]" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Detect pauses and silence in audio using local dynamic thresholds. Use when you need to find natural pauses in lectures, board-writing silences, or breaks between sections. Uses local context comparison to avoid false positives from volume variation." ;
+    oc:hasName "pause-detector" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pause-detector
+description: Detect pauses and silence in audio using local dynamic thresholds. Use when you need to find natural pauses in lectures, board-writing silences, or breaks between sections. Uses local context comparison to avoid false positives from volume variation.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Detects pauses and low-energy segments using local dynamic thresholds on pre-computed energy data. Unlike global threshold methods, this compares energy to surrounding context, avoiding false positives when speaker volume varies." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_45aad574670ee611 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "How It Works" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Detect pauses after opening (start at 221s)
+python3 /root/.claude/skills/pause-detector/scripts/detect_pauses.py \\
+    --energies energies.json \\
+    --start-time 221 \\
+    --output pauses.json
+
+# Result: Found 11 pauses totaling 28 seconds
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 68-76" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Local threshold adapts to varying speaker volume" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Use --start-time to skip detected opening" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Requires energy data from energy-calculator skill" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Detecting natural pauses in lectures" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Identifying breaks between sections" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Finding board-writing silences" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/pause-detector/scripts/detect_pauses.py \\
+    --energies /path/to/energies.json \\
+    --output /path/to/pauses.json
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-22" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """{
+  "method": "local_dynamic_threshold",
+  "segments": [
+    {"start": 610, "end": 613, "duration": 3},
+    {"start": 720, "end": 724, "duration": 4}
+  ],
+  "total_segments": 11,
+  "total_duration_seconds": 28,
+  "parameters": {
+    "threshold_ratio": 0.5,
+    "window_size": 30,
+    "min_duration": 2
+  }
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 35-50" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Output Format" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--energies`: Path to energy JSON file (from energy-calculator)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`--window-size`: Local average window size (default: 30)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`--start-time`: Start analyzing from this second (default: 0)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`--min-duration`: Minimum pause duration in seconds (default: 2)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`--threshold-ratio`: Ratio of local average for low energy (default: 0.5)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--output`: Path to output JSON file" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Parameters Tuning" ;
+                            oc:tableMarkdown """| Parameter | Lower Value | Higher Value |
+|-----------|-------------|--------------|
+| `threshold_ratio` | More aggressive | More conservative |
+| `min_duration` | Shorter pauses | Longer pauses only |
+| `window_size` | Local context | Broader context |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Parameters Tuning" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "numpy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "scipy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Python 3.11+" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Dependencies" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Pause Detector" ] ;
+    oc:hasWorkflow _:ref_45aad574670ee611,
+        [ a oc:Workflow ;
+            dcterms:description "Detect pause segments from pre-computed energy data using local dynamic thresholds" ;
+            oc:hasStep _:ref_10b059a90fd88864,
+                _:ref_29f86c6a6494882b,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify output JSON contains segments array with start/end/duration fields" ;
+                    oc:expectedOutcome "Confirmed valid pause detection results" ;
+                    oc:stepDependsOn _:ref_29f86c6a6494882b ;
+                    oc:stepId "validate-output" ] ;
+            oc:workflowId "pause-detection" ;
+            oc:workflowName "Detect Pauses in Audio" ] ;
+    oc:impartsKnowledge oc:kn_011b4315,
+        oc:kn_1e36cef8,
+        oc:kn_3db02925,
+        oc:kn_91589954,
+        oc:kn_a024ecd1,
+        oc:kn_b3b1ac16 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "detect pauses in audio",
+        "find breaks between sections in audio",
+        "find silence segments in lectures",
+        "identify board-writing silences" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_011b4315 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Always when detecting pauses" ;
+    oc:directiveContent "Uses local dynamic thresholds (sliding window) rather than global thresholds to adapt to varying speaker volume" ;
+    oc:hasRationale "Global thresholds produce false positives when speaker volume varies across the recording" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_1e36cef8 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Always" ;
+    oc:directiveContent "1. Load pre-computed energy data 2. Calculate local average using sliding window 3. Mark seconds where energy < local_avg × threshold_ratio 4. Group consecutive low-energy seconds into segments 5. Filter segments by minimum duration" ;
+    oc:stepOrder 1 .
+
+oc:kn_3db02925 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Python 3.11+, numpy, and scipy must be installed" .
+
+oc:kn_91589954 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When detecting pauses in audio" ;
+    oc:directiveContent "python3 /root/.claude/skills/pause-detector/scripts/detect_pauses.py --energies /path/to/energies.json --output /path/to/pauses.json" .
+
+oc:kn_a024ecd1 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When tuning detection sensitivity" ;
+    oc:directiveContent "Lower threshold_ratio = more aggressive detection; higher min_duration = only longer pauses; larger window_size = broader context" ;
+    oc:hasRationale "Parameters control tradeoff between detecting all pauses vs avoiding false positives" .
+
+oc:kn_b3b1ac16 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "Requires pre-computed energy data from the energy-calculator skill as input via --energies parameter" ;
+    oc:hasRationale "Pause detection operates on per-second RMS energy values, not raw audio files" ;
+    oc:severityLevel "CRITICAL" .
+
+_:ref_30272b510f99ffcb a oc:WorkflowStep ;
+    dcterms:description "Load pre-computed energy data" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3ebb44c11d0d1826 a oc:WorkflowStep ;
+    dcterms:description "Group consecutive low-energy seconds into segments" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_94cfa0a99f06ce55 a oc:WorkflowStep ;
+    dcterms:description "Calculate local average using sliding window" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_954b91313280af67 a oc:WorkflowStep ;
+    dcterms:description "Filter segments by minimum duration" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_cea0f73a921e59b0 a oc:WorkflowStep ;
+    dcterms:description "Mark seconds where energy < local_avg × threshold_ratio" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_10b059a90fd88864 a oc:WorkflowStep ;
+    dcterms:description "Verify energy JSON file exists from energy-calculator" ;
+    oc:expectedOutcome "Energy data file confirmed at specified path" ;
+    oc:stepId "verify-energy-input" .
+
+_:ref_29f86c6a6494882b a oc:WorkflowStep ;
+    dcterms:description "Run detect_pauses.py with energy input, output path, and optional parameters" ;
+    oc:expectedOutcome "JSON output file with detected pause segments" ;
+    oc:stepDependsOn _:ref_10b059a90fd88864 ;
+    oc:stepId "run-detection" .
+
+_:ref_45aad574670ee611 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_30272b510f99ffcb,
+        _:ref_3ebb44c11d0d1826,
+        _:ref_94cfa0a99f06ce55,
+        _:ref_954b91313280af67,
+        _:ref_cea0f73a921e59b0 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

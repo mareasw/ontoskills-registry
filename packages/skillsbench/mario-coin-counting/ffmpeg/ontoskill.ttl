@@ -1,0 +1,260 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mario_coin_counting_ffmpeg_keyframe_extraction a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-keyframe-extraction" ;
+    skos:broader "FFmpeg video processing skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mario-coin-counting/ffmpeg" ;
+    oc:contentHash "2d8046aa3ba5db420ecc4abd90a54cef099691051591ad900d65915ee77f213c" ;
+    oc:differentia "extracts key frames (I-frames) from video files using command-line options" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "input-video-file-path [output-pattern]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Extract key frames (I-frames) from video files using FFmpeg command line tool. Use this skill when the user needs to pull out keyframes, thumbnails, or important frames from MP4, MKV, AVI, or other video formats for analysis, previews, or processing." ;
+    oc:hasName "ffmpeg-keyframe-extraction" ;
+    oc:hasRequirement oc:req_8f2ef958,
+        oc:req_a5657514 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: ffmpeg-keyframe-extraction
+description: Extract key frames (I-frames) from video files using FFmpeg command line tool. Use this skill when the user needs to pull out keyframes, thumbnails, or important frames from MP4, MKV, AVI, or other video formats for analysis, previews, or processing.
+license: Complete terms in LICENSE.txt
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Extract key frames (I-frames) from video files using FFmpeg CLI." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "FFmpeg installed and available in PATH" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Input video file (MP4, MKV, AVI, MOV, etc.)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Prerequisites" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 42-44" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+## Notes
+Method 2 (-skip_frame nokey) is faster as it skips decoding non-keyframes
+Method 1 offers more filtering flexibility (can combine with other filters)
+Keyframe frequency depends on video encoding settings
+Use -vsync vfr to avoid duplicate frames in output
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 9 ;
+                                    oc:sourceLocation "lines 57-63" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """ffmpeg -i video.mp4 -vf "select='eq(pict_type,I)'" -vsync vfr keyframe_%03d.png
+High-quality JPEG:""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """ffmpeg -i <input_video> -vf "select='eq(pict_type,I)'" -vsync vfr <output_pattern>
+Method 2: Skip Frame (Faster)
+
+ffmpeg -skip_frame nokey -i <input_video> -vsync vfr <output_pattern>
+Key Options
+Option	Description
+-i <file>	Input video file
+-vf "select='eq(pict_type,I)'"	Filter selecting only I-frames
+-skip_frame nokey	Skip decoding non-keyframes (performance)
+-vsync vfr	Variable frame rate, prevents duplicates
+-q:v <n>	Quality (1-31, lower = better, for JPEG)
+-frame_pts 1	Use presentation timestamp in filename
+Output Patterns
+frame_%03d.png - PNG sequence (frame_001.png, frame_002.png...)
+frame_%03d.jpg - JPEG sequence
+frame_%d.bmp - BMP sequence
+Examples
+Basic PNG extraction:
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 20-39" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 47-49" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """
+To specific directory:
+
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 51-55" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent """ffmpeg -i video.mp4 -skip_frame nokey -vsync vfr -q:v 2 keyframe_%03d.jpg
+With timestamps:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent "ffmpeg -i video.mp4 -vf \"select='eq(pict_type,I)'\" -vsync vfr ./output/keyframe_%03d.png" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "ffmpeg -i video.mp4 -vf \"select='eq(pict_type,I)'\" -vsync vfr -frame_pts 1 keyframe_%d.png" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Method 1: Select Filter (More Control)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Methods" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Keyframe Extraction" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract I-frames from a video file using FFmpeg" ;
+            oc:hasStep _:ref_35588a3b633217d1,
+                _:ref_8c96c4c401ce88e6,
+                _:ref_af7c66a14ccc2b01,
+                _:ref_b219f3eb6b0c9aff,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Check that output images were created successfully" ;
+                    oc:stepDependsOn _:ref_af7c66a14ccc2b01 ;
+                    oc:stepId "verify-output" ] ;
+            oc:workflowId "keyframe-extraction" ;
+            oc:workflowName "Extract Keyframes from Video" ] ;
+    oc:impartsKnowledge oc:kn_22e6c54a,
+        oc:kn_3d902e83,
+        oc:kn_52668321,
+        oc:kn_543d8eff,
+        oc:kn_9a8a0dc9,
+        oc:kn_aad1cc53,
+        oc:kn_b55fc92e,
+        oc:kn_c5a30e72,
+        oc:kn_d1b522e0 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "extract I-frames from video",
+        "extract keyframes from video",
+        "generate thumbnails from video",
+        "pull important frames from MP4 MKV AVI" ;
+    oc:yieldsState oc:FileDownloaded .
+
+oc:kn_22e6c54a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "All keyframe extraction commands" ;
+    oc:directiveContent "Always include -vsync vfr to prevent duplicate frames in output." ;
+    oc:hasRationale "Without -vsync vfr, FFmpeg may produce duplicate frames when using select filters, inflating output." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_3d902e83 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When speed is priority and only keyframes are needed" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -skip_frame nokey -i <input_video> -vsync vfr <output_pattern>" .
+
+oc:kn_52668321 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Choosing between extraction methods" ;
+    oc:directiveContent "Use -skip_frame nokey (Method 2) for faster extraction when you only need keyframes; use select filter (Method 1) when you need to combine with other filters." ;
+    oc:hasRationale "Method 2 skips decoding non-keyframes entirely for performance; Method 1 allows filter chaining for more complex operations." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_543d8eff a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "High-quality JPEG keyframe extraction" ;
+    oc:directiveContent "ffmpeg -i video.mp4 -skip_frame nokey -vsync vfr -q:v 2 keyframe_%03d.jpg" .
+
+oc:kn_9a8a0dc9 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "Output file naming patterns" ;
+    oc:directiveContent """keyframe_%03d.png → keyframe_001.png, keyframe_002.png, ...
+keyframe_%03d.jpg → keyframe_001.jpg, keyframe_002.jpg, ...
+keyframe_%d.bmp → keyframe_1.bmp, keyframe_2.bmp, ...""" ;
+    oc:templateVariables "%03d",
+        "%d" .
+
+oc:kn_aad1cc53 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When expecting a specific number of output frames" ;
+    oc:directiveContent "Keyframe frequency depends entirely on the video's encoding settings; there is no guaranteed minimum or maximum number of keyframes." ;
+    oc:hasRationale "GOP (Group of Pictures) size is set at encoding time, so extraction yield varies per video." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b55fc92e a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any keyframe extraction" ;
+    oc:directiveContent "FFmpeg must be installed and available in PATH" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_c5a30e72 a oc:Command,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Basic PNG keyframe extraction" ;
+    oc:directiveContent "ffmpeg -i video.mp4 -vf \"select='eq(pict_type,I)'\" -vsync vfr keyframe_%03d.png" .
+
+oc:kn_d1b522e0 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When precise I-frame filtering is needed or combining with other filters" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i <input_video> -vf \"select='eq(pict_type,I)'\" -vsync vfr <output_pattern>" .
+
+oc:req_8f2ef958 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffmpeg" .
+
+oc:req_a5657514 a oc:RequirementHardware ;
+    oc:isOptional false ;
+    oc:requirementValue "Input video file (MP4, MKV, AVI, MOV, etc.)" .
+
+_:ref_35588a3b633217d1 a oc:WorkflowStep ;
+    dcterms:description "Choose extraction method: select filter for flexibility or skip_frame for speed" ;
+    oc:expectedOutcome "Method selected based on requirements" ;
+    oc:stepDependsOn _:ref_8c96c4c401ce88e6,
+        _:ref_b219f3eb6b0c9aff ;
+    oc:stepId "choose-method" .
+
+_:ref_8c96c4c401ce88e6 a oc:WorkflowStep ;
+    dcterms:description "Verify FFmpeg is installed and accessible in PATH" ;
+    oc:expectedOutcome "FFmpeg version is confirmed" ;
+    oc:stepId "verify-ffmpeg" .
+
+_:ref_af7c66a14ccc2b01 a oc:WorkflowStep ;
+    dcterms:description "Execute ffmpeg command with chosen method and output pattern" ;
+    oc:expectedOutcome "Keyframe images written to output location" ;
+    oc:stepDependsOn _:ref_35588a3b633217d1 ;
+    oc:stepId "run-extraction" .
+
+_:ref_b219f3eb6b0c9aff a oc:WorkflowStep ;
+    dcterms:description "Confirm input video file exists and is readable" ;
+    oc:expectedOutcome "Video file path is valid" ;
+    oc:stepId "verify-input" .
+

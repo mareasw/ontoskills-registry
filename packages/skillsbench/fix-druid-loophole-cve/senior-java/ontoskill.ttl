@@ -1,0 +1,1772 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_druid_loophole_cve_senior_java a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "senior-java" ;
+    skos:broader "Development skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-druid-loophole-cve/senior-java" ;
+    oc:contentHash "f0e6163748da7831ae4c58b0471b1e6f101954d11262c29aadd689d8e7bfc3e7" ;
+    oc:differentia "provides Java and Spring Boot scaffolding, entity generation, API development, security configuration, dependency analysis, and performance profiling for enterprise applications" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "command-type with tool-specific arguments (e.g., scaffold, entity-gen, api-gen, security-config, dep-analyze, perf-profile)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "World-class Java and Spring Boot development skill for enterprise applications, microservices, and cloud-native systems. Expertise in Spring Framework, Spring Boot 3.x, Spring Cloud, JPA/Hibernate, and reactive programming with WebFlux. Includes project scaffolding, dependency management, security implementation, and performance optimization." ;
+    oc:hasName "senior-java" ;
+    oc:hasRequirement oc:req_13a82279,
+        oc:req_1a21bd91,
+        oc:req_7bf5e215,
+        oc:req_901833bd,
+        oc:req_ba24f94e,
+        oc:req_f03f83cc,
+        oc:req_f22530c8 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """
+# === CORE IDENTITY ===
+name: senior-java
+title: Senior Java Skill Package
+description: World-class Java and Spring Boot development skill for enterprise applications, microservices, and cloud-native systems. Expertise in Spring Framework, Spring Boot 3.x, Spring Cloud, JPA/Hibernate, and reactive programming with WebFlux. Includes project scaffolding, dependency management, security implementation, and performance optimization.
+domain: engineering
+subdomain: java-development
+
+# === WEBSITE DISPLAY ===
+difficulty: advanced
+time-saved: "60%+ on project scaffolding, 40% on security implementation"
+frequency: "Daily for enterprise development teams"
+use-cases:
+  - Building enterprise Spring Boot applications with production-ready configuration
+  - Designing microservices with Spring Cloud and service discovery
+  - Implementing JPA/Hibernate data layers with optimized queries
+  - Setting up Spring Security with OAuth2 and JWT authentication
+  - Performance tuning JVM applications and reactive WebFlux systems
+
+# === RELATIONSHIPS ===
+related-agents: [cs-java-engineer]
+related-skills: [senior-backend, senior-architect]
+related-commands: []
+orchestrated-by: [cs-java-engineer]
+
+# === TECHNICAL ===
+dependencies:
+  scripts: [spring_project_scaffolder.py, dependency_analyzer.py, entity_generator.py, api_endpoint_generator.py, security_config_generator.py, performance_profiler.py]
+  references: [spring-boot-best-practices.md, microservices-patterns.md, jpa-hibernate-guide.md, spring-security-reference.md, java-performance-tuning.md]
+  assets: []
+compatibility:
+  python-version: 3.8+
+  platforms: [macos, linux, windows]
+tech-stack:
+  - Java 17/21 LTS
+  - Spring Boot 3.x
+  - Spring Framework 6.x
+  - Spring Cloud
+  - Spring Security
+  - Spring Data JPA
+  - Hibernate ORM
+  - Maven/Gradle
+  - JUnit 5
+  - Mockito
+  - Docker
+  - Kubernetes
+
+# === EXAMPLES ===
+examples:
+  - title: "Spring Boot Project Scaffolding"
+    input: "python scripts/spring_project_scaffolder.py my-service --type microservice --db postgresql"
+    output: "Complete Spring Boot 3.x project with layered architecture, Docker setup, and CI/CD pipeline"
+  - title: "Entity Generation"
+    input: "python scripts/entity_generator.py User --fields 'id:Long,email:String,name:String,createdAt:LocalDateTime'"
+    output: "JPA entity with repository, service, controller, and DTO classes"
+
+# === ANALYTICS ===
+stats:
+  downloads: 0
+  stars: 0
+  rating: 0.0
+  reviews: 0
+
+# === VERSIONING ===
+version: v1.0.0
+author: Claude Skills Team
+contributors: []
+created: 2025-12-16
+updated: 2025-12-16
+license: MIT
+
+# === DISCOVERABILITY ===
+tags:
+  - java
+  - spring-boot
+  - spring-framework
+  - microservices
+  - jpa
+  - hibernate
+  - spring-cloud
+  - webflux
+  - enterprise
+  - cloud-native
+  - maven
+  - gradle
+  - api
+  - backend
+featured: false
+verified: true
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "World-class Java and Spring Boot development skill for enterprise applications, microservices, and cloud-native systems. Expertise in Spring Framework, Spring Boot 3.x, Spring Cloud, JPA/Hibernate, and reactive programming with WebFlux." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "See [spring-boot-best-practices.md](references/spring-boot-best-practices.md) for CI/CD and automation integration examples." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill works best with:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**senior-architect** - For system design and microservices architecture decisions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**senior-backend** - For general API patterns and database design" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**senior-security** - For security audits and penetration testing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**senior-devops** - For CI/CD pipeline and Kubernetes deployment" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 27 ;
+                    oc:sectionTitle "Integration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Generate complete entity stack (entity, repository, service, controller, DTO)
+python scripts/entity_generator.py Product --fields "id:Long,name:String,price:BigDecimal,category:String,createdAt:LocalDateTime"
+
+# Generate with relationships
+python scripts/entity_generator.py Order --fields "id:Long,customer:Customer,items:List<OrderItem>,total:BigDecimal" --relations "customer:ManyToOne,items:OneToMany"
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 145-151" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Generate JPA Entity" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create microservice with PostgreSQL
+python scripts/spring_project_scaffolder.py order-service --type microservice --db postgresql
+
+# Create monolith with MySQL and security
+python scripts/spring_project_scaffolder.py ecommerce-app --type monolith --db mysql --security oauth2
+
+# Create reactive WebFlux service
+python scripts/spring_project_scaffolder.py notification-service --type reactive --db mongodb
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 132-141" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Create Spring Boot Project" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Check for vulnerabilities and updates
+python scripts/dependency_analyzer.py pom.xml --check-security
+
+# Generate upgrade report
+python scripts/dependency_analyzer.py build.gradle --output report.md
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 155-161" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Analyze Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Security reference: `references/spring-security-reference.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "JPA/Hibernate guide: `references/jpa-hibernate-guide.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Performance tuning: `references/java-performance-tuning.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Spring Boot patterns: `references/spring-boot-best-practices.md`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Microservices design: `references/microservices-patterns.md`" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Access Documentation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**This skill receives input from:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**senior-devops** - Generated projects include Dockerfile and CI/CD configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**technical-writer** - OpenAPI specs feed API documentation generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**senior-qa** - Generated code includes test scaffolding for QA automation" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**business-analyst-toolkit** - Requirements define entity models and API contracts" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**product-manager-toolkit** - User stories guide feature implementation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**senior-architect** - Architecture decisions inform project scaffolding choices" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**This skill provides output to:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 29 ;
+                            oc:sectionTitle "Skill Composition Patterns" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """senior-architect → senior-java → senior-devops
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 530-532" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Use this pattern for designing and deploying microservices with proper architecture review." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Workflow Pattern 1: Microservices Development**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """senior-java → senior-frontend → senior-qa
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 536-538" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "Use this pattern for end-to-end feature implementation with backend API, frontend UI, and testing." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Workflow Pattern 2: Full-Stack Feature**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 30 ;
+                            oc:sectionTitle "Recommended Skill Combinations" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 28 ;
+                    oc:sectionTitle "Composability & Integration" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**API Development** - Scaffold RESTful endpoints with validation, error handling, pagination, and OpenAPI documentation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Security Implementation** - Configure Spring Security with OAuth2, JWT, role-based access control, and security best practices" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Spring Boot Scaffolding** - Generate production-ready Spring Boot 3.x projects with layered architecture, Docker configuration, and CI/CD pipelines" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Entity Generation** - Create JPA entities with repositories, services, controllers, DTOs, and mappers following DDD patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Performance Optimization** - Profile JVM applications, identify bottlenecks, and generate optimization recommendations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Dependency Management** - Analyze dependencies for vulnerabilities, outdated versions, and upgrade paths" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Core Capabilities" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Documentation coverage (target: 100% public APIs)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Test coverage (target: 80%+)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Static analysis issues (target: 0 critical/high)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Development Efficiency:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Entity stack generation (target: < 5 minutes per entity)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Security setup time (target: < 1 hour)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Project scaffolding time (target: < 30 minutes)" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Throughput (target: > 1000 RPS per instance)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Memory efficiency (target: < 512MB heap for typical service)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "P99 latency (target: < 200ms)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Code Quality:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Runtime Performance:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 26 ;
+                    oc:sectionTitle "Performance Metrics" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_2714b4d3f4d2c81f,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Advanced Usage:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Set up distributed tracing with Micrometer" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Configure Spring Cloud for service discovery" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Implement reactive patterns with WebFlux" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Getting Started:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 32 ;
+                    oc:sectionTitle "Next Steps" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_3e6555ed8a5f9416,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 20-30 minutes per endpoint group" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "See [spring-boot-best-practices.md](references/spring-boot-best-practices.md) for API design patterns." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "2. REST API Development" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 1-2 hours for complex data models" ],
+                                _:ref_9b60db371f31e168,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "See [jpa-hibernate-guide.md](references/jpa-hibernate-guide.md) for optimization patterns." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "3. JPA/Hibernate Optimization" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "See [spring-boot-best-practices.md](references/spring-boot-best-practices.md) for complete setup patterns." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 30-45 minutes" ],
+                                _:ref_efece9dc838d2a54 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "1. New Spring Boot Microservice" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 1-2 hours" ],
+                                _:ref_88f64e444e598f7d,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "See [spring-security-reference.md](references/spring-security-reference.md) for security patterns." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "4. Spring Security Implementation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Key Workflows" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Blocking in WebFlux** - Never use blocking calls in reactive pipelines" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Hardcoded Configuration** - Use externalized configuration with profiles" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "**Open Sessions in View** - Disable OSIV anti-pattern in production" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**N+1 Queries** - Always use entity graphs or fetch joins for relationships" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Missing Transactions** - Ensure @Transactional on service methods modifying data" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Missing Validation** - Always validate input at controller layer" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "See [spring-boot-best-practices.md](references/spring-boot-best-practices.md) for detailed guidelines." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 25 ;
+                            oc:sectionTitle "Common Pitfalls to Avoid" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Code Coverage:** Target 80%+ for business logic, 60%+ overall" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Performance:** P99 latency < 200ms for CRUD operations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**API Documentation:** 100% endpoint coverage with OpenAPI" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Security Scanning:** Zero critical/high vulnerabilities" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 24 ;
+                            oc:sectionTitle "Quality Standards" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "DTO and mapper (MapStruct)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Spring Data JPA repository with custom queries" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "REST controller with validation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "JPA entity with Lombok annotations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Service layer with transaction management" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Relationship support (OneToMany, ManyToOne, ManyToMany)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Generate complete JPA entity stacks with repository, service, controller, and DTO." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Basic entity
+python scripts/entity_generator.py Customer --fields "id:Long,name:String,email:String"
+
+# Entity with relationships
+python scripts/entity_generator.py Order --fields "id:Long,customer:Customer,total:BigDecimal" --relations "customer:ManyToOne"
+
+# Entity with audit fields
+python scripts/entity_generator.py Product --fields "id:Long,name:String,price:BigDecimal" --auditable
+
+# Help
+python scripts/entity_generator.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 312-324" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 16 ;
+                            oc:sectionTitle "entity_generator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Pagination support" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Jakarta validation annotations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Error handling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "CRUD endpoint generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "OpenAPI annotations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Request/response DTOs" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Full CRUD endpoints
+python scripts/api_endpoint_generator.py orders --methods GET,POST,PUT,DELETE
+
+# Read-only with pagination
+python scripts/api_endpoint_generator.py reports --methods GET --paginated
+
+# Help
+python scripts/api_endpoint_generator.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 339-348" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Scaffold RESTful API endpoints with validation and documentation." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "api_endpoint_generator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Generate Spring Security configuration for various authentication methods." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "CORS and CSRF configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Security filter chain" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Method security configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "JWT authentication setup" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "OAuth2 resource server configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Role-based access control" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# JWT security with roles
+python scripts/security_config_generator.py --type jwt --roles ADMIN,USER
+
+# OAuth2 resource server
+python scripts/security_config_generator.py --type oauth2 --issuer-uri https://auth.example.com
+
+# Help
+python scripts/security_config_generator.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 363-372" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "security_config_generator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Memory usage patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "GC behavior analysis" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Connection pool optimization" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Thread pool recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "JVM flag recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Query analysis for N+1 detection" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Analyze source for performance issues
+python scripts/performance_profiler.py --analyze-queries src/
+
+# Profile running application
+python scripts/performance_profiler.py --profile http://localhost:8080/actuator
+
+# Generate optimization report
+python scripts/performance_profiler.py src/ --output performance-report.md
+
+# Help
+python scripts/performance_profiler.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 413-425" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Profile JVM applications and generate optimization recommendations." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 20 ;
+                            oc:sectionTitle "performance_profiler.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Generate production-ready Spring Boot project structures with complete configuration." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Microservice with PostgreSQL and JWT security
+python scripts/spring_project_scaffolder.py user-service --type microservice --db postgresql --security jwt
+
+# Monolith with MySQL and OAuth2
+python scripts/spring_project_scaffolder.py ecommerce --type monolith --db mysql --security oauth2
+
+# Reactive service with MongoDB
+python scripts/spring_project_scaffolder.py notification-service --type reactive --db mongodb
+
+# Help
+python scripts/spring_project_scaffolder.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 285-297" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Database configuration (PostgreSQL, MySQL, MongoDB, H2)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Lombok and MapStruct integration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "GitHub Actions CI/CD pipeline" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Docker and Docker Compose setup" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Layered architecture (controller, service, repository)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Spring Boot 3.x with Java 17/21 support" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Multiple project types (microservice, monolith, reactive)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "spring_project_scaffolder.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Dependency tree analysis" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Outdated dependency detection" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Upgrade path recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "License compliance checking" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Security vulnerability scanning" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Common Usage:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Analyze Maven/Gradle dependencies for vulnerabilities and updates." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Analyze Maven project
+python scripts/dependency_analyzer.py pom.xml
+
+# Analyze Gradle with security focus
+python scripts/dependency_analyzer.py build.gradle --check-security
+
+# Generate markdown report
+python scripts/dependency_analyzer.py pom.xml --output report.md
+
+# Help
+python scripts/dependency_analyzer.py --help
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 386-398" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 19 ;
+                            oc:sectionTitle "dependency_analyzer.py" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Python Tools" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent "**[java-performance-tuning.md](references/java-performance-tuning.md)** - Performance" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Transaction management" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Repository patterns and custom queries" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Entity design and mapping strategies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Fetch optimization and N+1 prevention" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Caching strategies (first-level, second-level)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**[spring-security-reference.md](references/spring-security-reference.md)** - Security" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**[microservices-patterns.md](references/microservices-patterns.md)** - Microservices Architecture" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**[jpa-hibernate-guide.md](references/jpa-hibernate-guide.md)** - Data Layer" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Configuration management with profiles" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "API design and error handling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Production readiness (actuator, monitoring)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Project structure and layered architecture" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Testing strategies (unit, integration, contract)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**[spring-boot-best-practices.md](references/spring-boot-best-practices.md)** - Spring Boot Patterns" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Distributed tracing and observability" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Spring Cloud components (Config, Gateway, Discovery)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Inter-service communication (REST, gRPC, messaging)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Circuit breaker and resilience patterns" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Service decomposition strategies" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Authentication methods (JWT, OAuth2, SAML)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Security filter chain configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Authorization patterns (RBAC, ABAC)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Method security annotations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Security testing" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 10 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Profiling and monitoring tools" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "JVM tuning and GC optimization" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Connection pool configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Async processing and virtual threads" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Caching strategies" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 22 ;
+                            oc:sectionTitle "When to Use Each Reference" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Reference Documentation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Version:** 1.0.0 | **Last Updated:** 2025-12-16 | **Status:** Production Ready" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**Documentation:** Full skill guide and workflows available in this file" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**External documentation** - [Spring Boot Reference](https://docs.spring.io/spring-boot/docs/current/reference/html/)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Troubleshooting** - See [java-performance-tuning.md](references/java-performance-tuning.md)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Quick commands** - See tool documentation above" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Best practices** - See [spring-boot-best-practices.md](references/spring-boot-best-practices.md)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Support:** For issues or questions, refer to domain guide at `../CLAUDE.md`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 33 ;
+                    oc:sectionTitle "Additional Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill provides production-ready Java and Spring Boot development capabilities through six Python automation tools and comprehensive reference documentation. Whether building enterprise monoliths, microservices architectures, or reactive systems, this skill ensures best practices, scalable architecture, and enterprise-grade security." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 5 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Designing RESTful APIs with Spring MVC or WebFlux" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Optimizing JVM and application performance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Reviewing Java code for quality and patterns" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Starting new Spring Boot projects or microservices" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Implementing JPA/Hibernate data layers" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Setting up authentication and authorization" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Use this skill when:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "**Core Value:** Save 60%+ time on project scaffolding while ensuring enterprise-grade architecture, security compliance, and performance optimization." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**What This Skill Provides:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "RESTful API endpoint scaffolding with proper error handling" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Spring Boot project scaffolding with layered architecture" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Spring Security configuration (OAuth2, JWT, RBAC)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "JPA entity and repository generation with optimized queries" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "JVM performance profiling and optimization guidance" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Dependency analysis and upgrade recommendations" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Lower maintenance costs through consistency" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Reduced technical debt through standardization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Faster time-to-market for new services" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Consistent architecture across projects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Comprehensive test coverage templates" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Built-in security best practices" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Quality Improvements:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "40% faster security implementation with templates" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "60% faster project scaffolding vs. manual setup" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "50% reduction in boilerplate code through generation" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Time Savings:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Business Impact:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 31 ;
+                    oc:sectionTitle "Benefits" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Senior Java" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Workflow for scaffolding and implementing RESTful API endpoints" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Configure SpringDoc for automatic API documentation" ;
+                    oc:expectedOutcome "100% endpoint documentation with OpenAPI spec" ;
+                    oc:stepDependsOn _:ref_7516908934b390b6 ;
+                    oc:stepId "add-openapi-docs" ],
+                _:ref_6ca229f96e1948c1,
+                _:ref_7516908934b390b6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Generate integration tests with MockMvc or WebTestClient" ;
+                    oc:expectedOutcome "Comprehensive test coverage for all API endpoints" ;
+                    oc:stepDependsOn _:ref_6ca229f96e1948c1,
+                        _:ref_fdadb89be8b2af35 ;
+                    oc:stepId "test-endpoints" ],
+                _:ref_fdadb89be8b2af35 ;
+            oc:workflowId "rest-api-development" ;
+            oc:workflowName "REST API Development" ],
+        _:ref_2714b4d3f4d2c81f,
+        [ a oc:Workflow ;
+            dcterms:description "Workflow for configuring authentication and authorization in Spring Boot" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Generate security integration tests" ;
+                    oc:expectedOutcome "All security rules verified with passing tests" ;
+                    oc:stepDependsOn _:ref_7887b2ee84a31821 ;
+                    oc:stepId "test-security" ],
+                _:ref_3b8e2953245cadb2,
+                _:ref_4f7d7bebbb48a0b2,
+                _:ref_7887b2ee84a31821,
+                _:ref_b2c3480141bb292f ;
+            oc:workflowId "security-implementation" ;
+            oc:workflowName "Spring Security Implementation" ],
+        _:ref_3e6555ed8a5f9416,
+        _:ref_88f64e444e598f7d,
+        _:ref_9b60db371f31e168,
+        [ a oc:Workflow ;
+            dcterms:description "Workflow for profiling and optimizing JPA/Hibernate data access layers" ;
+            oc:hasStep _:ref_1856cdd1c18a49c7,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Set up Hibernate second-level cache with Hazelcast or Redis" ;
+                    oc:expectedOutcome "Frequently accessed data served from cache instead of database" ;
+                    oc:stepDependsOn _:ref_8815e9fe17979076 ;
+                    oc:stepId "configure-caching" ],
+                _:ref_708c37aa93b0a266,
+                _:ref_8815e9fe17979076,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Use Spring Data Slice or Page for large dataset queries" ;
+                    oc:expectedOutcome "All list endpoints returning paginated results" ;
+                    oc:stepDependsOn _:ref_1856cdd1c18a49c7 ;
+                    oc:stepId "implement-pagination" ] ;
+            oc:workflowId "jpa-optimization" ;
+            oc:workflowName "JPA/Hibernate Optimization" ],
+        _:ref_efece9dc838d2a54,
+        [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for scaffolding and deploying a new Spring Boot microservice" ;
+            oc:hasStep _:ref_1903ac408fb65fe4,
+                _:ref_9567792ade21bd71,
+                _:ref_95d6bef1c46acec2,
+                _:ref_a5a35770be23ace4,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Package application and build Docker image for deployment" ;
+                    oc:expectedOutcome "Docker image built and ready for deployment to Kubernetes or container platform" ;
+                    oc:stepDependsOn _:ref_9567792ade21bd71 ;
+                    oc:stepId "build-deploy" ],
+                _:ref_d62159a69ae177b4 ;
+            oc:workflowId "new-microservice" ;
+            oc:workflowName "New Spring Boot Microservice" ] ;
+    oc:impartsKnowledge oc:kn_06383d69,
+        oc:kn_708cc2de,
+        oc:kn_73d315c1,
+        oc:kn_76c802e7,
+        oc:kn_79124b59,
+        oc:kn_92f99cf7,
+        oc:kn_abeb4f49,
+        oc:kn_adcfb4b1,
+        oc:kn_e1020416,
+        oc:kn_e9d6836f ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "analyze dependencies for vulnerabilities",
+        "build microservices with Spring Cloud",
+        "configure spring security with OAuth2 or JWT",
+        "create spring boot project",
+        "generate JPA entities and repositories",
+        "optimize JPA/Hibernate queries",
+        "profile JVM performance",
+        "scaffold REST API endpoints" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_06383d69 a oc:FallbackStrategy,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing JPA/Hibernate query performance" ;
+    oc:directiveContent "Use entity graphs or fetch joins for relationship loading; configure Hibernate second-level cache with Hazelcast or Redis for repeated queries" ;
+    oc:hasRationale "Proper fetch strategies prevent N+1 queries; caching reduces database load for frequently accessed data" .
+
+oc:kn_708cc2de a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing list/query endpoints with potentially large result sets" ;
+    oc:directiveContent "Use Spring Data Slice or Page for large datasets rather than loading full collections" ;
+    oc:hasRationale "Pagination prevents memory exhaustion and reduces response times for large datasets" .
+
+oc:kn_73d315c1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing service layer methods" ;
+    oc:directiveContent "Always annotate service methods modifying data with @Transactional" ;
+    oc:hasRationale "Missing transaction boundaries can lead to partial data saves and inconsistent state" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_76c802e7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring Spring Boot applications" ;
+    oc:directiveContent "Use externalized configuration with Spring profiles (dev, staging, prod) instead of hardcoded values" ;
+    oc:hasRationale "Externalized configuration enables environment-specific settings without code changes, supporting 12-factor app principles" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_79124b59 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When sizing and benchmarking Spring Boot microservices" ;
+    oc:directiveContent "Target < 512MB heap for typical microservice; > 1000 RPS per instance; scaffolding < 30 min; entity generation < 5 min per entity" ;
+    oc:hasRationale "These targets represent production-grade efficiency for cloud-native Java services" .
+
+oc:kn_92f99cf7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring JPA/Hibernate in Spring Boot applications" ;
+    oc:directiveContent "Disable Open Session in View (OSIV) anti-pattern in production" ;
+    oc:hasRationale "OSIV keeps database sessions open during view rendering, causing unpredictable query execution, hidden N+1 issues, and connection pool exhaustion" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_abeb4f49 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing REST controllers" ;
+    oc:directiveContent "Always validate input at the controller layer using Jakarta validation annotations" ;
+    oc:hasRationale "Missing validation allows invalid data into the system, causing downstream errors and security vulnerabilities" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_adcfb4b1 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When measuring quality of generated Spring Boot applications" ;
+    oc:directiveContent "Target 80%+ code coverage for business logic, 60%+ overall; P99 latency < 200ms for CRUD; zero critical/high security vulnerabilities" ;
+    oc:hasRationale "These thresholds ensure production-ready quality with adequate test coverage, responsive APIs, and secure code" .
+
+oc:kn_e1020416 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing JPA/Hibernate data access layers" ;
+    oc:directiveContent "Never use N+1 queries — always employ entity graphs or fetch joins for relationships" ;
+    oc:hasRationale "N+1 queries cause severe performance degradation by issuing one SQL query per entity in a collection" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_e9d6836f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When developing reactive services with Spring WebFlux" ;
+    oc:directiveContent "Never use blocking calls in reactive WebFlux pipelines" ;
+    oc:hasRationale "Blocking calls defeat the purpose of reactive programming and can starve the limited event loop threads" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_13a82279 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Python 3.8+" .
+
+oc:req_1a21bd91 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Docker" .
+
+oc:req_7bf5e215 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Spring Boot 3.x framework" .
+
+oc:req_901833bd a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Java 17 or 21 LTS" .
+
+oc:req_ba24f94e a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "JPA/Hibernate ORM" .
+
+oc:req_f03f83cc a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Maven or Gradle" .
+
+oc:req_f22530c8 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Spring Security" .
+
+_:ref_1d86caeb6ee17d4e a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """python scripts/performance_profiler.py --analyze-queries src/
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 236-238" .
+
+_:ref_2515335342e1b943 a oc:WorkflowStep ;
+    dcterms:description "**Test Endpoints** - Generate integration tests with MockMvc or WebTestClient" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_27abe0b003528537 a oc:WorkflowStep ;
+    dcterms:description "**Implement Business Logic** - Add service layer logic and validation rules" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_300445b116641b48 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """python scripts/security_config_generator.py --type jwt --roles ADMIN,USER,MANAGER
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 255-257" .
+
+_:ref_335cf45246515ee0 a oc:WorkflowStep ;
+    dcterms:description "**Optimize Fetch Strategies** - Configure lazy/eager loading appropriately" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_356f2f76c4ae988e a oc:WorkflowStep ;
+    dcterms:description "**Configure Environment** - Set up application.yml with profiles (dev, staging, prod)" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """cd inventory-service
+# Edit src/main/resources/application.yml
+# Configure database, security, and service discovery
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 183-187" ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_437f7314f84dce74 a oc:WorkflowStep ;
+    dcterms:description "**Configure Error Handling** - Set up global exception handler with problem details (RFC 7807)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_446dcc72fc06d2d8 a oc:WorkflowStep ;
+    dcterms:description "**Add Query Hints** - Implement entity graphs and query hints for complex queries" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_4bbd355a4db0e8e9 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """# Run tests
+./mvnw test
+./mvnw verify  # Integration tests
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 198-202" .
+
+_:ref_574db3771f55606c a oc:WorkflowStep ;
+    dcterms:description "Run `python scripts/spring_project_scaffolder.py my-service --type microservice --db postgresql` to create your first project" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_578fe24ebd8a3057 a oc:WorkflowStep ;
+    dcterms:description "Review generated structure and customize configuration" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_68e8a0e2ba46f4ea a oc:WorkflowStep ;
+    dcterms:description "**Analyze Current Queries** - Profile repository methods for N+1 problems" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_1d86caeb6ee17d4e ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_7c5d2b84feaa2544 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """python scripts/api_endpoint_generator.py products --methods GET,POST,PUT,DELETE --paginated
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 217-219" .
+
+_:ref_9436cb6c6df3d803 a oc:WorkflowStep ;
+    dcterms:description "**Implement RBAC** - Add role-based access control to endpoints" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_94eee7632680fc15 a oc:CodeExample ;
+    oc:blockType "code_block" ;
+    oc:codeContent """python scripts/entity_generator.py Inventory --fields "id:Long,productId:Long,quantity:Integer,warehouse:String"
+python scripts/entity_generator.py InventoryMovement --fields "id:Long,inventory:Inventory,quantity:Integer,type:MovementType,timestamp:LocalDateTime"
+""" ;
+    oc:codeLanguage "bash" ;
+    oc:contentOrder 1 ;
+    oc:sourceLocation "lines 190-193" .
+
+_:ref_99a9ba408da4e4a1 a oc:WorkflowStep ;
+    dcterms:description "**Implement Pagination** - Use Spring Data's Slice or Page for large datasets" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_9e72a38d02d0bde6 a oc:WorkflowStep ;
+    dcterms:description "**Test Security** - Generate security integration tests" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_a02038bb61e1ee64 a oc:WorkflowStep ;
+    dcterms:description "**Add Tests** - Generate unit and integration tests" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_4bbd355a4db0e8e9 ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_b3d99ec18cc2da90 a oc:WorkflowStep ;
+    dcterms:description "**Generate Security Config** - Create security configuration for chosen auth method" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_300445b116641b48 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_b724ffa308ce5e74 a oc:WorkflowStep ;
+    dcterms:description "**Configure OAuth2/JWT** - Set up token generation, validation, and refresh" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_b8d340d4e5ab580b a oc:WorkflowStep ;
+    dcterms:description "**Scaffold Project** - Generate microservice with Spring Boot 3.x, Docker, and CI/CD" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """python scripts/spring_project_scaffolder.py inventory-service --type microservice --db postgresql --security jwt
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 178-180" ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_c49ed7f7dd5707f9 a oc:WorkflowStep ;
+    dcterms:description "**Generate Entities** - Create domain model with JPA entities" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_94eee7632680fc15 ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c54289bdbccefdef a oc:WorkflowStep ;
+    dcterms:description "**Add OpenAPI Documentation** - Configure SpringDoc for automatic API docs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_c9bfe27e4bbc6df9 a oc:WorkflowStep ;
+    dcterms:description "Generate entities with `python scripts/entity_generator.py`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d00b019ab8a29487 a oc:WorkflowStep ;
+    dcterms:description "**Configure Caching** - Set up Hibernate second-level cache with Hazelcast or Redis" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_de55dba3b9a826bc a oc:WorkflowStep ;
+    dcterms:description "**Add Method Security** - Configure @PreAuthorize and @PostAuthorize annotations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_eafcddb15f742464 a oc:WorkflowStep ;
+    dcterms:description "**Design API Contract** - Define endpoints following REST conventions" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild _:ref_7c5d2b84feaa2544 ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_fa9f161a9ca01ac5 a oc:WorkflowStep ;
+    dcterms:description "**Implement Validation** - Add Jakarta validation annotations and custom validators" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_fd104c3dcda1f56e a oc:WorkflowStep ;
+    dcterms:description "**Build and Deploy**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:CodeExample ;
+            oc:blockType "code_block" ;
+            oc:codeContent """./mvnw clean package -DskipTests
+docker build -t inventory-service:latest .
+""" ;
+            oc:codeLanguage "bash" ;
+            oc:contentOrder 1 ;
+            oc:sourceLocation "lines 205-208" ] ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_1856cdd1c18a49c7 a oc:WorkflowStep ;
+    dcterms:description "Implement entity graphs and query hints for complex queries" ;
+    oc:expectedOutcome "Complex queries using single optimized SQL statements" ;
+    oc:stepDependsOn _:ref_8815e9fe17979076 ;
+    oc:stepId "add-query-hints" .
+
+_:ref_1903ac408fb65fe4 a oc:WorkflowStep ;
+    dcterms:description "Add service layer business logic and validation rules" ;
+    oc:expectedOutcome "Business rules implemented with proper transaction management and validation" ;
+    oc:stepDependsOn _:ref_95d6bef1c46acec2 ;
+    oc:stepId "implement-business-logic" .
+
+_:ref_2714b4d3f4d2c81f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_574db3771f55606c,
+        _:ref_578fe24ebd8a3057,
+        _:ref_c9bfe27e4bbc6df9 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_3b8e2953245cadb2 a oc:WorkflowStep ;
+    dcterms:description "Create security configuration using security_config_generator.py for JWT or OAuth2" ;
+    oc:expectedOutcome "Spring Security configuration with filter chain and authentication provider" ;
+    oc:stepId "generate-security-config" .
+
+_:ref_3e6555ed8a5f9416 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_2515335342e1b943,
+        _:ref_437f7314f84dce74,
+        _:ref_c54289bdbccefdef,
+        _:ref_eafcddb15f742464,
+        _:ref_fa9f161a9ca01ac5 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4f7d7bebbb48a0b2 a oc:WorkflowStep ;
+    dcterms:description "Set up token generation, validation, and refresh mechanisms" ;
+    oc:expectedOutcome "Working token-based authentication with proper lifecycle management" ;
+    oc:stepDependsOn _:ref_3b8e2953245cadb2 ;
+    oc:stepId "configure-oauth2-jwt" .
+
+_:ref_6ca229f96e1948c1 a oc:WorkflowStep ;
+    dcterms:description "Add Jakarta validation annotations and custom validators" ;
+    oc:expectedOutcome "Input validation enforced at controller layer" ;
+    oc:stepDependsOn _:ref_7516908934b390b6 ;
+    oc:stepId "implement-validation" .
+
+_:ref_708c37aa93b0a266 a oc:WorkflowStep ;
+    dcterms:description "Profile repository methods for N+1 problems using performance_profiler.py" ;
+    oc:expectedOutcome "Report identifying all N+1 query patterns and performance bottlenecks" ;
+    oc:stepId "analyze-queries" .
+
+_:ref_7887b2ee84a31821 a oc:WorkflowStep ;
+    dcterms:description "Configure @PreAuthorize and @PostAuthorize annotations" ;
+    oc:expectedOutcome "Fine-grained authorization at service method level" ;
+    oc:stepDependsOn _:ref_b2c3480141bb292f ;
+    oc:stepId "add-method-security" .
+
+_:ref_88f64e444e598f7d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_9436cb6c6df3d803,
+        _:ref_9e72a38d02d0bde6,
+        _:ref_b3d99ec18cc2da90,
+        _:ref_b724ffa308ce5e74,
+        _:ref_de55dba3b9a826bc ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_9567792ade21bd71 a oc:WorkflowStep ;
+    dcterms:description "Generate and run unit tests (mvnw test) and integration tests (mvnw verify)" ;
+    oc:expectedOutcome "80%+ code coverage with passing test suites" ;
+    oc:stepDependsOn _:ref_1903ac408fb65fe4 ;
+    oc:stepId "add-tests" .
+
+_:ref_95d6bef1c46acec2 a oc:WorkflowStep ;
+    dcterms:description "Create domain model with JPA entities using entity_generator.py" ;
+    oc:expectedOutcome "JPA entities with repositories, services, controllers, and DTOs generated" ;
+    oc:stepDependsOn _:ref_a5a35770be23ace4 ;
+    oc:stepId "generate-entities" .
+
+_:ref_9b60db371f31e168 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_335cf45246515ee0,
+        _:ref_446dcc72fc06d2d8,
+        _:ref_68e8a0e2ba46f4ea,
+        _:ref_99a9ba408da4e4a1,
+        _:ref_d00b019ab8a29487 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_a5a35770be23ace4 a oc:WorkflowStep ;
+    dcterms:description "Set up application.yml with profiles (dev, staging, prod) for database, security, and service discovery" ;
+    oc:expectedOutcome "Environment-specific configuration files ready for each deployment stage" ;
+    oc:stepDependsOn _:ref_d62159a69ae177b4 ;
+    oc:stepId "configure-environment" .
+
+_:ref_b2c3480141bb292f a oc:WorkflowStep ;
+    dcterms:description "Add role-based access control to endpoints" ;
+    oc:expectedOutcome "Endpoints protected by role requirements" ;
+    oc:stepDependsOn _:ref_4f7d7bebbb48a0b2 ;
+    oc:stepId "implement-rbac" .
+
+_:ref_d62159a69ae177b4 a oc:WorkflowStep ;
+    dcterms:description "Generate microservice with Spring Boot 3.x, Docker, and CI/CD using spring_project_scaffolder.py" ;
+    oc:expectedOutcome "Complete project structure with layered architecture, Dockerfile, and GitHub Actions pipeline" ;
+    oc:stepId "scaffold-project" .
+
+_:ref_efece9dc838d2a54 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_27abe0b003528537,
+        _:ref_356f2f76c4ae988e,
+        _:ref_a02038bb61e1ee64,
+        _:ref_b8d340d4e5ab580b,
+        _:ref_c49ed7f7dd5707f9,
+        _:ref_fd104c3dcda1f56e ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_fdadb89be8b2af35 a oc:WorkflowStep ;
+    dcterms:description "Set up global exception handler with problem details (RFC 7807)" ;
+    oc:expectedOutcome "Consistent error response format across all endpoints" ;
+    oc:stepDependsOn _:ref_7516908934b390b6 ;
+    oc:stepId "configure-error-handling" .
+
+_:ref_8815e9fe17979076 a oc:WorkflowStep ;
+    dcterms:description "Configure lazy/eager loading appropriately for each entity relationship" ;
+    oc:expectedOutcome "Optimal fetch strategies eliminating unnecessary queries" ;
+    oc:stepDependsOn _:ref_708c37aa93b0a266 ;
+    oc:stepId "optimize-fetch-strategies" .
+
+_:ref_7516908934b390b6 a oc:WorkflowStep ;
+    dcterms:description "Define endpoints using api_endpoint_generator.py with REST conventions" ;
+    oc:expectedOutcome "Scaffolded CRUD endpoints with request/response DTOs" ;
+    oc:stepId "design-api-contract" .
+

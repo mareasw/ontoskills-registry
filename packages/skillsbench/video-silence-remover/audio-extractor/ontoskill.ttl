@@ -1,0 +1,241 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_video_silence_remover_audio_extractor a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "audio-extractor" ;
+    skos:broader "Audio extraction utility" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/video-silence-remover/audio-extractor" ;
+    oc:contentHash "b3f93bd13397f2365900894fcbe4b35000629c5e3b3149801e906d34a01f9150" ;
+    oc:differentia "converts video audio tracks to mono 16kHz PCM WAV format optimized for speech and energy analysis" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "--video /path/to/video.mp4 --output /path/to/audio.wav" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Extract audio from video files to WAV format. Use when you need to analyze audio from video, prepare audio for energy calculation, or convert video audio to standard format for processing." ;
+    oc:hasName "audio-extractor" ;
+    oc:hasRequirement oc:req_3fcf652e,
+        oc:req_8f2ef958 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: audio-extractor
+description: Extract audio from video files to WAV format. Use when you need to analyze audio from video, prepare audio for energy calculation, or convert video audio to standard format for processing.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Extracts audio from video files to WAV format for further analysis. Converts to mono 16kHz PCM format optimized for speech/energy analysis." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """python3 /root/.claude/skills/audio-extractor/scripts/extract_audio.py \\
+    --video /path/to/video.mp4 \\
+    --output /path/to/audio.wav
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-22" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Channels: Mono" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Sample rate: 16000 Hz (default)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Format: WAV (PCM 16-bit signed)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Output Format" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`--output`: Path to output WAV file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`--sample-rate`: Audio sample rate in Hz (default: 16000)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`--video`: Path to input video file" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`--duration`: Optional duration limit in seconds (default: full video)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Parameters" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Usage" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "16kHz sample rate is sufficient for speech analysis and reduces file size" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Output is always mono for consistent analysis" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Supports any video format that ffmpeg can read" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Notes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Extract first 10 minutes of audio
+python3 /root/.claude/skills/audio-extractor/scripts/extract_audio.py \\
+    --video lecture.mp4 \\
+    --duration 600 \\
+    --output audio.wav
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 43-49" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Example" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Converting video audio to standard format" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Preparing audio for energy calculation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Extracting audio for speech analysis" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Use Cases" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "ffmpeg" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Dependencies" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Audio Extractor" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Extract audio from a video file to WAV format for downstream analysis" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Confirm output WAV file was created and is non-empty" ;
+                    oc:expectedOutcome "Valid WAV file ready for downstream processing" ;
+                    oc:stepDependsOn _:ref_9c4b8127fbaf32d5 ;
+                    oc:stepId "verify-output" ],
+                _:ref_56499a0d24b00e8a,
+                _:ref_9c4b8127fbaf32d5 ;
+            oc:workflowId "audio-extraction" ;
+            oc:workflowName "Audio Extraction Workflow" ] ;
+    oc:impartsKnowledge oc:kn_18cf370f,
+        oc:kn_25651dc2,
+        oc:kn_7280bc7b,
+        oc:kn_83363129,
+        oc:kn_b9453df4,
+        oc:kn_d0408dd2 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "convert video audio to WAV format",
+        "extract audio from video",
+        "prepare audio for energy analysis" ;
+    oc:yieldsState oc:DocumentCreated .
+
+oc:kn_18cf370f a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "Creates a WAV file on disk at the specified output path; overwrites if file exists" ;
+    oc:hasRationale "Agent must ensure output path is writable and won't overwrite important files" .
+
+oc:kn_25651dc2 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting audio for speech or energy analysis" ;
+    oc:directiveContent "Default 16kHz sample rate is used because it is sufficient for speech analysis and reduces file size" ;
+    oc:hasRationale "Speech energy is concentrated below 8kHz, so 16kHz Nyquist covers the full speech bandwidth while minimizing storage" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_7280bc7b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before execution" ;
+    oc:directiveContent "ffmpeg must be installed and available in PATH" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_83363129 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "Output is always mono channel regardless of input video's channel configuration" ;
+    oc:hasRationale "Mono ensures consistent energy analysis downstream without channel-averaging ambiguity" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_b9453df4 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executed multiple times" ;
+    oc:directiveContent "Re-running with the same parameters overwrites the output file with identical content" ;
+    oc:hasRationale "Safe to re-run without side effects beyond overwriting the output" .
+
+oc:kn_d0408dd2 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When selecting input video files" ;
+    oc:directiveContent "Supports any video format that ffmpeg can read as input" ;
+    oc:hasRationale "Leverages ffmpeg's broad codec support for maximum compatibility" .
+
+oc:req_3fcf652e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python3" .
+
+oc:req_8f2ef958 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "ffmpeg" .
+
+_:ref_56499a0d24b00e8a a oc:WorkflowStep ;
+    dcterms:description "Verify input video file exists and is readable" ;
+    oc:expectedOutcome "Input file confirmed accessible" ;
+    oc:stepId "verify-input" .
+
+_:ref_9c4b8127fbaf32d5 a oc:WorkflowStep ;
+    dcterms:description "Execute extract_audio.py with video path, output path, and optional parameters" ;
+    oc:expectedOutcome "WAV file created at output path" ;
+    oc:stepDependsOn _:ref_56499a0d24b00e8a ;
+    oc:stepId "run-extraction" .
+

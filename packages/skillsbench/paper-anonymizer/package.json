@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/paper-anonymizer",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "academic-pdf-redaction/ontoskill.ttl",
+    "pdf/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "academic-pdf-redaction/intents.json",
+    "pdf/intents.json"
+  ],
+  "skills": []
+}

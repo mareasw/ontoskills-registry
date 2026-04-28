@@ -1,0 +1,15 @@
+{
+  "package_id": "skillsbench/edit-pdf",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "pdf-editing/ontoskill.ttl",
+    "text-parser/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "pdf-editing/intents.json",
+    "text-parser/intents.json"
+  ],
+  "skills": []
+}

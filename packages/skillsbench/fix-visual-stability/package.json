@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/fix-visual-stability",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "browser-testing/ontoskill.ttl",
+    "react-best-practices/ontoskill.ttl",
+    "web-interface-guidelines/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "browser-testing/intents.json",
+    "react-best-practices/intents.json",
+    "web-interface-guidelines/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/energy-ac-optimal-power-flow",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "ac-branch-pi-model/ontoskill.ttl",
+    "casadi-ipopt-nlp/ontoskill.ttl",
+    "power-flow-data/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "ac-branch-pi-model/intents.json",
+    "casadi-ipopt-nlp/intents.json",
+    "power-flow-data/intents.json"
+  ],
+  "skills": []
+}

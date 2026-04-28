@@ -1,0 +1,1979 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_flink_query_senior_data_engineer a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "senior-data-engineer" ;
+    skos:broader "Data engineering skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/flink-query/senior-data-engineer" ;
+    oc:contentHash "845b9d2407d30b242104c5db07124bfdc4f6a560c4548f33d1ae4039ecf37c7f" ;
+    oc:differentia "provides comprehensive expertise in building scalable data pipelines, ETL/ELT systems, real-time streaming, data quality management, and DataOps for production-grade data infrastructure" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "task description (e.g., 'build streaming pipeline', 'validate data quality', 'optimize Airflow DAG')" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "World-class data engineering skill for building scalable data pipelines, ETL/ELT systems, real-time streaming, and data infrastructure. Expertise in Python, SQL, Spark, Airflow, dbt, Kafka, Flink, Kinesis, and modern data stack. Includes data modeling, pipeline orchestration, data quality, streaming quality monitoring, and DataOps. Use when designing data architectures, building batch or streaming data pipelines, optimizing data workflows, or implementing data governance." ;
+    oc:hasName "senior-data-engineer" ;
+    oc:hasPackageName "flink-query" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Quality Framework:** See [frameworks.md](references/frameworks.md) for complete Data Quality Framework covering all dimensions (completeness, accuracy, consistency, timeliness, validity)." ],
+                                _:ref_34b1a9bae416d56c,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Validation Templates:** See [templates.md](references/templates.md) for validation configuration examples and Python API usage." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Steps:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Data Quality Management" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Optimization Strategies:** See [frameworks.md](references/frameworks.md) for performance best practices including partitioning strategies, query optimization, and Spark tuning." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Steps:**" ],
+                                _:ref_88efcc6ccb50d59f,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Analysis Tools:** See [tools.md](references/tools.md) for complete documentation on etl_performance_optimizer.py with query analysis and Spark tuning." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Performance Optimization" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Steps:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Pipeline Patterns:** See [frameworks.md](references/frameworks.md) for Lambda Architecture, Kappa Architecture, Medallion Architecture (Bronze/Silver/Gold), and Microservices Data patterns." ],
+                                _:ref_63242274f73da6d6,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Templates:** See [templates.md](references/templates.md) for complete Airflow DAG templates, Spark job templates, dbt models, and Docker configurations." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Building Production Data Pipelines" ],
+                        [ a oc:Section ;
+                            oc:hasContent _:ref_59e5b75fcfd44ce4,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Templates:** See [templates.md](references/templates.md) for Flink DataStream jobs, Kafka Streams applications, PyFlink templates, and Docker Compose configurations." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Streaming Patterns:** See [frameworks.md](references/frameworks.md) for stateful processing, stream joins, windowing, exactly-once semantics, and CDC patterns." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Steps:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Building Real-Time Streaming Pipelines" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**dbt Templates:** See [templates.md](references/templates.md) for complete dbt model templates including staging, intermediate, fact tables, and SCD Type 2 logic." ],
+                                _:ref_566d1c90454133f7,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Steps:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Modeling Patterns:** See [frameworks.md](references/frameworks.md) for Dimensional Modeling (Kimball), Data Vault 2.0, One Big Table (OBT), and SCD implementations." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Data Modeling & Transformation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Core Workflows" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Batch Pipeline Orchestration** - Design and implement production-ready ETL/ELT pipelines with Airflow, intelligent dependency resolution, retry logic, and comprehensive monitoring" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Streaming Quality Monitoring** - Track consumer lag, data freshness, schema drift, throughput, and dead letter queue rates for streaming pipelines" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Data Quality Management** - Comprehensive batch and streaming data quality validation covering completeness, accuracy, consistency, timeliness, and validity" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Real-Time Streaming** - Build event-driven streaming pipelines with Kafka, Flink, Kinesis, and Spark Streaming with exactly-once semantics and sub-second latency" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Performance Optimization** - Analyze and optimize pipeline performance with query optimization, Spark tuning, and cost analysis recommendations" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Core Capabilities" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill provides comprehensive expertise in data engineering fundamentals through advanced production patterns. From designing medallion architectures to implementing real-time streaming pipelines, it covers the full spectrum of modern data engineering including ETL/ELT design, data quality frameworks, pipeline orchestration, and DataOps practices." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Performance optimization and cost analysis tools" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Production-ready pipeline templates (Airflow, Spark, dbt)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Complete DataOps CI/CD workflows" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Comprehensive data quality validation framework" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Data architecture patterns (Lambda, Kappa, Medallion)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "**Best For:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 5 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Optimizing ETL performance and cloud costs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Building scalable data pipelines for enterprise systems" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Designing modern data architectures (lake, warehouse, lakehouse)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Implementing data quality and governance frameworks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Production ML/AI data infrastructure" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "**What This Skill Provides:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "See [tools.md](references/tools.md) for detailed integration patterns and examples." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Orchestration:** Airflow, Prefect, Dagster for workflow management" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Monitoring:** Datadog, Prometheus for pipeline monitoring" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**ML Platforms:** MLflow, Kubeflow for ML pipeline integration" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Transformation:** dbt for SQL transformations and testing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**BI Tools:** Looker, Tableau, Power BI for analytics" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Quality:** Great Expectations for data validation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "**Version Control:** Git for pipeline code and configuration" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill integrates with:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Integration Points" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Production-grade Kafka configuration generator with performance and security profiles." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for all profiles, security options, and Connect configurations." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Capabilities:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Consumer profiles (exactly-once, high-throughput, batch)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Kafka Streams configuration with state store tuning" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Security configuration (SASL-PLAIN, SASL-SCRAM, mTLS)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Kafka Connect source/sink configurations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Multiple output formats (properties, YAML, JSON)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Topic configuration (partitions, replication, retention, compaction)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Producer profiles (high-throughput, exactly-once, low-latency, ordered)" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Generate topic configuration
+python scripts/kafka_config_generator.py \\
+    --topic user-events --partitions 12 --replication 3 --retention-hours 168
+
+# Generate exactly-once producer
+python scripts/kafka_config_generator.py \\
+    --producer --profile exactly-once --transactional-id producer-001
+
+# Generate Kafka Streams config
+python scripts/kafka_config_generator.py \\
+    --streams --application-id events-processor --exactly-once
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 447-459" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "kafka_config_generator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Comprehensive data quality validation framework with automated checks and reporting." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for rule configuration, API usage, and integration patterns." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Validate with custom rules
+python scripts/data_quality_validator.py \\
+    --input data/sales.csv \\
+    --rules rules/sales_validation.yaml \\
+    --output report.html
+
+# Database table validation
+python scripts/data_quality_validator.py \\
+    --connection postgresql://host/db \\
+    --table sales_transactions \\
+    --threshold 0.95
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 328-340" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Capabilities:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Anomaly detection" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Custom business rule validation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "HTML/PDF report generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Great Expectations integration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Multi-dimensional validation (completeness, accuracy, consistency, timeliness, validity)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Historical trend tracking" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "data_quality_validator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for profiling options, optimization strategies, and cost analysis." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Bottleneck detection and analysis" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Historical performance trending" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Cost analysis and optimization" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Spark job tuning recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Airflow DAG execution profiling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "SQL query optimization suggestions" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Pipeline performance analysis with actionable optimization recommendations." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Analyze Airflow DAG
+python scripts/etl_performance_optimizer.py \\
+    --airflow-db postgresql://host/airflow \\
+    --dag-id sales_etl_pipeline \\
+    --days 30 \\
+    --optimize
+
+# Spark job analysis
+python scripts/etl_performance_optimizer.py \\
+    --spark-history-server http://spark-history:18080 \\
+    --app-id app-20250115-001
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 357-369" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Capabilities:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "etl_performance_optimizer.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Automated Airflow DAG generation with intelligent dependency resolution and monitoring." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Basic DAG generation
+python scripts/pipeline_orchestrator.py --config pipeline_config.yaml --output dags/
+
+# With validation
+python scripts/pipeline_orchestrator.py --config config.yaml --validate
+
+# From template
+python scripts/pipeline_orchestrator.py --template incremental --output dags/
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 302-311" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Automatic task dependency resolution" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Multi-source support (PostgreSQL, S3, BigQuery, Snowflake)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Generate production-ready DAGs from YAML configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Built-in retry logic and error handling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Integrated quality checks and alerting" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Key Features:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for full configuration options, templates, and integration examples." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "pipeline_orchestrator.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Streaming pipeline configuration generator and validator for Kafka, Flink, and Kinesis." ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Multi-platform support (Kafka, Flink, Kinesis, Spark Streaming)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Exactly-once semantics configuration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Configuration validation with best practice checks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Kafka topic configuration generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Flink/Spark job scaffolding generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Docker Compose for local streaming stacks" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for configuration format, validation checks, and generated outputs." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Capabilities:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Validate configuration
+python scripts/stream_processor.py --config streaming_config.yaml --validate
+
+# Generate Kafka configurations
+python scripts/stream_processor.py --config streaming_config.yaml --mode kafka --generate
+
+# Generate Flink job scaffolding
+python scripts/stream_processor.py --config streaming_config.yaml --mode flink --generate --output flink-jobs/
+
+# Generate Docker Compose for local development
+python scripts/stream_processor.py --config streaming_config.yaml --mode docker --generate
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 386-398" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "stream_processor.py" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Capabilities:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Real-time streaming data quality monitoring with comprehensive health scoring." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Usage:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 3 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Schema drift detection" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Dead letter queue rate monitoring" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Consumer lag monitoring with thresholds" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Prometheus metrics export" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "Overall quality scoring with recommendations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Throughput analysis (events/sec, bytes/sec)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Data freshness validation (P50/P95/P99 latency)" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "**Complete Documentation:** See [tools.md](references/tools.md) for all monitoring dimensions and integration patterns." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Monitor consumer lag
+python scripts/streaming_quality_validator.py \\
+    --lag --consumer-group events-processor --threshold 10000
+
+# Monitor data freshness
+python scripts/streaming_quality_validator.py \\
+    --freshness --topic processed-events --max-latency-ms 5000
+
+# Full quality validation
+python scripts/streaming_quality_validator.py \\
+    --lag --freshness --throughput --dlq \\
+    --output streaming-health-report.html
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 416-429" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "streaming_quality_validator.py" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Python Tools" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Production-ready code templates and examples:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Airflow DAGs:** Complete ETL DAG, incremental load, dynamic task generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Spark Jobs:** Batch processing, streaming, optimized configurations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 9 ;
+                                            oc:itemText "**Configuration:** dbt project config, Spark configuration, Airflow variables, streaming pipeline YAML" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Python Pipelines:** Data quality validation class, retry decorators, error handling" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "**Kafka Configs:** Producer/consumer properties templates, topic configurations, security configurations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**SQL Patterns:** Incremental merge (upsert), deduplication, date spine, window functions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**dbt Models:** Staging, intermediate, fact tables, dimensions with SCD Type 2" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "**Docker:** Dockerfiles for data pipelines, Docker Compose for local development including streaming stack (Kafka, Flink, Schema Registry)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 10 ;
+                                            oc:itemText "**Testing:** pytest fixtures, integration tests, data quality tests" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "**Real-Time Streaming:** Apache Flink DataStream jobs (Java), Kafka Streams applications, PyFlink jobs, AWS Kinesis consumers, Docker Compose for streaming stack" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Templates ([templates.md](references/templates.md))" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "**Governance:** Data catalog, lineage tracking, access control" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Data Modeling:** Dimensional (Kimball), Data Vault 2.0, One Big Table" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "**Real-Time Streaming:** Stateful processing, stream joins, windowing strategies, exactly-once semantics, event time processing, watermarks, backpressure, Apache Flink patterns, AWS Kinesis patterns, CDC for streaming" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**ETL/ELT Patterns:** Full load, incremental load, CDC, SCD, idempotent pipelines" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "**Orchestration:** Airflow DAG patterns, backfill strategies" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Data Quality:** Complete framework covering all quality dimensions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**DataOps:** CI/CD for data pipelines, testing strategies, monitoring" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Architecture Patterns:** Lambda, Kappa, Medallion, Microservices data architecture" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Comprehensive data engineering frameworks and patterns:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Frameworks ([frameworks.md](references/frameworks.md))" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Python automation tool documentation:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "**kafka_config_generator.py:** Topic, producer, consumer, Kafka Streams, and Connect configurations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**etl_performance_optimizer.py:** Performance analysis, query optimization, Spark tuning" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "**Best Practices:** Configuration management, error handling, performance, monitoring, streaming quality" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**stream_processor.py:** Streaming pipeline configuration, validation, job scaffolding generation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "**Integration Patterns:** Airflow, dbt, CI/CD, monitoring systems, Prometheus" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**streaming_quality_validator.py:** Consumer lag, data freshness, schema drift, throughput monitoring" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**data_quality_validator.py:** Validation rules, dimension checks, Great Expectations integration" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**pipeline_orchestrator.py:** Complete usage guide, configuration format, DAG templates" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Tools ([tools.md](references/tools.md))" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Reference Documentation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent """**Version:** 2.0.0
+**Last Updated:** December 16, 2025
+**Documentation Structure:** Progressive disclosure with comprehensive references
+**Streaming Enhancement:** Task #8 - Real-time streaming capabilities added""" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Frameworks Guide:** [references/frameworks.md](references/frameworks.md)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Tool Documentation:** [references/tools.md](references/tools.md)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Python Scripts:** `scripts/` directory" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Code Templates:** [references/templates.md](references/templates.md)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Resources" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Data Platforms:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Workflow:** Airflow, Prefect, Dagster" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Stream Processing Engines:** Apache Flink, Kafka Streams, Spark Structured Streaming" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Streaming Platforms:** Apache Kafka, AWS Kinesis, Google Pub/Sub, Azure Event Hubs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Cloud Data Warehouses:** Snowflake, BigQuery, Redshift" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Data Lakes:** Delta Lake, Apache Iceberg, Apache Hudi" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Core Technologies:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Languages:** Python 3.8+, SQL, Scala (Spark), Java (Flink)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Storage:** PostgreSQL, BigQuery, Snowflake, Redshift, S3, GCS" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "**Containerization:** Docker, Kubernetes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Stream Processing:** Apache Kafka, Apache Flink, Kafka Streams, Spark Structured Streaming, AWS Kinesis" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Batch Processing:** Apache Spark, dbt, Pandas" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Orchestration:** Apache Airflow, Prefect, Dagster" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Schema Management:** Confluent Schema Registry, AWS Glue Schema Registry" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "**Monitoring:** Datadog, Prometheus, Grafana, Kafka UI" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Tech Stack" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Expected Output:** Streaming pipeline processing 10K+ events/sec with P99 latency < 1s, exactly-once delivery, and real-time quality monitoring" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "World-class data engineering for production-grade data systems, scalable pipelines, and enterprise data platforms." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Steps:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 3-5 days" ],
+                                _:ref_e9005cb6ca672271 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Workflow 2: Build Real-Time Streaming Pipeline" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**Expected Output:** Production-ready ETL pipeline with 99%+ success rate, automated quality checks, and comprehensive monitoring" ],
+                                _:ref_9fe4f8b23d3ff503,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Steps:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Time:** 2-4 hours" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Workflow 1: Build ETL Pipeline" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key Workflows" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Validate CSV file with quality checks
+python scripts/data_quality_validator.py --input data/sales.csv --output report.html
+
+# Validate database table with custom rules
+python scripts/data_quality_validator.py \\
+    --connection postgresql://user:pass@host/db \\
+    --table sales_transactions \\
+    --rules rules/sales_validation.yaml \\
+    --threshold 0.95
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 159-169" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Data Quality Validation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Generate Airflow DAG from configuration
+python scripts/pipeline_orchestrator.py --config pipeline_config.yaml --output dags/
+
+# Validate pipeline configuration
+python scripts/pipeline_orchestrator.py --config pipeline_config.yaml --validate
+
+# Use incremental load template
+python scripts/pipeline_orchestrator.py --template incremental --output dags/
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 146-155" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pipeline Orchestration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Validate streaming pipeline configuration
+python scripts/stream_processor.py --config streaming_config.yaml --validate
+
+# Generate Kafka topic and client configurations
+python scripts/kafka_config_generator.py \\
+    --topic user-events \\
+    --partitions 12 \\
+    --replication 3 \\
+    --output kafka/topics/
+
+# Generate exactly-once producer configuration
+python scripts/kafka_config_generator.py \\
+    --producer \\
+    --profile exactly-once \\
+    --output kafka/producer.properties
+
+# Generate Flink job scaffolding
+python scripts/stream_processor.py \\
+    --config streaming_config.yaml \\
+    --mode flink \\
+    --generate \\
+    --output flink-jobs/
+
+# Monitor streaming quality
+python scripts/streaming_quality_validator.py \\
+    --lag --consumer-group events-processor --threshold 10000 \\
+    --freshness --topic processed-events --max-latency-ms 5000 \\
+    --output streaming-health-report.html
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 189-218" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Real-Time Streaming" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Analyze pipeline performance and get recommendations
+python scripts/etl_performance_optimizer.py \\
+    --airflow-db postgresql://host/airflow \\
+    --dag-id sales_etl_pipeline \\
+    --days 30 \\
+    --optimize
+
+# Analyze Spark job performance
+python scripts/etl_performance_optimizer.py \\
+    --spark-history-server http://spark-history:18080 \\
+    --app-id app-20250115-001
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 173-185" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Performance Optimization" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 8 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Late data rate: < 5% outside watermark window" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Schema compatibility: 100% backward/forward compatible changes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Data freshness: P95 < 5 minutes from event generation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Dead letter queue rate: < 1%" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Exactly-once delivery: Zero duplicates or losses" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Throughput: 10K+ events/second sustained" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "End-to-end latency: P99 < 1 second" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Consumer lag: < 10K records behind" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "**Streaming Quality:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 9 ;
+                            oc:textContent "**Cost Efficiency:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Streaming Pipeline Execution:**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Success rate: > 99%" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "P95 latency: < 15 minutes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "P50 latency: < 5 minutes (hourly pipelines)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Data freshness: < 1 hour behind source" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Batch Pipeline Execution:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Data Quality (Batch):**" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 10 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Resource utilization: > 70%" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Cloud cost trend: Stable or decreasing" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Cost per GB processed: < $0.10" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Timeliness: < 2 hours data lag" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Completeness: > 99%" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Zero critical failures" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Quality score: > 95%" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Performance Targets" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_094f12fb045b330d,
+                        _:ref_0d09dce2bb5ddd94,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Performance:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 7 ;
+                            oc:textContent "**Operations:**" ],
+                        _:ref_8798b7ea6801124e,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Data Quality:**" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Pipeline Design:**" ],
+                        _:ref_9beffdf3cf056e97 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Senior Data Engineer" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """
+# === CORE IDENTITY ===
+name: senior-data-engineer
+title: Senior Data Engineer Skill Package
+description: World-class data engineering skill for building scalable data pipelines, ETL/ELT systems, real-time streaming, and data infrastructure. Expertise in Python, SQL, Spark, Airflow, dbt, Kafka, Flink, Kinesis, and modern data stack. Includes data modeling, pipeline orchestration, data quality, streaming quality monitoring, and DataOps. Use when designing data architectures, building batch or streaming data pipelines, optimizing data workflows, or implementing data governance.
+domain: engineering
+subdomain: data-engineering
+
+# === WEBSITE DISPLAY ===
+difficulty: advanced
+time-saved: "TODO: Quantify time savings"
+frequency: "TODO: Estimate usage frequency"
+use-cases:
+  - Designing data pipelines for ETL/ELT processes
+  - Building data warehouses and data lakes
+  - Implementing data quality and governance frameworks
+  - Creating analytics dashboards and reporting
+  - Building real-time streaming pipelines with Kafka and Flink
+  - Implementing exactly-once streaming semantics
+  - Monitoring streaming quality (consumer lag, data freshness, schema drift)
+
+# === RELATIONSHIPS ===
+related-agents: []
+related-skills: []
+related-commands: []
+orchestrated-by: []
+
+# === TECHNICAL ===
+dependencies:
+  scripts: []
+  references: []
+  assets: []
+compatibility:
+  python-version: 3.8+
+  platforms: [macos, linux, windows]
+tech-stack:
+  - Python
+  - SQL
+  - Apache Spark
+  - Airflow
+  - dbt
+  - Apache Kafka
+  - Apache Flink
+  - AWS Kinesis
+  - Spark Structured Streaming
+  - Kafka Streams
+  - PostgreSQL
+  - BigQuery
+  - Snowflake
+  - Docker
+  - Schema Registry
+
+# === EXAMPLES ===
+examples:
+  -
+    title: Example Usage
+    input: "TODO: Add example input for senior-data-engineer"
+    output: "TODO: Add expected output"
+
+# === ANALYTICS ===
+stats:
+  downloads: 0
+  stars: 0
+  rating: 0.0
+  reviews: 0
+
+# === VERSIONING ===
+version: v2.0.0
+author: Claude Skills Team
+contributors: []
+created: 2025-10-20
+updated: 2025-12-16
+license: MIT
+
+# === DISCOVERABILITY ===
+tags: [architecture, data, design, engineer, engineering, senior, streaming, kafka, flink, real-time]
+featured: false
+verified: true
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_094f12fb045b330d,
+        _:ref_0d09dce2bb5ddd94,
+        [ a oc:Workflow ;
+            dcterms:description "Design and deploy a production-ready ETL pipeline with orchestration, quality checks, and monitoring" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Deploy pipeline and configure monitoring/alerting" ;
+                    oc:expectedOutcome "Pipeline running with 99%+ success rate and automated alerts" ;
+                    oc:stepDependsOn _:ref_a9125ffde22290e9,
+                        _:ref_ac732cb1af04dfbc ;
+                    oc:stepId "etl-5" ],
+                _:ref_93db0d734fe525ad,
+                _:ref_a9125ffde22290e9,
+                _:ref_ac732cb1af04dfbc,
+                _:ref_b5ffa57d46fd62b9 ;
+            oc:workflowId "build-etl-pipeline" ;
+            oc:workflowName "Build Production ETL Pipeline" ],
+        _:ref_34b1a9bae416d56c,
+        _:ref_566d1c90454133f7,
+        _:ref_59e5b75fcfd44ce4,
+        [ a oc:Workflow ;
+            dcterms:description "Profile, identify bottlenecks, and optimize data pipeline performance" ;
+            oc:hasStep _:ref_7e3d2bb72b6d375f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Measure impact: compare before/after metrics, track cost savings" ;
+                    oc:expectedOutcome "Quantified improvement in latency, throughput, and cost" ;
+                    oc:stepDependsOn _:ref_7e3d2bb72b6d375f,
+                        _:ref_d0926dee12bb0af3 ;
+                    oc:stepId "perf-5" ],
+                _:ref_94de958dd1029a3c,
+                _:ref_957f6e87ce944793,
+                _:ref_d0926dee12bb0af3 ;
+            oc:workflowId "performance-optimization" ;
+            oc:workflowName "Pipeline Performance Optimization" ],
+        _:ref_63242274f73da6d6,
+        [ a oc:Workflow ;
+            dcterms:description "Implement comprehensive data quality validation framework for batch data" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Monitor quality trends over time and alert on degradation" ;
+                    oc:expectedOutcome "Quality dashboard with historical trends and alerts" ;
+                    oc:stepDependsOn _:ref_8a916bff9941fe50 ;
+                    oc:stepId "dq-5" ],
+                _:ref_13fc21241b3ede6b,
+                _:ref_454ab32f901f076f,
+                _:ref_8a916bff9941fe50,
+                _:ref_f9ecba31680e4187 ;
+            oc:workflowId "data-quality-management" ;
+            oc:workflowName "Data Quality Management" ],
+        _:ref_8798b7ea6801124e,
+        _:ref_88efcc6ccb50d59f,
+        _:ref_9beffdf3cf056e97,
+        _:ref_9fe4f8b23d3ff503,
+        [ a oc:Workflow ;
+            dcterms:description "Design data models and implement transformations using dbt with proper SCD handling" ;
+            oc:hasStep _:ref_3a001c50849a0bc6,
+                _:ref_4a29c4d597f3ec56,
+                _:ref_5b08f2f9a502ed82,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run dbt tests, generate documentation, deploy models" ;
+                    oc:expectedOutcome "Tested and documented dbt models deployed to production" ;
+                    oc:stepDependsOn _:ref_3a001c50849a0bc6 ;
+                    oc:stepId "dm-5" ],
+                _:ref_bb85f7ddf8d82dda ;
+            oc:workflowId "data-modeling-transformation" ;
+            oc:workflowName "Data Modeling & Transformation" ],
+        [ a oc:Workflow ;
+            dcterms:description "Design and deploy a real-time streaming pipeline with Kafka, Flink/Spark, exactly-once semantics, and quality monitoring" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Monitor streaming quality with streaming_quality_validator.py" ;
+                    oc:expectedOutcome "Quality metrics tracked: consumer lag, freshness, throughput, DLQ rate" ;
+                    oc:stepDependsOn _:ref_b8f3d3cd4114037f ;
+                    oc:stepId "stream-6" ],
+                _:ref_157d147f91414ca4,
+                _:ref_b2ae12d6b41be61b,
+                _:ref_b8f3d3cd4114037f,
+                _:ref_d7c5a4a65c63896b,
+                _:ref_eb21cb3ddeab94cf ;
+            oc:workflowId "build-streaming-pipeline" ;
+            oc:workflowName "Build Real-Time Streaming Pipeline" ],
+        _:ref_e9005cb6ca672271 ;
+    oc:impartsKnowledge oc:kn_0dd2838c,
+        oc:kn_29e8556a,
+        oc:kn_8adcd356,
+        oc:kn_8d178f43,
+        oc:kn_974853f7,
+        oc:kn_a06f366c,
+        oc:kn_a4651c85,
+        oc:kn_b2ee5d6b ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "build ETL/ELT data pipelines",
+        "build real-time streaming pipelines",
+        "configure Kafka and Flink streaming",
+        "design data architectures",
+        "generate Airflow DAGs",
+        "monitor streaming quality",
+        "optimize pipeline performance",
+        "validate data quality" ;
+    oc:yieldsState oc:DataQualityValidated,
+        oc:PipelineConfigured,
+        oc:StreamingPipelineDeployed .
+
+oc:kn_0dd2838c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building ETL pipelines for large datasets" ;
+    oc:directiveContent "Never process full datasets when incremental processing is possible — always prefer incremental loads over full reloads" ;
+    oc:hasRationale "Full reloads waste compute resources, increase latency, and raise costs unnecessarily" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_29e8556a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deploying pipelines to production" ;
+    oc:directiveContent "Production batch pipelines must achieve >99% success rate, streaming pipelines must sustain 10K+ events/sec with P99 latency <1s, and data quality scores must exceed 95%" ;
+    oc:hasRationale "These are the minimum performance targets for reliable data infrastructure" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8adcd356 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When optimizing pipeline performance" ;
+    oc:directiveContent "Partition large tables by date/region, use columnar formats (Parquet/ORC), leverage predicate pushdown, and monitor query patterns for optimization opportunities" ;
+    oc:hasRationale "These patterns consistently deliver the best price-performance ratio for analytical workloads" .
+
+oc:kn_8d178f43 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When pipelines fail in production" ;
+    oc:directiveContent "Implement automated retry logic with exponential backoff, dead letter queues for failed records, and clear runbooks for incident response" ;
+    oc:hasRationale "Automated recovery reduces MTTR and manual intervention for transient failures" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_974853f7 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing any data pipeline" ;
+    oc:directiveContent "Use idempotent operations for safe reruns — every pipeline step must produce the same result when executed multiple times with the same input" ;
+    oc:hasRationale "Idempotency prevents duplicate data and corruption during reruns caused by failures or backfills" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a06f366c a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing ETL logic" ;
+    oc:directiveContent "All pipeline operations must be idempotent — use merge/upsert patterns instead of inserts, and include deduplication logic at every stage" ;
+    oc:hasRationale "Non-idempotent pipelines produce incorrect results on reruns and cannot safely recover from failures" .
+
+oc:kn_a4651c85 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing new data architectures" ;
+    oc:directiveContent "Choose architecture pattern based on requirements: Kappa for streaming-only workloads, Lambda for hybrid batch+streaming, Medallion (Bronze/Silver/Gold) for lakehouse architectures" ;
+    oc:hasRationale "Each pattern optimizes for different latency, complexity, and cost tradeoffs" .
+
+oc:kn_b2ee5d6b a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before deploying streaming infrastructure" ;
+    oc:directiveContent "Before deploying streaming pipelines: validate YAML configuration, check Kafka topic existence and partition counts, verify Schema Registry compatibility, and confirm consumer group offsets" ;
+    oc:hasRationale "Pre-deployment validation prevents costly misconfigurations from reaching production" .
+
+_:ref_03da9ae57873836a a oc:WorkflowStep ;
+    dcterms:description "**Integrate CI/CD:** Add validation to pipeline deployment process" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_056405a1ffb3164a a oc:WorkflowStep ;
+    dcterms:description "Define quality rules early" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0907338da0264323 a oc:WorkflowStep ;
+    dcterms:description "**Configure Pipeline:** Create YAML config with sources, processing engine, sinks, quality thresholds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_0b004941f8076907 a oc:WorkflowStep ;
+    dcterms:description "**Deploy Infrastructure:** Use Docker Compose for local dev, Kubernetes for production" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_0d265151f0bf5690 a oc:WorkflowStep ;
+    dcterms:description "**Choose Modeling Approach:** Dimensional (Kimball), Data Vault 2.0, or One Big Table" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0f2ef964b7515aed a oc:WorkflowStep ;
+    dcterms:description "**Monitor Trends:** Track quality scores over time" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_156eaa161f6cddc8 a oc:WorkflowStep ;
+    dcterms:description "**Generate Kafka Configs:** `python scripts/kafka_config_generator.py --topic events --partitions 12`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_15d57b1329162328 a oc:WorkflowStep ;
+    dcterms:description "**Profile Pipeline:** Run performance analyzer on recent pipeline executions" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_16d7c99a8164d20c a oc:WorkflowStep ;
+    dcterms:description "Configure streaming pipeline YAML (sources, processing, sinks, quality)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_173d73ac9ffbcfac a oc:WorkflowStep ;
+    dcterms:description "Automate testing and deployment" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_1b011fb6be695db7 a oc:WorkflowStep ;
+    dcterms:description "Automated recovery mechanisms" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_1cb0d7036a9f00ae a oc:WorkflowStep ;
+    dcterms:description "Incremental processing where possible" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_26583caf43489e3c a oc:WorkflowStep ;
+    dcterms:description "Regular performance reviews" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_2eb97e56457ac905 a oc:WorkflowStep ;
+    dcterms:description "Optimize for your query patterns" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_3873f32ad88b45ea a oc:WorkflowStep ;
+    dcterms:description "Automate quality monitoring" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_39451a0b7b78a10f a oc:WorkflowStep ;
+    dcterms:description "Block bad data from downstream" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_39a070c3999b29ba a oc:WorkflowStep ;
+    dcterms:description "Generate Kafka configurations with `kafka_config_generator.py`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_3b43956156337956 a oc:WorkflowStep ;
+    dcterms:description "Comprehensive error handling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_3fc442135b89c278 a oc:WorkflowStep ;
+    dcterms:description "**Test & Deploy:** Run dbt tests, generate documentation, deploy" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_45081299ee286fa4 a oc:WorkflowStep ;
+    dcterms:description "**Add Quality Checks:** Define validation rules for data quality" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_4fc72bddeb6bb2d4 a oc:WorkflowStep ;
+    dcterms:description "**Generate Job Scaffolding:** `python scripts/stream_processor.py --mode flink --generate`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_55061b4b41822e07 a oc:WorkflowStep ;
+    dcterms:description "**Run Validation:** `python scripts/data_quality_validator.py --rules rules.yaml`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_5c658b910b9b9b27 a oc:WorkflowStep ;
+    dcterms:description "**Configure Pipeline:** Create YAML configuration with sources, transformations, targets" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_664eb65b874b479e a oc:WorkflowStep ;
+    dcterms:description "Configure YAML pipeline definition with sources, transformations, targets" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_6dd8b4fbd7a495ab a oc:WorkflowStep ;
+    dcterms:description "Partition large tables by date/region" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_75d0d90ae8df0d88 a oc:WorkflowStep ;
+    dcterms:description "**Monitor Quality:** `python scripts/streaming_quality_validator.py --lag --freshness --throughput`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_7c29204e53bc661e a oc:WorkflowStep ;
+    dcterms:description "Clear data lineage and documentation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_7fd3bb8fbc791d70 a oc:WorkflowStep ;
+    dcterms:description "Deploy and monitor with `streaming_quality_validator.py`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_81721cfe38443322 a oc:WorkflowStep ;
+    dcterms:description "**Apply Optimizations:** Implement recommendations (partitioning, indexing, batching)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_88a46cb7eea6ffb5 a oc:WorkflowStep ;
+    dcterms:description "Deploy and configure monitoring/alerting" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_92163696ec575cd4 a oc:WorkflowStep ;
+    dcterms:description "**Design Architecture:** Choose pattern (Lambda, Kappa, Medallion) based on requirements" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_92b8f16f4709e3c0 a oc:WorkflowStep ;
+    dcterms:description "**Architecture Selection:** Choose Kappa (streaming-only) or Lambda (batch + streaming) architecture" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_9cdeb318417f6936 a oc:WorkflowStep ;
+    dcterms:description "Define data quality validation rules" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_a04e4eda56b1a5d2 a oc:WorkflowStep ;
+    dcterms:description "**Deploy & Monitor:** Deploy to Airflow, configure alerts, track metrics" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_a1dfec66871afb83 a oc:WorkflowStep ;
+    dcterms:description "Leverage predicate pushdown" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_a5431aa4753c7900 a oc:WorkflowStep ;
+    dcterms:description "Validate at every pipeline stage" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ac6cb866c89496e5 a oc:WorkflowStep ;
+    dcterms:description "Select streaming architecture (Kappa vs Lambda) based on requirements" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_afd5acc2007e8f16 a oc:WorkflowStep ;
+    dcterms:description "**Review Results:** Analyze quality scores and failed checks" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_baa9a7a7f2ba264c a oc:WorkflowStep ;
+    dcterms:description "Generate Flink/Spark job scaffolding with `stream_processor.py`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_bbf4e8250683a8eb a oc:WorkflowStep ;
+    dcterms:description "Implement comprehensive monitoring" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_cf97f8bbfa21690f a oc:WorkflowStep ;
+    dcterms:description "**Design Schema:** Define fact tables, dimensions, and relationships" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d0cb98cc564c01e7 a oc:WorkflowStep ;
+    dcterms:description "Monitor and tune regularly" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_d19844381195fc0f a oc:WorkflowStep ;
+    dcterms:description "Idempotent operations for safe reruns" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d55182dd1b798144 a oc:WorkflowStep ;
+    dcterms:description "Design pipeline architecture using Lambda, Kappa, or Medallion pattern" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_d5814cdae2f4ea19 a oc:WorkflowStep ;
+    dcterms:description "Use columnar formats (Parquet, ORC)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_d68fce41b8bfb736 a oc:WorkflowStep ;
+    dcterms:description "**Implement with dbt:** Create staging, intermediate, and mart models" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_d7bff1b7b2bf2f26 a oc:WorkflowStep ;
+    dcterms:description "**Generate DAG:** `python scripts/pipeline_orchestrator.py --config config.yaml`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_da5ee7a4cf313a13 a oc:WorkflowStep ;
+    dcterms:description "**Measure Impact:** Compare before/after metrics, track cost savings" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_dc6f6aa83d36fe3d a oc:WorkflowStep ;
+    dcterms:description "Version control everything" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e64f6eacc8a641c5 a oc:WorkflowStep ;
+    dcterms:description "**Identify Bottlenecks:** Review execution time breakdown and slow tasks" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ea378ccff5b41912 a oc:WorkflowStep ;
+    dcterms:description "**Define Rules:** Create validation rules covering completeness, accuracy, consistency" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_ef87bdc56006d1b1 a oc:WorkflowStep ;
+    dcterms:description "Track quality trends over time" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f829a21d03e39ba0 a oc:WorkflowStep ;
+    dcterms:description "Document runbooks for incidents" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f8c61ff1b751f0c1 a oc:WorkflowStep ;
+    dcterms:description "Generate Airflow DAG with `pipeline_orchestrator.py`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fa51dc39b6665825 a oc:WorkflowStep ;
+    dcterms:description "**Handle SCD:** Implement slowly changing dimension logic (Type 1/2/3)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_fb77d11d7ace1b02 a oc:WorkflowStep ;
+    dcterms:description "**Tune Spark Jobs:** Optimize memory, parallelism, and shuffle settings" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_094f12fb045b330d a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_056405a1ffb3164a,
+        _:ref_3873f32ad88b45ea,
+        _:ref_39451a0b7b78a10f,
+        _:ref_a5431aa4753c7900,
+        _:ref_ef87bdc56006d1b1 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_0d09dce2bb5ddd94 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_1b011fb6be695db7,
+        _:ref_1cb0d7036a9f00ae,
+        _:ref_3b43956156337956,
+        _:ref_7c29204e53bc661e,
+        _:ref_d19844381195fc0f ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_13fc21241b3ede6b a oc:WorkflowStep ;
+    dcterms:description "Run validation with data_quality_validator.py against data sources" ;
+    oc:expectedOutcome "Quality report generated with scores per dimension" ;
+    oc:stepDependsOn _:ref_f9ecba31680e4187 ;
+    oc:stepId "dq-2" .
+
+_:ref_157d147f91414ca4 a oc:WorkflowStep ;
+    dcterms:description "Select streaming architecture (Kappa vs Lambda) based on requirements" ;
+    oc:expectedOutcome "Architecture pattern selected with justification" ;
+    oc:stepId "stream-1" .
+
+_:ref_34b1a9bae416d56c a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_03da9ae57873836a,
+        _:ref_0f2ef964b7515aed,
+        _:ref_55061b4b41822e07,
+        _:ref_afd5acc2007e8f16,
+        _:ref_ea378ccff5b41912 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_3a001c50849a0bc6 a oc:WorkflowStep ;
+    dcterms:description "Implement SCD logic (Type 1/2/3) for slowly changing dimensions" ;
+    oc:expectedOutcome "SCD models handling historical tracking" ;
+    oc:stepDependsOn _:ref_bb85f7ddf8d82dda ;
+    oc:stepId "dm-4" .
+
+_:ref_454ab32f901f076f a oc:WorkflowStep ;
+    dcterms:description "Review quality scores and investigate failed checks" ;
+    oc:expectedOutcome "Root causes identified for quality failures" ;
+    oc:stepDependsOn _:ref_13fc21241b3ede6b ;
+    oc:stepId "dq-3" .
+
+_:ref_4a29c4d597f3ec56 a oc:WorkflowStep ;
+    dcterms:description "Choose modeling approach: Dimensional (Kimball), Data Vault 2.0, or One Big Table" ;
+    oc:expectedOutcome "Modeling approach selected based on requirements" ;
+    oc:stepId "dm-1" .
+
+_:ref_566d1c90454133f7 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0d265151f0bf5690,
+        _:ref_3fc442135b89c278,
+        _:ref_cf97f8bbfa21690f,
+        _:ref_d68fce41b8bfb736,
+        _:ref_fa51dc39b6665825 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_59e5b75fcfd44ce4 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0907338da0264323,
+        _:ref_0b004941f8076907,
+        _:ref_156eaa161f6cddc8,
+        _:ref_4fc72bddeb6bb2d4,
+        _:ref_75d0d90ae8df0d88,
+        _:ref_92b8f16f4709e3c0 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_5b08f2f9a502ed82 a oc:WorkflowStep ;
+    dcterms:description "Design schema: define fact tables, dimensions, and relationships" ;
+    oc:expectedOutcome "Logical data model documented" ;
+    oc:stepDependsOn _:ref_4a29c4d597f3ec56 ;
+    oc:stepId "dm-2" .
+
+_:ref_63242274f73da6d6 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_45081299ee286fa4,
+        _:ref_5c658b910b9b9b27,
+        _:ref_92163696ec575cd4,
+        _:ref_a04e4eda56b1a5d2,
+        _:ref_d7bff1b7b2bf2f26 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_7e3d2bb72b6d375f a oc:WorkflowStep ;
+    dcterms:description "Tune Spark jobs: optimize memory, parallelism, shuffle settings" ;
+    oc:expectedOutcome "Spark configuration tuned for workload" ;
+    oc:stepDependsOn _:ref_94de958dd1029a3c ;
+    oc:stepId "perf-4" .
+
+_:ref_8798b7ea6801124e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 8 ;
+    oc:hasStep _:ref_173d73ac9ffbcfac,
+        _:ref_26583caf43489e3c,
+        _:ref_bbf4e8250683a8eb,
+        _:ref_dc6f6aa83d36fe3d,
+        _:ref_f829a21d03e39ba0 ;
+    oc:workflowId "procedure_8" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_88efcc6ccb50d59f a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_15d57b1329162328,
+        _:ref_81721cfe38443322,
+        _:ref_da5ee7a4cf313a13,
+        _:ref_e64f6eacc8a641c5,
+        _:ref_fb77d11d7ace1b02 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8a916bff9941fe50 a oc:WorkflowStep ;
+    dcterms:description "Integrate validation into CI/CD pipeline deployment" ;
+    oc:expectedOutcome "Quality gates blocking deployments below threshold" ;
+    oc:stepDependsOn _:ref_454ab32f901f076f ;
+    oc:stepId "dq-4" .
+
+_:ref_93db0d734fe525ad a oc:WorkflowStep ;
+    dcterms:description "Design pipeline architecture using Lambda, Kappa, or Medallion pattern" ;
+    oc:expectedOutcome "Architecture decision documented with pattern selection rationale" ;
+    oc:stepId "etl-1" .
+
+_:ref_957f6e87ce944793 a oc:WorkflowStep ;
+    dcterms:description "Profile pipeline execution using etl_performance_optimizer.py" ;
+    oc:expectedOutcome "Performance report with execution time breakdown" ;
+    oc:stepId "perf-1" .
+
+_:ref_9beffdf3cf056e97 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 6 ;
+    oc:hasStep _:ref_2eb97e56457ac905,
+        _:ref_6dd8b4fbd7a495ab,
+        _:ref_a1dfec66871afb83,
+        _:ref_d0cb98cc564c01e7,
+        _:ref_d5814cdae2f4ea19 ;
+    oc:workflowId "procedure_6" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_9fe4f8b23d3ff503 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_664eb65b874b479e,
+        _:ref_88a46cb7eea6ffb5,
+        _:ref_9cdeb318417f6936,
+        _:ref_d55182dd1b798144,
+        _:ref_f8c61ff1b751f0c1 ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_a9125ffde22290e9 a oc:WorkflowStep ;
+    dcterms:description "Define data quality validation rules" ;
+    oc:expectedOutcome "Validation rules YAML created covering completeness, accuracy, consistency" ;
+    oc:stepDependsOn _:ref_b5ffa57d46fd62b9 ;
+    oc:stepId "etl-4" .
+
+_:ref_ac732cb1af04dfbc a oc:WorkflowStep ;
+    dcterms:description "Generate Airflow DAG with pipeline_orchestrator.py" ;
+    oc:expectedOutcome "Production-ready DAG generated in dags/ directory" ;
+    oc:stepDependsOn _:ref_b5ffa57d46fd62b9 ;
+    oc:stepId "etl-3" .
+
+_:ref_b2ae12d6b41be61b a oc:WorkflowStep ;
+    dcterms:description "Generate Flink/Spark job scaffolding with stream_processor.py" ;
+    oc:expectedOutcome "Job skeleton code generated in output directory" ;
+    oc:stepDependsOn _:ref_eb21cb3ddeab94cf ;
+    oc:stepId "stream-4" .
+
+_:ref_b8f3d3cd4114037f a oc:WorkflowStep ;
+    dcterms:description "Deploy infrastructure (Docker Compose for local, Kubernetes for production)" ;
+    oc:expectedOutcome "Streaming stack running and processing events" ;
+    oc:stepDependsOn _:ref_b2ae12d6b41be61b,
+        _:ref_d7c5a4a65c63896b ;
+    oc:stepId "stream-5" .
+
+_:ref_bb85f7ddf8d82dda a oc:WorkflowStep ;
+    dcterms:description "Implement with dbt: create staging, intermediate, and mart models" ;
+    oc:expectedOutcome "dbt project with model files created" ;
+    oc:stepDependsOn _:ref_5b08f2f9a502ed82 ;
+    oc:stepId "dm-3" .
+
+_:ref_d0926dee12bb0af3 a oc:WorkflowStep ;
+    dcterms:description "Apply optimizations: partitioning, indexing, batching, predicate pushdown" ;
+    oc:expectedOutcome "Optimization changes implemented" ;
+    oc:stepDependsOn _:ref_94de958dd1029a3c ;
+    oc:stepId "perf-3" .
+
+_:ref_d7c5a4a65c63896b a oc:WorkflowStep ;
+    dcterms:description "Generate Kafka configurations with kafka_config_generator.py" ;
+    oc:expectedOutcome "Topic configs, producer/consumer properties generated" ;
+    oc:stepDependsOn _:ref_eb21cb3ddeab94cf ;
+    oc:stepId "stream-3" .
+
+_:ref_e9005cb6ca672271 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 3 ;
+    oc:hasStep _:ref_16d7c99a8164d20c,
+        _:ref_39a070c3999b29ba,
+        _:ref_7fd3bb8fbc791d70,
+        _:ref_ac6cb866c89496e5,
+        _:ref_baa9a7a7f2ba264c ;
+    oc:workflowId "procedure_3" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f9ecba31680e4187 a oc:WorkflowStep ;
+    dcterms:description "Define validation rules covering completeness, accuracy, consistency dimensions" ;
+    oc:expectedOutcome "Validation rules YAML created" ;
+    oc:stepId "dq-1" .
+
+_:ref_94de958dd1029a3c a oc:WorkflowStep ;
+    dcterms:description "Identify bottlenecks from execution time breakdown and slow tasks" ;
+    oc:expectedOutcome "Top bottlenecks ranked by impact" ;
+    oc:stepDependsOn _:ref_957f6e87ce944793 ;
+    oc:stepId "perf-2" .
+
+_:ref_b5ffa57d46fd62b9 a oc:WorkflowStep ;
+    dcterms:description "Configure YAML pipeline definition with sources, transformations, targets" ;
+    oc:expectedOutcome "pipeline_config.yaml created with all pipeline stages defined" ;
+    oc:stepDependsOn _:ref_93db0d734fe525ad ;
+    oc:stepId "etl-2" .
+
+_:ref_eb21cb3ddeab94cf a oc:WorkflowStep ;
+    dcterms:description "Configure streaming pipeline YAML (sources, processing, sinks, quality thresholds)" ;
+    oc:expectedOutcome "streaming_config.yaml created with all components defined" ;
+    oc:stepDependsOn _:ref_157d147f91414ca4 ;
+    oc:stepId "stream-2" .
+

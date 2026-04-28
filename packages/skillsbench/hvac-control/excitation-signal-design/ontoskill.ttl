@@ -1,0 +1,318 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_hvac_control_excitation_signal_design a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "excitation-signal-design" ;
+    skos:broader "System identification methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/hvac-control/excitation-signal-design" ;
+    oc:contentHash "5d368c582c49ed3e8b4d43b8391773007626c50734312dc140a8c54d4d7a4b11" ;
+    oc:differentia "designs excitation signals (step tests) to probe unknown system dynamics for parameter estimation" ;
+    oc:handlesFailure oc:InsufficientDuration,
+        oc:InsufficientSampleRate,
+        oc:SystemSaturated ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Design effective excitation signals (step tests) for system identification and parameter estimation in control systems." ;
+    oc:hasName "excitation-signal-design" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Rule of thumb**: If the output appears to have settled, you've collected enough data" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Recommended**: 3-5 time constants for accurate parameter estimation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Minimum**: At least 2-3 time constants to see the response shape" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The test should run long enough to capture the system dynamics:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Duration Guidelines" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For a first-order system, the step response follows an exponential curve:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Where K is the process gain and tau is the time constant." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Initial: Output at starting value" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Final: Asymptotically approaches steady-state value" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Rising: Exponential approach toward new steady state" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The response follows: `y(t) = y_initial + K*u*(1 - exp(-t/tau))`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Expected Response Shape" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Example data collection pattern
+data = []
+for step in range(num_steps):
+    result = system.step(input_value)
+    data.append({
+        "time": result["time"],
+        "output": result["output"],
+        "input": result["input"]
+    })
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 44-54" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Time (from start of test)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Output measurement (with sensor noise)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Input command" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "During the step test, record:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Data Collection" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When identifying the dynamics of an unknown system, you must excite the system with a known input and observe its response. This skill describes how to design effective excitation signals for parameter estimation." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The simplest excitation signal for first-order systems is a step test:" ],
+                        _:ref_a1bc70afd6b8a689 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Step Test Method" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Sufficient duration**: Cutting the test short means incomplete data for fitting" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Moderate input**: Use an input level that produces a measurable response without saturating" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Noise is normal**: Real sensors have measurement noise; don't over-smooth the data" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**One good test**: A single well-executed step test often provides sufficient data" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Tips" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Choose a sample rate that captures the transient behavior:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Good practice: At least 10-20 samples per time constant" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Too slow: Miss important dynamics during the rise phase" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Too fast: Excessive data without added information" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Sample Rate Selection" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Excitation Signal Design for System Identification" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: excitation-signal-design
+description: Design effective excitation signals (step tests) for system identification and parameter estimation in control systems.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_a1bc70afd6b8a689,
+        [ a oc:Workflow ;
+            dcterms:description "Design and execute a step test to collect input-output data for first-order system identification" ;
+            oc:hasStep _:ref_243df442c0a04eb4,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Confirm the output has settled to new steady state and data captures the full transient" ;
+                    oc:expectedOutcome "Data is sufficient for accurate parameter estimation" ;
+                    oc:stepDependsOn _:ref_243df442c0a04eb4 ;
+                    oc:stepId "verify-data-quality" ],
+                _:ref_3a13a7bc752b1cb2,
+                _:ref_87c46e4015e4dc77,
+                _:ref_d85242f7b623e8ef ;
+            oc:workflowId "step-test-design" ;
+            oc:workflowName "Step Test Design and Execution" ] ;
+    oc:impartsKnowledge oc:kn_019f2d11,
+        oc:kn_3971bdcc,
+        oc:kn_4b11ebd0,
+        oc:kn_59759265,
+        oc:kn_753ba9c9,
+        oc:kn_877882c4,
+        oc:kn_9225921d ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:SystemAtSteadyState ;
+    oc:resolvesIntent "design step test excitation signal",
+        "determine test duration and sample rate for step response",
+        "plan system identification experiment" ;
+    oc:yieldsState oc:ExcitationSignalDesigned .
+
+oc:kn_019f2d11 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any step test" ;
+    oc:directiveContent "Verify the system is stable at a known steady-state operating point before applying the step input." ;
+    oc:hasRationale "Starting from a known steady state ensures the observed response is solely due to the step input, not residual transients" .
+
+oc:kn_3971bdcc a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When executing and processing step test data" ;
+    oc:directiveContent "Avoid cutting the test short before the response has settled, using an input level that saturates the system, or over-smoothing noisy sensor data." ;
+    oc:hasRationale "Short tests, saturation, and over-smoothing all destroy information needed for accurate parameter estimation" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_4b11ebd0 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "During any step test data collection" ;
+    oc:directiveContent "Record three data channels during the step test: time (from test start), output measurement (with sensor noise), and input command value." ;
+    oc:hasRationale "Complete input-output time-series data is essential for model fitting and parameter estimation" .
+
+oc:kn_59759265 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting sample rate for data collection" ;
+    oc:directiveContent "Use at least 10-20 samples per time constant. Too slow misses transient dynamics; too fast produces excessive data without added information." ;
+    oc:hasRationale "Proper sampling captures the rise phase transient behavior which is critical for accurate time constant estimation" .
+
+oc:kn_753ba9c9 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When performing a step test for first-order system identification" ;
+    oc:directiveContent "1. Ensure system is at steady state at a known operating point. 2. Apply step input from zero to a constant value. 3. Hold input for 3-5 time constants to capture full response. 4. Record time, output, and input data at regular intervals (10-20 samples per time constant)." ;
+    oc:hasRationale "A structured step test ensures consistent, repeatable data collection for accurate parameter estimation" ;
+    oc:stepOrder 1 .
+
+oc:kn_877882c4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When determining test duration for a step response experiment" ;
+    oc:directiveContent "Run the step test for 3-5 time constants. Minimum is 2-3 time constants. If the output appears to have settled, you've collected enough data." ;
+    oc:hasRationale "Insufficient duration yields incomplete data that leads to poor model fitting" .
+
+oc:kn_9225921d a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing input magnitude for the step test" ;
+    oc:directiveContent "Use a moderate input level that produces a measurable response without saturating the system. A single well-executed step test often provides sufficient data." ;
+    oc:hasRationale "Saturation introduces nonlinearity that invalidates first-order model assumptions; too-small inputs get lost in noise" .
+
+_:ref_75086ffd2703ee30 a oc:WorkflowStep ;
+    dcterms:description "**Record the response**: Capture input and output data at regular intervals" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_796ba485413072bd a oc:WorkflowStep ;
+    dcterms:description "**Hold for sufficient duration**: Wait long enough to observe the full response" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_e8d06dbdabda4130 a oc:WorkflowStep ;
+    dcterms:description "**Start at steady state**: Ensure the system is stable at a known operating point" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_eb1baafcb2db9266 a oc:WorkflowStep ;
+    dcterms:description "**Apply a step input**: Change the input from zero to a constant value" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_243df442c0a04eb4 a oc:WorkflowStep ;
+    dcterms:description "Record time, output, and input data at regular intervals for the full test duration" ;
+    oc:expectedOutcome "Complete time-series dataset capturing the full step response" ;
+    oc:stepDependsOn _:ref_3a13a7bc752b1cb2 ;
+    oc:stepId "record-response" .
+
+_:ref_3a13a7bc752b1cb2 a oc:WorkflowStep ;
+    dcterms:description "Apply a step change from zero to the chosen constant input value" ;
+    oc:expectedOutcome "System begins responding to the step input" ;
+    oc:stepDependsOn _:ref_d85242f7b623e8ef ;
+    oc:stepId "apply-step-input" .
+
+_:ref_87c46e4015e4dc77 a oc:WorkflowStep ;
+    dcterms:description "Ensure the system is stable at a known steady-state operating point" ;
+    oc:expectedOutcome "System output is constant and stable, ready for perturbation" ;
+    oc:stepId "verify-steady-state" .
+
+_:ref_a1bc70afd6b8a689 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_75086ffd2703ee30,
+        _:ref_796ba485413072bd,
+        _:ref_e8d06dbdabda4130,
+        _:ref_eb1baafcb2db9266 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_d85242f7b623e8ef a oc:WorkflowStep ;
+    dcterms:description "Select step input magnitude (moderate, non-saturating), test duration (3-5 time constants), and sample rate (10-20 samples per time constant)" ;
+    oc:expectedOutcome "Excitation signal parameters are defined" ;
+    oc:stepDependsOn _:ref_87c46e4015e4dc77 ;
+    oc:stepId "choose-parameters" .
+

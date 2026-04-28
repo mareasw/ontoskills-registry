@@ -1,0 +1,447 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_gravitational_wave_detection_conditioning a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "conditioning" ;
+    skos:broader "Data preprocessing pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/gravitational-wave-detection/conditioning" ;
+    oc:contentHash "88b64d65d6b16a9b459f9303f18fbf040f4c5ee4111cdd66686e30b0d4e47174" ;
+    oc:differentia "conditions raw gravitational wave detector strain data through high-pass filtering, resampling, wraparound cropping, and PSD estimation for matched filtering" ;
+    oc:handlesFailure oc:FilterWraparoundArtifact,
+        oc:InsufficientDataDuration,
+        oc:InvalidInput ;
+    oc:hasArgumentHint "strain TimeSeries data to condition" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Data conditioning techniques for gravitational wave detector data. Use when preprocessing raw detector strain data before matched filtering, including high-pass filtering, resampling, removing filter wraparound artifacts, and estimating power spectral density (PSD). Works with PyCBC TimeSeries data." ;
+    oc:hasName "conditioning" ;
+    oc:hasRequirement oc:req_b57700e7,
+        oc:req_c5d36a86 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Data conditioning is essential before matched filtering. Raw gravitational wave detector data contains low-frequency noise, instrumental artifacts, and needs proper sampling rates for computational efficiency." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Problem**: Filter wraparound artifacts in matched filtering" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 6 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Increase high-pass filter cutoff frequency or check PSD inverse spectrum truncation" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Increase crop amount or check that filtering happened before cropping" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Solution**: Ensure data is long enough after cropping (need several segments for Welch method)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**Problem**: PSD estimation fails with \"must contain at least one sample\" error" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Problem**: Poor SNR due to low-frequency noise" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pycbc.filter import highpass
+
+# High-pass filter at 15 Hz (typical for LIGO/Virgo data)
+strain_filtered = highpass(strain, 15.0)
+
+# Common cutoff frequencies:
+# 15 Hz: Standard for ground-based detectors
+# 20 Hz: Higher cutoff, more aggressive noise removal
+# 10 Hz: Lower cutoff, preserves more low-frequency content
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 22-32" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Remove low-frequency noise and instrumental artifacts:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Why 15 Hz?** Ground-based detectors like LIGO/Virgo have significant low-frequency noise. High-pass filtering removes this noise while preserving the gravitational wave signal (typically >20 Hz for binary mergers)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "High-Pass Filtering" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Note**: Resampling should happen AFTER high-pass filtering to avoid aliasing. The Nyquist frequency (half the sampling rate) must be above the signal frequency of interest." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Downsample the data to reduce computational cost:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pycbc.filter import resample_to_delta_t
+
+# Resample to 2048 Hz (common for matched filtering)
+delta_t = 1.0 / 2048
+strain_resampled = resample_to_delta_t(strain_filtered, delta_t)
+
+# Or to 4096 Hz for higher resolution
+delta_t = 1.0 / 4096
+strain_resampled = resample_to_delta_t(strain_filtered, delta_t)
+
+# Common sampling rates:
+# 2048 Hz: Standard, computationally efficient
+# 4096 Hz: Higher resolution, better for high-mass systems
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 40-54" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Resampling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Remove edge artifacts introduced by filtering:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Why crop?** Digital filters introduce artifacts at the edges of the time series. These artifacts can cause false triggers in matched filtering." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Crop 2 seconds from both ends to remove filter wraparound
+conditioned = strain_resampled.crop(2, 2)
+
+# The crop() method removes time from start and end:
+# crop(start_seconds, end_seconds)
+# Common values: 2-4 seconds on each end
+
+# Verify the duration
+print(f"Original duration: {strain_resampled.duration} s")
+print(f"Cropped duration: {conditioned.duration} s")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 62-73" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Crop Filter Wraparound" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pycbc
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 120-122" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[PyCBC Filter Documentation](https://pycbc.org/pycbc/latest/html/pycbc.filter.html)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[PyCBC Tutorial: Waveform & Matched Filter](https://colab.research.google.com/github/gwastro/pycbc-tutorials/blob/master/tutorial/3_WaveformMatchedFilter.ipynb) - Practical tutorial covering data conditioning, PSD estimation, and matched filtering" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[PyCBC PSD Documentation](https://pycbc.org/pycbc/latest/html/pycbc.psd.html)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The conditioning pipeline typically involves:" ],
+                        _:ref_8b2ff403d339f5c0 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from pycbc.psd import interpolate, inverse_spectrum_truncation
+
+# Estimate PSD using Welch's method
+# seg_len: segment length in seconds (typically 4 seconds)
+psd = conditioned.psd(4)
+
+# Interpolate PSD to match data frequency resolution
+psd = interpolate(psd, conditioned.delta_f)
+
+# Inverse spectrum truncation for numerical stability
+# This limits the effective filter length
+psd = inverse_spectrum_truncation(
+    psd,
+    int(4 * conditioned.sample_rate),
+    low_frequency_cutoff=15
+)
+
+# Check PSD properties
+print(f"PSD length: {len(psd)}")
+print(f"PSD delta_f: {psd.delta_f}")
+print(f"PSD frequency range: {psd.sample_frequencies[0]:.2f} - {psd.sample_frequencies[-1]:.2f} Hz")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 81-103" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Calculate the PSD needed for matched filtering:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Low frequency cutoff (15 Hz)**: Should match your high-pass filter cutoff. Frequencies below this are not well-characterized." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Segment length (4 seconds)**: Longer segments give better frequency resolution but fewer averages. 4 seconds is a good balance." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "PSD Parameters Explained" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Power Spectral Density (PSD) Estimation" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_747508d30e5ec859 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Gravitational Wave Data Conditioning" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: conditioning
+description: Data conditioning techniques for gravitational wave detector data. Use when preprocessing raw detector strain data before matched filtering, including high-pass filtering, resampling, removing filter wraparound artifacts, and estimating power spectral density (PSD). Works with PyCBC TimeSeries data.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_747508d30e5ec859,
+        _:ref_8b2ff403d339f5c0,
+        [ a oc:Workflow ;
+            dcterms:description "Sequential pipeline for conditioning raw gravitational wave detector strain data prior to matched filtering" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Estimate PSD using Welch's method (4s segments), interpolate to match data resolution, apply inverse spectrum truncation" ;
+                    oc:expectedOutcome "PSD ready for matched filtering with matching frequency resolution" ;
+                    oc:stepDependsOn _:ref_ca0505121a4c0995 ;
+                    oc:stepId "psd-estimate" ],
+                _:ref_0bf6d7bcd80cf0fd,
+                _:ref_3985d97958f7f181,
+                _:ref_ca0505121a4c0995 ;
+            oc:workflowId "conditioning-pipeline" ;
+            oc:workflowName "Full Data Conditioning Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_123823f7,
+        oc:kn_2601dce6,
+        oc:kn_41e4ed38,
+        oc:kn_47173089,
+        oc:kn_57643b3a,
+        oc:kn_5cdae13b,
+        oc:kn_c4a2b637,
+        oc:kn_cf588aca ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "condition strain data before matched filtering",
+        "estimate power spectral density for matched filtering",
+        "high-pass filter strain data",
+        "preprocess gravitational wave detector data",
+        "remove low-frequency noise from detector data" ;
+    oc:yieldsState oc:DataConditioned,
+        oc:PSDEstimated .
+
+oc:kn_123823f7 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing sampling rate and crop duration" ;
+    oc:directiveContent "Use 2048 Hz sampling for standard binary mergers; use 4096 Hz for high-mass systems needing better time-resolution. Crop minimum 2 seconds from each end, more for longer templates." ;
+    oc:hasRationale "Higher sampling rates increase computational cost; adequate cropping removes edge artifacts that cause false triggers" .
+
+oc:kn_2601dce6 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When estimating PSD for matched filtering" ;
+    oc:directiveContent "The PSD low-frequency cutoff must match the high-pass filter cutoff frequency (typically 15 Hz). Data must be long enough after cropping to support multiple Welch segments." ;
+    oc:hasRationale "Mismatched cutoffs lead to poorly characterized noise at low frequencies; insufficient data causes Welch method to fail" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_41e4ed38 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When conditioning raw gravitational wave strain data" ;
+    oc:directiveContent "1. High-pass filter at 15 Hz to remove low-frequency noise 2. Resample to 2048 Hz (or 4096 Hz) to reduce computational cost 3. Crop 2+ seconds from both ends to remove filter wraparound artifacts 4. Estimate PSD via Welch's method (4s segments), interpolate, apply inverse spectrum truncation" ;
+    oc:hasRationale "This order prevents aliasing during resampling and ensures clean PSD estimation for matched filtering" ;
+    oc:stepOrder 1 .
+
+oc:kn_47173089 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When ordering the conditioning pipeline steps" ;
+    oc:directiveContent "Never resample before high-pass filtering — resampling without prior filtering causes aliasing of low-frequency noise into the band of interest" ;
+    oc:hasRationale "Aliasing irreversibly corrupts the signal band, degrading matched filtering SNR" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_57643b3a a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "On PSD estimation failure or poor matched filtering results" ;
+    oc:directiveContent "If PSD estimation fails with 'must contain at least one sample', ensure data is long enough after cropping. If filter wraparound artifacts appear in matched filtering, increase crop amount or verify filtering preceded cropping. If poor SNR persists, increase high-pass cutoff or check inverse spectrum truncation." ;
+    oc:hasRationale "These are the most common conditioning failures and each has a targeted fix" .
+
+oc:kn_5cdae13b a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "PyCBC must be installed (pip install pycbc). Input must be a PyCBC TimeSeries object." .
+
+oc:kn_c4a2b637 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When selecting sampling rate" ;
+    oc:directiveContent "Resampling from original detector rate to 2048 Hz significantly reduces computational cost of downstream matched filtering. 4096 Hz doubles data volume vs 2048 Hz." ;
+    oc:hasRationale "Downsampling is the primary computational optimization in the conditioning pipeline" .
+
+oc:kn_cf588aca a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Complete conditioning pipeline from raw strain to PSD-ready data" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from pycbc.filter import highpass, resample_to_delta_t
+from pycbc.psd import interpolate, inverse_spectrum_truncation
+
+strain_filtered = highpass(strain, 15.0)
+strain_resampled = resample_to_delta_t(strain_filtered, 1.0/2048)
+conditioned = strain_resampled.crop(2, 2)
+psd = conditioned.psd(4)
+psd = interpolate(psd, conditioned.delta_f)
+psd = inverse_spectrum_truncation(psd, int(4 * conditioned.sample_rate), low_frequency_cutoff=15)""" .
+
+oc:req_b57700e7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "PyCBC TimeSeries API" .
+
+oc:req_c5d36a86 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pycbc" .
+
+_:ref_0bdafed1fd8d0ffd a oc:WorkflowStep ;
+    dcterms:description "**Always high-pass filter first**: Remove low-frequency noise before resampling" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_7aaed367cbc449f2 a oc:WorkflowStep ;
+    dcterms:description "**Verify data quality**: Plot the conditioned strain to check for issues" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_7bddb0a8ec72272f a oc:WorkflowStep ;
+    dcterms:description "**Choose appropriate sampling rate**: 2048 Hz is standard, 4096 Hz for high-mass systems" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a0da68bdc80bbed3 a oc:WorkflowStep ;
+    dcterms:description "**Match PSD cutoff to filter**: PSD low-frequency cutoff should match high-pass filter frequency" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_ab53a08518049012 a oc:WorkflowStep ;
+    dcterms:description "PSD estimation (calculate power spectral density for matched filtering)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_e7eb356fb8dad098 a oc:WorkflowStep ;
+    dcterms:description "High-pass filtering (remove low-frequency noise below ~15 Hz)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e8d0f9a7166f22aa a oc:WorkflowStep ;
+    dcterms:description "**Crop enough time**: 2 seconds is minimum, but may need more for longer templates" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ec81a02049e427f7 a oc:WorkflowStep ;
+    dcterms:description "Crop filter wraparound (remove edge artifacts from filtering)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fd969fd012a28657 a oc:WorkflowStep ;
+    dcterms:description "Resampling (downsample to appropriate sampling rate)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_0bf6d7bcd80cf0fd a oc:WorkflowStep ;
+    dcterms:description "High-pass filter strain data at 15 Hz to remove low-frequency noise" ;
+    oc:expectedOutcome "Filtered TimeSeries with frequencies below 15 Hz attenuated" ;
+    oc:stepId "highpass" .
+
+_:ref_3985d97958f7f181 a oc:WorkflowStep ;
+    dcterms:description "Resample filtered data to 2048 Hz (standard) or 4096 Hz (high-resolution)" ;
+    oc:expectedOutcome "Downsampled TimeSeries at target sampling rate" ;
+    oc:stepDependsOn _:ref_0bf6d7bcd80cf0fd ;
+    oc:stepId "resample" .
+
+_:ref_747508d30e5ec859 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_0bdafed1fd8d0ffd,
+        _:ref_7aaed367cbc449f2,
+        _:ref_7bddb0a8ec72272f,
+        _:ref_a0da68bdc80bbed3,
+        _:ref_e8d0f9a7166f22aa ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_8b2ff403d339f5c0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_ab53a08518049012,
+        _:ref_e7eb356fb8dad098,
+        _:ref_ec81a02049e427f7,
+        _:ref_fd969fd012a28657 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ca0505121a4c0995 a oc:WorkflowStep ;
+    dcterms:description "Crop 2+ seconds from both ends to remove filter wraparound artifacts" ;
+    oc:expectedOutcome "Conditioned TimeSeries free of edge artifacts" ;
+    oc:stepDependsOn _:ref_3985d97958f7f181 ;
+    oc:stepId "crop" .
+

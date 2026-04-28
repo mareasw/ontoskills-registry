@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/r2r-mpc-control",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "finite-horizon-lqr/ontoskill.ttl",
+    "integral-action-design/ontoskill.ttl",
+    "mpc-horizon-tuning/ontoskill.ttl",
+    "state-space-linearization/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "finite-horizon-lqr/intents.json",
+    "integral-action-design/intents.json",
+    "mpc-horizon-tuning/intents.json",
+    "state-space-linearization/intents.json"
+  ],
+  "skills": []
+}

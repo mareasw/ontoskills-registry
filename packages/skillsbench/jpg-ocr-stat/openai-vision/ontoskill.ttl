@@ -1,0 +1,1169 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_jpg_ocr_stat_openai_vision a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "openai-vision" ;
+    skos:broader "Vision analysis service" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/jpg-ocr-stat/openai-vision" ;
+    oc:contentHash "f75b869b2d9b90428a57269807b0f6a3c76798a2e89041bb39596353f037d48b" ;
+    oc:dependsOnSkill oc:skill_ontoskills_video_frame_extraction ;
+    oc:differentia "uses OpenAI GPT vision models for image understanding, text extraction, and multi-frame comparison" ;
+    oc:extends oc:skill_ontoskills_image_ocr ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:NetworkTimeout,
+        oc:PermissionDenied,
+        oc:RateLimitExceeded ;
+    oc:hasAllowedTool "Bash",
+        "Glob",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "image-path or image-url" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "Analyze images and multi-frame sequences using OpenAI GPT vision models" ;
+    oc:hasName "openai-vision" ;
+    oc:hasRequirement oc:req_252d6050,
+        oc:req_36b693b8,
+        oc:req_5aff0610,
+        oc:req_c01c4241 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Maximum images**: Up to 500 images per request" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Image quality**: Clear, legible content; avoid watermarks or heavy distortions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**File formats**: JPG, JPEG, PNG, WEBP, non-animated GIF" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Image sources**: URL, Base64-encoded data, or local file paths" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Size limits**: Up to 20MB per image; total request payload under 50MB" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Input Requirements" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**1.0.0** (2026-01-21): Initial release with GPT-4o vision support" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "Version History" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def estimate_image_tokens(image_path, detail="high"):
+    \"\"\"Estimate token usage for an image.\"\"\"
+    if detail == "low":
+        return 85
+    
+    with Image.open(image_path) as img:
+        width, height = img.size
+    
+    # High detail: image is scaled to fit in 2048x2048, then tiled at 512x512
+    scale = min(2048 / max(width, height), 1.0)
+    scaled_width = int(width * scale)
+    scaled_height = int(height * scale)
+    
+    # Ensure minimum 768 on shortest side
+    if min(scaled_width, scaled_height) < 768:
+        scale = 768 / min(scaled_width, scaled_height)
+        scaled_width = int(scaled_width * scale)
+        scaled_height = int(scaled_height * scale)
+    
+    # Calculate tiles
+    tiles_x = (scaled_width + 511) // 512
+    tiles_y = (scaled_height + 511) // 512
+    total_tiles = tiles_x * tiles_y
+    
+    return 85 + (170 * total_tiles)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 611-637" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Approximate token costs for image inputs:" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "Approximate token costs for image inputs" ;
+                            oc:tableMarkdown """| Detail Level | Tokens per Image | Best For |
+|-------------|------------------|----------|
+| low | ~85 tokens (fixed) | Quick classification, color detection |
+| high | 85 + 170 per 512x512 tile | OCR, detailed analysis, small objects |
+| auto | Variable | General use |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 22 ;
+                    oc:sectionTitle "Token Cost Estimation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """{
+  "success": true,
+  "images_analyzed": 1,
+  "analysis": {
+    "description": "A detailed scene description...",
+    "objects": [
+      {"name": "car", "color": "red", "position": "foreground center"},
+      {"name": "tree", "count": 3, "position": "background"}
+    ],
+    "text_content": "Any text visible in the image...",
+    "colors": ["blue", "green", "white"],
+    "scene_type": "outdoor/urban"
+  },
+  "comparison": {
+    "differences": ["Object X appeared", "Color changed from A to B"],
+    "similarities": ["Background unchanged", "Layout consistent"]
+  },
+  "metadata": {
+    "model_used": "gpt-4o",
+    "detail_level": "high",
+    "token_usage": {"prompt": 1500, "completion": 200}
+  },
+  "warnings": []
+}
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 41-66" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Analysis results should be returned as valid JSON conforming to this schema:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 9 ;
+                                            oc:itemText "`metadata.model_used`: The GPT model used for analysis" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 11 ;
+                                            oc:itemText "`metadata.token_usage`: Token consumption for cost tracking" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`success`: Boolean indicating whether analysis completed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`analysis.colors`: Dominant colors identified" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`analysis.text_content`: Any text extracted from the image" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`analysis.objects`: Array of detected objects with attributes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "`comparison`: Present when multiple images are analyzed; describes differences and similarities" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 12 ;
+                                            oc:itemText "`warnings`: Array of any issues or limitations encountered" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`analysis.description`: Natural language description of the image content" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 10 ;
+                                            oc:itemText "`metadata.detail_level`: Resolution level used (`low`, `high`, or `auto`)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`images_analyzed`: Number of images processed in the request" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`analysis.scene_type`: Classification of the scene" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Field Descriptions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Output Schema" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill enables image analysis, scene understanding, text extraction, and multi-frame comparison using OpenAI's vision-capable GPT models (e.g., `gpt-4o`, `gpt-4o-mini`). It supports single images, multiple images for comparison, and sequential frames for temporal analysis." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Purpose" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Low detail: 512x512 fixed, ~85 tokens per image
+# Best for: Quick summaries, dominant colors, general scene type
+{"detail": "low"}
+
+# High detail: Full resolution processing
+# Best for: Reading text, detecting small objects, detailed analysis
+{"detail": "high"}
+
+# Auto: Model decides based on image size
+# Best for: General use when cost vs quality tradeoff is acceptable
+{"detail": "auto"}
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 404-416" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The `detail` parameter controls image resolution and token usage:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def get_recommended_detail(task_type):
+    \"\"\"Recommend detail level based on task type.\"\"\"
+    high_detail_tasks = {
+        'ocr', 'text_extraction', 'document_analysis',
+        'small_object_detection', 'detailed_comparison',
+        'fine_grained_analysis'
+    }
+    
+    low_detail_tasks = {
+        'scene_classification', 'dominant_colors',
+        'general_description', 'thumbnail_preview'
+    }
+    
+    if task_type.lower() in high_detail_tasks:
+        return "high"
+    elif task_type.lower() in low_detail_tasks:
+        return "low"
+    else:
+        return "auto"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 420-440" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 16 ;
+                            oc:sectionTitle "Choosing Detail Level" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Detail Level Configuration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+import base64
+import json
+from pathlib import Path
+
+client = OpenAI()
+
+def process_image_directory(directory_path, output_file, prompt=None):
+    \"\"\"Process all images in a directory and save results.\"\"\"
+    if prompt is None:
+        prompt = "Describe this image briefly, including any visible text."
+    
+    image_extensions = {'.jpg', '.jpeg', '.png', '.webp', '.gif'}
+    results = []
+    
+    for file_path in sorted(Path(directory_path).iterdir()):
+        if file_path.suffix.lower() in image_extensions:
+            print(f"Processing: {file_path.name}")
+            
+            try:
+                analysis = analyze_local_image(str(file_path), prompt)
+                results.append({
+                    "filename": file_path.name,
+                    "success": True,
+                    "analysis": analysis
+                })
+            except Exception as e:
+                results.append({
+                    "filename": file_path.name,
+                    "success": False,
+                    "error": str(e)
+                })
+    
+    # Save results
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    
+    return results
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 358-397" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Batch Processing Directory" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+import base64
+
+client = OpenAI()
+
+def compare_images(image_paths, comparison_prompt=None):
+    \"\"\"Compare multiple images and identify differences.\"\"\"
+    if comparison_prompt is None:
+        comparison_prompt = (
+            "Compare these images carefully. "
+            "List all differences and similarities you observe. "
+            "Describe any changes in objects, colors, positions, or text."
+        )
+    
+    content = [{"type": "text", "text": comparison_prompt}]
+    
+    for i, image_path in enumerate(image_paths):
+        base64_image = encode_image_to_base64(image_path)
+        media_type = get_image_media_type(image_path)
+        
+        # Add label for each image
+        content.append({
+            "type": "text", 
+            "text": f"Image {i + 1}:"
+        })
+        content.append({
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:{media_type};base64,{base64_image}",
+                "detail": "high"
+            }
+        })
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": content}],
+        max_tokens=2000
+    )
+    return response.choices[0].message.content
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 171-211" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Multi-Image Comparison" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+import base64
+from pathlib import Path
+
+client = OpenAI()
+
+def analyze_video_frames(frame_paths, analysis_prompt=None):
+    \"\"\"Analyze a sequence of video frames for temporal understanding.\"\"\"
+    if analysis_prompt is None:
+        analysis_prompt = (
+            "These are sequential frames from a video. "
+            "Describe what is happening over time. "
+            "Identify any motion, changes, or events that occur across the frames."
+        )
+    
+    content = [{"type": "text", "text": analysis_prompt}]
+    
+    for i, frame_path in enumerate(frame_paths):
+        base64_image = encode_image_to_base64(frame_path)
+        media_type = get_image_media_type(frame_path)
+        
+        content.append({
+            "type": "text",
+            "text": f"Frame {i + 1}:"
+        })
+        content.append({
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:{media_type};base64,{base64_image}",
+                "detail": "auto"  # Use auto for frames to balance cost
+            }
+        })
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": content}],
+        max_tokens=2000
+    )
+    return response.choices[0].message.content
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 215-255" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Multi-Frame Video Analysis" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+import base64
+import json
+import os
+
+client = OpenAI()
+
+def analyze_image_to_json(image_path, extract_text=True):
+    \"\"\"Perform comprehensive image analysis and return structured JSON.\"\"\"
+    filename = os.path.basename(image_path)
+    
+    prompt = \"\"\"Analyze this image and return a JSON object with the following structure:
+{
+    "description": "detailed scene description",
+    "objects": [{"name": "object name", "attributes": "color, size, position"}],
+    "text_content": "any visible text or null if none",
+    "colors": ["dominant", "colors"],
+    "scene_type": "indoor/outdoor/abstract/etc",
+    "people_count": 0,
+    "notable_features": ["list of notable visual elements"]
+}
+
+Return ONLY valid JSON, no other text.\"\"\"
+
+    try:
+        base64_image = encode_image_to_base64(image_path)
+        media_type = get_image_media_type(image_path)
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:{media_type};base64,{base64_image}",
+                                "detail": "high"
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens=1500
+        )
+        
+        # Parse the response as JSON
+        analysis_text = response.choices[0].message.content
+        # Remove markdown code blocks if present
+        if analysis_text.startswith("```"):
+            analysis_text = analysis_text.split("```")[1]
+            if analysis_text.startswith("json"):
+                analysis_text = analysis_text[4:]
+        analysis = json.loads(analysis_text.strip())
+        
+        result = {
+            "success": True,
+            "filename": filename,
+            "analysis": analysis,
+            "metadata": {
+                "model_used": "gpt-4o",
+                "detail_level": "high",
+                "token_usage": {
+                    "prompt": response.usage.prompt_tokens,
+                    "completion": response.usage.completion_tokens
+                }
+            },
+            "warnings": []
+        }
+        
+    except json.JSONDecodeError as e:
+        result = {
+            "success": False,
+            "filename": filename,
+            "analysis": {"raw_response": response.choices[0].message.content},
+            "metadata": {"model_used": "gpt-4o"},
+            "warnings": [f"Failed to parse JSON: {str(e)}"]
+        }
+    except Exception as e:
+        result = {
+            "success": False,
+            "filename": filename,
+            "analysis": {},
+            "metadata": {},
+            "warnings": [f"Analysis failed: {str(e)}"]
+        }
+    
+    return result
+
+# Usage
+result = analyze_image_to_json("photo.jpg")
+print(json.dumps(result, indent=2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 259-354" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "Full Analysis with JSON Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+
+client = OpenAI()
+
+def analyze_image_url(image_url, prompt="Describe this image in detail."):
+    \"\"\"Analyze an image from a URL using GPT-4o vision.\"\"\"
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": image_url,
+                            "detail": "high"
+                        }
+                    }
+                ]
+            }
+        ],
+        max_tokens=1000
+    )
+    return response.choices[0].message.content
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 88-115" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Basic Image Analysis from URL" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from openai import OpenAI
+import base64
+
+client = OpenAI()
+
+def encode_image_to_base64(image_path):
+    \"\"\"Encode a local image file to base64.\"\"\"
+    with open(image_path, "rb") as image_file:
+        return base64.standard_b64encode(image_file.read()).decode("utf-8")
+
+def get_image_media_type(image_path):
+    \"\"\"Determine the media type based on file extension.\"\"\"
+    ext = image_path.lower().split('.')[-1]
+    media_types = {
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png',
+        'gif': 'image/gif',
+        'webp': 'image/webp'
+    }
+    return media_types.get(ext, 'image/jpeg')
+
+def analyze_local_image(image_path, prompt="Describe this image in detail."):
+    \"\"\"Analyze a local image file using GPT-4o vision.\"\"\"
+    base64_image = encode_image_to_base64(image_path)
+    media_type = get_image_media_type(image_path)
+    
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:{media_type};base64,{base64_image}",
+                            "detail": "high"
+                        }
+                    }
+                ]
+            }
+        ],
+        max_tokens=1000
+    )
+    return response.choices[0].message.content
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 119-167" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "Image Analysis from Local File (Base64)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Code Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before returning results, verify:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] For multi-image: all images were processed" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "[ ] Confidence/warnings are included when analysis is uncertain" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] All requested analysis fields are present" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] API response was received successfully" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] No error messages in the response" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] Output is valid JSON (if structured output requested)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Token usage is within expected bounds" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 20 ;
+                    oc:sectionTitle "Quality Self-Check" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Non-Latin scripts**: Lower accuracy for complex scripts (CJK, Arabic, etc.)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "**Graphs and charts**: May misinterpret line styles, legends, or data points" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 9 ;
+                                    oc:itemText "**Metadata**: Cannot access EXIF data, camera info, or GPS coordinates from images" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Spatial precision**: Cannot provide pixel-accurate bounding boxes or measurements" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Medical imagery**: Not suitable for diagnostic analysis of CT scans, X-rays, or MRIs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Rotated/skewed text**: Accuracy decreases with text rotation; pre-process if needed" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Object counting**: Approximate counts only; may miss or double-count similar objects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "**Panoramic/fisheye**: Distorted images reduce analysis accuracy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Small text**: Text smaller than ~12pt may be misread; use `detail: high`" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 10 ;
+                                    oc:itemText "**Cost**: High-detail analysis of many images can be expensive; monitor token usage" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Limitations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Comparing multiple images to detect differences or changes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Analyzing image content (objects, scenes, colors, spatial relationships)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Extracting and reading text from images (OCR via vision models)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Generating detailed image descriptions or captions" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Answering questions about visual content" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Processing video frames to understand temporal progression" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import time
+from openai import RateLimitError
+
+def analyze_with_retry(image_path, prompt, max_retries=3):
+    \"\"\"Analyze image with exponential backoff retry.\"\"\"
+    for attempt in range(max_retries):
+        try:
+            return analyze_local_image(image_path, prompt)
+        except RateLimitError:
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt  # Exponential backoff
+                print(f"Rate limited, waiting {wait_time}s...")
+                time.sleep(wait_time)
+            else:
+                raise
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 499-515" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Issue**: Image too large" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def validate_image(image_path):
+    \"\"\"Validate image before processing.\"\"\"
+    valid_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+    
+    path = Path(image_path)
+    
+    if not path.exists():
+        return False, "File does not exist"
+    
+    if path.suffix.lower() not in valid_extensions:
+        return False, f"Unsupported format: {path.suffix}"
+    
+    try:
+        with Image.open(image_path) as img:
+            img.verify()
+        return True, "Valid image"
+    except Exception as e:
+        return False, f"Invalid image: {str(e)}"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 6 ;
+                                    oc:sourceLocation "lines 552-571" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Issue**: Invalid image format" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from PIL import Image
+import io
+
+def resize_image_if_needed(image_path, max_size_mb=15):
+    \"\"\"Resize image if it exceeds size limit.\"\"\"
+    file_size_mb = os.path.getsize(image_path) / (1024 * 1024)
+    
+    if file_size_mb <= max_size_mb:
+        return encode_image_to_base64(image_path)
+    
+    # Resize the image
+    img = Image.open(image_path)
+    
+    # Calculate new dimensions (reduce by 50% iteratively)
+    while file_size_mb > max_size_mb:
+        new_width = img.width // 2
+        new_height = img.height // 2
+        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        
+        # Check new size
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG', quality=85)
+        file_size_mb = len(buffer.getvalue()) / (1024 * 1024)
+    
+    # Encode resized image
+    buffer = io.BytesIO()
+    img.save(buffer, format='JPEG', quality=85)
+    return base64.standard_b64encode(buffer.getvalue()).decode("utf-8")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 519-548" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Issue**: API rate limits exceeded" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 19 ;
+                            oc:sectionTitle "Common Issues and Solutions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 18 ;
+                    oc:sectionTitle "Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from openai import OpenAI
+import base64
+import json
+import os
+from pathlib import Path
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 23-29" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The following Python libraries are required:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Required Libraries" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def extract_text_from_image(image_path, preserve_layout=False):
+    \"\"\"Extract text from an image using GPT-4o vision.\"\"\"
+    if preserve_layout:
+        prompt = (
+            "Extract ALL text visible in this image. "
+            "Preserve the original layout and formatting as much as possible. "
+            "Include headers, paragraphs, captions, and any other text. "
+            "Return only the extracted text, nothing else."
+        )
+    else:
+        prompt = (
+            "Extract all text visible in this image. "
+            "Return the text in reading order (top to bottom, left to right). "
+            "Return only the extracted text, nothing else."
+        )
+    
+    return analyze_local_image(image_path, prompt)
+
+
+def extract_structured_text(image_path):
+    \"\"\"Extract text with structure information as JSON.\"\"\"
+    prompt = \"\"\"Extract all text from this image and return as JSON:
+{
+    "headers": ["list of headers/titles"],
+    "paragraphs": ["list of paragraph texts"],
+    "labels": ["list of labels or captions"],
+    "other_text": ["any other text elements"],
+    "reading_order": ["all text in reading order"]
+}
+Return ONLY valid JSON.\"\"\"
+    
+    response = analyze_local_image(image_path, prompt)
+    
+    try:
+        # Clean and parse JSON
+        if response.startswith("```"):
+            response = response.split("```")[1]
+            if response.startswith("json"):
+                response = response[4:]
+        return json.loads(response.strip())
+    except json.JSONDecodeError:
+        return {"raw_text": response, "parse_error": True}
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 447-490" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For extracting text from images using vision models:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 17 ;
+                    oc:sectionTitle "Text Extraction (Vision-based OCR)" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "OpenAI Vision Analysis Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: openai-vision
+description: Analyze images and multi-frame sequences using OpenAI GPT vision models
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Process all images in a directory and save aggregated results" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Report total token usage and any warnings from the batch" ;
+                    oc:expectedOutcome "Cost summary available for review" ;
+                    oc:stepDependsOn _:ref_e9efa542da664e3a ;
+                    oc:stepId "cost-report" ],
+                _:ref_d95adac9632ba1ec,
+                _:ref_e9efa542da664e3a,
+                _:ref_fe8803987578e472 ;
+            oc:workflowId "batch-directory-analysis" ;
+            oc:workflowName "Batch Directory Analysis" ],
+        [ a oc:Workflow ;
+            dcterms:description "Analyze a single image and return structured results" ;
+            oc:hasStep _:ref_6d1cc10a73efe8a4,
+                _:ref_7828df9d5689d9c5,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Parse response, strip markdown code blocks, validate JSON structure if applicable" ;
+                    oc:expectedOutcome "Clean structured result ready for use" ;
+                    oc:stepDependsOn _:ref_7828df9d5689d9c5 ;
+                    oc:stepId "parse-output" ],
+                _:ref_a3d96c25a13726a8,
+                _:ref_d6395c255be5d32a ;
+            oc:workflowId "single-image-analysis" ;
+            oc:workflowName "Single Image Analysis" ],
+        [ a oc:Workflow ;
+            dcterms:description "Compare multiple images and identify differences" ;
+            oc:hasStep _:ref_08fefc3fc487f509,
+                _:ref_346bd32890a35f19,
+                _:ref_3be6f546bba0d07f,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Extract differences and similarities from the response into structured format" ;
+                    oc:expectedOutcome "Structured comparison result with differences and similarities" ;
+                    oc:stepDependsOn _:ref_346bd32890a35f19 ;
+                    oc:stepId "extract-diffs" ] ;
+            oc:workflowId "multi-image-comparison" ;
+            oc:workflowName "Multi-Image Comparison" ] ;
+    oc:impartsKnowledge oc:kn_655eaa28,
+        oc:kn_6cf4e5b9,
+        oc:kn_703e4ce1,
+        oc:kn_80fdd0ca,
+        oc:kn_813e7d64,
+        oc:kn_8b8f7d2a,
+        oc:kn_8cd7a9e0,
+        oc:kn_98b8e9a5,
+        oc:kn_9ae8c93f,
+        oc:kn_b4e54e31,
+        oc:kn_c8dde906,
+        oc:kn_d22a28d8,
+        oc:kn_d4c0d51c ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:APIKeySet,
+        oc:FileExists,
+        oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze image content",
+        "analyze video frame sequences",
+        "answer questions about visual content",
+        "compare multiple images",
+        "extract text from images via vision",
+        "generate image descriptions and captions" ;
+    oc:yieldsState oc:ImageAnalyzed,
+        oc:TextExtracted .
+
+oc:kn_655eaa28 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When requesting structured output from vision analysis" ;
+    oc:directiveContent "For structured JSON output, instruct the model to 'Return ONLY valid JSON, no other text'. Strip markdown code blocks (```json```) from responses before parsing. Always wrap JSON parsing in try/except with fallback to raw response." ;
+    oc:hasRationale "GPT models sometimes wrap JSON in markdown blocks or add explanatory text, causing parse failures" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6cf4e5b9 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When estimating cost for large batches or high-resolution images" ;
+    oc:directiveContent "Low detail uses fixed ~85 tokens per image. High detail uses 85 + 170 tokens per 512x512 tile (image scaled to fit 2048x2048, min 768 on shortest side). Batch processing directories incurs sequential API calls." ;
+    oc:hasRationale "Token costs scale with image resolution and detail level; unmonitored batch processing can be expensive" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_703e4ce1 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Core pattern for sending any image to the vision API" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{
+        "role": "user",
+        "content": [
+            {"type": "text", "text": prompt},
+            {"type": "image_url", "image_url": {"url": f"data:{media_type};base64,{base64_image}", "detail": "high"}}
+        ]
+    }],
+    max_tokens=1000
+)""" .
+
+oc:kn_80fdd0ca a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:directiveContent "Requires openai Python package installed and OPENAI_API_KEY environment variable set with a valid API key." .
+
+oc:kn_813e7d64 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When encoding local images for the API" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """base64_image = base64.standard_b64encode(open(image_path, 'rb').read()).decode('utf-8')
+media_types = {'jpg':'image/jpeg','jpeg':'image/jpeg','png':'image/png','gif':'image/gif','webp':'image/webp'}""" .
+
+oc:kn_8b8f7d2a a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before sending any image to the API" ;
+    oc:directiveContent "Maximum image size is 20MB per image; total request payload must be under 50MB. Supported formats: JPG, JPEG, PNG, WEBP, non-animated GIF. Up to 500 images per request." ;
+    oc:hasRationale "Exceeding size or format limits causes API rejection or degraded performance" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_8cd7a9e0 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When API calls fail due to rate limits or payload size" ;
+    oc:directiveContent "On RateLimitError, implement exponential backoff retry (2^attempt seconds). On image too large, iteratively resize by 50% with LANCZOS resampling until under 15MB, then re-encode as JPEG quality 85." ;
+    oc:hasRationale "Rate limits are transient and recoverable; oversized images can be reduced without significant quality loss" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_98b8e9a5 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent "{\"success\": {bool}, \"images_analyzed\": {int}, \"analysis\": {\"description\": {str}, \"objects\": [{\"name\": {str}, \"color\": {str}, \"position\": {str}}], \"text_content\": {str}, \"colors\": [{str}], \"scene_type\": {str}}, \"comparison\": {\"differences\": [{str}], \"similarities\": [{str}]}, \"metadata\": {\"model_used\": {str}, \"detail_level\": {str}, \"token_usage\": {\"prompt\": {int}, \"completion\": {int}}}, \"warnings\": [{str}]}" ;
+    oc:templateVariables "colors",
+        "description",
+        "detail_level",
+        "differences",
+        "images_analyzed",
+        "model_used",
+        "objects",
+        "scene_type",
+        "similarities",
+        "success",
+        "text_content",
+        "token_usage",
+        "warnings" .
+
+oc:kn_9ae8c93f a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring the detail parameter for any vision API call" ;
+    oc:directiveContent "Use detail='high' for OCR, text extraction, small object detection, and detailed comparison. Use detail='low' for scene classification, dominant colors, and general descriptions (~85 tokens). Use detail='auto' when cost vs quality tradeoff is acceptable." ;
+    oc:hasRationale "Detail level directly affects token cost and analysis quality; high detail can cost 85 + 170 per 512x512 tile" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_b4e54e31 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting this tool for a task" ;
+    oc:directiveContent "Do not use vision models for medical imagery diagnostics, pixel-accurate measurements, bounding boxes, or EXIF/metadata extraction. Accuracy decreases for rotated/skewed text, non-Latin scripts (CJK, Arabic), and object counting." ;
+    oc:hasRationale "The model has documented limitations in these domains that can produce misleading results" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c8dde906 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before encoding and sending any local image" ;
+    oc:directiveContent "Validate image existence, supported extension (.jpg/.jpeg/.png/.gif/.webp), and verify image integrity using PIL Image.open().verify() before encoding to base64." ;
+    oc:hasRationale "Invalid or corrupted images waste API calls and produce errors" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_d22a28d8 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After receiving analysis results" ;
+    oc:directiveContent "After analysis, verify: API response received, output is valid JSON (if requested), all requested fields present, token usage within bounds, no error messages, and all images processed (for multi-image)." ;
+    oc:hasRationale "Silent failures can return partial or malformed results that appear successful" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_d4c0d51c a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "For any single image analysis" ;
+    oc:directiveContent "1. Validate image file (exists, supported format, integrity check). 2. Determine detail level based on task type. 3. Encode local files to base64 with correct media type, or use URL directly. 4. Construct message with text prompt + image_url content blocks. 5. Call client.chat.completions.create() with model='gpt-4o'. 6. Parse response, stripping markdown code blocks if JSON expected. 7. Validate output against expected schema." ;
+    oc:stepOrder 1 .
+
+oc:req_252d6050 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "openai Python package" .
+
+oc:req_36b693b8 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "GPT-4o or GPT-4o-mini model access" .
+
+oc:req_5aff0610 a oc:RequirementAPI ;
+    oc:isOptional false ;
+    oc:requirementValue "OpenAI API key (OPENAI_API_KEY environment variable)" .
+
+oc:req_c01c4241 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "Pillow (PIL) for image validation and resizing" .
+
+_:ref_08fefc3fc487f509 a oc:WorkflowStep ;
+    dcterms:description "Build content array with text prompt and labeled base64-encoded image blocks" ;
+    oc:expectedOutcome "Content array with all images and labels ready" ;
+    oc:stepDependsOn _:ref_3be6f546bba0d07f ;
+    oc:stepId "build-content" .
+
+_:ref_346bd32890a35f19 a oc:WorkflowStep ;
+    dcterms:description "Send multi-image request to vision API with comparison prompt" ;
+    oc:expectedOutcome "Comparison analysis received" ;
+    oc:stepDependsOn _:ref_08fefc3fc487f509 ;
+    oc:stepId "call-compare-api" .
+
+_:ref_3be6f546bba0d07f a oc:WorkflowStep ;
+    dcterms:description "Gather all image paths to compare and validate each one" ;
+    oc:expectedOutcome "All images confirmed valid" ;
+    oc:stepId "collect-images" .
+
+_:ref_6d1cc10a73efe8a4 a oc:WorkflowStep ;
+    dcterms:description "Encode image to base64 and determine media type from file extension" ;
+    oc:expectedOutcome "Base64 string and correct MIME type obtained" ;
+    oc:stepDependsOn _:ref_d6395c255be5d32a ;
+    oc:stepId "encode" .
+
+_:ref_7828df9d5689d9c5 a oc:WorkflowStep ;
+    dcterms:description "Construct message with prompt and image, call client.chat.completions.create()" ;
+    oc:expectedOutcome "API response received with analysis content" ;
+    oc:stepDependsOn _:ref_6d1cc10a73efe8a4,
+        _:ref_a3d96c25a13726a8 ;
+    oc:stepId "call-api" .
+
+_:ref_a3d96c25a13726a8 a oc:WorkflowStep ;
+    dcterms:description "Select detail level based on task type (high for OCR, low for classification, auto otherwise)" ;
+    oc:expectedOutcome "Appropriate detail level chosen" ;
+    oc:stepId "select-detail" .
+
+_:ref_d6395c255be5d32a a oc:WorkflowStep ;
+    dcterms:description "Validate image file: check existence, supported format, and PIL integrity" ;
+    oc:expectedOutcome "Image confirmed as valid and processable" ;
+    oc:stepId "validate" .
+
+_:ref_d95adac9632ba1ec a oc:WorkflowStep ;
+    dcterms:description "Iterate through images, analyze each with retry handling, collect results" ;
+    oc:expectedOutcome "Array of analysis results with success/failure status per image" ;
+    oc:stepDependsOn _:ref_fe8803987578e472 ;
+    oc:stepId "process-each" .
+
+_:ref_e9efa542da664e3a a oc:WorkflowStep ;
+    dcterms:description "Save aggregated results to JSON output file" ;
+    oc:expectedOutcome "JSON file written with all analysis results" ;
+    oc:stepDependsOn _:ref_d95adac9632ba1ec ;
+    oc:stepId "save-results" .
+
+_:ref_fe8803987578e472 a oc:WorkflowStep ;
+    dcterms:description "Scan directory for files with supported image extensions (.jpg/.jpeg/.png/.webp/.gif)" ;
+    oc:expectedOutcome "Sorted list of image file paths" ;
+    oc:stepId "scan-directory" .
+

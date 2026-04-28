@@ -1,0 +1,498 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_energy_ac_optimal_power_flow_casadi_ipopt_nlp a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "casadi-ipopt-nlp" ;
+    skos:broader "Nonlinear programming solver" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/energy-ac-optimal-power-flow/casadi-ipopt-nlp" ;
+    oc:contentHash "c57d2da6d7abe433d4b346e75c21482d1b2c92dc9f4b1141fd073d11ab24f294" ;
+    oc:differentia "Uses CasADi symbolic framework with IPOPT interior-point solver for building and solving constrained NLP problems, with power systems optimization patterns" ;
+    oc:handlesFailure oc:ConvergenceFailure,
+        oc:SolverInfeasible,
+        oc:SolverTimeout ;
+    oc:hasArgumentHint "NLP problem specification (variables, objective, constraints)" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Nonlinear optimization with CasADi and IPOPT solver. Use when building and solving NLP problems: defining symbolic variables, adding nonlinear constraints, setting solver options, handling multiple initializations, and extracting solutions. Covers power systems optimization patterns including per-unit scaling and complex number formulations." ;
+    oc:hasName "casadi-ipopt-nlp" ;
+    oc:hasRequirement oc:req_806b4c67,
+        oc:req_941f1281,
+        oc:req_b07ecd06,
+        oc:req_dee6594f ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "CasADi is a symbolic framework for nonlinear optimization. IPOPT is an interior-point solver for large-scale NLP." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## IPOPT options (tuning guide)" ;
+                            oc:tableMarkdown """| Option | Default | Recommendation | Notes |
+|--------|---------|----------------|-------|
+| `tol` | 1e-8 | 1e-7 | Convergence tolerance |
+| `acceptable_tol` | 1e-6 | 1e-5 | Fallback if tol not reached |
+| `max_iter` | 3000 | 2000 | Increase for hard problems |
+| `mu_strategy` | monotone | adaptive | Better for nonconvex |
+| `print_level` | 5 | 0 | Quiet output |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "IPOPT options (tuning guide)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """bus_id_to_idx = {int(bus[i, 0]): i for i in range(n_bus)}
+gen_bus_idx = bus_id_to_idx[int(gen_row[0])]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 164-167" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Power system bus numbers may not be contiguous:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Bus ID mapping" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """Pg_bus = [ca.MX(0) for _ in range(n_bus)]
+for k in range(n_gen):
+    bus_idx = gen_bus_idx[k]
+    Pg_bus[bus_idx] += Pg[k]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 171-176" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Aggregating per-bus quantities" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """baseMVA = 100.0
+Pg_pu = Pg_MW / baseMVA      # Input conversion
+Pg_MW = Pg_pu * baseMVA      # Output conversion
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 152-156" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Cost functions often expect MW, not per-unit - check the formulation." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Work in per-unit internally, convert for output:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Per-unit scaling" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Power systems patterns" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Stack bounds matching variable order
+lbx = np.concatenate([Vm_min, Va_min, Pg_min, Qg_min]).tolist()
+ubx = np.concatenate([Vm_max, Va_max, Pg_max, Qg_max]).tolist()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 74-78" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "4. Variable bounds" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Quadratic cost: sum of c2*P^2 + c1*P + c0
+obj = ca.MX(0)
+for k in range(n_gen):
+    obj += c2[k] * Pg[k]**2 + c1[k] * Pg[k] + c0[k]
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 38-43" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Build symbolic expression:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Objective function" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """nlp = {"x": x, "f": obj, "g": g}
+opts = {
+    "ipopt.print_level": 0,
+    "ipopt.max_iter": 2000,
+    "ipopt.tol": 1e-7,
+    "ipopt.acceptable_tol": 1e-5,
+    "ipopt.mu_strategy": "adaptive",
+    "print_time": False,
+}
+solver = ca.nlpsol("solver", "ipopt", nlp, opts)
+
+sol = solver(x0=x0, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
+x_opt = np.array(sol["x"]).flatten()
+obj_val = float(sol["f"])
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 82-97" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "5. Create and call solver" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Collect constraints in lists with bounds:" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """g_expr = []  # Constraint expressions
+lbg = []     # Lower bounds
+ubg = []     # Upper bounds
+
+# Equality constraint: g(x) = 0
+g_expr.append(some_expression)
+lbg.append(0.0)
+ubg.append(0.0)
+
+# Inequality constraint: g(x) <= limit
+g_expr.append(another_expression)
+lbg.append(-ca.inf)
+ubg.append(limit)
+
+# Two-sided: lo <= g(x) <= hi
+g_expr.append(bounded_expression)
+lbg.append(lo)
+ubg.append(hi)
+
+g = ca.vertcat(*g_expr)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 49-70" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. Constraints" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import casadi as ca
+
+n_bus, n_gen = 100, 20
+Vm = ca.MX.sym("Vm", n_bus)   # Voltage magnitudes
+Va = ca.MX.sym("Va", n_bus)   # Voltage angles (radians)
+Pg = ca.MX.sym("Pg", n_gen)   # Real power
+Qg = ca.MX.sym("Qg", n_gen)   # Reactive power
+
+# Stack into single vector for solver
+x = ca.vertcat(Vm, Va, Pg, Qg)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 21-32" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. Decision variables" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Building an NLP" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """apt-get update -qq && apt-get install -y -qq libgfortran5
+pip install numpy==1.26.4 casadi==3.6.7
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-15" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Quick start (Linux)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """x_opt = np.array(sol["x"]).flatten()
+
+# Unpack by slicing (must match variable order)
+Vm_sol = x_opt[:n_bus]
+Va_sol = x_opt[n_bus:2*n_bus]
+Pg_sol = x_opt[2*n_bus:2*n_bus+n_gen]
+Qg_sol = x_opt[2*n_bus+n_gen:]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 136-144" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Extracting solutions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Data-derived: Use values from input data, clipped to bounds" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Always enforce known constraints in initial point (e.g., reference angle = 0)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Flat start: Nominal values (e.g., Vm=1.0, Va=0.0)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Nonlinear solvers are sensitive to starting points. Use multiple initializations:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Good initialization strategies:**" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """initializations = [x0_from_data, x0_flat_start]
+best_sol = None
+
+for x0 in initializations:
+    try:
+        sol = solver(x0=x0, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
+        if best_sol is None or float(sol["f"]) < float(best_sol["f"]):
+            best_sol = sol
+    except Exception:
+        continue
+
+if best_sol is None:
+    raise RuntimeError("Solver failed from all initializations")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 113-127" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Initialization matters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Shunt signs**: Check convention for Gs (conductance) vs Bs (susceptance)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Angle units**: Data often in degrees, solver needs radians" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Wrong tap handling**: MATPOWER uses `tap=0` to mean 1.0, not zero" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Slow convergence**: Try different initialization, relax tolerances temporarily" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "**Over-rounding outputs**: Keep high precision (≥6 decimals) in results" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Infeasible**: Check bound consistency, constraint signs, unit conversions" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Common failure modes" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "CasADi + IPOPT for Nonlinear Programming" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: casadi-ipopt-nlp
+description: "Nonlinear optimization with CasADi and IPOPT solver. Use when building and solving NLP problems: defining symbolic variables, adding nonlinear constraints, setting solver options, handling multiple initializations, and extracting solutions. Covers power systems optimization patterns including per-unit scaling and complex number formulations."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for constructing and solving a nonlinear program with CasADi and IPOPT" ;
+            oc:hasStep _:ref_438c4d38b942388f,
+                _:ref_57cc1966d3ace334,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Extract solution vector and unpack into named variables by slicing at correct offsets" ;
+                    oc:expectedOutcome "Individual solution arrays (Vm_sol, Va_sol, Pg_sol, Qg_sol)" ;
+                    oc:stepDependsOn _:ref_438c4d38b942388f ;
+                    oc:stepId "extract-solution" ],
+                _:ref_9b104b805183b671,
+                _:ref_c266be314382020f,
+                _:ref_eaff79bb0b76367b,
+                _:ref_eb18caf8eb48ff4d ;
+            oc:workflowId "build-solve-nlp" ;
+            oc:workflowName "Build and Solve NLP" ] ;
+    oc:impartsKnowledge oc:kn_3aaaf2c7,
+        oc:kn_533cac0a,
+        oc:kn_634843f7,
+        oc:kn_664c4e7e,
+        oc:kn_6ac85edf,
+        oc:kn_af34a210,
+        oc:kn_b077da4d,
+        oc:kn_f3942dbf,
+        oc:kn_f7aa2d6c,
+        oc:kn_fb0fe276 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "build NLP with symbolic variables and constraints",
+        "extract and unpack optimization solutions",
+        "handle multiple initializations for nonconvex problems",
+        "solve nonlinear optimization problem",
+        "tune IPOPT solver options" ;
+    oc:yieldsState oc:OptimizationSolved .
+
+oc:kn_3aaaf2c7 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When creating and calling the IPOPT solver via CasADi" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import casadi as ca
+nlp = {"x": x, "f": obj, "g": g}
+opts = {"ipopt.print_level": 0, "ipopt.tol": 1e-7, "ipopt.mu_strategy": "adaptive"}
+solver = ca.nlpsol("solver", "ipopt", nlp, opts)
+sol = solver(x0=x0, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)""" .
+
+oc:kn_533cac0a a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting and unpacking solution variables after solving" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """x_opt = np.array(sol["x"]).flatten()
+Vm_sol = x_opt[:n_bus]
+Va_sol = x_opt[n_bus:2*n_bus]
+Pg_sol = x_opt[2*n_bus:2*n_bus+n_gen]
+Qg_sol = x_opt[2*n_bus+n_gen:]""" .
+
+oc:kn_634843f7 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When solving any nonconvex or power systems NLP" ;
+    oc:directiveContent "Never use a single initialization point for nonconvex NLP problems — always try multiple starting points (data-derived and flat start) and keep the best feasible solution." ;
+    oc:hasRationale "IPOPT is a local optimizer; different starting points can converge to different local optima, missing the global optimum." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_664c4e7e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When configuring IPOPT solver options for power systems optimization" ;
+    oc:directiveContent "Use mu_strategy=adaptive for nonconvex problems, tol=1e-7, acceptable_tol=1e-5, max_iter=2000, and print_level=0 as a good starting configuration for IPOPT." ;
+    oc:hasRationale "These settings balance convergence reliability with computation speed for typical power flow OPF problems." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6ac85edf a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When building or unpacking NLP solutions" ;
+    oc:directiveContent "Constraint bounds (lbg/ubg) and variable bounds (lbx/ubx) must be stacked in the exact same order as the decision variable vector x = vertcat(Vm, Va, Pg, Qg). Solution unpacking must use matching slice indices." ;
+    oc:hasRationale "Mismatched ordering between variables, bounds, and solution slicing silently produces wrong results without any error." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_af34a210 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before running any CasADi/IPOPT code" ;
+    oc:directiveContent "Python with casadi==3.6.7 and numpy==1.26.4 installed; on Linux, libgfortran5 must be available for IPOPT." .
+
+oc:kn_b077da4d a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Always when building and solving an NLP with CasADi" ;
+    oc:directiveContent "1. Define symbolic decision variables with ca.MX.sym → 2. Stack into single vector with ca.vertcat → 3. Build objective as symbolic expression → 4. Collect constraints in g_expr/lbg/ubg lists → 5. Stack variable bounds in lbx/ubx matching variable order → 6. Create NLP dict {x, f, g} → 7. Create solver with ca.nlpsol and IPOPT options → 8. Solve with multiple initializations, keep best → 9. Extract solution via sol['x'] and slice by variable order" ;
+    oc:stepOrder 1 .
+
+oc:kn_f3942dbf a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When mapping non-contiguous bus IDs to array indices and aggregating per-bus generator quantities" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """bus_id_to_idx = {int(bus[i, 0]): i for i in range(n_bus)}
+Pg_bus = [ca.MX(0) for _ in range(n_bus)]
+for k in range(n_gen):
+    bus_idx = gen_bus_idx[k]
+    Pg_bus[bus_idx] += Pg[k]""" .
+
+oc:kn_f7aa2d6c a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When diagnosing IPOPT solver failures or unexpected results" ;
+    oc:directiveContent "Common failure modes: (1) Infeasible — check bound consistency, constraint signs, unit conversions; (2) Slow convergence — try different initialization or relax tolerances; (3) MATPOWER tap=0 means 1.0 not zero; (4) Data angles in degrees but solver needs radians; (5) Keep ≥6 decimals precision in outputs." ;
+    oc:hasRationale "These are the most frequent bugs in power systems NLP implementations and account for the majority of debugging time." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_fb0fe276 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When formulating power systems optimization problems" ;
+    oc:directiveContent "Work in per-unit internally for power systems optimization, converting to/from physical units only at input/output boundaries. Verify whether cost functions expect MW or per-unit." ;
+    oc:hasRationale "Per-unit scaling improves numerical conditioning of the optimization problem, but cost function unit expectations vary by formulation." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_806b4c67 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy==1.26.4" .
+
+oc:req_941f1281 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Nonlinear optimization fundamentals" .
+
+oc:req_b07ecd06 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "IPOPT solver" .
+
+oc:req_dee6594f a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "casadi==3.6.7" .
+
+_:ref_438c4d38b942388f a oc:WorkflowStep ;
+    dcterms:description "Run solver from multiple initialization points, keep best feasible solution" ;
+    oc:expectedOutcome "Best solution object with optimal x and objective value" ;
+    oc:stepDependsOn _:ref_c266be314382020f ;
+    oc:stepId "solve-multi-init" .
+
+_:ref_57cc1966d3ace334 a oc:WorkflowStep ;
+    dcterms:description "Stack variable bounds (lbx/ubx) in same order as decision variable vector" ;
+    oc:expectedOutcome "lbx and ubx arrays matching x dimension" ;
+    oc:stepDependsOn _:ref_9b104b805183b671 ;
+    oc:stepId "set-bounds" .
+
+_:ref_c266be314382020f a oc:WorkflowStep ;
+    dcterms:description "Create NLP dict {x, f, g}, configure IPOPT options, instantiate solver with ca.nlpsol" ;
+    oc:expectedOutcome "Solver object ready to accept initial point and bounds" ;
+    oc:stepDependsOn _:ref_57cc1966d3ace334,
+        _:ref_eaff79bb0b76367b,
+        _:ref_eb18caf8eb48ff4d ;
+    oc:stepId "create-solver" .
+
+_:ref_eaff79bb0b76367b a oc:WorkflowStep ;
+    dcterms:description "Collect constraint expressions with bounds (equality, inequality, two-sided) in g_expr/lbg/ubg lists and vertcat into g" ;
+    oc:expectedOutcome "Constraint vector g with matching lower/upper bound arrays" ;
+    oc:stepDependsOn _:ref_9b104b805183b671 ;
+    oc:stepId "add-constraints" .
+
+_:ref_eb18caf8eb48ff4d a oc:WorkflowStep ;
+    dcterms:description "Build symbolic objective function expression (e.g., quadratic generator cost)" ;
+    oc:expectedOutcome "Scalar symbolic expression obj representing cost to minimize" ;
+    oc:stepDependsOn _:ref_9b104b805183b671 ;
+    oc:stepId "build-objective" .
+
+_:ref_9b104b805183b671 a oc:WorkflowStep ;
+    dcterms:description "Define symbolic decision variables (ca.MX.sym) and stack with vertcat" ;
+    oc:expectedOutcome "Single decision variable vector x ready for solver" ;
+    oc:stepId "define-variables" .
+

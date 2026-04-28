@@ -1,0 +1,301 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_lake_warming_attribution_trend_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "trend-analysis" ;
+    skos:broader "Statistical analysis method" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/lake-warming-attribution/trend-analysis" ;
+    oc:contentHash "c70ad1e8f7aaa18b3d541dfe0d6d50d12365831d99a3d50e5d6be27c467cf4d2" ;
+    oc:differentia "detects long-term trends in time series data using parametric (linear regression) and non-parametric (Sen's slope with Mann-Kendall test) approaches" ;
+    oc:handlesFailure oc:InsufficientDataPoints,
+        oc:InvalidInput ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Detect long-term trends in time series data using parametric and non-parametric methods. Use when determining if a variable shows statistically significant increase or decrease over time." ;
+    oc:hasName "trend-analysis" ;
+    oc:hasRequirement oc:req_33cba043,
+        oc:req_607f9638,
+        oc:req_746aacc9,
+        oc:req_8f0bae9a ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Trend analysis determines whether a time series shows a statistically significant long-term increase or decrease. This guide covers both parametric (linear regression) and non-parametric (Sen's slope) methods." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Sen's slope is robust to outliers and does not assume normality. Recommended for environmental data." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pymannkendall as mk
+
+result = mk.original_test(values)
+
+print(result.slope)  # Sen's slope (rate of change per time unit)
+print(result.p)      # p-value for significance
+print(result.trend)  # 'increasing', 'decreasing', or 'no trend'
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 34-42" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 2 ;
+                                    oc:tableCaption "### Comparison" ;
+                                    oc:tableMarkdown """| Method | Pros | Cons |
+|--------|------|------|
+| Linear Regression | Easy to interpret, gives R² | Sensitive to outliers |
+| Sen's Slope | Robust to outliers, no normality assumption | Slightly less statistical power |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Comparison" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Non-Parametric Method: Sen's Slope with Mann-Kendall Test" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pandas as pd
+import pymannkendall as mk
+
+# Load annual precipitation data
+df = pd.read_csv('precipitation.csv')
+precip = df['Precipitation'].values
+
+# Run Mann-Kendall test
+result = mk.original_test(precip)
+print(f"Sen's slope: {result.slope:.2f} mm/year")
+print(f"p-value: {result.p:.2f}")
+print(f"Trend: {result.trend}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 61-74" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Example: Annual Precipitation Trend" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 3 ;
+                            oc:tableCaption "## Common Issues" ;
+                            oc:tableMarkdown """| Issue | Cause | Solution |
+|-------|-------|----------|
+| p-value = NaN | Too few data points | Need at least 8-10 years |
+| Conflicting results | Methods have different assumptions | Trust Sen's slope for environmental data |
+| Slope near zero but significant | Large sample size | Check practical significance |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Issues" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Linear regression fits a straight line to the data and tests if the slope is significantly different from zero." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from scipy import stats
+
+slope, intercept, r_value, p_value, std_err = stats.linregress(years, values)
+
+print(f"Slope: {slope:.2f} units/year")
+print(f"p-value: {p_value:.2f}")
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-23" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Homoscedasticity (constant variance)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Residuals are normally distributed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Linear relationship between time and variable" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Assumptions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Parametric Method: Linear Regression" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Significance Levels" ;
+                            oc:tableMarkdown """| p-value | Interpretation |
+|---------|----------------|
+| p < 0.01 | Highly significant trend |
+| p < 0.05 | Significant trend |
+| p < 0.10 | Marginally significant |
+| p >= 0.10 | No significant trend |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Significance Levels" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use at least 10 data points for reliable results" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Prefer Sen's slope for environmental time series" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Round results to 2 decimal places" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Report both slope magnitude and p-value" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Trend Analysis Guide" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: trend-analysis
+description: Detect long-term trends in time series data using parametric and non-parametric methods. Use when determining if a variable shows statistically significant increase or decrease over time.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for detecting and reporting trends in time series data" ;
+            oc:hasStep _:ref_1b8b347d27280f96,
+                _:ref_20532a7a855a5339,
+                _:ref_3a2fea77e8e4edf5,
+                _:ref_50cf97186f362c35,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Report slope magnitude and p-value rounded to 2 decimal places" ;
+                    oc:expectedOutcome "Clear, complete trend summary with both statistical and practical significance" ;
+                    oc:stepDependsOn _:ref_1b8b347d27280f96 ;
+                    oc:stepId "report-findings" ] ;
+            oc:workflowId "trend-analysis-main" ;
+            oc:workflowName "Trend Analysis Workflow" ] ;
+    oc:impartsKnowledge oc:kn_3c00827a,
+        oc:kn_7aa733f9,
+        oc:kn_9a397d54,
+        oc:kn_ade53765,
+        oc:kn_c89d947b,
+        oc:kn_fb36241c ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:DataLoadedAsTimeSeries ;
+    oc:resolvesIntent "calculate rate of change in environmental data",
+        "compare parametric and non-parametric trend methods",
+        "detect trend in time series",
+        "determine if variable shows significant increase or decrease over time" ;
+    oc:yieldsState oc:TrendAnalysisComplete .
+
+oc:kn_3c00827a a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When choosing or interpreting linear regression trend analysis" ;
+    oc:directiveContent "Linear regression assumes linearity, normally distributed residuals, and homoscedasticity (constant variance). Violating these assumptions reduces result reliability." ;
+    oc:hasRationale "Parametric methods produce unreliable results when their statistical assumptions are violated" .
+
+oc:kn_7aa733f9 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When presenting trend analysis results" ;
+    oc:directiveContent "Report both slope magnitude (rate of change) and p-value (statistical significance) together; round results to 2 decimal places." ;
+    oc:hasRationale "Slope magnitude indicates practical significance while p-value indicates statistical confidence" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_9a397d54 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When linear regression and Mann-Kendall give contradictory results" ;
+    oc:directiveContent "When parametric and non-parametric methods conflict, trust Sen's slope for environmental data due to its robustness to assumption violations." ;
+    oc:hasRationale "Conflicting results arise from different distributional assumptions; Sen's slope does not require normality" .
+
+oc:kn_ade53765 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Before running any trend analysis" ;
+    oc:directiveContent "Use at least 10 data points for reliable trend analysis results. Fewer than 8-10 years of data may produce NaN p-values." ;
+    oc:hasRationale "Insufficient data leads to unreliable or undefined statistical results" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c89d947b a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a trend detection method" ;
+    oc:directiveContent "Prefer Sen's slope with Mann-Kendall test for environmental time series; use linear regression when data is normally distributed and free of outliers." ;
+    oc:hasRationale "Environmental data often contains outliers and non-normal distributions, making non-parametric methods more robust" .
+
+oc:kn_fb36241c a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting trend results with large datasets" ;
+    oc:directiveContent "Do not rely solely on p-value significance when slope magnitude is near zero with large sample sizes — check practical significance." ;
+    oc:hasRationale "Large samples can make trivially small trends statistically significant without being practically meaningful" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_33cba043 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pymannkendall" .
+
+oc:req_607f9638 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "scipy" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_8f0bae9a a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Time series data with at least 10 data points" .
+
+_:ref_1b8b347d27280f96 a oc:WorkflowStep ;
+    dcterms:description "Assess statistical significance using p-value thresholds and check practical significance of slope magnitude" ;
+    oc:expectedOutcome "Trend classified as significant/marginally significant/no trend with rate of change quantified" ;
+    oc:stepDependsOn _:ref_3a2fea77e8e4edf5 ;
+    oc:stepId "interpret-results" .
+
+_:ref_20532a7a855a5339 a oc:WorkflowStep ;
+    dcterms:description "Choose parametric (linear regression) or non-parametric (Sen's slope) based on data characteristics" ;
+    oc:expectedOutcome "Appropriate method selected given data distribution and outlier presence" ;
+    oc:stepDependsOn _:ref_50cf97186f362c35 ;
+    oc:stepId "select-method" .
+
+_:ref_3a2fea77e8e4edf5 a oc:WorkflowStep ;
+    dcterms:description "Execute trend detection using scipy linregress or pymannkendall" ;
+    oc:expectedOutcome "Slope, p-value, and trend direction computed" ;
+    oc:stepDependsOn _:ref_20532a7a855a5339 ;
+    oc:stepId "run-analysis" .
+
+_:ref_50cf97186f362c35 a oc:WorkflowStep ;
+    dcterms:description "Verify time series data has at least 10 data points and is properly formatted" ;
+    oc:expectedOutcome "Confirmed sufficient data for reliable trend analysis" ;
+    oc:stepId "validate-data" .
+

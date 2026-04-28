@@ -1,0 +1,430 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_hvac_control_safety_interlocks a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "safety-interlocks" ;
+    skos:broader "Safety mechanism" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/hvac-control/safety-interlocks" ;
+    oc:contentHash "a41cbe431d989720aa1012c32df694215185127804bed8d976f0bf2145bd20d7" ;
+    oc:differentia "that prevents equipment damage and ensures safe control system operation through output clamping and limit checking" ;
+    oc:handlesFailure oc:MeasurementOutOfRange,
+        oc:SafetyLimitExceeded,
+        oc:SensorInvalid ;
+    oc:hasAllowedTool "Bash",
+        "Edit",
+        "Read",
+        "Write" ;
+    oc:hasArgumentHint "measurement limits and output bounds configuration" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Implement safety interlocks and protective mechanisms to prevent equipment damage and ensure safe control system operation." ;
+    oc:hasName "safety-interlocks" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: safety-interlocks
+description: Implement safety interlocks and protective mechanisms to prevent equipment damage and ensure safe control system operation.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """class SafeController:
+    def __init__(self, controller, max_limit, min_output=0.0, max_output=100.0):
+        self.controller = controller
+        self.max_limit = max_limit
+        self.min_output = min_output
+        self.max_output = max_output
+        self.safety_events = []
+
+    def compute(self, measurement, dt):
+        \"\"\"Compute safe control output.\"\"\"
+        # Check safety FIRST
+        if measurement >= self.max_limit:
+            self.safety_events.append({
+                "measurement": measurement,
+                "action": "emergency_cutoff"
+            })
+            return self.min_output
+
+        # Normal control
+        output = self.controller.compute(measurement, dt)
+
+        # Clamp to valid range
+        return max(self.min_output, min(self.max_output, output))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 47-71" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Integration with Control Loop" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Safety interlocks are protective mechanisms that prevent equipment damage and ensure safe operation. In control systems, the primary risks are output saturation and exceeding safe operating limits." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def apply_safety_limits(measurement, command, max_limit, min_limit, max_output, min_output):
+    \"\"\"
+    Apply safety checks and return safe command.
+
+    Args:
+        measurement: Current sensor reading
+        command: Requested control output
+        max_limit: Maximum safe measurement value
+        min_limit: Minimum safe measurement value
+        max_output: Maximum output command
+        min_output: Minimum output command
+
+    Returns:
+        tuple: (safe_command, safety_triggered)
+    \"\"\"
+    safety_triggered = False
+
+    # Check for over-limit - HIGHEST PRIORITY
+    if measurement >= max_limit:
+        command = min_output  # Emergency cutoff
+        safety_triggered = True
+
+    # Clamp output to valid range
+    command = max(min_output, min(max_output, command))
+
+    return command, safety_triggered
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 16-43" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always check safety conditions BEFORE applying control outputs:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Implementation Pattern" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Always log safety events for analysis:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """safety_log = {
+    "limit": max_limit,
+    "events": []
+}
+
+if measurement >= max_limit:
+    safety_log["events"].append({
+        "time": current_time,
+        "measurement": measurement,
+        "command_before": command,
+        "command_after": 0.0,
+        "event_type": "limit_exceeded"
+    })
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 98-112" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Logging Safety Events" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_8f13c8d189243b48 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def run_test_with_safety(system, input_value, duration, dt, max_limit):
+    \"\"\"Run open-loop test while monitoring safety limits.\"\"\"
+    data = []
+    current_input = input_value
+
+    for step in range(int(duration / dt)):
+        result = system.step(current_input)
+        data.append(result)
+
+        # Safety check
+        if result["output"] >= max_limit:
+            current_input = 0.0  # Cut input
+
+    return data
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 77-92" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "During calibration/excitation, safety is especially important because there's no feedback control:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Safety During Open-Loop Testing" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def pre_control_checks(measurement, config):
+    \"\"\"Run pre-control safety verification.\"\"\"
+    assert not np.isnan(measurement), "Measurement is NaN"
+    assert config.get("max_limit") is not None, "Safety limit not configured"
+    return True
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 130-136" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before starting any control operation:" ],
+                        _:ref_99504a81d2e00cb2 ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Pre-Control Checklist" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Safety Interlocks for Control Systems" ] ;
+    oc:hasWorkflow _:ref_8f13c8d189243b48,
+        _:ref_99504a81d2e00cb2 ;
+    oc:impartsKnowledge oc:kn_26efff9c,
+        oc:kn_2c8b44ab,
+        oc:kn_33e16923,
+        oc:kn_7035fe9e,
+        oc:kn_88f683f0,
+        oc:kn_8ef29b1e,
+        oc:kn_b1aa870c,
+        oc:kn_e8a3290e,
+        oc:kn_ed30c528,
+        oc:kn_f93d673e,
+        oc:kn_fb2d90cc ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ControllerInitialized,
+        oc:SafetyLimitsConfigured ;
+    oc:resolvesIntent "add safety limits to control loops",
+        "implement safety interlocks in control systems",
+        "monitor and log safety events in control operations",
+        "prevent equipment damage from control output saturation" ;
+    oc:yieldsState oc:SafeOperationVerified,
+        oc:SafetyEventsLogged .
+
+oc:kn_26efff9c a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When safety limits are exceeded during control computation" ;
+    oc:directiveContent "Safety interlocks may override or discard computed control outputs, replacing them with safe values (e.g., min_output or 0.0)." ;
+    oc:hasRationale "Agents must understand that the actual output sent to the system may differ from the controller's computed output when safety activates." .
+
+oc:kn_2c8b44ab a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "During open-loop testing when no feedback control is active" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def run_test_with_safety(system, input_value, duration, dt, max_limit):
+    data = []
+    current_input = input_value
+    for step in range(int(duration / dt)):
+        result = system.step(current_input)
+        data.append(result)
+        if result["output"] >= max_limit:
+            current_input = 0.0
+    return data""" .
+
+oc:kn_33e16923 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying safety limits to any control output" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """def apply_safety_limits(measurement, command, max_limit, min_limit, max_output, min_output):
+    safety_triggered = False
+    if measurement >= max_limit:
+        command = min_output
+        safety_triggered = True
+    command = max(min_output, min(max_output, command))
+    return command, safety_triggered""" .
+
+oc:kn_7035fe9e a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When wrapping an existing controller with safety interlocks" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """class SafeController:
+    def __init__(self, controller, max_limit, min_output=0.0, max_output=100.0):
+        self.controller = controller
+        self.max_limit = max_limit
+        self.min_output = min_output
+        self.max_output = max_output
+        self.safety_events = []
+    def compute(self, measurement, dt):
+        if measurement >= self.max_limit:
+            self.safety_events.append({"measurement": measurement, "action": "emergency_cutoff"})
+            return self.min_output
+        output = self.controller.compute(measurement, dt)
+        return max(self.min_output, min(self.max_output, output))""" .
+
+oc:kn_88f683f0 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After running a control operation with safety interlocks" ;
+    oc:directiveContent "Successful safety interlock operation is indicated by: no measurements exceeding limits during operation, and a complete safety_log recording all events (even if empty)." ;
+    oc:hasRationale "An empty safety event log with correct system behavior confirms interlocks are properly configured and not needed; a non-empty log indicates protective action was taken and should be reviewed." .
+
+oc:kn_8ef29b1e a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a safety condition is triggered or sensor reading is questionable" ;
+    oc:directiveContent "When in doubt, fail safe by reducing output to the minimum safe value." ;
+    oc:hasRationale "Reducing output prevents escalation of unsafe conditions and is the conservative protective action." .
+
+oc:kn_b1aa870c a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "During every control loop iteration" ;
+    oc:directiveContent "1. Check safety conditions (measurement >= max_limit) BEFORE applying control output 2. If limit exceeded, override command to emergency cutoff value 3. Clamp output to valid range [min_output, max_output] 4. Log all safety events with timestamps and values 5. Return safe command and safety status" ;
+    oc:stepOrder 1 .
+
+oc:kn_e8a3290e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When implementing any control loop" ;
+    oc:directiveContent "Never bypass safety code or make it conditionally disabled — safety checks must always execute before control outputs are applied." ;
+    oc:hasRationale "Bypassing safety interlocks can lead to equipment damage, runaway outputs, or unsafe operating conditions." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_ed30c528 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing safety interlocks for control systems" ;
+    oc:directiveContent "Apply defense in depth: use multiple layers of protection including limit checking, output clamping, and emergency cutoffs." ;
+    oc:hasRationale "Single-layer protection can fail; redundant safety mechanisms reduce risk of equipment damage." .
+
+oc:kn_f93d673e a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When logging safety events during control operation" ;
+    oc:directiveContent """safety_log = {
+    "limit": {max_limit},
+    "events": [{
+        "time": {timestamp},
+        "measurement": {value},
+        "command_before": {original_command},
+        "command_after": {safe_command},
+        "event_type": "limit_exceeded"
+    }]
+}""" ;
+    oc:templateVariables "max_limit",
+        "original_command",
+        "safe_command",
+        "timestamp",
+        "value" .
+
+oc:kn_fb2d90cc a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before executing any control loop iteration" ;
+    oc:directiveContent "Before starting any control operation: verify sensor reading is reasonable (not NaN/infinite, within physical bounds), check initial conditions are at expected starting point, and confirm safety limits (max_limit, output clamping) are configured." ;
+    oc:hasRationale "Invalid sensor data or missing safety configuration can cause the interlock to malfunction or pass through dangerous commands." .
+
+_:ref_0ea8c088f6c02548 a oc:WorkflowStep ;
+    dcterms:description "**Check initial conditions**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Measurement should be at expected starting point" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Output should start at safe value" ] ] ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_194c1073e3bb7484 a oc:WorkflowStep ;
+    dcterms:description "**Confirm safety limits are configured**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Output clamping enabled" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Maximum limit threshold set" ] ] ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_2ad91d2fe1471e7d a oc:WorkflowStep ;
+    dcterms:description "**Verify sensor reading is reasonable**" ;
+    oc:blockType "workflow_step" ;
+    oc:hasChild [ a oc:BulletList ;
+            oc:blockType "bullet_list" ;
+            oc:contentOrder 1 ;
+            oc:hasItem [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 1 ;
+                    oc:itemText "Not NaN or infinite" ],
+                [ a oc:BulletItem ;
+                    oc:blockType "bullet_item" ;
+                    oc:itemOrder 2 ;
+                    oc:itemText "Within physical bounds" ] ] ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_317baa5406b0dca4 a oc:WorkflowStep ;
+    dcterms:description "**Defense in depth**: Multiple layers of protection" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_3375a8759c068b39 a oc:WorkflowStep ;
+    dcterms:description "**Log everything**: Record all safety events" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_5c076440a5884447 a oc:WorkflowStep ;
+    dcterms:description "**Fail safe**: When in doubt, reduce output" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_6b2aba3065c7862f a oc:WorkflowStep ;
+    dcterms:description "**Never bypass**: Safety code should not be conditionally disabled" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_f0ded44fa66d2e0a a oc:WorkflowStep ;
+    dcterms:description "**Test safety**: Verify interlocks work before normal operation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_8f13c8d189243b48 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_317baa5406b0dca4,
+        _:ref_3375a8759c068b39,
+        _:ref_5c076440a5884447,
+        _:ref_6b2aba3065c7862f,
+        _:ref_f0ded44fa66d2e0a ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_99504a81d2e00cb2 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_0ea8c088f6c02548,
+        _:ref_194c1073e3bb7484,
+        _:ref_2ad91d2fe1471e7d ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+

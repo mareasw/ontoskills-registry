@@ -1,0 +1,240 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_dynamic_object_aware_egomotion_output_validation a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "output-validation" ;
+    skos:broader "Validation routine" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/dynamic-object-aware-egomotion/output-validation" ;
+    oc:contentHash "87b4fc6c7b6f9f04a4e8eea5db1b12eaba69076fede40adebd9bbc85e95ec6b0" ;
+    oc:dependsOnSkill oc:skill_ontoskills_dyn_object_masks,
+        oc:skill_ontoskills_sampling_and_indexing ;
+    oc:differentia "locally self-checks interval-instruction JSON and CSR mask NPZ outputs for format, range, and structural consistency without ground-truth access" ;
+    oc:hasArgumentHint "paths to video, interval_instructions.json, and masks.npz" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Local self-check of instructions and mask outputs (format/range/consistency) without using GT." ;
+    oc:hasName "output-validation" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: output-validation
+description: "Local self-check of instructions and mask outputs (format/range/consistency) without using GT."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "[ ] CSR structure and `shape` validated." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "[ ] Max frame index within video range and near sampled max." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "[ ] NPZ frame count matches sampling; keys consecutive." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "[ ] JSON keys/values pass format checks." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 4 ;
+            oc:sectionTitle "Self-check list" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:CodeExample ;
+                    oc:blockType "code_block" ;
+                    oc:codeContent """import json, numpy as np, cv2
+VIDEO_PATH = "<path/to/video>"
+INSTRUCTIONS_PATH = "<path/to/interval_instructions.json>"
+MASKS_PATH = "<path/to/masks.npz>"
+cap=cv2.VideoCapture(VIDEO_PATH)
+n=int(cap.get(cv2.CAP_PROP_FRAME_COUNT)); H=int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)); W=int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+j=json.load(open(INSTRUCTIONS_PATH))
+npz=np.load(MASKS_PATH)
+for k,v in j.items():
+    s,e=k.split("->"); assert s.isdigit() and e.isdigit()
+    s=int(s); e=int(e); assert 0<=s<=e<n
+    for lbl in v: assert isinstance(lbl,str)
+frames=0
+while f"f_{frames}_data" in npz: frames+=1
+assert frames>0
+assert npz["shape"][0]==H and npz["shape"][1]==W
+indptr=npz["f_0_indptr"]; indices=npz["f_0_indices"]
+assert indptr.shape[0]==H+1 and indptr[-1]==indices.size
+assert indices.size==0 or (indices.min()>=0 and indices.max()<W)
+""" ;
+                    oc:codeLanguage "python" ;
+                    oc:contentOrder 1 ;
+                    oc:sourceLocation "lines 17-37" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 3 ;
+            oc:sectionTitle "Reference snippet" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "**Coverage**: max frame index ≤ video total-1; consistent with your sampling policy." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "**Frame count**: NPZ `f_{i}_*` count equals sampled frame count; no gaps or missing components." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 5 ;
+                            oc:itemText "**Value validity**: JSON values are non-empty string lists; labels in the allowed set." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "**Key format**: every key is `\"{start}->{end}\"`, integers only, `start<=end`." ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "**CSR integrity**: each frame has `data/indices/indptr`; `len(indptr)==H+1`; `indptr[-1]==indices.size`; indices within `[0,W)`." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 2 ;
+            oc:sectionTitle "Checks" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 1 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "After generating your outputs (interval instructions, masks, etc.), before submission/hand-off." ] ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "When to use" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Sequential validation of interval instructions and mask outputs before submission." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Load interval_instructions.json; verify every key is '{start}->{end}' with integers, start<=end<n; values are non-empty string lists." ;
+                    oc:expectedOutcome "All JSON keys and values pass format and range checks." ;
+                    oc:stepDependsOn _:ref_9a4646422728694b ;
+                    oc:stepId "validate-json-keys" ],
+                [ a oc:WorkflowStep ;
+                    dcterms:description "For each frame, verify indptr has H+1 entries, indptr[-1]==indices.size, and indices within [0,W)." ;
+                    oc:expectedOutcome "All CSR arrays are structurally valid." ;
+                    oc:stepDependsOn _:ref_ad48178c67e9b14c ;
+                    oc:stepId "validate-csr-structure" ],
+                _:ref_9a4646422728694b,
+                _:ref_ad48178c67e9b14c,
+                _:ref_cea4b2bbb536b472 ;
+            oc:workflowId "output-validation-flow" ;
+            oc:workflowName "Output Validation Workflow" ] ;
+    oc:impartsKnowledge oc:kn_0f867811,
+        oc:kn_a1d3d782,
+        oc:kn_a9d951dc,
+        oc:kn_b5908865,
+        oc:kn_b7656988,
+        oc:kn_d2905bd9,
+        oc:kn_dccd74be,
+        oc:kn_e4c25dcd,
+        oc:kn_fd042193 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "self-check output consistency",
+        "validate NPZ CSR structure",
+        "validate mask outputs",
+        "verify instruction format" ;
+    oc:yieldsState oc:OutputValidated .
+
+oc:kn_0f867811 a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After generating interval instructions and mask files" ;
+    oc:directiveContent "Run all four checks (JSON key/value format, frame coverage, NPZ frame count, CSR integrity) after generating outputs and before submission." ;
+    oc:hasRationale "Catching format and structural errors locally prevents wasted compute on invalid downstream pipelines." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_a1d3d782 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating interval_instructions.json" ;
+    oc:directiveContent "Every JSON key must follow the format '{start}->{end}' with integer values where start<=end and end<video frame count." ;
+    oc:hasRationale "Malformed keys break downstream interval-to-frame mapping and can cause index-out-of-range errors." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a9d951dc a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "Validation is read-only and side-effect-free; it can be re-run any number of times without modifying inputs." ;
+    oc:hasRationale "Safe to re-validate iteratively while debugging mask generation issues." .
+
+oc:kn_b5908865 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:directiveContent "1. Load video metadata (n, H, W). 2. Load interval_instructions.json and validate key format (start->end, ints, start<=end<n) and value types (non-empty string lists). 3. Load masks.npz and count consecutive f_{i}_* frames; assert count>0. 4. Validate NPZ shape matches video H×W. 5. Validate CSR structure for each frame (indptr length, indptr[-1]==indices.size, indices range [0,W))." ;
+    oc:stepOrder 1 .
+
+oc:kn_b7656988 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating masks.npz CSR structure" ;
+    oc:directiveContent "Each NPZ frame must have exactly three CSR arrays (data, indices, indptr) where len(indptr)==H+1, indptr[-1]==indices.size, and all indices fall within [0,W)." ;
+    oc:hasRationale "Broken CSR invariants cause segfaults or incorrect mask reconstruction during downstream processing." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d2905bd9 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing local output validation on interval instructions and mask NPZ files" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """for k,v in j.items():
+    s,e=k.split("->"); assert s.isdigit() and e.isdigit()
+    s=int(s); e=int(e); assert 0<=s<=e<n
+    for lbl in v: assert isinstance(lbl,str)
+frames=0
+while f"f_{frames}_data" in npz: frames+=1
+assert frames>0
+assert npz["shape"][0]==H and npz["shape"][1]==W
+indptr=npz["f_0_indptr"]; indices=npz["f_0_indices"]
+assert indptr.shape[0]==H+1 and indptr[-1]==indices.size
+assert indices.size==0 or (indices.min()>=0 and indices.max()<W)""" .
+
+oc:kn_dccd74be a oc:AssumptionBoundary,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting validation results" ;
+    oc:directiveContent "This validation does NOT compare outputs against ground truth; it only checks format, range, and internal consistency." ;
+    oc:hasRationale "Passing validation does not guarantee correctness of the masks—only structural validity." .
+
+oc:kn_e4c25dcd a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running validation checks" ;
+    oc:directiveContent "Verify that video file, interval_instructions.json, and masks.npz all exist and are readable before starting validation." ;
+    oc:hasRationale "Missing files cause immediate failure with unhelpful error messages." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_fd042193 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When validating mask coverage completeness" ;
+    oc:directiveContent "The NPZ frame count (f_{i}_* entries) must equal the sampled frame count with no gaps in the consecutive sequence, and the 'shape' array must match video H and W." ;
+    oc:hasRationale "Missing or extra frames indicate a sampling mismatch that will corrupt mask-to-frame alignment." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_ad48178c67e9b14c a oc:WorkflowStep ;
+    dcterms:description "Assert npz['shape'][0]==H and npz['shape'][1]==W." ;
+    oc:expectedOutcome "Mask dimensions match video dimensions." ;
+    oc:stepDependsOn _:ref_9a4646422728694b,
+        _:ref_cea4b2bbb536b472 ;
+    oc:stepId "validate-npz-shape" .
+
+_:ref_cea4b2bbb536b472 a oc:WorkflowStep ;
+    dcterms:description "Load masks.npz; count consecutive f_{i}_* entries; assert count>0 and matches sampled frame count." ;
+    oc:expectedOutcome "Frame count is positive and consistent with sampling policy." ;
+    oc:stepDependsOn _:ref_9a4646422728694b ;
+    oc:stepId "validate-npz-frame-count" .
+
+_:ref_9a4646422728694b a oc:WorkflowStep ;
+    dcterms:description "Open video with cv2.VideoCapture and extract frame count (n), height (H), and width (W)." ;
+    oc:expectedOutcome "n, H, W integers available for downstream checks." ;
+    oc:stepId "load-video-meta" .
+

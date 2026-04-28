@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/speaker-diarization-subtitles",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "automatic-speech-recognition/ontoskill.ttl",
+    "multimodal-fusion/ontoskill.ttl",
+    "speaker-clustering/ontoskill.ttl",
+    "voice-activity-detection/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "automatic-speech-recognition/intents.json",
+    "multimodal-fusion/intents.json",
+    "speaker-clustering/intents.json",
+    "voice-activity-detection/intents.json"
+  ],
+  "skills": []
+}

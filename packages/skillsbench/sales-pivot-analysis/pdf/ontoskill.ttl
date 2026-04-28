@@ -1,0 +1,426 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_sales_pivot_analysis_pdf a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "pdf" ;
+    skos:broader "Data extraction tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/sales-pivot-analysis/pdf" ;
+    oc:contentHash "c1c599326de297b6fdb561e9b2c157922a4e0138932b89136adac22cbd6045e1" ;
+    oc:differentia "that uses pdfplumber to reliably extract tables and text from PDF documents, replacing the inadequate Read tool" ;
+    oc:hasAllowedTool "pandas",
+        "pdfplumber",
+        "python" ;
+    oc:hasArgumentHint "file-path to PDF" ;
+    oc:hasCategory "document" ;
+    oc:hasDescription "ALWAYS use this skill instead of the Read tool for PDF files. The Read tool cannot extract PDF tables properly. Use this skill when: (1) Reading ANY PDF file, (2) Extracting tables from PDFs, (3) Converting PDF tables to pandas DataFrames, (4) Processing multi-page PDFs" ;
+    oc:hasName "pdf" ;
+    oc:hasRequirement oc:req_0d42ebc7,
+        oc:req_746aacc9,
+        oc:req_f08bdea9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: pdf
+description: "ALWAYS use this skill instead of the Read tool for PDF files. The Read tool cannot extract PDF tables properly. Use this skill when: (1) Reading ANY PDF file, (2) Extracting tables from PDFs, (3) Converting PDF tables to pandas DataFrames, (4) Processing multi-page PDFs"
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "pdfplumber is the recommended library for extracting tables from PDFs." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+import pandas as pd
+
+with pdfplumber.open("document.pdf") as pdf:
+    page = pdf.pages[0]  # First page
+    tables = page.extract_tables()
+
+    if tables:
+        # First row is usually headers
+        table = tables[0]
+        df = pd.DataFrame(table[1:], columns=table[0])
+        print(df)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 40-53" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Convert to pandas DataFrame" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+import pandas as pd
+
+all_tables = []
+
+with pdfplumber.open("document.pdf") as pdf:
+    for page in pdf.pages:
+        tables = page.extract_tables()
+        for table in tables:
+            if table and len(table) > 1:  # Has data
+                df = pd.DataFrame(table[1:], columns=table[0])
+                all_tables.append(df)
+
+# Combine if same structure
+if all_tables:
+    combined = pd.concat(all_tables, ignore_index=True)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 57-74" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Extract All Tables from Multi-Page PDF" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+
+with pdfplumber.open("document.pdf") as pdf:
+    for page in pdf.pages:
+        tables = page.extract_tables()
+        for table in tables:
+            print(table)  # List of lists
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 28-36" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Basic Table Extraction" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Table Extraction with pdfplumber" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Merged cells**: Tables with merged cells may extract incorrectly" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Scanned PDFs**: Use OCR (pytesseract) for image-based PDFs" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**No tables found**: Check if content is actually a table or styled text" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Empty table**: Try `page.extract_tables(table_settings={...})` with custom settings" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Extract text and tables from PDF documents using Python libraries." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 5 ;
+                            oc:tableCaption "## Quick Reference" ;
+                            oc:tableMarkdown """| Task | Code |
+|------|------|
+| Open PDF | `pdfplumber.open("file.pdf")` |
+| Get pages | `pdf.pages` |
+| Extract tables | `page.extract_tables()` |
+| Extract text | `page.extract_text()` |
+| Table to DataFrame | `pd.DataFrame(table[1:], columns=table[0])` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Quick Reference" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "If you need to extract data from a PDF, write Python code using pdfplumber. This is the only reliable way to get complete table data from all pages." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "**The Read tool cannot properly extract tabular data from PDFs.** It will only show you a limited preview of the first page's text content, missing most of the data." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 3 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**DO**: Use `pdfplumber` as shown in this skill" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**DO NOT**: Use the Read tool to view PDF contents" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "For PDF files, especially multi-page PDFs with tables:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "IMPORTANT: Do NOT Use the Read Tool for PDFs" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+
+with pdfplumber.open("document.pdf") as pdf:
+    text = ""
+    for page in pdf.pages:
+        text += page.extract_text() + "\\n"
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 80-87" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Full Page Text" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """with pdfplumber.open("document.pdf") as pdf:
+    page = pdf.pages[0]
+    text = page.extract_text(layout=True)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 91-95" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Text with Layout Preserved" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Text Extraction" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# If table has no header row
+table = pdf.pages[0].extract_tables()[0]
+df = pd.DataFrame(table)
+df.columns = ['Col1', 'Col2', 'Col3', 'Col4']  # Assign manually
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 185-190" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Handle Missing Headers" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Important:** Always iterate over ALL pages (`for page in pdf.pages`) - tables often span multiple pages, and continuation pages may not have headers." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+import pandas as pd
+
+category_map = {}      # CategoryID -> CategoryName
+product_map = {}       # ProductID -> (ProductName, CategoryID)
+
+with pdfplumber.open("catalog.pdf") as pdf:
+    for page_num, page in enumerate(pdf.pages):
+        tables = page.extract_tables()
+
+        for table in tables:
+            if not table or len(table) < 2:
+                continue
+
+            # Check first row to identify table type
+            header = [str(cell).strip() if cell else '' for cell in table[0]]
+
+            # Determine if first row is header or data (continuation page)
+            if 'CategoryID' in header and 'CategoryName' in header:
+                # Categories table with header
+                for row in table[1:]:
+                    if row and len(row) >= 2 and row[0]:
+                        cat_id = int(row[0].strip())
+                        cat_name = row[1].strip()
+                        category_map[cat_id] = cat_name
+
+            elif 'ProductID' in header and 'ProductName' in header:
+                # Products table with header
+                for row in table[1:]:
+                    if row and len(row) >= 3 and row[0]:
+                        try:
+                            prod_id = int(row[0].strip())
+                            prod_name = row[1].strip()
+                            cat_id = int(row[2].strip())
+                            product_map[prod_id] = (prod_name, cat_id)
+                        except (ValueError, AttributeError):
+                            continue
+            else:
+                # Continuation page (no header) - check if it's product data
+                for row in table:
+                    if row and len(row) >= 3 and row[0]:
+                        try:
+                            prod_id = int(row[0].strip())
+                            prod_name = row[1].strip()
+                            cat_id = int(row[2].strip())
+                            product_map[prod_id] = (prod_name, cat_id)
+                        except (ValueError, AttributeError):
+                            continue
+
+# Build final mapping: ProductID -> CategoryName
+product_to_category_name = {
+    pid: category_map[cat_id]
+    for pid, (name, cat_id) in product_map.items()
+}
+# {1: 'Beverages', 2: 'Beverages', 3: 'Condiments', ...}
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 103-159" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "When a PDF contains multiple related tables (possibly spanning multiple pages), extract from ALL pages and build lookup dictionaries:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Extract Multiple Tables and Create Mappings" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pdfplumber
+import pandas as pd
+
+with pdfplumber.open("document.pdf") as pdf:
+    table = pdf.pages[0].extract_tables()[0]
+    df = pd.DataFrame(table[1:], columns=table[0])
+
+    # Clean whitespace
+    df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+
+    # Remove empty rows
+    df = df.dropna(how='all')
+
+    # Rename columns if needed
+    df.columns = df.columns.str.strip()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 165-181" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Clean Extracted Table Data" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Common Patterns" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "PDF Processing Guide" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for extracting tabular data from a PDF file using pdfplumber" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Clean data: strip whitespace, drop empty rows, normalize column names" ;
+                    oc:expectedOutcome "Cleaned, analysis-ready DataFrame" ;
+                    oc:stepDependsOn _:ref_90681f4df722ffb6 ;
+                    oc:stepId "step-4" ],
+                _:ref_5bb853614a87c9ba,
+                _:ref_90681f4df722ffb6,
+                _:ref_d4b8c1732a9c13b9 ;
+            oc:workflowId "pdf-extract-tables" ;
+            oc:workflowName "Extract Tables from PDF" ] ;
+    oc:impartsKnowledge oc:kn_214297ba,
+        oc:kn_98a61888,
+        oc:kn_a3d7647e,
+        oc:kn_bc1291a4,
+        oc:kn_f7424368 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "convert PDF tables to pandas DataFrames",
+        "extract tables from PDF",
+        "extract text from PDF",
+        "process multi-page PDFs",
+        "read PDF files" ;
+    oc:yieldsState oc:DocumentParsed,
+        oc:TablesExtracted .
+
+oc:kn_214297ba a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When extraction returns empty or garbled results" ;
+    oc:directiveContent "Scanned/image-based PDFs cannot be processed with pdfplumber alone — use OCR (pytesseract) instead. Merged cells may extract incorrectly." ;
+    oc:hasRationale "pdfplumber works on vector/text PDFs only; image-based PDFs require OCR preprocessing." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_98a61888 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "Always — pdfplumber.open reads files without writing" ;
+    oc:directiveContent "PDF processing with pdfplumber is read-only — no modifications are made to the source PDF file." ;
+    oc:hasRationale "Safe for sensitive documents; original files are never altered." ;
+    oc:severityLevel "LOW" .
+
+oc:kn_a3d7647e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Whenever a PDF file needs to be read or analyzed" ;
+    oc:directiveContent "NEVER use the Read tool to extract data from PDF files — it cannot extract tabular data and only shows a limited preview of the first page's text." ;
+    oc:hasRationale "The Read tool fundamentally cannot parse PDF table structures, leading to incomplete or missing data extraction." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bc1291a4 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting tables from multi-page PDFs" ;
+    oc:directiveContent "When processing multi-page PDFs with tables, always iterate ALL pages — tables often span multiple pages and continuation pages may not have headers." ;
+    oc:hasRationale "Missing continuation pages leads to incomplete data sets." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f7424368 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When extracting data from any PDF file" ;
+    oc:directiveContent "Always use pdfplumber with Python code to extract tables and text from PDFs. Always iterate over ALL pages with `for page in pdf.pages`." ;
+    oc:hasRationale "pdfplumber is the only reliable way to get complete table data from all pages of a PDF." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_0d42ebc7 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "Read tool cannot extract PDF tables properly" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional true ;
+    oc:requirementValue "pandas" .
+
+oc:req_f08bdea9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pdfplumber" .
+
+_:ref_5bb853614a87c9ba a oc:WorkflowStep ;
+    dcterms:description "Open PDF with pdfplumber.open() and iterate over all pages extracting tables" ;
+    oc:expectedOutcome "Raw table data extracted from all pages" ;
+    oc:stepDependsOn _:ref_d4b8c1732a9c13b9 ;
+    oc:stepId "step-2" .
+
+_:ref_90681f4df722ffb6 a oc:WorkflowStep ;
+    dcterms:description "Convert extracted tables to pandas DataFrames, handling headers and continuation pages" ;
+    oc:expectedOutcome "Clean DataFrames ready for analysis" ;
+    oc:stepDependsOn _:ref_5bb853614a87c9ba ;
+    oc:stepId "step-3" .
+
+_:ref_d4b8c1732a9c13b9 a oc:WorkflowStep ;
+    dcterms:description "Identify PDF file path and determine if tables or text extraction is needed" ;
+    oc:expectedOutcome "File path confirmed, extraction goal clear" ;
+    oc:stepId "step-1" .
+

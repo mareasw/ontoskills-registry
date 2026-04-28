@@ -1,0 +1,934 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_jpg_ocr_stat_image_ocr a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "image-ocr" ;
+    skos:broader "OCR text extraction tool" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/jpg-ocr-stat/image-ocr" ;
+    oc:contentHash "c3e31689ef72c2f549a502c064beca017e14ae156270e999259b2a779f604d76" ;
+    oc:differentia "that uses Tesseract OCR via Python's pytesseract library to extract and structure text content from image files with confidence scoring and preprocessing support" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "image-path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Extract text content from images using Tesseract OCR via Python" ;
+    oc:hasName "image-ocr" ;
+    oc:hasRequirement oc:req_1f415a6c,
+        oc:req_323db01a,
+        oc:req_3b2e1010,
+        oc:req_7106622d ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Verify image is not corrupted" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Try different PSM modes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Check if image contains actual text" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Issue**: Tesseract not found" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Issue**: Poor OCR quality" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Verify Tesseract is installed
+try:
+    pytesseract.get_tesseract_version()
+except pytesseract.TesseractNotFoundError:
+    print("Tesseract is not installed or not in PATH")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 347-353" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Ensure image resolution is sufficient (300+ DPI)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Preprocess image (grayscale, contrast, sharpen)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Use appropriate PSM mode for the document type" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Issue**: Empty or garbage output" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 20 ;
+                            oc:sectionTitle "Common Issues and Solutions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 19 ;
+                    oc:sectionTitle "Error Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Tesseract works best with printed text; handwriting recognition is limited" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Accuracy decreases with decorative fonts, artistic text, or extreme stylization" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Complex multi-column layouts may require custom PSM configuration" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Severe image degradation (blur, noise, low resolution) reduces accuracy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Mathematical equations and special notation may not extract accurately" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Redacted or watermarked text cannot be recovered" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 22 ;
+                    oc:sectionTitle "Limitations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import pytesseract
+from PIL import Image
+import json
+import os
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 22-27" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The following Python libraries are required:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Required Libraries" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For better OCR accuracy, preprocess images:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from PIL import Image, ImageFilter, ImageOps
+
+def preprocess_image(image_path):
+    \"\"\"Preprocess image for better OCR results.\"\"\"
+    img = Image.open(image_path)
+
+    # Convert to grayscale
+    img = img.convert('L')
+
+    # Increase contrast
+    img = ImageOps.autocontrast(img)
+
+    # Apply slight sharpening
+    img = img.filter(ImageFilter.SHARPEN)
+
+    return img
+
+# Use preprocessed image for OCR
+img = preprocess_image("document.jpg")
+text = pytesseract.image_to_string(img)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 264-285" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_5a816d0156047a4e,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For difficult images (low contrast, faded text, dark backgrounds), try multiple preprocessing approaches:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "Advanced Preprocessing Strategies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "Image Preprocessing" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Text language**: Specify if non-English to improve accuracy" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**File formats**: JPG, JPEG, PNG, WEBP" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Image quality**: Minimum 300 DPI recommended for printed text; clear and legible text" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**File size**: Under 5MB per image (resize if necessary)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Input Requirements" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_0e5b0ef9ac21b145,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For challenging images, a single OCR pass may miss text. Use multiple passes with different configurations:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def multi_pass_ocr(image_path):
+    \"\"\"Run OCR with multiple strategies and combine results.\"\"\"
+    img = Image.open(image_path)
+    gray = ImageOps.grayscale(img)
+
+    # Generate preprocessing variants
+    variants = [
+        ImageOps.autocontrast(gray),
+        ImageOps.invert(ImageOps.autocontrast(gray)),
+        gray.filter(ImageFilter.SHARPEN),
+    ]
+
+    # PSM modes to try
+    psm_modes = ['--psm 6', '--psm 4', '--psm 11']
+
+    all_text = []
+    for variant in variants:
+        for psm in psm_modes:
+            try:
+                text = pytesseract.image_to_string(variant, config=psm)
+                if text.strip():
+                    all_text.append(text)
+            except Exception:
+                pass
+
+    # Combine all extracted text
+    return "\\n".join(all_text)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 308-336" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "This approach improves extraction for receipts, faded documents, and images with varying quality." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 18 ;
+                    oc:sectionTitle "Multi-Pass OCR Strategy" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "[ ] Text preserves logical reading order" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "[ ] Warnings array includes all detected issues" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "[ ] Confidence level reflects actual OCR quality" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "[ ] Special characters are properly escaped in JSON" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "[ ] All required fields are present (`success`, `filename`, `extracted_text`, `confidence`, `metadata`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "[ ] Output is valid JSON (use `json.loads()` to validate)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Before returning results, verify:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 21 ;
+                    oc:sectionTitle "Quality Self-Check" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytesseract
+from PIL import Image
+
+def extract_text_from_image(image_path):
+    \"\"\"Extract text from a single image using Tesseract OCR.\"\"\"
+    img = Image.open(image_path)
+    text = pytesseract.image_to_string(img)
+    return text.strip()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 75-84" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Basic OCR Extraction" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytesseract
+from PIL import Image
+import json
+import os
+from pathlib import Path
+
+def process_image_directory(directory_path, output_file):
+    \"\"\"Process all images in a directory and save results.\"\"\"
+    image_extensions = {'.jpg', '.jpeg', '.png', '.webp'}
+    results = []
+
+    for file_path in sorted(Path(directory_path).iterdir()):
+        if file_path.suffix.lower() in image_extensions:
+            result = ocr_to_json(str(file_path))
+            results.append(result)
+            print(f"Processed: {file_path.name}")
+
+    # Save results
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+
+    return results
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 194-217" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Batch Processing Multiple Images" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytesseract
+from PIL import Image
+import json
+import os
+
+def ocr_to_json(image_path):
+    \"\"\"Perform OCR and return results as JSON.\"\"\"
+    filename = os.path.basename(image_path)
+    warnings = []
+
+    try:
+        img = Image.open(image_path)
+
+        # Get detailed OCR data
+        data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+
+        # Extract text preserving structure
+        text = pytesseract.image_to_string(img)
+
+        # Calculate confidence
+        confidences = [c for c in data['conf'] if c > 0]
+        avg_conf = sum(confidences) / len(confidences) if confidences else 0
+
+        # Determine confidence level
+        if avg_conf >= 80:
+            confidence = "high"
+        elif avg_conf >= 50:
+            confidence = "medium"
+        else:
+            confidence = "low"
+            warnings.append(f"Low OCR confidence: {avg_conf:.1f}%")
+
+        # Count text regions (blocks)
+        block_nums = set(data['block_num'])
+        text_regions = len([b for b in block_nums if b > 0])
+
+        result = {
+            "success": True,
+            "filename": filename,
+            "extracted_text": text.strip(),
+            "confidence": confidence,
+            "metadata": {
+                "language_detected": "en",
+                "text_regions": text_regions,
+                "has_tables": False,
+                "has_handwriting": False
+            },
+            "warnings": warnings
+        }
+
+    except Exception as e:
+        result = {
+            "success": False,
+            "filename": filename,
+            "extracted_text": "",
+            "confidence": "low",
+            "metadata": {
+                "language_detected": "unknown",
+                "text_regions": 0,
+                "has_tables": False,
+                "has_handwriting": False
+            },
+            "warnings": [f"OCR failed: {str(e)}"]
+        }
+
+    return result
+
+# Usage
+result = ocr_to_json("document.jpg")
+print(json.dumps(result, indent=2))
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 119-190" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Full OCR with JSON Output" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pytesseract
+from PIL import Image
+
+def extract_with_confidence(image_path):
+    \"\"\"Extract text with per-word confidence scores.\"\"\"
+    img = Image.open(image_path)
+
+    # Get detailed OCR data including confidence
+    data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+
+    words = []
+    confidences = []
+
+    for i, word in enumerate(data['text']):
+        if word.strip():  # Skip empty strings
+            words.append(word)
+            confidences.append(data['conf'][i])
+
+    # Calculate average confidence
+    avg_confidence = sum(c for c in confidences if c > 0) / len([c for c in confidences if c > 0]) if confidences else 0
+
+    return {
+        'text': ' '.join(words),
+        'average_confidence': avg_confidence,
+        'word_count': len(words)
+    }
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 88-115" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "OCR with Confidence Data" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Code Examples" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**1.0.0** (2026-01-13): Initial release with Tesseract/pytesseract OCR" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 23 ;
+                    oc:sectionTitle "Version History" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "This skill enables accurate text extraction from image files (JPG, PNG, etc.) using Tesseract OCR via the `pytesseract` Python library. It is suitable for scanned documents, screenshots, photos of text, receipts, forms, and other visual content containing text." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Purpose" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Specify language (default is English)
+text = pytesseract.image_to_string(img, lang='eng')
+
+# Multiple languages
+text = pytesseract.image_to_string(img, lang='eng+fra+deu')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 224-230" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "Language Selection" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`13`: Raw line" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`6`: Uniform block of text" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`0`: Orientation and script detection (OSD) only" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`4`: Single column of text of variable sizes" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`3`: Fully automatic page segmentation (default)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`7`: Single text line" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`11`: Sparse text" ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# PSM 3: Fully automatic page segmentation (default)
+text = pytesseract.image_to_string(img, config='--psm 3')
+
+# PSM 4: Assume single column of text
+text = pytesseract.image_to_string(img, config='--psm 4')
+
+# PSM 6: Assume uniform block of text
+text = pytesseract.image_to_string(img, config='--psm 6')
+
+# PSM 11: Sparse text - find as much text as possible
+text = pytesseract.image_to_string(img, config='--psm 11')
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 236-248" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Common PSM values:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Use `--psm` to control how Tesseract segments the image:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "Page Segmentation Modes (PSM)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Tesseract Configuration Options" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Converting visual documents to machine-readable text" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Extracting text from scanned documents or photos" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Extracting structured data from forms, receipts, or tables in images" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Reading text from screenshots or image captures" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Processing batch image files that contain textual information" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """{
+  "success": true,
+  "filename": "example.jpg",
+  "extracted_text": "Full raw text extracted from the image...",
+  "confidence": "high|medium|low",
+  "metadata": {
+    "language_detected": "en",
+    "text_regions": 3,
+    "has_tables": false,
+    "has_handwriting": false
+  },
+  "warnings": [
+    "Text partially obscured in bottom-right corner",
+    "Low contrast detected in header section"
+  ]
+}
+""" ;
+                            oc:codeLanguage "json" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 38-55" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "All extracted content must be returned as valid JSON conforming to this schema:" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`success`: Boolean indicating whether text extraction completed" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "`metadata.language_detected`: ISO 639-1 language code" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`filename`: Original image filename" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 9 ;
+                                            oc:itemText "`warnings`: Array of quality issues or potential errors" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "`extracted_text`: Complete text content in reading order (top-to-bottom, left-to-right)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "`metadata.has_tables`: Whether tabular data structures were detected" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "`metadata.text_regions`: Number of distinct text blocks identified" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 8 ;
+                                            oc:itemText "`metadata.has_handwriting`: Whether handwritten text was detected" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "`confidence`: Overall OCR confidence level based on image quality and text clarity" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Field Descriptions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Output Schema" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Image OCR Skill" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: image-ocr
+description: Extract text content from images using Tesseract OCR via Python
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_0e5b0ef9ac21b145,
+        _:ref_5a816d0156047a4e,
+        [ a oc:Workflow ;
+            dcterms:description "Process all images in a directory and output combined results" ;
+            oc:hasStep _:ref_162e797ca4727bb6,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Write combined results to output JSON file" ;
+                    oc:expectedOutcome "JSON file with array of OCR results written to disk" ;
+                    oc:stepDependsOn _:ref_162e797ca4727bb6 ;
+                    oc:stepId "save-results" ],
+                _:ref_339159e7975da885 ;
+            oc:workflowId "image-ocr-batch" ;
+            oc:workflowName "Batch Image OCR Processing" ],
+        [ a oc:Workflow ;
+            dcterms:description "Extract text from a single image with confidence scoring and structured JSON output" ;
+            oc:hasStep _:ref_0af37065ab87a9d5,
+                _:ref_0f58b3c5358f8087,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Build JSON result object with all required fields (success, filename, extracted_text, confidence, metadata, warnings) and validate" ;
+                    oc:expectedOutcome "Valid JSON object conforming to output schema" ;
+                    oc:stepDependsOn _:ref_0af37065ab87a9d5 ;
+                    oc:stepId "assemble-output" ],
+                _:ref_ad9d63334d6cd720,
+                _:ref_d915ccfcd56bb2fe ;
+            oc:workflowId "image-ocr-basic" ;
+            oc:workflowName "Basic Image OCR Extraction" ] ;
+    oc:impartsKnowledge oc:kn_0ce00abe,
+        oc:kn_294b567d,
+        oc:kn_4772c078,
+        oc:kn_4cb6a974,
+        oc:kn_4f5d0ebd,
+        oc:kn_856c38f5,
+        oc:kn_8951ce0e,
+        oc:kn_89bb878d,
+        oc:kn_99ef2e56,
+        oc:kn_9a43e568,
+        oc:kn_c35fd6a8,
+        oc:kn_dede1aa6,
+        oc:kn_f43750a6 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:FileExists,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "OCR scanned documents",
+        "batch process images for text extraction",
+        "convert visual documents to machine-readable text",
+        "extract text from images",
+        "extract text from screenshots" ;
+    oc:yieldsState oc:TextExtracted .
+
+oc:kn_0ce00abe a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before using this skill" ;
+    oc:directiveContent "Tesseract OCR must be installed and accessible in PATH. pytesseract and Pillow Python packages must be available." .
+
+oc:kn_294b567d a oc:KnowledgeNode,
+        oc:PostFlightValidation ;
+    oc:appliesToContext "After every OCR extraction before returning results" ;
+    oc:directiveContent "Validate output JSON with json.loads(), confirm all required fields are present, text preserves reading order, confidence level reflects quality, and warnings array includes detected issues." ;
+    oc:hasRationale "Ensures output integrity and provides consumers with reliable, complete results" .
+
+oc:kn_4772c078 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing any image for OCR extraction" ;
+    oc:directiveContent "Always preprocess images before OCR: convert to grayscale, apply autocontrast, and sharpen. These three steps significantly improve character recognition accuracy." ;
+    oc:hasRationale "Preprocessing reduces noise and enhances text edges, which are the primary factors in OCR accuracy" .
+
+oc:kn_4cb6a974 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running any OCR operation" ;
+    oc:directiveContent "Verify Tesseract is installed and accessible by calling pytesseract.get_tesseract_version() before attempting OCR." ;
+    oc:hasRationale "pytesseract will raise TesseractNotFoundError at runtime if Tesseract binary is not in PATH" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_4f5d0ebd a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Basic single-image text extraction" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """import pytesseract
+from PIL import Image
+
+def extract_text_from_image(image_path):
+    img = Image.open(image_path)
+    text = pytesseract.image_to_string(img)
+    return text.strip()""" .
+
+oc:kn_856c38f5 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calculating OCR confidence scores" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+confidences = [c for c in data['conf'] if c > 0]
+avg_conf = sum(confidences) / len(confidences) if confidences else 0
+confidence = "high" if avg_conf >= 80 else "medium" if avg_conf >= 50 else "low\"""" .
+
+oc:kn_8951ce0e a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When OCR confidence is low or image quality is suboptimal" ;
+    oc:directiveContent "Never run a single OCR pass on challenging images without preprocessing or multi-pass strategies." ;
+    oc:hasRationale "Single-pass OCR on difficult images (low contrast, faded text, complex layouts) misses significant text" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_89bb878d a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When initial OCR results are poor or text extraction is incomplete" ;
+    oc:directiveContent "For difficult images, use multi-pass OCR: try multiple PSM modes (--psm 6 for blocks, --psm 4 for columns, --psm 11 for sparse text) combined with preprocessing variants (grayscale+autocontrast, inverted, sharpened) and aggregate results." ;
+    oc:hasRationale "Different PSM modes and preprocessing strategies capture different text regions; combining them maximizes extraction coverage" .
+
+oc:kn_99ef2e56 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When performing OCR on any image" ;
+    oc:directiveContent "1. Verify Tesseract is installed 2. Open image and preprocess (grayscale, autocontrast, sharpen) 3. Run pytesseract.image_to_data() for confidence data 4. Run pytesseract.image_to_string() for text 5. Calculate confidence level (>=80 high, >=50 medium, else low) 6. Assemble JSON output with metadata and warnings 7. Validate JSON output" ;
+    oc:stepOrder 1 .
+
+oc:kn_9a43e568 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preprocessing images for better OCR accuracy" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from PIL import Image, ImageFilter, ImageOps
+img = Image.open(image_path)
+img = img.convert('L')  # grayscale
+img = ImageOps.autocontrast(img)
+img = img.filter(ImageFilter.SHARPEN)
+text = pytesseract.image_to_string(img)""" .
+
+oc:kn_c35fd6a8 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before processing any image" ;
+    oc:directiveContent "Accepted image formats are JPG, JPEG, PNG, and WEBP only. Images should be under 5MB and at minimum 300 DPI for printed text." ;
+    oc:hasRationale "Non-supported formats will cause errors; low-resolution images produce poor OCR results" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_dede1aa6 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When returning any OCR result" ;
+    oc:directiveContent "All OCR results must conform to the JSON schema with fields: success (bool), filename (str), extracted_text (str), confidence (high|medium|low), metadata (object with language_detected, text_regions, has_tables, has_handwriting), warnings (array of strings)." ;
+    oc:hasRationale "Consistent output schema enables downstream processing and error handling" ;
+    oc:severityLevel "HIGH" ;
+    oc:templateVariables "confidence",
+        "extracted_text",
+        "filename",
+        "metadata",
+        "success",
+        "warnings" .
+
+oc:kn_f43750a6 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When processing images with these characteristics" ;
+    oc:directiveContent "Tesseract has limited handwriting recognition, struggles with decorative/artistic fonts, mathematical equations, and special notation. Redacted or watermarked text cannot be recovered." ;
+    oc:hasRationale "These are fundamental limitations of the Tesseract engine; consider alternative approaches (e.g., vision models) for such content" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_1f415a6c a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Tesseract PSM modes for page segmentation" .
+
+oc:req_323db01a a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "tesseract-ocr" .
+
+oc:req_3b2e1010 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pytesseract" .
+
+oc:req_7106622d a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "Pillow (PIL)" .
+
+_:ref_2eb196f821651254 a oc:WorkflowStep ;
+    dcterms:description "**Try multiple preprocessing variants** - Run OCR on several preprocessed versions of the same image" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_32c3c3a165a7a054 a oc:WorkflowStep ;
+    dcterms:description "**Combine results** - Aggregate text from all passes to maximize extraction coverage" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_46fa99458998c598 a oc:WorkflowStep ;
+    dcterms:description "**Grayscale + Autocontrast** - Basic enhancement for most images" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_a34eb229a73ee331 a oc:WorkflowStep ;
+    dcterms:description "**Sharpening** - Apply `ImageFilter.SHARPEN` to improve edge clarity" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_bbb9a4c2c403af13 a oc:WorkflowStep ;
+    dcterms:description "**Thresholding** - Convert to binary using `img.point(lambda p: 255 if p > threshold else 0)` with different threshold values (e.g., 100, 128)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d0b8fbe50c647f1f a oc:WorkflowStep ;
+    dcterms:description "**Inverted** - Use `ImageOps.invert()` for dark backgrounds with light text" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e6ea0ed920020773 a oc:WorkflowStep ;
+    dcterms:description "**Scaling** - Upscale small images (e.g., 2x) before OCR to improve character recognition" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_edd936274f6ced3d a oc:WorkflowStep ;
+    dcterms:description "**Try multiple PSM modes** - Different page segmentation modes work better for different layouts (e.g., `--psm 6` for blocks, `--psm 4` for columns, `--psm 11` for sparse text)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_0af37065ab87a9d5 a oc:WorkflowStep ;
+    dcterms:description "Compute average confidence from image_to_data results and classify as high/medium/low" ;
+    oc:expectedOutcome "Confidence level string and any low-confidence warnings" ;
+    oc:stepDependsOn _:ref_d915ccfcd56bb2fe ;
+    oc:stepId "calculate-confidence" .
+
+_:ref_0e5b0ef9ac21b145 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_2eb196f821651254,
+        _:ref_32c3c3a165a7a054,
+        _:ref_edd936274f6ced3d ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_0f58b3c5358f8087 a oc:WorkflowStep ;
+    dcterms:description "Open image file and apply preprocessing: convert to grayscale, autocontrast, and sharpen" ;
+    oc:expectedOutcome "Preprocessed PIL Image object ready for OCR" ;
+    oc:stepDependsOn _:ref_ad9d63334d6cd720 ;
+    oc:stepId "preprocess-image" .
+
+_:ref_162e797ca4727bb6 a oc:WorkflowStep ;
+    dcterms:description "Run basic OCR extraction workflow on each image file" ;
+    oc:expectedOutcome "List of OCR result JSON objects" ;
+    oc:stepDependsOn _:ref_339159e7975da885 ;
+    oc:stepId "process-each" .
+
+_:ref_339159e7975da885 a oc:WorkflowStep ;
+    dcterms:description "Scan directory for image files with extensions .jpg, .jpeg, .png, .webp" ;
+    oc:expectedOutcome "Sorted list of image file paths" ;
+    oc:stepId "scan-directory" .
+
+_:ref_5a816d0156047a4e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_46fa99458998c598,
+        _:ref_a34eb229a73ee331,
+        _:ref_bbb9a4c2c403af13,
+        _:ref_d0b8fbe50c647f1f,
+        _:ref_e6ea0ed920020773 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ad9d63334d6cd720 a oc:WorkflowStep ;
+    dcterms:description "Verify Tesseract is installed and accessible via pytesseract.get_tesseract_version()" ;
+    oc:expectedOutcome "Tesseract version confirmed or TesseractNotFoundError raised" ;
+    oc:stepId "verify-tesseract" .
+
+_:ref_d915ccfcd56bb2fe a oc:WorkflowStep ;
+    dcterms:description "Run pytesseract.image_to_string() and pytesseract.image_to_data() on preprocessed image" ;
+    oc:expectedOutcome "Raw extracted text and detailed confidence/positioning data" ;
+    oc:stepDependsOn _:ref_0f58b3c5358f8087 ;
+    oc:stepId "run-ocr" .
+

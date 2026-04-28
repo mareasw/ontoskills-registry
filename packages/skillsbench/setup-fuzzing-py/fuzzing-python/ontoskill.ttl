@@ -1,0 +1,990 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_setup_fuzzing_py_fuzzing_python a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "fuzzing-python" ;
+    skos:broader "Fuzz testing framework" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/setup-fuzzing-py/fuzzing-python" ;
+    oc:contentHash "05b05c9e207d17275dbb5df4fe1c9105b36b1115157d11d1f935fe33158e3039" ;
+    oc:dependsOnSkill oc:skill_ontoskills_discover_important_function,
+        oc:skill_ontoskills_setup_env ;
+    oc:differentia "Uses Atheris (LibFuzzer-based) to create coverage-guided fuzz drivers for Python libraries and native extensions" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasArgumentHint "python-project-path" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Creating fuzz driver for Python libraries using LibFuzzer. This skill is useful when agent needs to work with creating fuzz drivers / fuzz targets for Python project and libraries." ;
+    oc:hasName "fuzzing-python" ;
+    oc:hasPackageName "atheris" ;
+    oc:hasRequirement oc:req_569ba2ed,
+        oc:req_8ddfe0b2,
+        oc:req_b0a27d07,
+        oc:req_c17bd76d ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: fuzzing-python
+description: "Creating fuzz driver for Python libraries using LibFuzzer. This skill is useful when agent needs to work with creating fuzz drivers / fuzz targets for Python project and libraries."
+license: Apache License 2.0. https://github.com/google/atheris/blob/775b08fb1a781142540995e8a2817c48ffae343f/LICENSE
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """@atheris.instrument_func
+def TestOneInput(data):
+  try:
+    decompressed = zlib.decompress(data)
+  except zlib.error:
+    return
+
+  if len(decompressed) < 2:
+    return
+
+  try:
+    if decompressed.decode() == 'FU':
+      raise RuntimeError('Boom')
+  except UnicodeDecodeError:
+    pass
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 176-192" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent """To reach the `RuntimeError` crash, the fuzzer needs to be able to produce inputs
+that are valid compressed data and satisfy the checks after decompression.
+It is very unlikely that Atheris will be able to produce such inputs: mutations
+on the input data will most probably result in invalid data that will fail at
+decompression-time.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """Atheris supports custom mutators
+[(as offered by LibFuzzer)](https://github.com/google/fuzzing/blob/master/docs/structure-aware-fuzzing.md)
+to produce grammar-aware inputs.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent """Example (Atheris-equivalent of the
+[example in the LibFuzzer docs](https://github.com/google/fuzzing/blob/master/docs/structure-aware-fuzzing.md#example-compression)):""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 11 ;
+                                    oc:textContent """Custom crossover functions (equivalent to `LLVMFuzzerCustomCrossOver`) are also
+supported. You can pass the custom crossover function to the invocation of
+`atheris.Setup`. See its usage in [custom_crossover_fuzz_test.py](src/custom_crossover_fuzz_test.py).""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent """To overcome this issue, you can define a custom mutator function (equivalent to
+`LLVMFuzzerCustomMutator`).
+This example produces valid compressed data. To enable Atheris to make use of
+it, pass the custom mutator function to the invocation of `atheris.Setup`.""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """$ python3 example_fuzzers/custom_mutator_example.py --no_mutator
+[...]
+#2      INITED cov: 2 ft: 2 corp: 1/1b exec/s: 0 rss: 37Mb
+#524288 pulse  cov: 2 ft: 2 corp: 1/1b lim: 4096 exec/s: 262144 rss: 37Mb
+#1048576        pulse  cov: 2 ft: 2 corp: 1/1b lim: 4096 exec/s: 349525 rss: 37Mb
+#2097152        pulse  cov: 2 ft: 2 corp: 1/1b lim: 4096 exec/s: 299593 rss: 37Mb
+#4194304        pulse  cov: 2 ft: 2 corp: 1/1b lim: 4096 exec/s: 279620 rss: 37Mb
+[...]
+
+$ python3 example_fuzzers/custom_mutator_example.py
+[...]
+INFO: found LLVMFuzzerCustomMutator (0x7f9c989fb0d0). Disabling -len_control by default.
+[...]
+#2      INITED cov: 2 ft: 2 corp: 1/1b exec/s: 0 rss: 37Mb
+#3      NEW    cov: 4 ft: 4 corp: 2/11b lim: 4096 exec/s: 0 rss: 37Mb L: 10/10 MS: 1 Custom-
+#12     NEW    cov: 5 ft: 5 corp: 3/21b lim: 4096 exec/s: 0 rss: 37Mb L: 10/10 MS: 7 Custom-CrossOver-Custom-CrossOver-Custom-ChangeBit-Custom-
+ === Uncaught Python exception: ===
+RuntimeError: Boom
+Traceback (most recent call last):
+  File "example_fuzzers/custom_mutator_example.py", line 62, in TestOneInput
+    raise RuntimeError('Boom')
+[...]
+""" ;
+                                    oc:codeLanguage "shell" ;
+                                    oc:contentOrder 10 ;
+                                    oc:sourceLocation "lines 226-249" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def CustomMutator(data, max_size, seed):
+  try:
+    decompressed = zlib.decompress(data)
+  except zlib.error:
+    decompressed = b'Hi'
+  else:
+    decompressed = atheris.Mutate(decompressed, len(decompressed))
+  return zlib.compress(decompressed)
+
+atheris.Setup(sys.argv, TestOneInput, custom_mutator=CustomMutator)
+atheris.Fuzz()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 205-217" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent """As seen in the example, the custom mutator may request Atheris to mutate data
+using `atheris.Mutate()` (this is equivalent to `LLVMFuzzerMutate`).""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """Atheris is based on a coverage-guided mutation-based fuzzer (LibFuzzer). This
+has the advantage of not requiring any grammar definition for generating inputs,
+making its setup easier. The disadvantage is that it will be harder for the
+fuzzer to generate inputs for code that parses complex data types. Often the
+inputs will be rejected early, resulting in low coverage.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent """You can experiment with [custom_mutator_example.py](example_fuzzers/custom_mutator_example.py)
+and see that without the mutator Atheris would not be able to find the crash,
+while with the mutator this is achieved in a matter of seconds.""" ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent """[libprotobuf-mutator](https://github.com/google/libprotobuf-mutator) has
+bindings to use it together with Atheris to perform structure-aware fuzzing
+using protocol buffers.""" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 2 ;
+                                            oc:textContent """See the documentation for
+[atheris_libprotobuf_mutator](contrib/libprotobuf_mutator/README.md).""" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 10 ;
+                                    oc:sectionTitle "Structure-aware Fuzzing with Protocol Buffers" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 9 ;
+                            oc:sectionTitle "Structure-aware Fuzzing" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent """This will cause Atheris to run on each file in `<corpus-dir>`, then exit.
+Note: atheris use empty data set as the first input even if there is no empty file in `<corpus_dir>`.
+Importantly, if you leave off the `-atheris_runs=$(ls corpus_dir | wc -l)`, no
+coverage report will be generated.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent """Using coverage.py will significantly slow down your fuzzer, so only use it for
+visualizing coverage; don't use it all the time.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent """If you'd like to examine coverage when running with your corpus, you can do
+that with the following command:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """Examining which lines are executed is helpful for understanding the
+effectiveness of your fuzzer. Atheris is compatible with
+[`coverage.py`](https://coverage.readthedocs.io/): you can run your fuzzer using
+the `coverage.py` module as you would for any other Python program. Here's an
+example:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent """No coverage report will be generated if your fuzzer exits due to a
+crash in native code, or due to libFuzzer's `-runs` flag (use `-atheris_runs`).
+If your fuzzer exits via other methods, such as SIGINT (Ctrl+C), Atheris will
+attempt to generate a report but may be unable to (depending on your code).
+For consistent reports, we recommend always using
+`-atheris_runs=<number>`.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "you specify `-atheris_runs=<number>`, and that many runs have elapsed." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "your fuzzer exits by `sys.exit()`." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "your fuzzer exits by Python exception." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent """Coverage reports are only generated when your fuzzer exits gracefully. This
+happens if:""" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python3 -m coverage run your_fuzzer.py -atheris_runs=10000  # Times to run
+python3 -m coverage html
+(cd htmlcov && python3 -m http.server 8000)
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 120-124" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """python3 -m coverage run your_fuzzer.py corpus_dir/* -atheris_runs=$(( 1 + $(ls corpus_dir | wc -l) ))
+""" ;
+                                    oc:codeLanguage "" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 143-145" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Visualizing Python code coverage" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent """Atheris can additionally instrument regular expression checks, e.g. `re.search`.
+To enable this feature, you will need to add:
+`atheris.enabled_hooks.add("RegEx")`
+To your script before your code calls `re.compile`.
+Internally this will import the `re` module and instrument the necessary functions.
+This is currently an experimental feature.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """Atheris collects Python coverage information by instrumenting bytecode.
+There are 3 options for adding this instrumentation to the bytecode:""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent """Similarly, Atheris can instrument str methods; currently only `str.startswith`
+and `str.endswith` are supported. To enable this feature, add
+`atheris.enabled_hooks.add("str")`. This is currently an experimental feature.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:CodeExample ;
+                                                    oc:blockType "code_block" ;
+                                                    oc:codeContent """@atheris.instrument_func
+def my_function(foo, bar):
+  print("instrumented")
+""" ;
+                                                    oc:codeLanguage "python" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:sourceLocation "lines 69-73" ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Or, you can instrument individual functions:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:CodeExample ;
+                                                    oc:blockType "code_block" ;
+                                                    oc:codeContent """atheris.instrument_all()
+""" ;
+                                                    oc:codeLanguage "python" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:sourceLocation "lines 77-79" ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent """Put this right before `atheris.Setup()`. This will find every Python function
+  currently loaded in the interpreter, and instrument it.
+  This might take a while.""" ] ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Or finally, you can instrument everything:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:CodeExample ;
+                                                    oc:blockType "code_block" ;
+                                                    oc:codeContent """with atheris.instrument_imports():
+  import foo
+  from bar import baz
+""" ;
+                                                    oc:codeLanguage "python" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:sourceLocation "lines 58-62" ],
+                                                [ a oc:Paragraph ;
+                                                    oc:blockType "paragraph" ;
+                                                    oc:contentOrder 2 ;
+                                                    oc:textContent """This will cause instrumentation to be added to `foo` and `bar`, as well as
+  any libraries they import.""" ] ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "You can instrument the libraries you import:" ] ] ;
+                            oc:hasSubsection [ a oc:Section ;
+                                    oc:hasContent [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 3 ;
+                                            oc:textContent """You'll get this error if the first 2 calls to `TestOneInput` didn't produce any
+coverage events. Even if you have instrumented some Python code,
+this can happen if the instrumentation isn't reached in those first 2 calls.
+(For example, because you have a nontrivial `TestOneInput`). You can resolve
+this by adding an `atheris.instrument_func` decorator to `TestOneInput`,
+using `atheris.instrument_all()`, or moving your `TestOneInput` function into an
+instrumented module.""" ],
+                                        [ a oc:CodeExample ;
+                                            oc:blockType "code_block" ;
+                                            oc:codeContent """ERROR: no interesting inputs were found. Is the code instrumented for coverage? Exiting.
+""" ;
+                                            oc:codeLanguage "" ;
+                                            oc:contentOrder 2 ;
+                                            oc:sourceLocation "lines 100-102" ],
+                                        [ a oc:Paragraph ;
+                                            oc:blockType "paragraph" ;
+                                            oc:contentOrder 1 ;
+                                            oc:textContent "You might see this error:" ] ;
+                                    oc:sectionLevel 4 ;
+                                    oc:sectionOrder 6 ;
+                                    oc:sectionTitle "Why am I getting \"No interesting inputs were found\"?" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 5 ;
+                            oc:sectionTitle "Python coverage" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """In order for fuzzing native extensions to be effective, your native extensions
+must be instrumented. See [Native Extension Fuzzing](https://github.com/google/atheris/blob/master/native_extension_fuzzing.md)
+for instructions.""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Fuzzing Native Extensions" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """#!/usr/bin/python3
+
+import atheris
+
+with atheris.instrument_imports():
+  import some_library
+  import sys
+
+def TestOneInput(data):
+  some_library.parse(data)
+
+atheris.Setup(sys.argv, TestOneInput)
+atheris.Fuzz()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 33-47" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "When fuzzing Python, Atheris will report a failure if the Python code under test throws an uncaught exception." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Example" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Using Atheris" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "It must be fast. Try avoiding cubic or greater complexity, logging, or excessive memory consumption." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "It must not exit() on any input." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "It must tolerate any kind of input (empty, huge, malformed, etc)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Usually, the narrower the target the better. E.g. if your target can parse several data formats, split it into several targets, one per format." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "It may use threads but ideally all threads should be joined at the end of the function." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "It must be as deterministic as possible. Non-determinism (e.g. random decisions not based on the input bytes) will make fuzzing inefficient." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Ideally, it should not modify any global state (although that’s not strict)." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "The fuzzing engine will execute the fuzz target many times with different inputs in the same process." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Some important things to remember about fuzz targets:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 19 ;
+                    oc:sectionTitle "Important considerations for fuzz targets" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "In your source file, import all libraries you wish to fuzz inside a `with atheris.instrument_imports():`-block, like this:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# library_a will not get instrumented
+import library_a
+
+with atheris.instrument_imports():
+    # library_b will get instrumented
+    import library_b
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 274-281" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The `atheris` module provides three key functions: `instrument_imports()`, `Setup()` and `Fuzz()`." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Generally, it's best to import `atheris` first and then import all other libraries inside of a `with atheris.instrument_imports()` block." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Next, define a fuzzer entry point function and pass it to `atheris.Setup()` along with the fuzzer's arguments (typically `sys.argv`). Finally, call `atheris.Fuzz()` to start fuzzing. You must call `atheris.Setup()` before `atheris.Fuzz()`." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "A full list of unsupported modules can be retrieved as follows:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """This should be used together with a `with`-statement. All modules imported in
+said statement will be instrumented. However, because Python imports all modules
+only once, this cannot be used to instrument any previously imported module,
+including modules required by Atheris. To add coverage to those modules, use
+`instrument_all()` instead.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`include`: A list of fully-qualified module names that shall be instrumented." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`exclude`: A list of fully-qualified module names that shall NOT be instrumented." ] ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import sys
+import atheris
+print(sys.modules.keys())
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 4 ;
+                                    oc:sourceLocation "lines 300-304" ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 13 ;
+                            oc:sectionTitle "`instrument_imports(include=[], exclude=[])`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText """`args`: A list of strings: the process arguments to pass to the fuzzer, typically `sys.argv`. This argument list may be modified in-place, to remove arguments consumed by the fuzzer.
+See [the LibFuzzer docs](https://llvm.org/docs/LibFuzzer.html#options) for a list of such options.""" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "`test_one_input`: your fuzzer's entry point. Must take a single `bytes` argument. This will be repeatedly invoked with a single bytes container." ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText """`internal_libfuzzer`: Indicates whether libfuzzer will be provided by atheris or by an external library (see [native_extension_fuzzing.md](./native_extension_fuzzing.md)). If unspecified, Atheris will determine this
+automatically. If fuzzing pure Python, leave this as `True`.""" ] ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 16 ;
+                            oc:sectionTitle "`Setup(args, test_one_input, internal_libfuzzer=None)`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """In many cases `Setup()` and `Fuzz()` could be combined into a single function, but they are
+separated because you may want the fuzzer to consume the command-line arguments it handles
+before passing any remaining arguments to another setup function.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "This starts the fuzzer. You must have called `Setup()` before calling this function. This function does not return." ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 17 ;
+                            oc:sectionTitle "`Fuzz()`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent """This will instrument the specified Python function and then return `func`. This
+is typically used as a decorator, but can be used to instrument individual
+functions too. Note that the `func` is instrumented in-place, so this will
+affect all call points of the function.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "`func`: The function to instrument." ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "This cannot be called on a bound method - call it on the unbound version." ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 14 ;
+                            oc:sectionTitle "`instrument_func(func)`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "This function is experimental." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent """This will scan over all objects in the interpreter and call `instrument_func` on
+every Python function. This works even on core Python interpreter functions,
+something which `instrument_imports` cannot do.""" ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 15 ;
+                            oc:sectionTitle "`instrument_all()`" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 32 ;
+                                    oc:textContent "Consume a list of `count` arbitrary floating-point values. Might produce weird values like `NaN` and `Inf`." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 8 ;
+                                    oc:textContent "Consume unicode characters. Might contain surrogate pair characters, which according to the specification are invalid in this situation. However, many core software tools (e.g. Windows file paths) support them, so other software often needs to too." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeIntInRange(min: int, max: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 17 ;
+                                    oc:sourceLocation "lines 389-391" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "The FuzzedDataProvider then supports the following functions:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "You can construct the FuzzedDataProvider with:" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 16 ;
+                                    oc:textContent "Consume an unsigned integer of the specified size." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeUInt(int: bytes)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 15 ;
+                                    oc:sourceLocation "lines 383-385" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeUnicodeNoSurrogates(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 9 ;
+                                    oc:sourceLocation "lines 365-367" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeFloatInRange(min: float, max: float)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 29 ;
+                                    oc:sourceLocation "lines 425-427" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeUnicode(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 7 ;
+                                    oc:sourceLocation "lines 359-361" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 12 ;
+                                    oc:textContent "Alias for `ConsumeBytes` in Python 2, or `ConsumeUnicode` in Python 3." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 34 ;
+                                    oc:textContent "Consume a list of `count` arbitrary numeric floating-point values; never produces special types like `NaN` or `Inf`." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent "Consume `count` bytes." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeBool()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 41 ;
+                                    oc:sourceLocation "lines 461-463" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 10 ;
+                                    oc:textContent "Consume unicode characters, but never generate surrogate pair characters." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 36 ;
+                                    oc:textContent "Consume a list of `count` floats in the range [0, 1]." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 24 ;
+                                    oc:textContent "Consume an arbitrary floating-point value. Might produce weird values like `NaN` and `Inf`." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeIntListInRange(count: int, min: int, max: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 21 ;
+                                    oc:sourceLocation "lines 401-403" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeProbabilityList(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 35 ;
+                                    oc:sourceLocation "lines 443-445" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeIntList(count: int, bytes: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 19 ;
+                                    oc:sourceLocation "lines 395-397" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeInt(int: bytes)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 13 ;
+                                    oc:sourceLocation "lines 377-379" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 40 ;
+                                    oc:textContent "Given a list, pick a random value" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 38 ;
+                                    oc:textContent "Consume a list of `count` floats in the range [`min`, `max`]" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 14 ;
+                                    oc:textContent "Consume a signed integer of the specified size (when written in two's complement notation)." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 42 ;
+                                    oc:textContent "Consume either `True` or `False`." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 26 ;
+                                    oc:textContent "Consume an arbitrary numeric floating-point value; never produces a special type like `NaN` or `Inf`." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 20 ;
+                                    oc:textContent "Consume a list of `count` integers of `size` bytes." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def PickValueInList(l: list)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 39 ;
+                                    oc:sourceLocation "lines 455-457" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeFloatListInRange(count: int, min: float, max: float)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 37 ;
+                                    oc:sourceLocation "lines 449-451" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 18 ;
+                                    oc:textContent "Consume an integer in the range [`min`, `max`]." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeString(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 11 ;
+                                    oc:sourceLocation "lines 371-373" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 28 ;
+                                    oc:textContent "Consume a floating-point value in the range [0, 1]." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeBytes(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 5 ;
+                                    oc:sourceLocation "lines 353-355" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeRegularFloat()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 25 ;
+                                    oc:sourceLocation "lines 413-415" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Often, a `bytes` object is not convenient input to your code being fuzzed. Similar to libFuzzer, we provide a FuzzedDataProvider to translate these bytes into other input forms." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """fdp = atheris.FuzzedDataProvider(input_bytes)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 347-349" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeProbability()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 27 ;
+                                    oc:sourceLocation "lines 419-421" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 30 ;
+                                    oc:textContent "Consume a floating-point value in the range [`min`, `max`]." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 22 ;
+                                    oc:textContent "Consume a list of `count` integers in the range [`min`, `max`]." ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeRegularFloatList(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 33 ;
+                                    oc:sourceLocation "lines 437-439" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeFloatList(count: int)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 31 ;
+                                    oc:sourceLocation "lines 431-433" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """def ConsumeFloat()
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 23 ;
+                                    oc:sourceLocation "lines 407-409" ] ;
+                            oc:sectionLevel 4 ;
+                            oc:sectionOrder 18 ;
+                            oc:sectionTitle "`FuzzedDataProvider`" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "API" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Atheris is fully supported by [OSS-Fuzz](https://github.com/google/oss-fuzz), Google's continuous fuzzing service for open source projects. For integrating with OSS-Fuzz, please see [https://google.github.io/oss-fuzz/getting-started/new-project-guide/python-lang](https://google.github.io/oss-fuzz/getting-started/new-project-guide/python-lang)." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Integration with OSS-Fuzz" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent """These wheels come with a built-in libFuzzer,
+which is fine for fuzzing Python code.
+If you plan to fuzz native extensions,
+you may need to build from source to ensure the libFuzzer version in Atheris matches your Clang version.""" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip3 install atheris
+""" ;
+                            oc:codeLanguage "sh" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 20-22" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent """Fuzz testing for Python projects are Atheris.
+Atheris is a coverage-guided Python fuzzing engine.
+It supports fuzzing of Python code, but also native extensions written for CPython.
+Atheris is based off of libFuzzer.
+When fuzzing native code,
+Atheris can be used in combination with Address Sanitizer or Undefined Behavior Sanitizer to catch extra bugs.""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "You can install prebuilt versions of Atheris with pip:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Setting up fuzzing for a Python project" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Python Fuzzing Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "End-to-end workflow for creating and running a coverage-guided fuzz driver using Atheris" ;
+            oc:hasStep _:ref_27c143946315a29b,
+                _:ref_738a5d58049218e1,
+                _:ref_74f036b56fbbcb86,
+                _:ref_c1bf77eb1f0bbef4,
+                _:ref_d99b2cb07fce5671,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Optionally visualize coverage: python3 -m coverage run fuzz_driver.py -atheris_runs=N && python3 -m coverage html" ;
+                    oc:expectedOutcome "HTML coverage report showing which lines were exercised" ;
+                    oc:stepDependsOn _:ref_27c143946315a29b ;
+                    oc:stepId "analyze-coverage" ] ;
+            oc:workflowId "create-fuzz-driver" ;
+            oc:workflowName "Create a Fuzz Driver for a Python Library" ] ;
+    oc:impartsKnowledge oc:kn_1fdc500f,
+        oc:kn_20d54c59,
+        oc:kn_6f459f6e,
+        oc:kn_841f268c,
+        oc:kn_9d16c5f2,
+        oc:kn_cdf4dea0,
+        oc:kn_df657856,
+        oc:kn_e33f2f32,
+        oc:kn_f29bf67a ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:ToolInstalled ;
+    oc:resolvesIntent "create fuzz driver for Python library",
+        "create structure-aware fuzzer with custom mutators",
+        "fuzz test Python code",
+        "generate fuzz targets for Python native extensions",
+        "set up coverage-guided fuzzing for Python project" ;
+    oc:yieldsState oc:FuzzTargetsIdentified,
+        oc:FuzzerCreated .
+
+oc:kn_1fdc500f a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fuzz target has side effects" ;
+    oc:directiveContent "Ideally, fuzz targets should not modify global state. While not strictly required, modifying global state between iterations can cause unreliable results." ;
+    oc:hasRationale "Global state changes persist across iterations in the same process, potentially causing false positives or missed bugs" ;
+    oc:severityLevel "LOW" .
+
+oc:kn_20d54c59 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "When running fuzzers with coverage.py for visualization" ;
+    oc:directiveContent "Use -atheris_runs=<number> instead of libFuzzer's -runs flag for graceful exit with coverage reports. No coverage report is generated on native code crashes or SIGINT." ;
+    oc:hasRationale "Atheris needs to handle cleanup to produce coverage reports; only -atheris_runs guarantees graceful exit with report generation" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_6f459f6e a oc:KnowledgeNode,
+        oc:SecurityImplication ;
+    oc:appliesToContext "When fuzzing C/C++ native extensions for CPython" ;
+    oc:directiveContent "Atheris reports failures on uncaught exceptions. When fuzzing native extensions, combine with Address Sanitizer or Undefined Behavior Sanitizer for deeper bug detection." ;
+    oc:hasRationale "Native code bugs (buffer overflows, use-after-free) are invisible to Python exception handling; sanitizers catch memory corruption bugs" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_841f268c a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When designing fuzz target scope and complexity" ;
+    oc:directiveContent "Fuzz targets must be fast — avoid cubic or greater complexity, excessive logging, or high memory consumption. Split targets handling multiple formats into separate fuzz targets per format." ;
+    oc:hasRationale "Slow targets reduce iterations per second, dramatically decreasing the chance of finding bugs; narrow targets achieve higher coverage per target" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9d16c5f2 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing any TestOneInput fuzz target function" ;
+    oc:directiveContent "The fuzz target function must accept a single bytes argument, must not call exit(), must tolerate any input (empty, huge, malformed), and must be deterministic." ;
+    oc:hasRationale "LibFuzzer executes the target many times in the same process; non-determinism or early exits make fuzzing ineffective or unstable" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_cdf4dea0 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When converting raw fuzz bytes into structured input types for the target function" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """fdp = atheris.FuzzedDataProvider(data)
+value = fdp.ConsumeIntInRange(min_val, max_val)
+items = fdp.ConsumeBytes(count)""" .
+
+oc:kn_df657856 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When fuzz target parses structured or compressed input formats" ;
+    oc:directiveContent "For code parsing complex data types (e.g., compressed data, serialized formats), use custom mutators via the custom_mutator parameter of atheris.Setup() to produce grammar-aware inputs." ;
+    oc:hasRationale "Mutation-based fuzzing rarely produces valid structured inputs; custom mutators decompress/mutate/recompress to maintain format validity" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_e33f2f32 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When setting up any Atheris fuzz driver" ;
+    oc:directiveContent "Import atheris first, then import all libraries to be fuzzed inside a `with atheris.instrument_imports():` block to enable coverage instrumentation." ;
+    oc:hasRationale "Libraries imported outside the instrument_imports context will not have coverage instrumentation, reducing fuzzer effectiveness" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f29bf67a a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When writing fuzz targets with complex setup logic" ;
+    oc:directiveContent "Do not add non-trivial logic before coverage instrumentation in TestOneInput; the first 2 calls must produce coverage events or you get 'no interesting inputs found' error." ;
+    oc:hasRationale "Atheris requires coverage events from the first 2 invocations to initialize the fuzzer; nontrivial pre-processing can prevent this" ;
+    oc:severityLevel "HIGH" .
+
+oc:req_569ba2ed a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "atheris" .
+
+oc:req_8ddfe0b2 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "coverage-guided fuzzing" .
+
+oc:req_b0a27d07 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "libFuzzer" .
+
+oc:req_c17bd76d a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pip3" .
+
+_:ref_27c143946315a29b a oc:WorkflowStep ;
+    dcterms:description "Run fuzzer: python3 fuzz_driver.py -atheris_runs=N" ;
+    oc:expectedOutcome "Fuzzer executes and either finds bugs or completes N runs with coverage data" ;
+    oc:stepDependsOn _:ref_c1bf77eb1f0bbef4 ;
+    oc:stepId "run-fuzzer" .
+
+_:ref_738a5d58049218e1 a oc:WorkflowStep ;
+    dcterms:description "Install Atheris: pip3 install atheris" ;
+    oc:expectedOutcome "atheris package available for import" ;
+    oc:stepId "install-atheris" .
+
+_:ref_74f036b56fbbcb86 a oc:WorkflowStep ;
+    dcterms:description "Write fuzz driver: import atheris, instrument target library imports, define TestOneInput(data) that exercises the target API, call Setup() and Fuzz()" ;
+    oc:expectedOutcome "Complete fuzz driver Python script" ;
+    oc:stepDependsOn _:ref_738a5d58049218e1,
+        _:ref_d99b2cb07fce5671 ;
+    oc:stepId "write-fuzz-driver" .
+
+_:ref_c1bf77eb1f0bbef4 a oc:WorkflowStep ;
+    dcterms:description "Add coverage instrumentation: use atheris.instrument_imports() for libraries, @atheris.instrument_func for individual functions, or atheris.instrument_all() for everything" ;
+    oc:expectedOutcome "Coverage instrumentation active on target code paths" ;
+    oc:stepDependsOn _:ref_74f036b56fbbcb86 ;
+    oc:stepId "add-instrumentation" .
+
+_:ref_d99b2cb07fce5671 a oc:WorkflowStep ;
+    dcterms:description "Identify the function/API to fuzz from the target library (use discover-important-function skill)" ;
+    oc:expectedOutcome "Specific function(s) selected as fuzz target entry point" ;
+    oc:stepId "identify-target" .
+

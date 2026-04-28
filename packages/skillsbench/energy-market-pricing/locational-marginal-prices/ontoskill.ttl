@@ -1,0 +1,415 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_energy_market_pricing_locational_marginal_prices a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "locational-marginal-prices" ;
+    skos:broader "Price extraction methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/energy-market-pricing/locational-marginal-prices" ;
+    oc:contentHash "ed402ae299d803d864d8cbd20dfbe6bf91fba96f25dc29662a8aff00e85ccbdd" ;
+    oc:dependsOnSkill oc:skill_ontoskills_dc_power_flow,
+        oc:skill_ontoskills_economic_dispatch ;
+    oc:differentia "extracts locational marginal prices from DC-OPF solutions using CVXPY dual values, identifies binding transmission constraints, and performs counterfactual congestion analysis" ;
+    oc:handlesFailure oc:NoDualValues,
+        oc:SolverFailed ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "opf-solution-or-network-data" ;
+    oc:hasCategory "finance" ;
+    oc:hasDescription "Extract locational marginal prices (LMPs) from DC-OPF solutions using dual values. Use when computing nodal electricity prices, reserve clearing prices, or performing price impact analysis." ;
+    oc:hasName "locational-marginal-prices" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: locational-marginal-prices
+description: "Extract locational marginal prices (LMPs) from DC-OPF solutions using dual values. Use when computing nodal electricity prices, reserve clearing prices, or performing price impact analysis."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "LMPs are the marginal cost of serving one additional MW of load at each bus. In optimization terms, they are the **dual values** (shadow prices) of the nodal power balance constraints." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For a balance constraint written as `generation - load == net_export`:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Negative LMPs commonly occur when:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "Negative LMPs are physically valid and expected in congested systems — they are not errors." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Negative LMP**: Increasing load at that bus *decreases* total cost" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Positive LMP**: Increasing load at that bus increases total cost (typical case)" ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "The magnitude can be very large in heavily congested networks (thousands of $/MWh)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Adding load at that bus relieves congestion by consuming local excess generation" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Cheap generation is trapped behind a congested line (can't export power)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "LMP Sign Convention" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Lines at or near thermal limits (≥99% loading) cause congestion and LMP separation. See the `dc-power-flow` skill for line flow calculation details." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """BINDING_THRESHOLD = 99.0  # Percent loading
+
+binding_lines = []
+for k, br in enumerate(branches):
+    f = bus_num_to_idx[int(br[0])]
+    t = bus_num_to_idx[int(br[1])]
+    x, rate = br[3], br[5]
+
+    if x != 0 and rate > 0:
+        b = 1.0 / x
+        flow_MW = b * (theta.value[f] - theta.value[t]) * baseMVA
+        loading_pct = abs(flow_MW) / rate * 100
+
+        if loading_pct >= BINDING_THRESHOLD:
+            binding_lines.append({
+                "from": int(br[0]),
+                "to": int(br[1]),
+                "flow_MW": round(float(flow_MW), 2),
+                "limit_MW": round(float(rate), 2)
+            })
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 82-103" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Finding Binding Lines" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_03693d58d391a459,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To extract LMPs, you must:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import cvxpy as cp
+
+# Store balance constraints separately for dual extraction
+balance_constraints = []
+
+for i in range(n_bus):
+    pg_at_bus = sum(Pg[g] for g in range(n_gen) if gen_bus[g] == i)
+    pd = buses[i, 2] / baseMVA
+
+    # Create constraint and store reference
+    balance_con = pg_at_bus - pd == B[i, :] @ theta
+    balance_constraints.append(balance_con)
+    constraints.append(balance_con)
+
+# Solve
+prob = cp.Problem(cp.Minimize(cost), constraints)
+prob.solve(solver=cp.CLARABEL)
+
+# Extract LMPs from duals
+lmp_by_bus = []
+for i in range(n_bus):
+    bus_num = int(buses[i, 0])
+    dual_val = balance_constraints[i].dual_value
+
+    # Scale: constraint is in per-unit, multiply by baseMVA to get $/MWh
+    lmp = float(dual_val) * baseMVA if dual_val is not None else 0.0
+    lmp_by_bus.append({
+        "bus": bus_num,
+        "lmp_dollars_per_MWh": round(lmp, 2)
+    })
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 17-48" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "LMP Extraction from CVXPY" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The reserve MCP represents the marginal cost of providing one additional MW of reserve capacity system-wide." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Store reference to reserve constraint
+reserve_con = cp.sum(Rg) >= reserve_requirement
+constraints.append(reserve_con)
+
+# After solving:
+reserve_mcp = float(reserve_con.dual_value) if reserve_con.dual_value is not None else 0.0
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 67-74" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The reserve MCP is the dual of the system reserve requirement constraint:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Reserve Clearing Price" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To analyze the impact of relaxing a transmission constraint:" ],
+                        _:ref_780bdf3470fe2a78,
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Modify line limit (e.g., increase by 20%)
+for k in range(n_branch):
+    br_from, br_to = int(branches[k, 0]), int(branches[k, 1])
+    if (br_from == target_from and br_to == target_to) or \\
+       (br_from == target_to and br_to == target_from):
+        branches[k, 5] *= 1.20  # 20% increase
+        break
+
+# After solving both cases:
+cost_reduction = base_cost - cf_cost  # Should be >= 0
+
+# LMP changes per bus
+for bus_num in base_lmp_map:
+    delta = cf_lmp_map[bus_num] - base_lmp_map[bus_num]
+    # Negative delta = price decreased (congestion relieved)
+
+# Congestion relieved if line was binding in base but not in counterfactual
+congestion_relieved = was_binding_in_base and not is_binding_in_cf
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 3 ;
+                            oc:sourceLocation "lines 114-133" ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**LMP convergence** after relieving congestion indicates reduced price separation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Relaxing a binding constraint** cannot increase cost (may decrease or stay same)" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Cost reduction** quantifies the shadow price of the constraint" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Economic Intuition" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Counterfactual Analysis" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Locational Marginal Prices (LMPs)" ] ;
+    oc:hasWorkflow _:ref_03693d58d391a459,
+        [ a oc:Workflow ;
+            dcterms:description "Analyze the price and cost impact of relaxing a transmission constraint" ;
+            oc:hasStep _:ref_4e7deb54ce8a98de,
+                _:ref_5c540b5666acebd3,
+                _:ref_6a79fc0820305718,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Compare costs (should decrease) and LMP changes (convergence indicates congestion relief)" ;
+                    oc:expectedOutcome "Cost reduction and per-bus LMP deltas quantifying congestion impact" ;
+                    oc:stepDependsOn _:ref_6a79fc0820305718 ;
+                    oc:stepId "compare-results" ] ;
+            oc:workflowId "counterfactual-analysis" ;
+            oc:workflowName "Counterfactual Congestion Analysis" ],
+        [ a oc:Workflow ;
+            dcterms:description "Extract locational marginal prices from a solved DC-OPF problem" ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Compute line loadings and identify lines at ≥99% of thermal limits" ;
+                    oc:expectedOutcome "List of binding lines causing congestion and LMP separation" ;
+                    oc:stepDependsOn _:ref_ced02d916d19385e ;
+                    oc:stepId "identify-binding" ],
+                _:ref_27ff3728e02ded72,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Read dual values from stored constraints and scale by baseMVA to obtain $/MWh" ;
+                    oc:expectedOutcome "LMP values for each bus in $/MWh" ;
+                    oc:stepDependsOn _:ref_ced02d916d19385e ;
+                    oc:stepId "extract-duals" ],
+                _:ref_ced02d916d19385e ;
+            oc:workflowId "lmp-extraction" ;
+            oc:workflowName "LMP Extraction from DC-OPF" ],
+        _:ref_780bdf3470fe2a78 ;
+    oc:impartsKnowledge oc:kn_2e637699,
+        oc:kn_34623ed1,
+        oc:kn_53e4d68c,
+        oc:kn_77afd53a,
+        oc:kn_9a8183ce,
+        oc:kn_d3d79225 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:OPFSolved ;
+    oc:resolvesIntent "analyze price impact of transmission congestion",
+        "compute nodal electricity prices",
+        "compute reserve clearing prices",
+        "extract LMPs from OPF solution",
+        "identify binding transmission lines",
+        "perform counterfactual congestion analysis" ;
+    oc:yieldsState oc:BindingLinesIdentified,
+        oc:LMPsComputed .
+
+oc:kn_2e637699 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When building DC-OPF problems for price extraction" ;
+    oc:directiveContent "Store balance constraint references separately before solving so dual values can be extracted after optimization completes." ;
+    oc:hasRationale "CVXPY dual values are only accessible on stored constraint objects; constraints embedded anonymously cannot yield LMPs." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_34623ed1 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "When reading dual values from CVXPY constraints" ;
+    oc:directiveContent "Check dual_value for None before scaling — solvers may not return duals if problem is infeasible or solver doesn't support dual extraction." ;
+    oc:hasRationale "Graceful handling prevents crashes when optimization fails or solver doesn't populate dual information." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_53e4d68c a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When extracting LMPs from per-unit OPF formulations" ;
+    oc:directiveContent "Scale dual values by baseMVA to convert from per-unit to $/MWh: lmp = dual_value * baseMVA." ;
+    oc:hasRationale "The power balance constraint is formulated in per-unit; multiplying by baseMVA converts shadow prices to actual $/MWh." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_77afd53a a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When interpreting LMP results that contain negative values" ;
+    oc:directiveContent "Negative LMPs are physically valid and expected in congested systems — they are not errors or solver artifacts." ;
+    oc:hasRationale "Negative LMPs occur when cheap generation is trapped behind a congested line; adding load at that bus relieves congestion by consuming local excess, reducing total system cost." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_9a8183ce a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When identifying binding transmission constraints" ;
+    oc:directiveContent "Lines at or near thermal limits (≥99% loading) cause congestion and LMP separation across buses." ;
+    oc:hasRationale "Binding lines are the physical cause of LMP differences between buses; identifying them explains the price structure." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d3d79225 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing counterfactual transmission analysis" ;
+    oc:directiveContent "Relaxing a binding constraint cannot increase system cost; cost reduction quantifies the shadow price of that constraint." ;
+    oc:hasRationale "This is the economic intuition behind congestion rent — the cost savings from relieving congestion measures the economic value of additional transmission capacity." .
+
+_:ref_1bb77292d7742083 a oc:WorkflowStep ;
+    dcterms:description "Solve the problem" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_20d3118918e3cd7a a oc:WorkflowStep ;
+    dcterms:description "Read the dual values after solving" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_52152d4342efb1b6 a oc:WorkflowStep ;
+    dcterms:description "**Solve counterfactual** — with the relaxed constraint" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_7e614fe6369cd518 a oc:WorkflowStep ;
+    dcterms:description "**Compute impact** — compare costs and LMPs" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_7ee5ccf033d2c697 a oc:WorkflowStep ;
+    dcterms:description "**Modify constraint** — e.g., increase a line's thermal limit" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_91c8347c8a3ecdb4 a oc:WorkflowStep ;
+    dcterms:description "**Solve base case** — record costs, LMPs, and binding lines" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e3ed7d02cf225e97 a oc:WorkflowStep ;
+    dcterms:description "Store references to the balance constraints" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_03693d58d391a459 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_1bb77292d7742083,
+        _:ref_20d3118918e3cd7a,
+        _:ref_e3ed7d02cf225e97 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_27ff3728e02ded72 a oc:WorkflowStep ;
+    dcterms:description "Store references to power balance constraints in a separate list before adding to constraint set" ;
+    oc:expectedOutcome "List of constraint objects with accessible dual values" ;
+    oc:stepId "store-constraints" .
+
+_:ref_4e7deb54ce8a98de a oc:WorkflowStep ;
+    dcterms:description "Modify the target line's thermal limit (e.g., increase by percentage)" ;
+    oc:expectedOutcome "Updated network data with relaxed constraint" ;
+    oc:stepDependsOn _:ref_5c540b5666acebd3 ;
+    oc:stepId "modify-constraint" .
+
+_:ref_5c540b5666acebd3 a oc:WorkflowStep ;
+    dcterms:description "Solve base case OPF and record costs, LMPs, and binding lines" ;
+    oc:expectedOutcome "Base case solution with LMPs and identified binding constraints" ;
+    oc:stepId "solve-base" .
+
+_:ref_6a79fc0820305718 a oc:WorkflowStep ;
+    dcterms:description "Solve OPF with modified constraint and extract new LMPs" ;
+    oc:expectedOutcome "Counterfactual solution with new LMPs" ;
+    oc:stepDependsOn _:ref_4e7deb54ce8a98de ;
+    oc:stepId "solve-counterfactual" .
+
+_:ref_780bdf3470fe2a78 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_52152d4342efb1b6,
+        _:ref_7e614fe6369cd518,
+        _:ref_7ee5ccf033d2c697,
+        _:ref_91c8347c8a3ecdb4 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ced02d916d19385e a oc:WorkflowStep ;
+    dcterms:description "Solve the optimization problem with a solver that supports dual values (e.g., CLARABEL)" ;
+    oc:expectedOutcome "Optimal solution with populated dual values" ;
+    oc:stepDependsOn _:ref_27ff3728e02ded72 ;
+    oc:stepId "solve-opf" .
+

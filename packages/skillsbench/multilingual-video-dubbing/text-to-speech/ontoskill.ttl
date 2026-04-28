@@ -1,0 +1,312 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_tts_audio_mastering a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "tts-audio-mastering" ;
+    skos:broader "Audio post-processing pipeline" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/text-to-speech" ;
+    oc:contentHash "a8e142df85150f09e0be762ac6b0eadd0a9f4576f8fa79de1e6316982cad85f6" ;
+    oc:dependsOnSkill oc:skill_ontoskills_ffmpeg_audio_processing ;
+    oc:differentia "that prepares TTS-generated speech segments for video delivery through cleanup, loudness normalization, and timing alignment" ;
+    oc:handlesFailure oc:AudioSyncDrift,
+        oc:NormalizationFailed ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "audio-file-path" ;
+    oc:hasCategory "automation" ;
+    oc:hasDescription "Practical mastering steps for TTS audio: cleanup, loudness normalization, alignment, and delivery specs." ;
+    oc:hasName "tts-audio-mastering" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill focuses on producing clean, consistent, and delivery-ready TTS audio for video tasks. It covers speech cleanup, loudness normalization, segment boundaries, and export specs." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Sync guideline:** keep end-to-end drift small (e.g., **<= 0.2s**) unless the task states otherwise." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "If a segment is longer, use gentle duration control (small speed change) or truncate carefully." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "If a segment is shorter than its window, pad with silence." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Match each segment to its target window as closely as possible." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Always apply boundary fades after padding/trimming to avoid clicks." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When stitching segment-level TTS into a full track:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "4. Timing & Segment Boundary Handling" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 4 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Add filters in a single chain, and keep them consistent across segments." ] ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Rumble/DC removal:** high-pass filter around **20 Hz**" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Click/pop prevention:** short fades at boundaries (e.g., **50 ms** fade-in and fade-out)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Harshness control:** optional low-pass around **16 kHz** (helps remove digital fizz)" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Recommended FFmpeg pattern (example):" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Apply lightweight processing to avoid common artifacts:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "2. Speech Cleanup (Per Segment)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Key rule:** Always confirm the **native sample rate** of the generated audio before resampling for video delivery." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Neural offline** (e.g., Kokoro): stable, high quality, no network dependency." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**Cloud TTS** (e.g., Edge-TTS / OpenAI TTS): convenient, higher naturalness but network-dependent." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Formant TTS** (e.g., espeak-ng): for prototyping only; often less natural." ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Choose a TTS engine based on deployment constraints and quality needs:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "1. TTS Engine & Output Basics" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "Recommended workflow:" ],
+                        _:ref_0f380c49bcbcb8e7,
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**True peak:** around **-1.5 dBTP**" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**LRA:** around **11** (optional)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Integrated loudness:** **-23 LUFS**" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Target loudness depends on the benchmark/task spec. A common target is ITU-R BS.1770 loudness measurement:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "3. Loudness Normalization" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "SKILL: TTS Audio Mastering" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """
+name: "TTS Audio Mastering"
+description: "Practical mastering steps for TTS audio: cleanup, loudness normalization, alignment, and delivery specs."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_0f380c49bcbcb8e7,
+        [ a oc:Workflow ;
+            dcterms:description "Complete mastering workflow from raw TTS output to delivery-ready audio" ;
+            oc:hasStep _:ref_03837662d26cf575,
+                _:ref_3a6ae58a1fa735d3,
+                _:ref_43fbb1a0299a56fd,
+                _:ref_8eb56cbe31d84005,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Verify final loudness, timing drift, and apply re-normalization if any post-normalization edits occurred" ;
+                    oc:expectedOutcome "Delivery-ready audio meeting all spec requirements" ;
+                    oc:stepDependsOn _:ref_8eb56cbe31d84005 ;
+                    oc:stepId "validate-delivery" ],
+                _:ref_ecd8317b9d32e949 ;
+            oc:workflowId "tts-mastering-pipeline" ;
+            oc:workflowName "TTS Audio Mastering Pipeline" ] ;
+    oc:impartsKnowledge oc:kn_11a8b7fb,
+        oc:kn_170eea03,
+        oc:kn_732d13ab,
+        oc:kn_863b4207,
+        oc:kn_94bdefb1,
+        oc:kn_aea5f219,
+        oc:kn_c81a6af5,
+        oc:kn_d920ac4e,
+        oc:kn_e60eea0f ;
+    oc:isUserInvocable true ;
+    oc:nature "Work" ;
+    oc:requiresState oc:FileExists ;
+    oc:resolvesIntent "align tts segments to video timing",
+        "clean up speech artifacts",
+        "export delivery-ready audio",
+        "master tts audio for video delivery",
+        "normalize tts audio loudness" ;
+    oc:yieldsState oc:AudioMastered .
+
+oc:kn_11a8b7fb a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying speech cleanup to multiple TTS segments" ;
+    oc:directiveContent "Apply all cleanup filters in a single FFmpeg filter chain and keep them consistent across all segments." ;
+    oc:hasRationale "Consistent processing avoids audible discontinuities between segments." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_170eea03 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Per-segment speech cleanup filter chain" ;
+    oc:codeLanguage "ffmpeg" ;
+    oc:directiveContent "highpass=f=20,lowpass=f=16000,afade=t=in:st=0:d=0.05,afade=t=out:st={duration-0.05}:d=0.05" .
+
+oc:kn_732d13ab a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before starting any audio mastering workflow" ;
+    oc:directiveContent "Verify TTS engine output sample rate, bit depth, and channel count before beginning mastering." ;
+    oc:hasRationale "Mismatched assumptions about source format lead to incorrect filter parameters and normalization targets." .
+
+oc:kn_863b4207 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When mastering TTS audio for video delivery" ;
+    oc:directiveContent "1. Confirm TTS engine native sample rate. 2. Apply cleanup filters per segment (high-pass 20Hz, optional low-pass 16kHz, 50ms boundary fades). 3. Align segments to target timing windows (pad silence or gentle speed change). 4. Measure loudness with ebur128. 5. Apply loudnorm filter targeting -23 LUFS / -1.5 dBTP. 6. Re-normalize if any post-normalization edits were made." ;
+    oc:stepOrder 1 .
+
+oc:kn_94bdefb1 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When stitching segment-level TTS into a full track" ;
+    oc:directiveContent "Keep end-to-end timing drift <= 0.2s between TTS segments and their target video windows." ;
+    oc:hasRationale "Drift beyond this threshold causes visible lip-sync misalignment." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_aea5f219 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running the mastering pipeline" ;
+    oc:directiveContent "Running loudness normalization multiple times is safe only if the target values are idempotent; however, re-normalizing after speed changes is required, not optional." ;
+    oc:hasRationale "Normalization to a fixed LUFS target is convergent, but intermediate edits break the result." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_c81a6af5 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:directiveContent "Audio specs: integrated loudness=-23 LUFS, true peak=-1.5 dBTP, LRA~11, sample rate matched to video project, boundary fades applied, drift<=0.2s." ;
+    oc:templateVariables "LRA",
+        "drift",
+        "integrated_loudness",
+        "sample_rate",
+        "true_peak" .
+
+oc:kn_d920ac4e a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When preparing any TTS output for video use" ;
+    oc:directiveContent "Always confirm the native sample rate of the generated audio before resampling for video delivery." ;
+    oc:hasRationale "Resampling from an incorrect assumption about source rate introduces aliasing or quality loss." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e60eea0f a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When post-processing normalized audio" ;
+    oc:directiveContent "Do not adjust tempo or duration after loudness normalization without re-normalizing." ;
+    oc:hasRationale "Speed changes alter the waveform and integrated loudness; the audio will no longer meet spec." ;
+    oc:severityLevel "HIGH" .
+
+_:ref_85d2662bf2a25a1f a oc:WorkflowStep ;
+    dcterms:description "**Apply normalization** (e.g., `loudnorm`) as the final step after cleanup and timing edits." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_9f43ade4e2680184 a oc:WorkflowStep ;
+    dcterms:description "**Measure loudness** using FFmpeg `ebur128` (or equivalent meter)." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e1d9f29dd484513d a oc:WorkflowStep ;
+    dcterms:description "If you adjust tempo/duration after normalization, re-normalize again." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_03837662d26cf575 a oc:WorkflowStep ;
+    dcterms:description "Apply per-segment cleanup: high-pass 20Hz, optional low-pass 16kHz, 50ms fade-in/fade-out" ;
+    oc:expectedOutcome "Clean segments free of rumble, harshness, and boundary clicks" ;
+    oc:stepDependsOn _:ref_43fbb1a0299a56fd ;
+    oc:stepId "cleanup-filters" .
+
+_:ref_0f380c49bcbcb8e7 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_85d2662bf2a25a1f,
+        _:ref_9f43ade4e2680184,
+        _:ref_e1d9f29dd484513d ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_3a6ae58a1fa735d3 a oc:WorkflowStep ;
+    dcterms:description "Measure integrated loudness using FFmpeg ebur128" ;
+    oc:expectedOutcome "Current loudness values known for each segment" ;
+    oc:stepDependsOn _:ref_ecd8317b9d32e949 ;
+    oc:stepId "measure-loudness" .
+
+_:ref_43fbb1a0299a56fd a oc:WorkflowStep ;
+    dcterms:description "Confirm TTS engine native sample rate, bit depth, and channel layout" ;
+    oc:expectedOutcome "Source audio format verified and documented" ;
+    oc:stepId "verify-format" .
+
+_:ref_8eb56cbe31d84005 a oc:WorkflowStep ;
+    dcterms:description "Apply loudnorm filter targeting -23 LUFS integrated, -1.5 dBTP true peak" ;
+    oc:expectedOutcome "Audio meets broadcast loudness specification" ;
+    oc:stepDependsOn _:ref_3a6ae58a1fa735d3 ;
+    oc:stepId "normalize-loudness" .
+
+_:ref_ecd8317b9d32e949 a oc:WorkflowStep ;
+    dcterms:description "Align segments to target video windows: pad silence for short segments, gentle speed change or truncate for long segments" ;
+    oc:expectedOutcome "All segments fit their target windows within 0.2s drift tolerance" ;
+    oc:stepDependsOn _:ref_03837662d26cf575 ;
+    oc:stepId "timing-alignment" .
+

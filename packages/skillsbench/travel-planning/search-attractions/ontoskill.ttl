@@ -1,0 +1,115 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_travel_planning_search_attractions a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "search-attractions" ;
+    skos:broader "Search skill" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/travel-planning/search-attractions" ;
+    oc:contentHash "4e9becfffba231990b7b2013df13177c1c3ed892fd0ff1605140e723f3e720c8" ;
+    oc:differentia "that retrieves attractions by city from a bundled dataset for sightseeing and travel planning" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasArgumentHint "city name (e.g., \"New York\")" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Retrieve attractions by city from the bundled dataset. Use this skill when surfacing points of interest or building sightseeing suggestions for a destination." ;
+    oc:hasName "search-attractions" ;
+    oc:hasRequirement oc:req_746aacc9 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: search-attractions
+description: Retrieve attractions by city from the bundled dataset. Use this skill when surfacing points of interest or building sightseeing suggestions for a destination.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Query attractions for a given city." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install pandas
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 12-14" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from search_attractions import Attractions
+
+attractions = Attractions()
+print(attractions.run("New York"))
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 18-23" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Quick Start" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Search Attractions" ] ;
+    oc:impartsKnowledge oc:kn_0b313384,
+        oc:kn_123711b0,
+        oc:kn_607ad5f4,
+        oc:kn_92d26826,
+        oc:kn_b8d83bed ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "build sightseeing suggestions",
+        "discover tourist attractions in a city",
+        "find points of interest for a destination",
+        "search attractions by city" ;
+    oc:yieldsState oc:AttractionsRetrieved .
+
+oc:kn_0b313384 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "always" ;
+    oc:directiveContent "This skill is read-only and idempotent; running it multiple times with the same city returns the same results without side effects" ;
+    oc:hasRationale "Ensures safe retry behavior when querying the static bundled dataset" .
+
+oc:kn_123711b0 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When searching for attractions" ;
+    oc:directiveContent "1. Import Attractions class 2. Instantiate Attractions() 3. Call .run(city_name) with target city" ;
+    oc:hasRationale "Standard usage pattern for the bundled attractions search module" ;
+    oc:stepOrder 1 .
+
+oc:kn_607ad5f4 a oc:DataProvenance,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When interpreting or presenting results to users" ;
+    oc:directiveContent "Attraction data comes from a bundled dataset, not a live API; results may not reflect real-time availability or seasonal closures" ;
+    oc:hasRationale "Agents should qualify recommendations noting the data source is bundled and may be outdated" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_92d26826 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When querying attractions for a city" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from search_attractions import Attractions
+
+attractions = Attractions()
+print(attractions.run("New York"))""" .
+
+oc:kn_b8d83bed a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "before execution" ;
+    oc:directiveContent "pip install pandas must be completed before running this skill" ;
+    oc:hasRationale "The skill relies on pandas for reading the bundled attractions CSV dataset" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+

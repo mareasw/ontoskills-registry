@@ -1,0 +1,19 @@
+{
+  "package_id": "skillsbench/dynamic-object-aware-egomotion",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "dyn-object-masks/ontoskill.ttl",
+    "egomotion-estimation/ontoskill.ttl",
+    "output-validation/ontoskill.ttl",
+    "sampling-and-indexing/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "dyn-object-masks/intents.json",
+    "egomotion-estimation/intents.json",
+    "output-validation/intents.json",
+    "sampling-and-indexing/intents.json"
+  ],
+  "skills": []
+}

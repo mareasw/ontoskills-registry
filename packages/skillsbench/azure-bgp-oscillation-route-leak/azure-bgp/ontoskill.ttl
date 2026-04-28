@@ -1,0 +1,844 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_skillsbench_azure_bgp_oscillation_route_leak_azure_bgp a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "azure-bgp" ;
+    skos:broader "Network routing analysis framework" ;
+    prov:wasDerivedFrom "/home/marcello/Documenti/onto/ontoskills/skills/author/skillsbench-azure-bgp-oscillation-route-leak/azure-bgp" ;
+    oc:contentHash "769c8089705d2a188ec1e4830ae4845492944f60852044a61fc9961e896e05c8" ;
+    oc:differentia "detects BGP oscillation via preference cycles and route leaks via valley-free violations in Azure Virtual WAN topologies, proposing only policy-level mitigations" ;
+    oc:handlesFailure oc:InvalidInput,
+        oc:ProhibitedFixRejected ;
+    oc:hasArgumentHint "JSON input files: topology.json, relationships.json, preferences.json, route.json, route_leaks.json, possible_solutions.json" ;
+    oc:hasCategory "networking" ;
+    oc:hasDescription "Analyze and resolve BGP oscillation and BGP route leaks in Azure Virtual WAN–style hub-and-spoke topologies (and similar cloud-managed BGP environments). Detect preference cycles, identify valley-free violations, and propose allowed policy-level mitigations while rejecting prohibited fixes." ;
+    oc:hasName "azure-bgp" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: azure-bgp
+description: "Analyze and resolve BGP oscillation and BGP route leaks in Azure Virtual WAN–style hub-and-spoke topologies (and similar cloud-managed BGP environments). Detect preference cycles, identify valley-free violations, and propose allowed policy-level mitigations while rejecting prohibited fixes."
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Analyze and resolve BGP oscillation and BGP route leaks in Azure Virtual WAN–style hub-and-spoke topologies (and similar cloud-managed BGP environments)." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 4 ;
+                    oc:textContent "The focus is cloud-correct reasoning, not on-prem router manipulation." ],
+                [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 2 ;
+                    oc:textContent "This skill trains an agent to:" ],
+                [ a oc:BulletList ;
+                    oc:blockType "bullet_list" ;
+                    oc:contentOrder 3 ;
+                    oc:hasItem [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 3 ;
+                            oc:itemText "Propose allowed, policy-level mitigations (routing intent, export policy, communities, UDR, ingress filtering)" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 4 ;
+                            oc:itemText "Reject prohibited fixes (disabling BGP, shutting down peering, removing connectivity)" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 1 ;
+                            oc:itemText "Detect preference cycles that cause BGP oscillation" ],
+                        [ a oc:BulletItem ;
+                            oc:blockType "bullet_item" ;
+                            oc:itemOrder 2 ;
+                            oc:itemText "Identify valley-free violations that constitute route leaks" ] ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "RFC 4271 — Border Gateway Protocol 4 (BGP-4)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Gao–Rexford model — Valley-free routing economics" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "References" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Unexpected transit, leaked prefixes, or valley-free violations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Repeated route flapping or unstable path selection" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Choosing between routing intent, UDRs, or BGP policy fixes" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Evaluating whether a proposed \"fix\" is valid in Azure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Azure Virtual WAN, hub-and-spoke BGP, ExpressRoute, or VPN gateways" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Use this skill when a task involves:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 2 ;
+                            oc:textContent "All are false." ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "❌ **Timer tuning or dampening fixes oscillation** — False. These reduce symptoms but don't break preference cycles." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "❌ **Removing peers is a valid mitigation** — False. This is prohibited in Azure." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "❌ **Accepting fewer prefixes prevents route leaks** — False. Ingress filtering alone doesn't stop export of other leaked routes." ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "❌ **Restarting gateways fixes root cause** — False. Only resets transient state." ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Valley-Free Rule**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "A route leak exists if either is true:" ],
+                                _:ref_4709c481f8803149,
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 2 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "**Valley-Free Rule**" ;
+                                    oc:tableMarkdown """| Learned from | May export to |
+|--------------|---------------|
+| Customer | Anyone |
+| Peer | Customers only |
+| Provider | Customers only |
+""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Leak Conditions**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 8 ;
+                            oc:sectionTitle "Step 3 — Detect BGP Route Leak (Valley-Free Violation)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Every ASN referenced must exist in `topology.json`" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "`provider(A→B)` ⇔ `customer(B→A)`" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "`peer` must be symmetric" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Relationship symmetry must hold:" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "If this fails, the input is invalid." ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 6 ;
+                            oc:sectionTitle "Step 1 — Sanity-Check Inputs" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Definition**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """pref = {asn: prefer_via_asn, ...}
+
+def find_cycle(start):
+    path = []
+    seen = {}
+    cur = start
+    while cur in pref:
+        if cur in seen:
+            return path[seen[cur]:]  # cycle found
+        seen[cur] = len(path)
+        path.append(cur)
+        cur = pref[cur]
+    return None
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 6 ;
+                                    oc:sourceLocation "lines 77-91" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Detection Rule**" ],
+                                _:ref_99f6c1cf6b8da810,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**Example pseudocode:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "BGP oscillation exists if ASes form a preference cycle, often between peers." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 7 ;
+                            oc:sectionTitle "Step 2 — Detect BGP Oscillation (Preference Cycle)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Reasoning Workflow (Executable Checklist)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "❌ BGP sessions between hubs **cannot** be administratively disabled by customers as it's owned by azure" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "✅ Problems **must** be fixed using routing policy, not topology destruction" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "❌ Removing connectivity is **not** a valid solution as it break all other traffic running" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "❌ Peering connections **cannot** be shut down as a fix as it break all other traffic running on the connections" ] ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "An agent must internalize these constraints before reasoning:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Any solution violating these rules is invalid.**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Core Invariants (Must Never Be Violated)" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent "**Use when:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "✔ Route leaks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "✔ Oscillation" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Applies to:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent """**Routing Behavior:**
+Enforces deterministic forwarding independent of BGP decision processes. UDRs operate at the data plane layer and take precedence over dynamic BGP routes.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**For oscillation:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 11 ;
+                                    oc:textContent """**Trade-off:**
+UDR is a data-plane fix that "masks" the control-plane issue. BGP may continue to have problems, but forwarding is stabilized. Prefer policy fixes (routing intent, export controls) when available for cleaner architecture.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent """**Purpose:**
+Authoritative, static routing mechanism in Azure that explicitly defines the next hop for network traffic based on destination IP prefixes, overriding Azure system routes and BGP-learned routes.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Leaked Prefix Neutralization** — UDR's explicit next hop supersedes the leaked route's next hop, preventing unauthorized transit" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "When a UDR specifies a next hop (e.g., prefer specific Virtual WAN hub), traffic cannot follow leaked peer routes even if BGP has learned them" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Route Leak Mitigation** — Overrides leaked BGP routes by changing the effective next hop" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**For route leaks:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Oscillation Neutralization** — Breaks the impact of BGP preference cycles by imposing a fixed forwarding path" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Even if vhubvnet1 and vhubvnet2 continue to flip-flop their route preferences, the UDR ensures traffic always goes to the same deterministic next hop" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 10 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Routing intent is unavailable" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Immediate containment is required" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 12 ;
+                            oc:sectionTitle "Tier 3 — User Defined Routes (UDR)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 6 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Breaks preference cycles by enforcing a single forwarding hierarchy" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Even if both hubs prefer each other's routes, intent policy ensures traffic follows one path" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 5 ;
+                                    oc:textContent "**For oscillation:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 8 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Enforces valley-free routing by keeping provider routes in proper hierarchy" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "When intent mandates hub-to-hub traffic goes through Virtual WAN (ASN 65001), leaked routes cannot be used" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Prevents leaked peer routes from being used as transit" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Why it works:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Applies to:**" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "✔ Route leaks" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "✔ Oscillation" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Routing intent operates above BGP** — BGP still learns routes, but does not decide forwarding" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Decouples forwarding correctness from BGP stability** — Even if BGP oscillates, forwarding is stable" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Forwarding becomes deterministic and policy-driven** — Intent policy overrides BGP path selection" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 9 ;
+                                    oc:textContent """**Agent reasoning:**
+If routing intent is available, recommend it first.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 7 ;
+                                    oc:textContent "**For route leaks:**" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 10 ;
+                            oc:sectionTitle "Tier 1 — Virtual WAN Routing Intent (Preferred)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**For oscillation:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 4 ;
+                                    oc:textContent "**For route leaks:**" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 6 ;
+                                    oc:textContent """**Limitation:**
+Does not control forwarding if multiple valid paths remain.""" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent """**Example:**
+If vhubvnet1 (ASN 65002) filters routes learned from vhubvnet2 (ASN 65003) before re-advertising, vhubvnet2 stops receiving routes via vhubvnet1, breaking the oscillation cycle.""" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 5 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**RPKI origin validation** — Cryptographically rejects BGP announcements from ASes that are not authorized to originate a given prefix, preventing many accidental and sub-prefix leaks from propagating" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Enforce valley-free export rules** — Prevent announcing provider/peer-learned routes to peers/providers" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Ingress filtering** — Reject routes with invalid AS_PATH from peers" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Use communities** (e.g., `no-export`) where applicable" ] ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 2 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Filter routes learned from a peer before re-advertising** — Removes one edge of the preference cycle" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:hasChild [ a oc:BulletList ;
+                                                    oc:blockType "bullet_list" ;
+                                                    oc:contentOrder 1 ;
+                                                    oc:hasItem [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 2 ;
+                                                            oc:itemText "Hub B can no longer prefer the path through Hub A because it no longer exists" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 3 ;
+                                                            oc:itemText "The cycle collapses, routing stabilizes" ],
+                                                        [ a oc:BulletItem ;
+                                                            oc:blockType "bullet_item" ;
+                                                            oc:itemOrder 1 ;
+                                                            oc:itemText "If Hub A filters routes learned from Hub B before re-announcing, Hub B stops receiving routes via Hub A" ] ] ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Why this works**: In a cycle where Hub A prefers routes via Hub B and vice versa, filtering breaks one \"leg\":" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 11 ;
+                            oc:sectionTitle "Tier 2 — Export / Route Policy (Protocol-Correct)" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Fix Selection Logic (Ranked)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "These solutions are **always invalid**:" ],
+                        _:ref_4038f1459bb18ae5,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 4 ;
+                            oc:textContent "Cloud providers separate policy control from connectivity existence to protect shared infrastructure and SLAs." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 8 ;
+                            oc:textContent "**Correct approach**: Fix BGP issues through **policy changes** (route filters, preferences, export controls, communities) rather than disabling connectivity." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 6 ;
+                            oc:textContent "BGP sessions and peering connections in Azure (Virtual WAN, ExpressRoute, VPN Gateway) **cannot be administratively shut down or disabled** by customers. This is a fundamental architectural constraint:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 5 ;
+                            oc:textContent "**Why these are not allowed in Azure:**" ],
+                        [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "These solutions are **always invalid**" ;
+                            oc:tableMarkdown """| Proposed Fix | Reason |
+|--------------|--------|
+| Disable BGP | Not customer-controllable |
+| Disable peering | prohibited operation and cannot solve the issue |
+| Shutdown gateways | Breaks SLA / shared control plane |
+| Restart devices | Resets symptoms only |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "**Required explanation:**" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Prohibited Fixes (Must Be Rejected)" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 2 ;
+                            oc:rowCount 6 ;
+                            oc:tableCaption "Tasks using this skill typically provide small JSON files" ;
+                            oc:tableMarkdown """| File | Meaning |
+|------|---------|
+| `topology.json` | Directed BGP adjacency graph |
+| `relationships.json` | Economic relationship per edge (provider, customer, peer) |
+| `preferences.json` | Per-ASN preferred next hop (may cause oscillation) |
+| `route.json` | Prefix and origin ASN |
+| `route_leaks.json` | Evidence of invalid propagation |
+| `possible_solutions.json` | Candidate fixes to classify |
+""" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Tasks using this skill typically provide small JSON files:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Expected Inputs" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_08699e53244e2217,
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "A correct solution should:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Output Expectations" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Azure BGP Oscillation & Route Leak Analysis" ] ;
+    oc:hasWorkflow _:ref_08699e53244e2217,
+        _:ref_4038f1459bb18ae5,
+        _:ref_4709c481f8803149,
+        _:ref_99f6c1cf6b8da810,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for analyzing Azure BGP problems: validate inputs, detect oscillation, detect route leaks, classify fixes." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Select fix from ranked tiers: Tier 1 (Routing Intent) → Tier 2 (Export/Route Policy) → Tier 3 (UDR). Explicitly reject any prohibited fixes." ;
+                    oc:expectedOutcome "Allowed policy-level fix recommended with reasoning; prohibited fixes rejected with Azure-specific explanation." ;
+                    oc:stepDependsOn _:ref_ec2f8d540182e816,
+                        _:ref_fff114578e3dc265 ;
+                    oc:stepId "recommend-fix" ],
+                _:ref_a867af8c93dcb1f6,
+                _:ref_ec2f8d540182e816,
+                _:ref_fff114578e3dc265 ;
+            oc:workflowId "azure-bgp-analysis" ;
+            oc:workflowName "BGP Oscillation & Route Leak Analysis" ] ;
+    oc:impartsKnowledge oc:kn_0c088277,
+        oc:kn_0e67b343,
+        oc:kn_0f8a9766,
+        oc:kn_66980e51,
+        oc:kn_6aeb427b,
+        oc:kn_80c39daf,
+        oc:kn_aad0cfca,
+        oc:kn_ada7587f,
+        oc:kn_bb11df96,
+        oc:kn_bf1a419a,
+        oc:kn_de7ebfc4,
+        oc:kn_f3fdec81 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:NetworkAvailable ;
+    oc:resolvesIntent "analyze BGP oscillation",
+        "classify valley-free violations",
+        "detect route leaks",
+        "evaluate proposed BGP mitigations",
+        "recommend Azure BGP fixes",
+        "troubleshoot Azure Virtual WAN routing" ;
+    oc:yieldsState oc:FixRecommended,
+        oc:OscillationDetected,
+        oc:RouteLeakClassified .
+
+oc:kn_0c088277 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating any proposed BGP fix for Azure Virtual WAN" ;
+    oc:directiveContent "BGP sessions between hubs cannot be administratively disabled by customers — they are owned by Azure's shared control plane." ;
+    oc:hasRationale "Azure's connectivity SLA and shared infrastructure depend on BGP sessions remaining active; customers control routing policy, not session existence." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_0e67b343 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before beginning any analysis" ;
+    oc:directiveContent "Verify all ASNs referenced in preferences.json, relationships.json, route.json, and route_leaks.json exist in topology.json; verify relationship symmetry holds." ;
+    oc:hasRationale "Invalid or inconsistent inputs produce meaningless analysis results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_0f8a9766 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When assessing oscillation mitigation proposals" ;
+    oc:directiveContent "Timer tuning or dampening does NOT fix BGP oscillation — it only reduces symptoms without breaking preference cycles." ;
+    oc:hasRationale "Oscillation is caused by preference cycles in route selection; adjusting timers masks the problem but the cycle persists." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_66980e51 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When selecting a fix strategy" ;
+    oc:directiveContent "Prefer fixes in this order: Tier 1 (Routing Intent) > Tier 2 (Export/Route Policy) > Tier 3 (UDR). Routing intent decouples forwarding from BGP stability; UDR only masks control-plane issues." ;
+    oc:hasRationale "Routing intent operates above BGP making forwarding deterministic; export policy is protocol-correct; UDR is a data-plane mask that leaves control-plane problems unresolved." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_6aeb427b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When assessing route leak mitigation proposals" ;
+    oc:directiveContent "Accepting fewer prefixes does NOT prevent route leaks — ingress filtering alone doesn't stop export of other leaked routes." ;
+    oc:hasRationale "Route leaks are caused by valley-free export violations; limiting ingress prefixes doesn't constrain export behavior." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_80c39daf a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "Always, when proposing any Azure BGP fix" ;
+    oc:directiveContent "Problems must be fixed using routing policy (routing intent, export policy, communities, UDR, ingress filtering), not topology destruction." ;
+    oc:hasRationale "Cloud providers separate policy control from connectivity existence to protect shared infrastructure and SLAs." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_aad0cfca a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When detecting oscillation in preference graphs" ;
+    oc:directiveContent "A 2-node preference cycle (A prefers B, B prefers A) is sufficient to conclude BGP oscillation exists." ;
+    oc:hasRationale "Even minimal cycles cause indefinite route flapping between the two participants." .
+
+oc:kn_ada7587f a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When producing analysis output" ;
+    oc:directiveContent """1. Identification: oscillation detected (preference cycle) and/or route leak detected (valley-free violation)
+2. Root cause explanation: which ASNs form the cycle or which edges violate valley-free
+3. Recommended fix: Tier 1 (routing intent) > Tier 2 (export policy) > Tier 3 (UDR) with specific mechanism
+4. Rejected fixes: explicit rejection of any prohibited fixes with Azure-specific reasoning""" ;
+    oc:templateVariables "oscillation_result",
+        "recommended_tier",
+        "rejected_fixes",
+        "root_cause",
+        "route_leak_result" .
+
+oc:kn_bb11df96 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When evaluating any proposed BGP fix for Azure Virtual WAN" ;
+    oc:directiveContent "Peering connections cannot be shut down or removed as a fix — this breaks all other traffic running on the connections." ;
+    oc:hasRationale "Connectivity removal is topology destruction, not policy correction; it violates Azure's separation of policy control from connectivity existence." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_bf1a419a a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When detecting BGP preference cycles to diagnose oscillation" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """pref = {asn: prefer_via_asn, ...}
+
+def find_cycle(start):
+    path = []
+    seen = {}
+    cur = start
+    while cur in pref:
+        if cur in seen:
+            return path[seen[cur]:]  # cycle found
+        seen[cur] = len(path)
+        path.append(cur)
+        cur = pref[cur]
+    return None""" .
+
+oc:kn_de7ebfc4 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "When analyzing any Azure BGP problem" ;
+    oc:directiveContent "1. Sanity-check inputs: verify every ASN exists in topology.json and relationship symmetry holds (provider(A→B) ⇔ customer(B→A), peer symmetric). 2. Detect oscillation: build directed graph ASN→preferred next-hop, find cycles. 3. Detect route leaks: check if provider-learned or peer-learned routes are exported to peers/providers. 4. Classify proposed fixes as allowed (policy-level) or prohibited (connectivity destruction)." ;
+    oc:stepOrder 1 .
+
+oc:kn_f3fdec81 a oc:KnowledgeNode,
+        oc:RollbackProcedure ;
+    oc:appliesToContext "When a policy fix has unintended side effects" ;
+    oc:directiveContent "If a fix causes unexpected behavior, revert to Tier 3 (UDR) for immediate containment while investigating, as UDR provides deterministic data-plane control independent of BGP." .
+
+_:ref_2c4b6abe82310f56 a oc:WorkflowStep ;
+    dcterms:description "Build a directed graph: `ASN → preferred next-hop ASN`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4183f760ce334019 a oc:WorkflowStep ;
+    dcterms:description "**Operational scale**: Managing BGP session state for thousands of customers requires automation that manual shutdown would undermine." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_61ec7a0366dabbb5 a oc:WorkflowStep ;
+    dcterms:description "**Security boundaries**: Customers control routing **policy** (what routes are advertised/accepted) but not the existence of BGP sessions themselves." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_65dc2f79b75ea06d a oc:WorkflowStep ;
+    dcterms:description "**Availability guarantees**: Azure's connectivity SLAs depend on these sessions remaining active." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_7f5d460a0f631efe a oc:WorkflowStep ;
+    dcterms:description "Explain why it occurs (preference cycle or valley-free violation)" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_8d95fabaa87edcef a oc:WorkflowStep ;
+    dcterms:description "Recommend allowed policy-level fixes" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ca8d0cbac8ccaf30 a oc:WorkflowStep ;
+    dcterms:description "**Shared control plane**: BGP and peering are part of Azure's provider-managed, SLA-backed control plane that operates at cloud scale." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_ce69fd3e7984f7a7 a oc:WorkflowStep ;
+    dcterms:description "If the graph contains a cycle, oscillation is possible" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e0282a3c8f352a93 a oc:WorkflowStep ;
+    dcterms:description "Route learned from a **provider** is exported to a **peer or provider**" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_e226b7ec66c940b0 a oc:WorkflowStep ;
+    dcterms:description "A 2-node cycle is sufficient to conclude oscillation." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_e4982d0b2b470029 a oc:WorkflowStep ;
+    dcterms:description "Route learned from a **peer** is exported to a **peer or provider**" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_e904bc8028bb0cc8 a oc:WorkflowStep ;
+    dcterms:description "Identify oscillation and/or route leak correctly" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_f9fafe5c16a146c3 a oc:WorkflowStep ;
+    dcterms:description "Explicitly reject prohibited fixes with reasoning" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_08699e53244e2217 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_7f5d460a0f631efe,
+        _:ref_8d95fabaa87edcef,
+        _:ref_e904bc8028bb0cc8,
+        _:ref_f9fafe5c16a146c3 ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4038f1459bb18ae5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 7 ;
+    oc:hasStep _:ref_4183f760ce334019,
+        _:ref_61ec7a0366dabbb5,
+        _:ref_65dc2f79b75ea06d,
+        _:ref_ca8d0cbac8ccaf30 ;
+    oc:workflowId "procedure_7" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4709c481f8803149 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 5 ;
+    oc:hasStep _:ref_e0282a3c8f352a93,
+        _:ref_e4982d0b2b470029 ;
+    oc:workflowId "procedure_5" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_99f6c1cf6b8da810 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 4 ;
+    oc:hasStep _:ref_2c4b6abe82310f56,
+        _:ref_ce69fd3e7984f7a7,
+        _:ref_e226b7ec66c940b0 ;
+    oc:workflowId "procedure_4" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_ec2f8d540182e816 a oc:WorkflowStep ;
+    dcterms:description "Check valley-free violations: routes learned from provider exported to peer/provider, or routes learned from peer exported to peer/provider." ;
+    oc:expectedOutcome "Route leaks identified with specific violating edges." ;
+    oc:stepDependsOn _:ref_a867af8c93dcb1f6 ;
+    oc:stepId "detect-route-leak" .
+
+_:ref_fff114578e3dc265 a oc:WorkflowStep ;
+    dcterms:description "Build directed preference graph (ASN → preferred next-hop) and search for cycles. A 2-node cycle confirms oscillation." ;
+    oc:expectedOutcome "Oscillation detected or ruled out, with cycle path identified." ;
+    oc:stepDependsOn _:ref_a867af8c93dcb1f6 ;
+    oc:stepId "detect-oscillation" .
+
+_:ref_a867af8c93dcb1f6 a oc:WorkflowStep ;
+    dcterms:description "Verify every ASN referenced exists in topology.json and that relationship symmetry holds (provider(A→B) ⇔ customer(B→A), peer symmetric)." ;
+    oc:expectedOutcome "Inputs validated or declared invalid." ;
+    oc:stepId "sanity-check" .
+

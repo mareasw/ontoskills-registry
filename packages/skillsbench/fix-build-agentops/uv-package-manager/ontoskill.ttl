@@ -1,0 +1,1493 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_fix_build_agentops_uv_package_manager a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "uv-package-manager" ;
+    skos:broader "package manager guide" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/fix-build-agentops/uv-package-manager" ;
+    oc:contentHash "54023d078c67faff93937501485296b70a10f58524a03cb6fe8a617de4b5890f" ;
+    oc:differentia "provides comprehensive instructions for using uv, an ultra-fast Rust-based Python package installer, resolver, virtual environment manager, and project workflow tool" ;
+    oc:handlesFailure oc:CacheCorrupted,
+        oc:DependencyConflict,
+        oc:NetworkTimeout,
+        oc:VersionMismatch ;
+    oc:hasArgumentHint "project-path or package-name" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, or optimizing Python development workflows with uv." ;
+    oc:hasName "uv-package-manager" ;
+    oc:hasRequirement oc:req_6a683cce,
+        oc:req_89f0378e ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Comprehensive guide to using uv, an extremely fast Python package installer and resolver written in Rust, for modern Python project management and dependency workflows." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent _:ref_d498cd56d931d0ed ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 19 ;
+                    oc:sectionTitle "Best Practices Summary" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Project structure
+# monorepo/
+#   packages/
+#     package-a/
+#       pyproject.toml
+#     package-b/
+#       pyproject.toml
+#   pyproject.toml (root)
+
+# Root pyproject.toml
+[tool.uv.workspace]
+members = ["packages/*"]
+
+# Install all workspace packages
+uv sync
+
+# Add workspace dependency
+uv add --path ./packages/package-a
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 346-365" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 12: Monorepo Support" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# .github/workflows/test.yml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Run linting
+        run: |
+          uv run ruff check .
+          uv run black --check .
+""" ;
+                                    oc:codeLanguage "yaml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 369-400" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 13: CI/CD Integration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Optimized multi-stage build:**" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Multi-stage Dockerfile
+FROM python:3.12-slim AS builder
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+WORKDIR /app
+
+# Install dependencies to venv
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-editable
+
+# Runtime stage
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Copy venv from builder
+COPY --from=builder /app/.venv .venv
+COPY . .
+
+# Use venv
+ENV PATH="/app/.venv/bin:$PATH"
+
+CMD ["python", "app.py"]
+""" ;
+                                    oc:codeLanguage "dockerfile" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 429-455" ],
+                                [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Dockerfile
+FROM python:3.12-slim
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Set working directory
+WORKDIR /app
+
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies
+RUN uv sync --frozen --no-dev
+
+# Copy application code
+COPY . .
+
+# Run application
+CMD ["uv", "run", "python", "app.py"]
+""" ;
+                                    oc:codeLanguage "dockerfile" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 404-425" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 14: Docker Integration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create lockfile (uv.lock)
+uv lock
+
+# Install from lockfile (exact versions)
+uv sync --frozen
+
+# Update lockfile without installing
+uv lock --no-install
+
+# Upgrade specific package in lock
+uv lock --upgrade-package requests
+
+# Check if lockfile is up to date
+uv lock --check
+
+# Export lockfile to requirements.txt
+uv export --format requirements-txt > requirements.txt
+
+# Export with hashes for security
+uv export --format requirements-txt --hash > requirements.txt
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 459-480" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Pattern 15: Lockfile Workflows" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Advanced Workflows" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Run Python script (auto-activates venv)
+uv run python app.py
+
+# Run installed CLI tool
+uv run black .
+uv run pytest
+
+# Run with specific Python version
+uv run --python 3.11 python script.py
+
+# Pass arguments
+uv run python script.py --arg value
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 152-165" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 3: Using uv run" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Linux/macOS
+source .venv/bin/activate
+
+# Windows (Command Prompt)
+.venv\\Scripts\\activate.bat
+
+# Windows (PowerShell)
+.venv\\Scripts\\Activate.ps1
+
+# Or use uv run (no activation needed)
+uv run python script.py
+uv run pytest
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 135-148" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 2: Activating Virtual Environments" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create virtual environment with uv
+uv venv
+
+# Create with specific Python version
+uv venv --python 3.12
+
+# Create with custom name
+uv venv my-env
+
+# Create with system site packages
+uv venv --system-site-packages
+
+# Specify location
+uv venv /path/to/venv
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 116-131" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 1: Creating Virtual Environments" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Virtual Environment Management" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Before
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# After
+uv venv
+uv pip install -r requirements.txt
+# Or better:
+uv init
+uv add -r requirements.txt
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 738-750" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "From pip + requirements.txt" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Before
+pip-compile requirements.in
+pip-sync requirements.txt
+
+# After
+uv lock
+uv sync --frozen
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 769-777" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "From pip-tools" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Before
+poetry install
+poetry add requests
+
+# After
+uv sync
+uv add requests
+
+# Keep existing pyproject.toml
+# uv reads [project] and [tool.poetry] sections
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 754-765" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "From Poetry" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 16 ;
+                    oc:sectionTitle "Migration Guide" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Migrate from requirements.txt
+uv add -r requirements.txt
+
+# Migrate from poetry
+# Already have pyproject.toml, just use:
+uv sync
+
+# Export to requirements.txt
+uv pip freeze > requirements.txt
+
+# Export with hashes
+uv pip freeze --require-hashes > requirements.txt
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 327-340" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 11: Using uv with Existing Projects" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """[project]
+name = "my-project"
+version = "0.1.0"
+description = "My awesome project"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0",
+    "pydantic>=2.0.0",
+    "click>=8.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=1.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    # Additional dev dependencies managed by uv
+]
+
+[tool.uv.sources]
+# Custom package sources
+my-package = { git = "https://github.com/user/repo.git" }
+""" ;
+                                    oc:codeLanguage "toml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 285-323" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 10: pyproject.toml with uv" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Project Configuration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Install packages (creates venv if needed)
+uv add requests pandas
+
+# Install dev dependencies
+uv add --dev pytest black ruff
+
+# Install from requirements.txt
+uv pip install -r requirements.txt
+
+# Install from pyproject.toml
+uv sync
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 98-110" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Install Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Create new project with virtual environment
+uv init my-project
+cd my-project
+
+# Or create in current directory
+uv init .
+
+# Initialize creates:
+# - .python-version (Python version)
+# - pyproject.toml (project config)
+# - README.md
+# - .gitignore
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 81-94" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Create a New Project" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Quick Start" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# pip
+python -m venv .venv
+source .venv/bin/activate
+pip install requests pandas numpy
+# ~30 seconds
+
+# uv
+uv venv
+uv add requests pandas numpy
+# ~2 seconds (10-15x faster)
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 525-536" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "uv vs pip" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# pip-tools
+pip-compile requirements.in
+pip-sync requirements.txt
+# ~15 seconds
+
+# uv
+uv lock
+uv sync --frozen
+# ~2 seconds (7-8x faster)
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 556-566" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "uv vs pip-tools" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# poetry
+poetry init
+poetry add requests pandas
+poetry install
+# ~20 seconds
+
+# uv
+uv init
+uv add requests pandas
+uv sync
+# ~3 seconds (6-7x faster)
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 540-552" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "uv vs poetry" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Comparison with Other Tools" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# UV installs packages in parallel by default
+
+# Control parallelism
+uv pip install --jobs 4 package1 package2
+
+# No parallel (sequential)
+uv pip install --jobs 1 package
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 501-509" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 17: Parallel Installation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# UV automatically uses global cache at:
+# Linux: ~/.cache/uv
+# macOS: ~/Library/Caches/uv
+# Windows: %LOCALAPPDATA%\\uv\\cache
+
+# Clear cache
+uv cache clean
+
+# Check cache size
+uv cache dir
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 486-497" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 16: Using Global Cache" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Install from cache only (no network)
+uv pip install --offline package
+
+# Sync from lockfile offline
+uv sync --frozen --offline
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 513-519" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 18: Offline Mode" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Performance Optimization" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Project management
+uv init [PATH]              # Initialize project
+uv add PACKAGE              # Add dependency
+uv remove PACKAGE           # Remove dependency
+uv sync                     # Install dependencies
+uv lock                     # Create/update lockfile
+
+# Virtual environments
+uv venv [PATH]              # Create venv
+uv run COMMAND              # Run in venv
+
+# Python management
+uv python install VERSION   # Install Python
+uv python list              # List installed Pythons
+uv python pin VERSION       # Pin Python version
+
+# Package installation (pip-compatible)
+uv pip install PACKAGE      # Install package
+uv pip uninstall PACKAGE    # Uninstall package
+uv pip freeze               # List installed
+uv pip list                 # List packages
+
+# Utility
+uv cache clean              # Clear cache
+uv cache dir                # Show cache location
+uv --version                # Show version
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 783-810" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Essential Commands" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 17 ;
+                    oc:sectionTitle "Command Reference" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Issue: uv not found
+# Solution: Add to PATH or reinstall
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+
+# Issue: Wrong Python version
+# Solution: Pin version explicitly
+uv python pin 3.12
+uv venv --python 3.12
+
+# Issue: Dependency conflict
+# Solution: Check resolution
+uv lock --verbose
+
+# Issue: Cache issues
+# Solution: Clear cache
+uv cache clean
+
+# Issue: Lockfile out of sync
+# Solution: Regenerate
+uv lock --upgrade
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 677-698" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Common Issues" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 14 ;
+                    oc:sectionTitle "Troubleshooting" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Clone repository
+git clone https://github.com/user/project.git
+cd project
+
+# Install dependencies (creates venv automatically)
+uv sync
+
+# Install with dev dependencies
+uv sync --all-extras
+
+# Update dependencies
+uv lock --upgrade
+
+# Run application
+uv run python app.py
+
+# Run tests
+uv run pytest
+
+# Add new dependency
+uv add new-package
+
+# Commit updated files
+git add pyproject.toml uv.lock
+git commit -m "Add new-package dependency"
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 599-625" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 20: Maintaining Existing Project" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Complete workflow
+uv init my-project
+cd my-project
+
+# Set Python version
+uv python pin 3.12
+
+# Add dependencies
+uv add fastapi uvicorn pydantic
+
+# Add dev dependencies
+uv add --dev pytest black ruff mypy
+
+# Create structure
+mkdir -p src/my_project tests
+
+# Run tests
+uv run pytest
+
+# Format code
+uv run black .
+uv run ruff check .
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 572-595" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 19: Starting a New Project" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Common Workflows" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "Built-in virtual environment support" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Compatible with pip, pip-tools, poetry" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Disk space efficient with global cache" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Blazing fast installation speeds" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "No Python required for installation" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "Comprehensive dependency resolution" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "Cross-platform support (Linux, macOS, Windows)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "2. Key Features" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**Drop-in pip replacement**: Compatible with pip workflows" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**Ultra-fast package installer**: 10-100x faster than pip" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**Written in Rust**: Leverages Rust's performance" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 5 ;
+                                            oc:itemText "**Python installer**: Download and manage Python versions" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 7 ;
+                                            oc:itemText "**Lockfile support**: Reproducible installations" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 6 ;
+                                            oc:itemText "**Resolver**: Advanced dependency resolution" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**Virtual environment manager**: Create and manage venvs" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "1. What is uv?" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "**vs poetry**: Faster, less opinionated, lighter" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 4 ;
+                                            oc:itemText "**vs conda**: Faster, Python-focused" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "**vs pip**: 10-100x faster, better resolver" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "**vs pip-tools**: Faster, simpler, better UX" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "3. UV vs Traditional Tools" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Core Concepts" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_1e561590c0e716e5 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Project Setup" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Use frozen installs in CI
+uv sync --frozen
+
+# Use offline mode when possible
+uv sync --offline
+
+# Parallel operations (automatic)
+# uv does this by default
+
+# Reuse cache across environments
+# uv shares cache globally
+
+# Use lockfiles to skip resolution
+uv sync --frozen  # skips resolution
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 717-732" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Performance Tips" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 15 ;
+                    oc:sectionTitle "Best Practices" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Set Python version for project
+uv python pin 3.12
+
+# This creates/updates .python-version file
+
+# Use specific Python version for command
+uv --python 3.11 run python script.py
+
+# Create venv with specific version
+uv venv --python 3.12
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 268-279" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 9: Setting Python Version" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Install Python version
+uv python install 3.12
+
+# Install multiple versions
+uv python install 3.11 3.12 3.13
+
+# Install latest version
+uv python install
+
+# List installed versions
+uv python list
+
+# Find available versions
+uv python list --all-versions
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 249-264" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 8: Installing Python Versions" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Python Version Management" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """// .vscode/settings.json
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["-v"],
+  "python.linting.enabled": true,
+  "python.formatting.provider": "black",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  }
+}
+""" ;
+                                    oc:codeLanguage "json" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 657-671" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 22: VS Code Integration" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: uv-lock
+        name: uv lock
+        entry: uv lock
+        language: system
+        pass_filenames: false
+
+      - id: ruff
+        name: ruff
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+
+      - id: black
+        name: black
+        entry: uv run black
+        language: system
+        types: [python]
+""" ;
+                                    oc:codeLanguage "yaml" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 631-653" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 21: Pre-commit Hooks" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 13 ;
+                    oc:sectionTitle "Tool Integration" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Using pip (if you already have Python)
+pip install uv
+
+# Using Homebrew (macOS)
+brew install uv
+
+# Using cargo (if you have Rust)
+cargo install --git https://github.com/astral-sh/uv uv
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 53-68" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Quick Install" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """uv --version
+# uv 0.x.x
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 72-75" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Verify Installation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Installation" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Upgrade specific package
+uv add --upgrade requests
+
+# Upgrade all packages
+uv sync --upgrade
+
+# Upgrade package to latest
+uv add --upgrade requests
+
+# Show what would be upgraded
+uv tree --outdated
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 215-227" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Pattern 6: Upgrading Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Generate uv.lock file
+uv lock
+
+# Update lock file
+uv lock --upgrade
+
+# Lock without installing
+uv lock --no-install
+
+# Lock specific package
+uv lock --upgrade-package requests
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 231-243" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 4 ;
+                            oc:sectionTitle "Pattern 7: Locking Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Add package (adds to pyproject.toml)
+uv add requests
+
+# Add with version constraint
+uv add "django>=4.0,<5.0"
+
+# Add multiple packages
+uv add numpy pandas matplotlib
+
+# Add dev dependency
+uv add --dev pytest pytest-cov
+
+# Add optional dependency group
+uv add --optional docs sphinx
+
+# Add from git
+uv add git+https://github.com/user/repo.git
+
+# Add from git with specific ref
+uv add git+https://github.com/user/repo.git@v1.0.0
+
+# Add from local path
+uv add ./local-package
+
+# Add editable local package
+uv add -e ./local-package
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 171-198" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Pattern 4: Adding Dependencies" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Remove package
+uv remove requests
+
+# Remove dev dependency
+uv remove --dev pytest
+
+# Remove multiple packages
+uv remove numpy pandas matplotlib
+""" ;
+                                    oc:codeLanguage "bash" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 202-211" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Pattern 5: Removing Dependencies" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Package Management" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Installing Python interpreters" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 9 ;
+                                    oc:itemText "Working with lockfiles for reproducible builds" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 10 ;
+                                    oc:itemText "Optimizing Docker builds with Python dependencies" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 8 ;
+                                    oc:itemText "Managing monorepo Python projects" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Resolving dependency conflicts efficiently" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Setting up new Python projects quickly" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Migrating from pip/pip-tools/poetry" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Managing Python dependencies faster than pip" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 7 ;
+                                    oc:itemText "Speeding up CI/CD pipelines" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Creating and managing virtual environments" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use This Skill" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "**Astral blog**: https://astral.sh/blog" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "**Official documentation**: https://docs.astral.sh/uv/" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "**GitHub repository**: https://github.com/astral-sh/uv" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "**Comparison with other tools**: https://docs.astral.sh/uv/pip/compatibility/" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "**Migration guides**: https://docs.astral.sh/uv/guides/" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 18 ;
+                    oc:sectionTitle "Resources" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "UV Package Manager" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: uv-package-manager
+description: Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, or optimizing Python development workflows with uv.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Workflow for cloning and setting up an existing project that uses uv." ;
+            oc:hasStep _:ref_4227b2f676d65179,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run uv run python -c 'import <pkg>' or uv run pytest to verify environment" ;
+                    oc:expectedOutcome "No import errors; tests pass" ;
+                    oc:stepDependsOn _:ref_9fbd9968a62b088e ;
+                    oc:stepId "verify-install" ],
+                _:ref_9fbd9968a62b088e ;
+            oc:workflowId "existing-project-onboard" ;
+            oc:workflowName "Onboard to Existing uv Project" ],
+        _:ref_1e561590c0e716e5,
+        [ a oc:Workflow ;
+            dcterms:description "Complete workflow for initializing a new Python project with uv, setting Python version, adding dependencies, and running code." ;
+            oc:hasStep _:ref_18a286154594c48c,
+                _:ref_553170d63ada81d0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Run uv run pytest or uv run python app.py to verify setup works" ;
+                    oc:expectedOutcome "Scripts execute correctly using the managed virtual environment" ;
+                    oc:stepDependsOn _:ref_18a286154594c48c ;
+                    oc:stepId "run-and-verify" ],
+                _:ref_bcfc6e2bb99c7a4a ;
+            oc:workflowId "new-project-setup" ;
+            oc:workflowName "Create New Python Project with uv" ],
+        _:ref_d498cd56d931d0ed ;
+    oc:impartsKnowledge oc:kn_09c69f26,
+        oc:kn_41db4e29,
+        oc:kn_76903044,
+        oc:kn_82114aae,
+        oc:kn_882b0b79,
+        oc:kn_9de9a88b,
+        oc:kn_a43357f3,
+        oc:kn_c9077783,
+        oc:kn_dca07037,
+        oc:kn_e2822d98,
+        oc:kn_ee0d431f ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "configure CI/CD pipelines with uv",
+        "create and manage lockfiles for reproducible builds",
+        "create and manage virtual environments",
+        "install Python interpreters",
+        "manage Python dependencies",
+        "manage monorepo Python projects",
+        "migrate from pip/poetry/pip-tools to uv",
+        "optimize Docker builds with Python dependencies",
+        "set up new Python projects",
+        "troubleshoot uv issues" ;
+    oc:yieldsState oc:DependenciesInstalled,
+        oc:EnvironmentReady .
+
+oc:kn_09c69f26 a oc:KnowledgeNode,
+        oc:PreFlightCheck ;
+    oc:appliesToContext "Before running any uv commands" ;
+    oc:directiveContent "Verify uv is installed with `uv --version` before attempting project setup commands." ;
+    oc:hasRationale "uv must be available on PATH; if missing, install via curl/pip/brew first" .
+
+oc:kn_41db4e29 a oc:KnowledgeNode,
+        oc:RecoveryTactic ;
+    oc:appliesToContext "On cache corruption or inexplicable installation failures" ;
+    oc:directiveContent "Clear the global cache with `uv cache clean` when encountering corrupted or stale package data." ;
+    oc:hasRationale "uv's global cache can occasionally hold corrupted artifacts; clearing resolves mysterious install failures" .
+
+oc:kn_76903044 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When evaluating tool choice for dependency management" ;
+    oc:directiveContent "uv is 10-100x faster than pip due to Rust implementation, parallel installation, and global disk cache." ;
+    oc:hasRationale "Performance gains are most dramatic in CI/CD and cold-start scenarios" .
+
+oc:kn_82114aae a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When managing project dependencies" ;
+    oc:directiveContent "Always commit uv.lock to version control for reproducible builds across environments." ;
+    oc:hasRationale "Lockfiles ensure exact version reproduction in CI/CD and across developer machines" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_882b0b79 a oc:KnowledgeNode,
+        oc:WorkflowStrategy ;
+    oc:appliesToContext "When optimizing Docker images for production" ;
+    oc:directiveContent "For Docker builds, use multi-stage builds with uv sync --frozen --no-dev --no-editable, then copy .venv to a slim runtime image." ;
+    oc:hasRationale "Multi-stage builds minimize final image size while maintaining reproducible dependencies" .
+
+oc:kn_9de9a88b a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When running uv sync in CI/CD environments" ;
+    oc:directiveContent "Use --frozen flag in CI pipelines to prevent unexpected dependency resolution." ;
+    oc:hasRationale "Frozen installs guarantee the lockfile is respected exactly, avoiding surprise upgrades in production" ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_a43357f3 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When managing project dependencies" ;
+    oc:directiveContent "Do not mix pip and uv commands on the same virtual environment." ;
+    oc:hasRationale "Mixing package managers can cause inconsistent state, broken metadata, and resolution conflicts" ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_c9077783 a oc:Idempotency,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When re-running CI or reprovisioning environments" ;
+    oc:directiveContent "uv sync is idempotent — running it multiple times produces the same environment state as defined by uv.lock." ;
+    oc:hasRationale "Safe to run repeatedly without side effects, enabling reliable automated workflows" .
+
+oc:kn_dca07037 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When setting up a new project" ;
+    oc:directiveContent "Pin Python version with .python-version file via `uv python pin <version>` at project initialization." ;
+    oc:hasRationale "Ensures consistent interpreter version across all developers and CI environments" .
+
+oc:kn_e2822d98 a oc:KnowledgeNode,
+        oc:KnownIssue ;
+    oc:appliesToContext "After manually editing pyproject.toml" ;
+    oc:directiveContent "Lockfile out-of-sync errors occur when pyproject.toml is modified without running uv lock." ;
+    oc:hasRationale "The lockfile must be regenerated whenever dependency specifications change to stay consistent" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_ee0d431f a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When running Python scripts or tools in a project" ;
+    oc:directiveContent "Use `uv run` instead of manually activating virtual environments." ;
+    oc:hasRationale "uv run auto-activates the project venv, reducing errors from forgotten activation and simplifying workflows" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_6a683cce a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "bash" .
+
+oc:req_89f0378e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "uv" .
+
+_:ref_022304181f11985b a oc:WorkflowStep ;
+    dcterms:description "**Export for compatibility** - Generate requirements.txt when needed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_20c1818ce641857e a oc:WorkflowStep ;
+    dcterms:description "**Use uv run** - Avoid manual venv activation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_2606ba030aabf4cd a oc:WorkflowStep ;
+    dcterms:description "**Keep uv updated** for latest features" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_45a99dff1586bdc7 a oc:WorkflowStep ;
+    dcterms:description "**Pin Python versions** - Use .python-version" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_630126bb486e78a7 a oc:WorkflowStep ;
+    dcterms:description "**Read the docs** - uv is feature-rich and evolving" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_10" ;
+    oc:stepOrder 10 .
+
+_:ref_8f71093fc464d98c a oc:WorkflowStep ;
+    dcterms:description "**Use uv for all new projects** - Start with `uv init`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_8f7920e9357f8480 a oc:WorkflowStep ;
+    dcterms:description "**Use --frozen in CI** - Exact reproduction" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_9d26f96d37664107 a oc:WorkflowStep ;
+    dcterms:description "**Export requirements.txt** for compatibility" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_9d7bd6ecee26ca9f a oc:WorkflowStep ;
+    dcterms:description "**Leverage caching** - Let uv manage global cache" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_b81646c531f541a6 a oc:WorkflowStep ;
+    dcterms:description "**Use --frozen in CI** for consistent builds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_c3d24bfcf7bd1c73 a oc:WorkflowStep ;
+    dcterms:description "**Leverage global cache** for speed" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_c5f7b941d2c55192 a oc:WorkflowStep ;
+    dcterms:description "**Commit lockfiles** - Ensure reproducible builds" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_cef1ac61288d4976 a oc:WorkflowStep ;
+    dcterms:description "**Use uv run** instead of activating venv" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_d4ef67f24aa1a530 a oc:WorkflowStep ;
+    dcterms:description "**Keep uv updated** - Fast-moving project" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_d8747580c89de4c5 a oc:WorkflowStep ;
+    dcterms:description "**Always use lockfiles** for reproducibility" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_dfa98b22fffc679e a oc:WorkflowStep ;
+    dcterms:description "**Use workspace** for monorepos" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_e8fdf7a1d4c64b81 a oc:WorkflowStep ;
+    dcterms:description "**Use workspaces** - For monorepo projects" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_eaa7c99a1387a5f6 a oc:WorkflowStep ;
+    dcterms:description "**Pin Python version** with .python-version" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_f3811b81726d3de4 a oc:WorkflowStep ;
+    dcterms:description "**Separate dev dependencies** from production" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_fe1d37c7dd24925a a oc:WorkflowStep ;
+    dcterms:description "**Commit uv.lock** to version control" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_18a286154594c48c a oc:WorkflowStep ;
+    dcterms:description "Run uv add to add production dependencies and uv add --dev for dev dependencies" ;
+    oc:expectedOutcome "Dependencies added to pyproject.toml and uv.lock generated, venv created" ;
+    oc:stepDependsOn _:ref_bcfc6e2bb99c7a4a ;
+    oc:stepId "add-deps" .
+
+_:ref_1e561590c0e716e5 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_2606ba030aabf4cd,
+        _:ref_9d26f96d37664107,
+        _:ref_b81646c531f541a6,
+        _:ref_c3d24bfcf7bd1c73,
+        _:ref_cef1ac61288d4976,
+        _:ref_d8747580c89de4c5,
+        _:ref_dfa98b22fffc679e,
+        _:ref_eaa7c99a1387a5f6,
+        _:ref_f3811b81726d3de4,
+        _:ref_fe1d37c7dd24925a ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_4227b2f676d65179 a oc:WorkflowStep ;
+    dcterms:description "Clone the repository and cd into project directory" ;
+    oc:expectedOutcome "Project files including pyproject.toml and uv.lock available locally" ;
+    oc:stepId "clone-repo" .
+
+_:ref_553170d63ada81d0 a oc:WorkflowStep ;
+    dcterms:description "Run uv init to create project structure with pyproject.toml and .python-version" ;
+    oc:expectedOutcome "Project directory created with pyproject.toml, .python-version, README.md, .gitignore" ;
+    oc:stepId "init-project" .
+
+_:ref_9fbd9968a62b088e a oc:WorkflowStep ;
+    dcterms:description "Run uv sync to install all dependencies from the lockfile" ;
+    oc:expectedOutcome "Virtual environment created with all dependencies installed at exact locked versions" ;
+    oc:stepDependsOn _:ref_4227b2f676d65179 ;
+    oc:stepId "sync-deps" .
+
+_:ref_bcfc6e2bb99c7a4a a oc:WorkflowStep ;
+    dcterms:description "Run uv python pin <version> to set the desired Python version" ;
+    oc:expectedOutcome ".python-version file updated with specified version" ;
+    oc:stepDependsOn _:ref_553170d63ada81d0 ;
+    oc:stepId "pin-python" .
+
+_:ref_d498cd56d931d0ed a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_022304181f11985b,
+        _:ref_20c1818ce641857e,
+        _:ref_45a99dff1586bdc7,
+        _:ref_630126bb486e78a7,
+        _:ref_8f71093fc464d98c,
+        _:ref_8f7920e9357f8480,
+        _:ref_9d7bd6ecee26ca9f,
+        _:ref_c5f7b941d2c55192,
+        _:ref_d4ef67f24aa1a530,
+        _:ref_e8fdf7a1d4c64b81 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+

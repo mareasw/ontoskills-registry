@@ -1,0 +1,426 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_multilingual_video_dubbing_ffmpeg_audio_processing a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "ffmpeg-audio-processing" ;
+    skos:broader "FFmpeg audio processing" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/multilingual-video-dubbing/ffmpeg-audio-processing" ;
+    oc:contentHash "70a2f456286bf4f60f783fe36d56629c37b75080e27545255607ce35ed2a8398" ;
+    oc:differentia "extracts, normalizes, mixes, and manipulates audio tracks using FFmpeg audio filters and codecs" ;
+    oc:handlesFailure oc:FileNotFound,
+        oc:InvalidInput,
+        oc:PermissionDenied ;
+    oc:hasAllowedTool "Bash" ;
+    oc:hasArgumentHint "input-file [output-file] [--operation extract|normalize|mix|adjust|filter|analyze]" ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Extract, normalize, mix, and process audio tracks - audio manipulation and analysis" ;
+    oc:hasName "ffmpeg-audio-processing" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: FFmpeg Audio Processing
+description: Extract, normalize, mix, and process audio tracks - audio manipulation and analysis
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Extract, normalize, mix, and process audio tracks from video files." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Concatenate audio files
+ffmpeg -i "concat:audio1.mp3|audio2.mp3|audio3.mp3" -c copy output.mp3
+
+# Using file list
+# file 'audio1.mp3'
+# file 'audio2.mp3'
+ffmpeg -f concat -safe 0 -i list.txt -c copy output.mp3
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 150-158" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Combine Multiple Audio Files" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Increase volume by 6dB
+ffmpeg -i input.mp4 -af "volume=6dB" output.mp4
+
+# Decrease volume by 3dB
+ffmpeg -i input.mp4 -af "volume=-3dB" output.mp4
+
+# Set absolute volume
+ffmpeg -i input.mp4 -af "volume=0.5" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 52-61" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Volume Adjustment" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Detect volume levels
+ffmpeg -i input.mp4 -af "volumedetect" -f null -
+
+# Measure loudness (LUFS)
+ffmpeg -i input.mp4 -af "ebur128=peak=true" -f null -
+
+# Get audio statistics
+ffprobe -v error -select_streams a:0 \\
+  -show_entries stream=sample_rate,channels,bit_rate \\
+  -of json input.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 135-146" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "Audio Analysis" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Extract left channel
+ffmpeg -i stereo.mp3 -map_channel 0.0.0 left.mp3
+
+# Extract right channel
+ffmpeg -i stereo.mp3 -map_channel 0.0.1 right.mp3
+
+# Convert stereo to mono
+ffmpeg -i stereo.mp3 -ac 1 mono.mp3
+
+# Convert mono to stereo
+ffmpeg -i mono.mp3 -ac 2 stereo.mp3
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 65-77" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Channel Operations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Resample to 48kHz
+ffmpeg -i input.mp4 -af "aresample=48000" output.mp4
+
+# Resample audio only
+ffmpeg -i input.mp4 -vn -af "aresample=48000" -ar 48000 audio.wav
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 109-115" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Sample Rate Conversion" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Extract as MP3
+ffmpeg -i video.mp4 -vn -acodec libmp3lame -q:a 2 audio.mp3
+
+# Extract as AAC (copy, no re-encode)
+ffmpeg -i video.mp4 -vn -c:a copy audio.aac
+
+# Extract as WAV (uncompressed)
+ffmpeg -i video.mp4 -vn -acodec pcm_s16le audio.wav
+
+# Extract specific audio stream
+ffmpeg -i video.mp4 -map 0:a:1 -c:a copy audio2.aac
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 21-33" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Extract Audio" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Replace audio track
+ffmpeg -i video.mp4 -i audio.mp3 -c:v copy -map 0:v:0 -map 1:a:0 output.mp4
+
+# Mix two audio tracks
+ffmpeg -i video.mp4 -i audio2.mp3 \\
+  -filter_complex "[0:a][1:a]amix=inputs=2:duration=first" \\
+  -c:v copy output.mp4
+
+# Mix with volume control
+ffmpeg -i video.mp4 -i bgm.mp3 \\
+  -filter_complex "[0:a]volume=1.0[voice];[1:a]volume=0.3[music];[voice][music]amix=inputs=2:duration=first" \\
+  -c:v copy output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 81-94" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Mix Audio Tracks" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Mix multiple audio tracks" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "Convert audio formats" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Adjust audio volume" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "Extract specific channels" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Normalize audio levels" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Extract audio from video" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "When to Use" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Delay audio by 0.5 seconds
+ffmpeg -i video.mp4 -itsoffset 0.5 -i video.mp4 \\
+  -map 0:v -map 1:a -c copy output.mp4
+
+# Using adelay filter (milliseconds)
+ffmpeg -i input.mp4 -af "adelay=500|500" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 98-105" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Audio Delay" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# High-pass filter (remove low frequencies)
+ffmpeg -i input.mp4 -af "highpass=f=200" output.mp4
+
+# Low-pass filter (remove high frequencies)
+ffmpeg -i input.mp4 -af "lowpass=f=3000" output.mp4
+
+# Band-pass filter
+ffmpeg -i input.mp4 -af "bandpass=f=1000:width_type=h:w=500" output.mp4
+
+# Fade in/out
+ffmpeg -i input.mp4 -af "afade=t=in:st=0:d=2,afade=t=out:st=8:d=2" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 119-131" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Audio Filters" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Normalize loudness (ITU-R BS.1770-4)
+ffmpeg -i input.mp4 -af "loudnorm=I=-23:TP=-1.5:LRA=11" output.mp4
+
+# Simple normalization
+ffmpeg -i input.mp4 -af "volume=2.0" output.mp4
+
+# Peak normalization
+ffmpeg -i input.mp4 -af "volumedetect" -f null -
+# Then use the detected peak to normalize
+ffmpeg -i input.mp4 -af "volume=0.5" output.mp4
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 37-48" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Normalize Audio" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 5 ;
+                                    oc:itemText "`-ar` for sample rate" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "`-map` to select specific streams" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 6 ;
+                                    oc:itemText "Normalization may require two passes for accurate results" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Use `-vn` to disable video when extracting audio" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 4 ;
+                                    oc:itemText "`-ac` for channel count" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "`-af` for audio filters" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 12 ;
+                    oc:sectionTitle "Notes" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "FFmpeg Audio Processing Skill" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Mix voice and background music tracks with volume control into a final output." ;
+            oc:hasStep _:ref_1090dab133cc25ca,
+                _:ref_cd44459870c9b834,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Apply filter_complex with amix and individual volume filters" ;
+                    oc:expectedOutcome "Mixed audio output file created" ;
+                    oc:stepDependsOn _:ref_1090dab133cc25ca ;
+                    oc:stepId "mix-with-filter" ] ;
+            oc:workflowId "ffmpeg-audio-mix-tracks" ;
+            oc:workflowName "Mix Multiple Audio Tracks" ],
+        [ a oc:Workflow ;
+            dcterms:description "Extract audio from a video file, analyze its levels, and normalize to broadcast standards." ;
+            oc:hasStep [ a oc:WorkflowStep ;
+                    dcterms:description "Run ebur128 measurement on output to verify loudness targets are met" ;
+                    oc:expectedOutcome "Confirmed output meets loudness specifications" ;
+                    oc:stepDependsOn _:ref_940b8ee9aec32e25 ;
+                    oc:stepId "verify-output" ],
+                _:ref_036fef8cbbfb0525,
+                _:ref_940b8ee9aec32e25,
+                _:ref_96b4edb8e3ab029a ;
+            oc:workflowId "ffmpeg-audio-extract-normalize" ;
+            oc:workflowName "Extract and Normalize Audio" ] ;
+    oc:impartsKnowledge oc:kn_002952d3,
+        oc:kn_03edc5c9,
+        oc:kn_1bc0bcbd,
+        oc:kn_39ec217e,
+        oc:kn_84546593,
+        oc:kn_d92f2c13,
+        oc:kn_dab7245b,
+        oc:kn_f36356ce,
+        oc:kn_f5809f71 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:ToolInstalled ;
+    oc:resolvesIntent "adjust audio volume",
+        "analyze audio properties and loudness",
+        "apply audio filters like fade and EQ",
+        "convert audio formats and sample rates",
+        "extract audio from video",
+        "extract or convert audio channels",
+        "mix multiple audio tracks",
+        "normalize audio levels" ;
+    oc:yieldsState oc:AudioExtracted,
+        oc:AudioNormalized,
+        oc:AudioProcessed .
+
+oc:kn_002952d3 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When applying filters, normalizing, or converting codecs" ;
+    oc:directiveContent "Audio re-encoding operations (anything not using -c:a copy) will result in quality loss and increased processing time." ;
+    oc:hasRationale "Re-encoding is lossy for most codecs; agents should warn users when quality degradation may occur." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_03edc5c9 a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before any audio processing operation" ;
+    oc:directiveContent "FFmpeg and FFprobe must be installed and accessible in PATH." .
+
+oc:kn_1bc0bcbd a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "General audio processing workflow" ;
+    oc:directiveContent "1. Analyze input with ffprobe/volumedetect 2. Choose codec (copy if possible) 3. Apply filters with -af 4. Verify output levels with ebur128" ;
+    oc:stepOrder 1 .
+
+oc:kn_39ec217e a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting audio from video files" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i video.mp4 -vn -acodec <codec> [-q:a <quality>] output.<ext>" ;
+    oc:hasRationale "The -vn flag disables video; codec selection controls quality and compatibility." .
+
+oc:kn_84546593 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When using the loudnorm filter" ;
+    oc:directiveContent "Loudness normalization may require two passes for accurate results — first pass detects levels, second pass applies correction." ;
+    oc:hasRationale "Single-pass loudnorm can be inaccurate for dynamic content; two-pass ensures the target LUFS is met." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_d92f2c13 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When mixing multiple audio tracks with independent volume control" ;
+    oc:codeLanguage "bash" ;
+    oc:directiveContent "ffmpeg -i video.mp4 -i audio.mp3 -filter_complex \"[0:a]volume=1.0[a];[1:a]volume=0.3[b];[a][b]amix=inputs=2:duration=first\" -c:v copy output.mp4" ;
+    oc:hasRationale "Filter_complex with named labels and amix allows precise control over multi-track mixing." .
+
+oc:kn_dab7245b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When normalizing audio for professional or multi-track use" ;
+    oc:directiveContent "Do not use simple volume normalization (volume=2.0) for broadcast/professional output; always use loudnorm filter with ITU-R BS.1770-4 parameters instead." ;
+    oc:hasRationale "Simple normalization can cause clipping and inconsistent loudness across tracks; loudnorm adheres to broadcast standards." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_f36356ce a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When extracting or converting audio" ;
+    oc:directiveContent "Use -c:a copy to extract audio without re-encoding when the target format matches the source codec; re-encode only when necessary." ;
+    oc:hasRationale "Copy mode preserves quality and is significantly faster; re-encoding introduces generation loss." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_f5809f71 a oc:KnowledgeNode,
+        oc:SuccessIndicator ;
+    oc:appliesToContext "After normalization or volume adjustment" ;
+    oc:directiveContent "Verify processed audio using ebur128 loudness measurement or volumedetect to confirm levels match targets." ;
+    oc:hasRationale "Post-processing verification ensures the output meets loudness and quality targets." .
+
+_:ref_036fef8cbbfb0525 a oc:WorkflowStep ;
+    dcterms:description "Analyze input audio properties using ffprobe and volumedetect" ;
+    oc:expectedOutcome "Audio stream metadata and volume statistics obtained" ;
+    oc:stepId "analyze-input" .
+
+_:ref_1090dab133cc25ca a oc:WorkflowStep ;
+    dcterms:description "Determine appropriate volume levels for each track (e.g., voice=1.0, bgm=0.3)" ;
+    oc:expectedOutcome "Target volume ratios decided" ;
+    oc:stepDependsOn _:ref_cd44459870c9b834 ;
+    oc:stepId "set-volumes" .
+
+_:ref_940b8ee9aec32e25 a oc:WorkflowStep ;
+    dcterms:description "Apply loudnorm filter with target LUFS/TP/LRA values" ;
+    oc:expectedOutcome "Audio normalized to broadcast standards" ;
+    oc:stepDependsOn _:ref_96b4edb8e3ab029a ;
+    oc:stepId "normalize-audio" .
+
+_:ref_96b4edb8e3ab029a a oc:WorkflowStep ;
+    dcterms:description "Extract audio track from video using -vn with appropriate codec" ;
+    oc:expectedOutcome "Raw audio file extracted" ;
+    oc:stepDependsOn _:ref_036fef8cbbfb0525 ;
+    oc:stepId "extract-audio" .
+
+_:ref_cd44459870c9b834 a oc:WorkflowStep ;
+    dcterms:description "Analyze volume levels of all input tracks" ;
+    oc:expectedOutcome "Volume levels known for each track" ;
+    oc:stepId "analyze-tracks" .
+

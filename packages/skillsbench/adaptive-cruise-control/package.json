@@ -1,0 +1,71 @@
+{
+  "package_id": "skillsbench/adaptive-cruise-control",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "csv-processing/ontoskill.ttl",
+    "pid-controller/ontoskill.ttl",
+    "simulation-metrics/ontoskill.ttl",
+    "vehicle-dynamics/ontoskill.ttl",
+    "yaml-config/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "csv-processing/intents.json",
+    "pid-controller/intents.json",
+    "simulation-metrics/intents.json",
+    "vehicle-dynamics/intents.json",
+    "yaml-config/intents.json"
+  ],
+  "skills": [
+    {
+      "id": "csv-processing",
+      "path": "csv-processing/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true
+    },
+    {
+      "id": "pid-controller",
+      "path": "pid-controller/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true,
+      "depends_on_skills": [
+        "ontoskills-vehicle-dynamics"
+      ]
+    },
+    {
+      "id": "simulation-metrics",
+      "path": "simulation-metrics/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true,
+      "depends_on_skills": [
+        "ontoskills-csv-processing"
+      ]
+    },
+    {
+      "id": "vehicle-dynamics",
+      "path": "vehicle-dynamics/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true,
+      "depends_on_skills": [
+        "ontoskills-pid-controller"
+      ]
+    },
+    {
+      "id": "yaml-config",
+      "path": "yaml-config/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "development",
+      "is_user_invocable": true
+    }
+  ]
+}

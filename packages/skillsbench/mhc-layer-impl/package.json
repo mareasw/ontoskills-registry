@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/mhc-layer-impl",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "mhc-algorithm/ontoskill.ttl",
+    "modal-gpu/ontoskill.ttl",
+    "nanogpt-training/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "mhc-algorithm/intents.json",
+    "modal-gpu/intents.json",
+    "nanogpt-training/intents.json"
+  ],
+  "skills": []
+}

@@ -1,0 +1,478 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_econ_detrending_correlation_timeseries_detrending a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "timeseries-detrending" ;
+    skos:broader "Time series analysis methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/econ-detrending-correlation/timeseries-detrending" ;
+    oc:contentHash "1ca3c23acd46c849219be9d75dc420811ef183ab9fb3fd25ff016f816ad7c614" ;
+    oc:differentia "decomposes macroeconomic data into trend and cyclical components using the HP filter and log transformations for business cycle analysis" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasAllowedTool "python" ;
+    oc:hasArgumentHint "time-series-data (pandas Series or DataFrame of economic variables)" ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Tools and techniques for detrending time series data in macroeconomic analysis. Use when working with economic time series that need to be decomposed into trend and cyclical components. Covers HP filter, log transformations for growth series, and correlation analysis of business cycles." ;
+    oc:hasName "timeseries-detrending" ;
+    oc:hasRequirement oc:req_02b3c31e,
+        oc:req_746aacc9,
+        oc:req_788682e2,
+        oc:req_bf86d2b2 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "This skill provides guidance on decomposing economic time series into trend and cyclical components, a fundamental technique in business cycle analysis." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 1 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "Series with zeros" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Series already expressed as rates or percentages" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "Series that can be negative (net exports, current account)" ] ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "When NOT to Use Logs" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import numpy as np
+
+# Apply log transformation BEFORE HP filtering
+log_series = np.log(real_series)
+cycle, trend = hpfilter(log_series, lamb=100)
+
+# The cycle now represents percentage deviations from trend
+# e.g., cycle = 0.02 means 2% above trend
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 3 ;
+                                    oc:sourceLocation "lines 71-80" ],
+                                _:ref_9344f71e554648b0,
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "For most macroeconomic aggregates (GDP, consumption, investment), you should apply the natural logarithm **before** filtering:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Why Use Logs?" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Log Transformation for Growth Series" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent _:ref_39bc9f78666d6f04 ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Step-by-Step Process" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import pandas as pd
+import numpy as np
+from statsmodels.tsa.filters.hp_filter import hpfilter
+
+# Load real (inflation-adjusted) data
+real_consumption = pd.Series(...)  # Real consumption expenditure
+real_investment = pd.Series(...)   # Real fixed investment
+
+# Log transformation
+ln_consumption = np.log(real_consumption)
+ln_investment = np.log(real_investment)
+
+# HP filter with λ=100 for annual data
+cycle_c, trend_c = hpfilter(ln_consumption, lamb=100)
+cycle_i, trend_i = hpfilter(ln_investment, lamb=100)
+
+# Compute correlation of cyclical components
+correlation = np.corrcoef(cycle_c, cycle_i)[0, 1]
+print(f"Business cycle correlation: {correlation:.4f}")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 100-120" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Example: Business Cycle Correlation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Complete Workflow for Detrending" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Economic time series like GDP, consumption, and investment contain both long-term trends and short-term fluctuations (business cycles). Separating these components is essential for:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Identifying leading/lagging indicators" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Comparing volatility across variables" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Analyzing business cycle correlations" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Ensure these packages are installed:" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "The HP filter is in `statsmodels.tsa.filters.hp_filter`." ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """pip install statsmodels pandas numpy
+""" ;
+                            oc:codeLanguage "bash" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 125-127" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Dependencies" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "The HP filter is the most widely used method for detrending macroeconomic data. It decomposes a time series into a trend component and a cyclical component." ] ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "**Common mistake**: Using λ=1600 (quarterly default) for annual data produces an overly smooth trend that misses important cyclical dynamics." ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "**Critical**: The choice of λ depends on data frequency:" ],
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 2 ;
+                                    oc:rowCount 3 ;
+                                    oc:tableCaption "**Critical**: The choice of λ depends on data frequency" ;
+                                    oc:tableMarkdown """| Data Frequency | Recommended λ | Rationale |
+|----------------|---------------|-----------|
+| Annual         | **100**       | Standard for yearly data |
+| Quarterly      | **1600**      | Hodrick-Prescott (1997) recommendation |
+| Monthly        | **14400**     | Ravn-Uhlig (2002) adjustment |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Choosing Lambda (λ)" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "$$\\sum_{t=1}^{T}(y_t - \\tau_t)^2 + \\lambda \\sum_{t=2}^{T-1}[(\\tau_{t+1} - \\tau_t) - (\\tau_t - \\tau_{t-1})]^2$$" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 3 ;
+                                    oc:textContent "Where:" ],
+                                [ a oc:BulletList ;
+                                    oc:blockType "bullet_list" ;
+                                    oc:contentOrder 4 ;
+                                    oc:hasItem [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 3 ;
+                                            oc:itemText "$\\lambda$: Smoothing parameter controlling the trade-off" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 1 ;
+                                            oc:itemText "First term: Minimizes deviation of data from trend" ],
+                                        [ a oc:BulletItem ;
+                                            oc:blockType "bullet_item" ;
+                                            oc:itemOrder 2 ;
+                                            oc:itemText "Second term: Penalizes changes in the trend's growth rate" ] ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "Given a time series $y_t$, the HP filter finds the trend $\\tau_t$ that minimizes:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Mathematical Foundation" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from statsmodels.tsa.filters.hp_filter import hpfilter
+import numpy as np
+
+# Apply HP filter
+# Returns: (cyclical_component, trend_component)
+cycle, trend = hpfilter(data, lamb=100)  # For annual data
+
+# For quarterly data
+cycle_q, trend_q = hpfilter(quarterly_data, lamb=1600)
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 46-56" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Important**: The function parameter is `lamb` (not `lambda`, which is a Python keyword)." ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 3 ;
+                            oc:sectionTitle "Python Implementation" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "The Hodrick-Prescott (HP) Filter" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Time Series Detrending for Macroeconomic Analysis" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: timeseries-detrending
+description: Tools and techniques for detrending time series data in macroeconomic analysis. Use when working with economic time series that need to be decomposed into trend and cyclical components. Covers HP filter, log transformations for growth series, and correlation analysis of business cycles.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow _:ref_39bc9f78666d6f04,
+        _:ref_9344f71e554648b0,
+        [ a oc:Workflow ;
+            dcterms:description "Full pipeline from raw economic data to cyclical component analysis" ;
+            oc:hasStep _:ref_1e5862b3297867ff,
+                _:ref_51019dcf491d4235,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Analyze cyclical components: compute correlations, volatilities, and other business cycle statistics" ;
+                    oc:expectedOutcome "Business cycle correlation matrix and volatility measures" ;
+                    oc:stepDependsOn _:ref_de7334d2f46c3bd1 ;
+                    oc:stepId "analyze-cycle" ],
+                _:ref_de7334d2f46c3bd1,
+                _:ref_e47356c6047f87c0 ;
+            oc:workflowId "detrending-workflow" ;
+            oc:workflowName "Complete Detrending Workflow" ] ;
+    oc:impartsKnowledge oc:kn_1ea958e8,
+        oc:kn_202cfab9,
+        oc:kn_25bb7d1a,
+        oc:kn_57e26fe1,
+        oc:kn_795abaa3,
+        oc:kn_88845927,
+        oc:kn_8ae46d31,
+        oc:kn_8b3f0cce,
+        oc:kn_928c623f,
+        oc:kn_d79b6969,
+        oc:kn_e061f981 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "analyze business cycle correlations",
+        "compare volatility across economic variables",
+        "compute cyclical component of GDP or macroeconomic data",
+        "decompose time series into trend and cycle",
+        "detrend economic time series" ;
+    oc:yieldsState oc:CyclicalComponentExtracted,
+        oc:DataDetrended .
+
+oc:kn_1ea958e8 a oc:KnowledgeNode,
+        oc:OutputFormat ;
+    oc:appliesToContext "When reporting correlation of cyclical components" ;
+    oc:directiveContent "Business cycle correlation: {correlation:.4f}" ;
+    oc:templateVariables "correlation" .
+
+oc:kn_202cfab9 a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When detrending annual macroeconomic data" ;
+    oc:directiveContent "Do not use λ=1600 (the quarterly default) for annual data — it produces an overly smooth trend that misses cyclical dynamics." ;
+    oc:hasRationale "This is the most common mistake in applied macroeconomic detrending and silently produces misleading results." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_25bb7d1a a oc:KnowledgeNode,
+        oc:Prerequisite ;
+    oc:appliesToContext "Before executing any detrending analysis" ;
+    oc:directiveContent "Install required packages: pip install statsmodels pandas numpy" .
+
+oc:kn_57e26fe1 a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When preparing macroeconomic data for detrending" ;
+    oc:directiveContent "Always convert nominal values to real (inflation-adjusted) terms before log transformation and filtering." ;
+    oc:hasRationale "Nominal values conflate price level changes with real economic fluctuations, contaminating cyclical component extraction." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_795abaa3 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When deciding whether to log-transform before filtering" ;
+    oc:directiveContent "Do NOT apply log transformation to: series that can be negative (net exports, current account), series already expressed as rates or percentages, or series containing zeros." ;
+    oc:hasRationale "Log of non-positive values is undefined or produces invalid results; rate series are already in comparable units." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_88845927 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Computing business cycle correlation between two detrended series" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent "correlation = np.corrcoef(cycle_c, cycle_i)[0, 1]" .
+
+oc:kn_8ae46d31 a oc:KnowledgeNode,
+        oc:Procedure ;
+    oc:appliesToContext "Complete detrending workflow" ;
+    oc:directiveContent "1. Load and clean data (handle missing values, ensure time ordering) → 2. Convert to real terms (deflate using price index) → 3. Apply log transformation to positive level variables → 4. Apply HP filter with correct λ for data frequency → 5. Analyze cyclical component (correlations, volatilities)" ;
+    oc:stepOrder 1 .
+
+oc:kn_8b3f0cce a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Standard HP filter application to log-transformed annual data" ;
+    oc:codeLanguage "python" ;
+    oc:directiveContent """from statsmodels.tsa.filters.hp_filter import hpfilter
+import numpy as np
+
+log_series = np.log(real_series)
+cycle, trend = hpfilter(log_series, lamb=100)  # λ=100 for annual data""" .
+
+oc:kn_928c623f a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When applying the HP filter to any time series" ;
+    oc:directiveContent "The HP filter smoothing parameter λ must match data frequency: λ=100 for annual, λ=1600 for quarterly, λ=14400 for monthly data." ;
+    oc:hasRationale "Using the wrong λ (e.g., quarterly default on annual data) produces an overly smooth trend that misses important cyclical dynamics." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:kn_d79b6969 a oc:KnowledgeNode,
+        oc:Standard ;
+    oc:appliesToContext "When detrending growth series for business cycle analysis" ;
+    oc:directiveContent "Apply natural logarithm to positive macroeconomic aggregates (GDP, consumption, investment) BEFORE HP filtering, never after." ;
+    oc:hasRationale "Log transformation converts multiplicative relationships to additive, stabilizes variance, and makes the cyclical component interpretable as percentage deviations from trend." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_e061f981 a oc:Heuristic,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When calling statsmodels hpfilter in Python" ;
+    oc:directiveContent "The HP filter function parameter is `lamb` (not `lambda`) because `lambda` is a Python keyword." ;
+    oc:hasRationale "Using `lambda` as parameter name causes a SyntaxError." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:req_02b3c31e a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "numpy" .
+
+oc:req_746aacc9 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "pandas" .
+
+oc:req_788682e2 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "statsmodels" .
+
+oc:req_bf86d2b2 a oc:RequirementKnowledge ;
+    oc:isOptional true ;
+    oc:requirementValue "Understanding of HP filter mathematical foundation" .
+
+_:ref_13a59dfeed084a5f a oc:WorkflowStep ;
+    dcterms:description "**Standard Practice**: Required for business cycle statistics that compare volatilities" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_78e903e3df655341 a oc:WorkflowStep ;
+    dcterms:description "**Multiplicative to Additive**: Converts percentage changes to log differences" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_9f23180f8be775f4 a oc:WorkflowStep ;
+    dcterms:description "**Convert to real terms**: Deflate nominal values using appropriate price index" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_a450c91b2d012c18 a oc:WorkflowStep ;
+    dcterms:description "**Analyze cyclical component**: Compute correlations, volatilities, etc." ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_b86d10262fea68cd a oc:WorkflowStep ;
+    dcterms:description "**Economic Interpretation**: Cyclical component represents percentage deviations from trend" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_bc23c53e3a47ce0b a oc:WorkflowStep ;
+    dcterms:description "**Stabilizes Variance**: Growth rates become comparable across time" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_c27b5954e37c6dbd a oc:WorkflowStep ;
+    dcterms:description "**Apply log transformation**: For positive level variables" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_ed25e8af6de40c3d a oc:WorkflowStep ;
+    dcterms:description "**Load and clean data**: Handle missing values, ensure proper time ordering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_f535976a05df0c34 a oc:WorkflowStep ;
+    dcterms:description "**Apply HP filter**: Use appropriate λ for data frequency" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_1e5862b3297867ff a oc:WorkflowStep ;
+    dcterms:description "Load and clean data: handle missing values, ensure proper time ordering" ;
+    oc:expectedOutcome "Clean pandas Series/DataFrame with datetime index and no missing values" ;
+    oc:stepId "load-clean" .
+
+_:ref_39bc9f78666d6f04 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_9f23180f8be775f4,
+        _:ref_a450c91b2d012c18,
+        _:ref_c27b5954e37c6dbd,
+        _:ref_ed25e8af6de40c3d,
+        _:ref_f535976a05df0c34 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_51019dcf491d4235 a oc:WorkflowStep ;
+    dcterms:description "Apply natural log transformation to positive level variables" ;
+    oc:expectedOutcome "Log-transformed series ready for HP filtering" ;
+    oc:stepDependsOn _:ref_e47356c6047f87c0 ;
+    oc:stepId "log-transform" .
+
+_:ref_9344f71e554648b0 a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 2 ;
+    oc:hasStep _:ref_13a59dfeed084a5f,
+        _:ref_78e903e3df655341,
+        _:ref_b86d10262fea68cd,
+        _:ref_bc23c53e3a47ce0b ;
+    oc:workflowId "procedure_2" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_de7334d2f46c3bd1 a oc:WorkflowStep ;
+    dcterms:description "Apply HP filter with λ appropriate for data frequency (100 annual, 1600 quarterly, 14400 monthly)" ;
+    oc:expectedOutcome "Decomposed trend and cyclical components" ;
+    oc:stepDependsOn _:ref_51019dcf491d4235 ;
+    oc:stepId "hp-filter" .
+
+_:ref_e47356c6047f87c0 a oc:WorkflowStep ;
+    dcterms:description "Convert nominal values to real terms using appropriate price index" ;
+    oc:expectedOutcome "Inflation-adjusted series in constant-price units" ;
+    oc:stepDependsOn _:ref_1e5862b3297867ff ;
+    oc:stepId "convert-real" .
+

@@ -1,0 +1,181 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_mars_clouds_clustering_custom_distance_metrics a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "custom-distance-metrics" ;
+    skos:broader "Distance metric definition technique" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/mars-clouds-clustering/custom-distance-metrics" ;
+    oc:contentHash "548b4bc6f93b0ea8c61be81f1a919662f376d496c66876cba2b6075cdda6e078" ;
+    oc:differentia "uses Python closures and factory functions to create custom distance/similarity metrics compatible with sklearn and scipy clustering algorithms" ;
+    oc:handlesFailure oc:InvalidInput ;
+    oc:hasCategory "development" ;
+    oc:hasDescription "Define custom distance/similarity metrics for clustering and ML algorithms. Use when working with DBSCAN, sklearn, or scipy distance functions with application-specific metrics." ;
+    oc:hasName "custom-distance-metrics" ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasContent [ a oc:Paragraph ;
+                    oc:blockType "paragraph" ;
+                    oc:contentOrder 1 ;
+                    oc:textContent "Custom distance metrics allow you to define application-specific notions of similarity or distance between data points." ] ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def create_weighted_distance(weight_x, weight_y):
+    \"\"\"Create a distance function with specific weights.\"\"\"
+    def distance(a, b):
+        dx = a[0] - b[0]
+        dy = a[1] - b[1]
+        return np.sqrt((weight_x * dx)**2 + (weight_y * dy)**2)
+    return distance
+
+# Create distances with different weights
+dist_equal = create_weighted_distance(1.0, 1.0)
+dist_x_heavy = create_weighted_distance(2.0, 0.5)
+
+# Use with DBSCAN
+db = DBSCAN(eps=10, min_samples=3, metric=dist_x_heavy)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 29-44" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "To use a distance function with configurable parameters, use a closure or factory function:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Parameterized Distance Functions" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 1 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Pre-compute distance matrices when doing multiple lookups" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "For large datasets, consider vectorizing operations" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Custom Python functions are slower than built-in metrics" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Performance Considerations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from scipy.spatial.distance import cdist, pdist, squareform
+
+# Custom distance for cdist
+def custom_metric(u, v):
+    return np.sqrt(np.sum((u - v)**2))
+
+# Distance matrix between two sets of points
+dist_matrix = cdist(points_a, points_b, metric=custom_metric)
+
+# Pairwise distances within one set
+pairwise = pdist(points, metric=custom_metric)
+dist_matrix = squareform(pairwise)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 71-84" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "For computing distance matrices efficiently:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Using scipy.spatial.distance" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """from sklearn.cluster import DBSCAN
+
+def my_distance(point_a, point_b):
+    \"\"\"Custom distance between two points.\"\"\"
+    # point_a and point_b are 1D arrays
+    return some_calculation(point_a, point_b)
+
+db = DBSCAN(eps=5, min_samples=3, metric=my_distance)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 14-23" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "sklearn's DBSCAN accepts a callable as the `metric` parameter:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Defining Custom Metrics for sklearn" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """def create_manhattan_distance(scale=1.0):
+    \"\"\"
+    Manhattan distance with optional scaling.
+    Measures distance as sum of absolute differences.
+    This is just one example - you can design custom metrics for your specific needs.
+    \"\"\"
+    def distance(a, b):
+        return scale * (abs(a[0] - b[0]) + abs(a[1] - b[1]))
+    return distance
+
+# Use with DBSCAN
+manhattan_metric = create_manhattan_distance(scale=1.5)
+db = DBSCAN(eps=10, min_samples=3, metric=manhattan_metric)
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 50-64" ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "As an example, Manhattan distance (L1 norm) can be parameterized with a scale factor:" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Example: Manhattan Distance with Parameter" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Custom Distance Metrics" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: custom-distance-metrics
+description: Define custom distance/similarity metrics for clustering and ML algorithms. Use when working with DBSCAN, sklearn, or scipy distance functions with application-specific metrics.
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:impartsKnowledge oc:kn_e4b0a681,
+        oc:kn_efaf9462 ;
+    oc:isUserInvocable true ;
+    oc:nature "Tool" ;
+    oc:requiresState oc:EnvironmentReady ;
+    oc:resolvesIntent "compute custom distance matrices",
+        "create parameterized distance function",
+        "define custom distance metric for clustering",
+        "use custom metrics with DBSCAN" ;
+    oc:yieldsState oc:CustomMetricDefined .
+
+oc:kn_e4b0a681 a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When using custom metrics on large datasets" ;
+    oc:directiveContent "Custom Python distance functions are significantly slower than built-in metrics. For large datasets, vectorize operations or pre-compute distance matrices when doing multiple lookups." ;
+    oc:hasRationale "Python-level function call overhead per pair of points makes custom metrics orders of magnitude slower than C-optimized built-in metrics" ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_efaf9462 a oc:CodePattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When a distance metric needs configurable parameters (weights, scales, thresholds)" ;
+    oc:directiveContent "Use a factory/closure pattern to create parameterized distance functions: outer function takes parameters, inner function captures them via closure and computes distance." ;
+    oc:hasRationale "sklearn's metric parameter accepts a callable(u, v) -> float only; closures provide a clean way to inject parameters without global state" .
+

@@ -1,0 +1,21 @@
+{
+  "package_id": "skillsbench/hvac-control",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "excitation-signal-design/ontoskill.ttl",
+    "first-order-model-fitting/ontoskill.ttl",
+    "imc-tuning-rules/ontoskill.ttl",
+    "safety-interlocks/ontoskill.ttl",
+    "scipy-curve-fit/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "excitation-signal-design/intents.json",
+    "first-order-model-fitting/intents.json",
+    "imc-tuning-rules/intents.json",
+    "safety-interlocks/intents.json",
+    "scipy-curve-fit/intents.json"
+  ],
+  "skills": []
+}

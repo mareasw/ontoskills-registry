@@ -1,0 +1,17 @@
+{
+  "package_id": "skillsbench/grid-dispatch-operator",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "dc-power-flow/ontoskill.ttl",
+    "economic-dispatch/ontoskill.ttl",
+    "power-flow-data/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "dc-power-flow/intents.json",
+    "economic-dispatch/intents.json",
+    "power-flow-data/intents.json"
+  ],
+  "skills": []
+}

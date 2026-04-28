@@ -1,0 +1,22 @@
+{
+  "package_id": "skillsbench/citation-check",
+  "version": "0.1.0",
+  "trust_tier": "community",
+  "source_kind": "ontology",
+  "modules": [
+    "citation-management/ontoskill.ttl"
+  ],
+  "embedding_files": [
+    "citation-management/intents.json"
+  ],
+  "skills": [
+    {
+      "id": "citation-management",
+      "path": "citation-management/ontoskill.ttl",
+      "default_enabled": false,
+      "aliases": [],
+      "category": "research",
+      "is_user_invocable": true
+    }
+  ]
+}

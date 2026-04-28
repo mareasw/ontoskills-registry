@@ -1,0 +1,560 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oc: <https://ontoskills.sh/ontology#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oc:skill_earthquake_plate_calculation_geospatial_analysis a oc:DeclarativeSkill,
+        oc:Skill ;
+    dcterms:identifier "geospatial-analysis" ;
+    skos:broader "Data analysis methodology" ;
+    prov:wasDerivedFrom ".agents/skills/skillsbench/earthquake-plate-calculation/geospatial-analysis" ;
+    oc:contentHash "4bd9f969f845973fc18021a566e9c54518c6528069f9c32ca64af0234c330181" ;
+    oc:differentia "that uses geopandas with proper coordinate projections for accurate geospatial distance calculations and spatial filtering" ;
+    oc:handlesFailure oc:CRSMismatch,
+        oc:InvalidInput ;
+    oc:hasCategory "research" ;
+    oc:hasDescription "Analyze geospatial data using geopandas with proper coordinate projections. Use when calculating distances between geographic features, performing spatial filtering, or working with plate boundaries and earthquake data." ;
+    oc:hasName "geospatial-analysis" ;
+    oc:hasRequirement oc:req_72343969,
+        oc:req_7e9ca2f5,
+        oc:req_891a4948,
+        oc:req_c8aa4291 ;
+    oc:hasSection [ a oc:Section ;
+            oc:hasSubsection [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """from shapely.geometry import Point
+import geopandas as gpd
+
+# Convert coordinate data to GeoDataFrame
+data = [
+    {"id": 1, "lat": 35.0, "lon": 140.0, "value": 5.5},
+    {"id": 2, "lat": 36.0, "lon": 141.0, "value": 6.0},
+]
+
+geometry = [Point(row["lon"], row["lat"]) for row in data]
+gdf = gpd.GeoDataFrame(data, geometry=geometry, crs="EPSG:4326")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 52-64" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "From Regular Data with Coordinates" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """import geopandas as gpd
+
+# Load GeoJSON files directly
+gdf_plates = gpd.read_file("plates.json")
+gdf_boundaries = gpd.read_file("boundaries.json")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 42-48" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "From GeoJSON Files" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 3 ;
+                    oc:sectionTitle "Loading Geospatial Data" ],
+                [ a oc:Section ;
+                    oc:hasContent _:ref_f52d30dfb5045cba ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 11 ;
+                    oc:sectionTitle "Best Practices Summary" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Here's a complete example for analyzing earthquakes near plate boundaries:" ],
+                        [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """import geopandas as gpd
+from shapely.geometry import Point
+
+# 1. Load data
+earthquakes_data = [...]  # Your earthquake data
+gdf_plates = gpd.read_file("plates.json")
+gdf_boundaries = gpd.read_file("boundaries.json")
+
+# 2. Create earthquake GeoDataFrame
+geometry = [Point(eq["longitude"], eq["latitude"]) for eq in earthquakes_data]
+gdf_eq = gpd.GeoDataFrame(earthquakes_data, geometry=geometry, crs="EPSG:4326")
+
+# 3. Spatial filtering - find earthquakes in specific plate
+target_plate = gdf_plates[gdf_plates["Code"] == "PA"].geometry.unary_union
+earthquakes_in_plate = gdf_eq[gdf_eq.within(target_plate)].copy()
+
+# 4. Calculate distances (project to metric CRS)
+METRIC_CRS = "EPSG:4087"
+eq_proj = earthquakes_in_plate.to_crs(METRIC_CRS)
+
+# Filter and combine relevant boundaries
+plate_boundaries = gdf_boundaries[
+    gdf_boundaries["Name"].str.contains("PA")
+].to_crs(METRIC_CRS).geometry.unary_union
+
+# Calculate distances
+earthquakes_in_plate["distance_km"] = eq_proj.geometry.distance(plate_boundaries) / 1000.0
+
+# 5. Find the furthest earthquake
+furthest_eq = earthquakes_in_plate.nlargest(1, "distance_km").iloc[0]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 130-161" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 6 ;
+                    oc:sectionTitle "Common Workflow Pattern" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Filter by name or code
+pacific_plate = gdf_plates[gdf_plates["PlateName"] == "Pacific"]
+pacific_plate_alt = gdf_plates[gdf_plates["Code"] == "PA"]
+
+# Filter boundaries involving a specific plate
+pacific_bounds = gdf_boundaries[
+    (gdf_boundaries["PlateA"] == "PA") | 
+    (gdf_boundaries["PlateB"] == "PA")
+]
+
+# String pattern matching
+pa_related = gdf_boundaries[gdf_boundaries["Name"].str.contains("PA")]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 1 ;
+                            oc:sourceLocation "lines 165-178" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 7 ;
+                    oc:sectionTitle "Filtering by Attributes" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Table ;
+                            oc:blockType "table" ;
+                            oc:contentOrder 1 ;
+                            oc:rowCount 4 ;
+                            oc:tableCaption "## Common Pitfalls" ;
+                            oc:tableMarkdown """| Issue | Problem | Solution |
+|-------|---------|----------|
+| Distance in degrees | Using EPSG:4326 for distance calculations | Project to EPSG:4087 or similar metric CRS |
+| Antimeridian issues | Manual longitude adjustments (±360) | Use geopandas spatial operations, they handle it |
+| Slow performance | Calculating distance to each boundary point separately | Use `.unary_union` + single `.distance()` call |
+| Missing geometries | Some features have no geometry | Filter with `gdf[gdf.geometry.notna()]` |
+""" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 9 ;
+                    oc:sectionTitle "Common Pitfalls" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "When working with geographic data (earthquakes, plate boundaries, etc.), using geopandas with proper coordinate projections provides accurate distance calculations and efficient spatial operations. This guide covers best practices for geospatial analysis." ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 1 ;
+                    oc:sectionTitle "Overview" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# ❌ INCORRECT: Calculating distance in EPSG:4326
+# This treats degrees as if they were equal distances everywhere on Earth
+gdf = gpd.GeoDataFrame(..., crs="EPSG:4326")
+distance = point1.distance(point2)  # Wrong! Returns degrees, not meters
+
+# ✅ CORRECT: Project to metric CRS first
+gdf_projected = gdf.to_crs("EPSG:4087")
+distance_meters = point1_proj.distance(point2_proj)  # Correct! Returns meters
+distance_km = distance_meters / 1000.0
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 26-36" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Why Projection Matters" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 2 ;
+                                    oc:textContent "**Critical Rule**: Never calculate distances directly in geographic coordinates (EPSG:4326). Always project to a metric coordinate system first." ],
+                                [ a oc:Table ;
+                                    oc:blockType "table" ;
+                                    oc:contentOrder 1 ;
+                                    oc:rowCount 2 ;
+                                    oc:tableCaption "### Geographic vs Projected Coordinate Systems" ;
+                                    oc:tableMarkdown """| Coordinate System | Type | Units | Use Case |
+|-------------------|------|-------|----------|
+| EPSG:4326 (WGS84) | Geographic | Degrees (lat/lon) | Data storage, display |
+| EPSG:4087 (World Equidistant Cylindrical) | Projected | Meters | Distance calculations |
+""" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Geographic vs Projected Coordinate Systems" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 2 ;
+                    oc:sectionTitle "Key Concepts" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:CodeExample ;
+                            oc:blockType "code_block" ;
+                            oc:codeContent """# Good: Filter first, then project
+small_subset = gdf_large[gdf_large["region"] == "Pacific"]
+small_projected = small_subset.to_crs(METRIC_CRS)
+
+# Avoid: Projecting large dataset just to filter
+# gdf_projected = gdf_large.to_crs(METRIC_CRS)
+# small_subset = gdf_projected[gdf_projected["region"] == "Pacific"]
+""" ;
+                            oc:codeLanguage "python" ;
+                            oc:contentOrder 2 ;
+                            oc:sourceLocation "lines 187-195" ],
+                        _:ref_f8d9edfee88c170e ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 8 ;
+                    oc:sectionTitle "Performance Tips" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Combine multiple boundary segments into one geometry
+all_boundaries = gdf_boundaries.geometry.unary_union
+
+# Or filter first, then combine
+pacific_boundaries = gdf_boundaries[
+    gdf_boundaries["Name"].str.contains("PA")
+].geometry.unary_union
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 2 ;
+                                    oc:sourceLocation "lines 84-92" ],
+                                [ a oc:Paragraph ;
+                                    oc:blockType "paragraph" ;
+                                    oc:contentOrder 1 ;
+                                    oc:textContent "When you have multiple polygons or lines that should be treated as one:" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Using `.unary_union` for Multiple Geometries" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Get the polygon of interest
+target_poly = gdf_plates[gdf_plates["Name"] == "Pacific"].geometry.unary_union
+
+# Filter points that fall within the polygon
+points_inside = gdf_points[gdf_points.within(target_poly)]
+
+print(f"Found {len(points_inside)} points inside the polygon")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 70-78" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Finding Points Within a Polygon" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 4 ;
+                    oc:sectionTitle "Spatial Filtering" ],
+                [ a oc:Section ;
+                    oc:hasSubsection [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# 1. Load your data
+gdf_points = gpd.read_file("points.json")
+gdf_boundaries = gpd.read_file("boundaries.json")
+
+# 2. Project to metric coordinate system
+METRIC_CRS = "EPSG:4087"
+points_proj = gdf_points.to_crs(METRIC_CRS)
+boundaries_proj = gdf_boundaries.to_crs(METRIC_CRS)
+
+# 3. Combine boundary segments if needed
+boundary_geom = boundaries_proj.geometry.unary_union
+
+# 4. Calculate distances (returns meters)
+gdf_points["distance_m"] = points_proj.geometry.distance(boundary_geom)
+gdf_points["distance_km"] = gdf_points["distance_m"] / 1000.0
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 98-114" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 1 ;
+                            oc:sectionTitle "Point to Line/Boundary Distance" ],
+                        [ a oc:Section ;
+                            oc:hasContent [ a oc:CodeExample ;
+                                    oc:blockType "code_block" ;
+                                    oc:codeContent """# Sort by distance and get the furthest point
+furthest = gdf_points.nlargest(1, "distance_km").iloc[0]
+
+print(f"Furthest point: {furthest['id']}")
+print(f"Distance: {furthest['distance_km']:.2f} km")
+""" ;
+                                    oc:codeLanguage "python" ;
+                                    oc:contentOrder 1 ;
+                                    oc:sourceLocation "lines 118-124" ] ;
+                            oc:sectionLevel 3 ;
+                            oc:sectionOrder 2 ;
+                            oc:sectionTitle "Finding Furthest Point" ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 5 ;
+                    oc:sectionTitle "Distance Calculations" ],
+                [ a oc:Section ;
+                    oc:hasContent [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 3 ;
+                            oc:textContent "These manual approaches are slower, more error-prone, and less accurate than geopandas methods." ],
+                        [ a oc:Paragraph ;
+                            oc:blockType "paragraph" ;
+                            oc:contentOrder 1 ;
+                            oc:textContent "Avoid implementing your own:" ],
+                        [ a oc:BulletList ;
+                            oc:blockType "bullet_list" ;
+                            oc:contentOrder 2 ;
+                            oc:hasItem [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 1 ;
+                                    oc:itemText "Haversine distance formulas (use geopandas projections instead)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 2 ;
+                                    oc:itemText "Point-in-polygon checks (use `.within()`)" ],
+                                [ a oc:BulletItem ;
+                                    oc:blockType "bullet_item" ;
+                                    oc:itemOrder 3 ;
+                                    oc:itemText "Iterating through boundary points (use `.distance()` with `.unary_union`)" ] ] ;
+                    oc:sectionLevel 2 ;
+                    oc:sectionOrder 10 ;
+                    oc:sectionTitle "When NOT to Use Manual Calculations" ] ;
+            oc:sectionLevel 1 ;
+            oc:sectionOrder 1 ;
+            oc:sectionTitle "Geospatial Analysis with GeoPandas" ],
+        [ a oc:Section ;
+            oc:hasContent [ a oc:FrontmatterBlock ;
+                    oc:blockType "frontmatter" ;
+                    oc:contentOrder 1 ;
+                    oc:rawYaml """name: geospatial-analysis
+description: Analyze geospatial data using geopandas with proper coordinate projections. Use when calculating distances between geographic features, performing spatial filtering, or working with plate boundaries and earthquake data.
+license: MIT
+""" ] ;
+            oc:sectionLevel 0 ;
+            oc:sectionOrder 0 ;
+            oc:sectionTitle "" ] ;
+    oc:hasWorkflow [ a oc:Workflow ;
+            dcterms:description "Complete workflow for loading, filtering, projecting, and analyzing geospatial data with distance calculations" ;
+            oc:hasStep _:ref_265132287be03487,
+                _:ref_5052a2f024116bb0,
+                [ a oc:WorkflowStep ;
+                    dcterms:description "Use .nlargest()/.nsmallest() to find extreme values, or analyze distance distributions" ;
+                    oc:expectedOutcome "Identified furthest/nearest points or distance statistics" ;
+                    oc:stepDependsOn _:ref_265132287be03487 ;
+                    oc:stepId "analyze-results" ],
+                _:ref_58d9e61b68987b18,
+                _:ref_6169078021dba224,
+                _:ref_851aec6fb237966f ;
+            oc:workflowId "geospatial-analysis-pipeline" ;
+            oc:workflowName "Geospatial Analysis Pipeline" ],
+        _:ref_f52d30dfb5045cba,
+        _:ref_f8d9edfee88c170e ;
+    oc:impartsKnowledge oc:kn_056dfdc7,
+        oc:kn_1740a48c,
+        oc:kn_5ad8f4da,
+        oc:kn_84087c7b,
+        oc:kn_db26aa97 ;
+    oc:isUserInvocable true ;
+    oc:nature "Concept" ;
+    oc:requiresState oc:EnvironmentReady,
+        oc:FileExists ;
+    oc:resolvesIntent "analyze earthquake and plate boundary data",
+        "calculate distances between geographic features",
+        "convert geographic coordinates to projected coordinate systems",
+        "find nearest or furthest geographic points",
+        "perform spatial filtering on geospatial data" ;
+    oc:yieldsState oc:GeospatialDistancesComputed,
+        oc:SpatialFilteringComplete .
+
+oc:kn_056dfdc7 a oc:KnowledgeNode,
+        oc:SideEffect ;
+    oc:appliesToContext "When filtering a GeoDataFrame and then adding new columns" ;
+    oc:directiveContent "Use .copy() when creating filtered DataFrames that will be modified (e.g., adding distance columns). Without .copy(), SettingWithCopyWarning may occur or data may be corrupted." ;
+    oc:hasRationale "Filtered DataFrames are views by default; modifying them can produce unpredictable results or raise warnings." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_1740a48c a oc:DesignPrinciple,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When optimizing geospatial workflows" ;
+    oc:directiveContent "Filter data before projecting to a metric CRS. Project once, not inside loops. Combine geometries with .unary_union before batch distance calculations." ;
+    oc:hasRationale "Projection is expensive; filtering first reduces data volume. Combining geometries before .distance() avoids N×M point-by-point comparisons." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_5ad8f4da a oc:KnowledgeNode,
+        oc:PerformanceProfile ;
+    oc:appliesToContext "When calculating distances from many points to a boundary composed of multiple segments" ;
+    oc:directiveContent "Use .unary_union to combine multiple geometries into a single geometry before calling .distance(). This transforms O(N×M) distance calculations into O(N) calculations." ;
+    oc:hasRationale "Calling .distance() once against a unified geometry is dramatically faster than iterating over each boundary segment individually." ;
+    oc:severityLevel "MEDIUM" .
+
+oc:kn_84087c7b a oc:AntiPattern,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "When performing any geospatial computation" ;
+    oc:directiveContent "Never implement manual Haversine formulas, point-in-polygon loops, or iterate through boundary points manually. Use geopandas built-in methods (.distance(), .within(), .unary_union) instead." ;
+    oc:hasRationale "Manual implementations are slower, more error-prone, and less accurate than geopandas methods which handle edge cases like antimeridian crossings." ;
+    oc:severityLevel "HIGH" .
+
+oc:kn_db26aa97 a oc:Constraint,
+        oc:KnowledgeNode ;
+    oc:appliesToContext "Before any distance calculation on geospatial data" ;
+    oc:directiveContent "Never calculate distances directly in geographic coordinates (EPSG:4326). Always project to a metric coordinate system (e.g., EPSG:4087) first." ;
+    oc:hasRationale "EPSG:4326 returns degrees, not meters. Treating degrees as equal distances is geometrically incorrect because longitude degrees shrink toward the poles." ;
+    oc:severityLevel "CRITICAL" .
+
+oc:req_72343969 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "geopandas" .
+
+oc:req_7e9ca2f5 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "python" .
+
+oc:req_891a4948 a oc:RequirementKnowledge ;
+    oc:isOptional false ;
+    oc:requirementValue "EPSG coordinate reference systems (4326 vs 4087)" .
+
+oc:req_c8aa4291 a oc:RequirementTool ;
+    oc:isOptional false ;
+    oc:requirementValue "shapely" .
+
+_:ref_06d90782f33ab998 a oc:WorkflowStep ;
+    dcterms:description "**Use `.unary_union`**: Combine geometries before distance calculations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_17fb4e55a7e74e55 a oc:WorkflowStep ;
+    dcterms:description "✅ Combine geometries with `.unary_union` before distance calculation" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_239723d765243093 a oc:WorkflowStep ;
+    dcterms:description "❌ Avoid manual Haversine implementations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_8" ;
+    oc:stepOrder 8 .
+
+_:ref_3a33242711e20539 a oc:WorkflowStep ;
+    dcterms:description "✅ Use `.distance()` method for point-to-geometry distances" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_5" ;
+    oc:stepOrder 5 .
+
+_:ref_494b38a9798843c7 a oc:WorkflowStep ;
+    dcterms:description "**Filter before projecting**: Reduce data size before expensive operations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_4a041ecaa80e0451 a oc:WorkflowStep ;
+    dcterms:description "**Copy when modifying**: Use `.copy()` when creating filtered DataFrames" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_4" ;
+    oc:stepOrder 4 .
+
+_:ref_5f50cc5f10320bd9 a oc:WorkflowStep ;
+    dcterms:description "**Project once**: Convert to metric CRS once, not in loops" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_88443b61eb73a9b4 a oc:WorkflowStep ;
+    dcterms:description "✅ Load GeoJSON with `gpd.read_file()`" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_1" ;
+    oc:stepOrder 1 .
+
+_:ref_921e6fa37a848042 a oc:WorkflowStep ;
+    dcterms:description "✅ Use `.nlargest()` / `.nsmallest()` for finding extreme values" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_6" ;
+    oc:stepOrder 6 .
+
+_:ref_b0faa0b0cd9aae01 a oc:WorkflowStep ;
+    dcterms:description "✅ Use `.within()` for spatial filtering" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_2" ;
+    oc:stepOrder 2 .
+
+_:ref_ba39a43930e28d23 a oc:WorkflowStep ;
+    dcterms:description "✅ Project to metric CRS (`EPSG:4087`) before distance calculations" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_3" ;
+    oc:stepOrder 3 .
+
+_:ref_c87e5dcad4f8844d a oc:WorkflowStep ;
+    dcterms:description "❌ Don't iterate through individual boundary points" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_9" ;
+    oc:stepOrder 9 .
+
+_:ref_d6533f060b250a2a a oc:WorkflowStep ;
+    dcterms:description "❌ Never calculate distances in EPSG:4326" ;
+    oc:blockType "workflow_step" ;
+    oc:stepId "step_7" ;
+    oc:stepOrder 7 .
+
+_:ref_265132287be03487 a oc:WorkflowStep ;
+    dcterms:description "Use .distance() to compute point-to-geometry distances in meters, then convert to km by dividing by 1000" ;
+    oc:expectedOutcome "Distance column added to GeoDataFrame in kilometers" ;
+    oc:stepDependsOn _:ref_5052a2f024116bb0 ;
+    oc:stepId "calculate-distances" .
+
+_:ref_5052a2f024116bb0 a oc:WorkflowStep ;
+    dcterms:description "Use .unary_union to combine multi-segment boundaries or multi-polygon regions into single geometries" ;
+    oc:expectedOutcome "Unified geometry for efficient distance computation" ;
+    oc:stepDependsOn _:ref_6169078021dba224 ;
+    oc:stepId "combine-geometries" .
+
+_:ref_58d9e61b68987b18 a oc:WorkflowStep ;
+    dcterms:description "Load GeoJSON files with gpd.read_file() or create GeoDataFrame from coordinate data with Point geometries and EPSG:4326 CRS" ;
+    oc:expectedOutcome "GeoDataFrames loaded with correct CRS assignment" ;
+    oc:stepId "load-data" .
+
+_:ref_6169078021dba224 a oc:WorkflowStep ;
+    dcterms:description "Project filtered GeoDataFrames from EPSG:4326 to EPSG:4087 (metric CRS). Filter BEFORE projecting for performance." ;
+    oc:expectedOutcome "GeoDataFrames in metric coordinates ready for distance calculations" ;
+    oc:stepDependsOn _:ref_851aec6fb237966f ;
+    oc:stepId "project-to-metric" .
+
+_:ref_851aec6fb237966f a oc:WorkflowStep ;
+    dcterms:description "Filter data using .within() for polygon containment and/or attribute-based filtering with boolean conditions" ;
+    oc:expectedOutcome "Filtered subset of points within target geographic region" ;
+    oc:stepDependsOn _:ref_58d9e61b68987b18 ;
+    oc:stepId "spatial-filter" .
+
+_:ref_f52d30dfb5045cba a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_17fb4e55a7e74e55,
+        _:ref_239723d765243093,
+        _:ref_3a33242711e20539,
+        _:ref_88443b61eb73a9b4,
+        _:ref_921e6fa37a848042,
+        _:ref_b0faa0b0cd9aae01,
+        _:ref_ba39a43930e28d23,
+        _:ref_c87e5dcad4f8844d,
+        _:ref_d6533f060b250a2a ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
+_:ref_f8d9edfee88c170e a oc:Workflow ;
+    oc:blockType "ordered_procedure" ;
+    oc:contentOrder 1 ;
+    oc:hasStep _:ref_06d90782f33ab998,
+        _:ref_494b38a9798843c7,
+        _:ref_4a041ecaa80e0451,
+        _:ref_5f50cc5f10320bd9 ;
+    oc:workflowId "procedure_1" ;
+    oc:workflowName "Ordered Procedure" .
+
